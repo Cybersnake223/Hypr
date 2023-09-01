@@ -2,6 +2,18 @@
 
 ## This is my rice of Hyprland Window Manager
 
+## Dependencies  
+swaylock  
+alacritty  
+nvim  
+hyprland  
+rofi  
+dunst  
+wlogout  
+wbg  
+bleachbit (Cleaner Script)  
+yt-dlp (Youtube audio/video download script)  
+
 ### Default Applications  
 
 Browser - Brave  
@@ -15,7 +27,7 @@ Shell - Zsh
 Wallpaper - Wbg  
 GUI File Manager - Thunar  
 CLI File Manager - Ranger  
-
+Music Player  - Cmus  
 
 This Repo also contains my custom scripts for Misc things like downloading youtube videos and audio , switching wallpaper in hyprland with keyboard shortcuts.
 make sure to copy the scripts folder in /home/.local/bin and also add it to your PATH variable
