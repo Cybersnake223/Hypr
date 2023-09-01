@@ -1,6 +1,6 @@
 # Hyprland Dotfiles  
 
-## This is my rice of Hyprland Window Manager
+## This is my rice of Hyprland on Arch Linux
 
 ## Dependencies  
 swaylock  
