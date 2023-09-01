@@ -1,0 +1,22 @@
+TERM="alacritty"
+PATH="$PATH:/home/cybersnake/.local/bin:/home/cybersnake/.local/bin/scripts/"
+VISUAL="nvim"
+EDITOR="nvim"
+BROWSER="brave"
+LANG="en_US.UTF-8"
+DBUS_SESSION_BUS_ADDRESS='unix:path=/run/user/1000/bus'
+export PAGER="most"
+GDK_BACKEND="wayland"
+XDG_CURRENT_DESKTOP=Hyprland
+XDG_SESSION_TYPE=wayland
+XDG_SESSION_DESKTOP=Hyprland
+SDL_VIDEODRIVER=wayland
+CLUTTER_BACKEND=wayland
+QT_QPA_PLATFORM="wayland;xcb"
+QT_QPA_PLATFORMTHEME=qt5ct
+MOZ_ENABLE_WAYLAND=1 
+LIBVA_DRIVER_NAME=iHD
+CLUTTER_PAINT=disable-dynamic-max-render-time
+MANPATH="/usr/local/man:$MANPATH"
+ZDOTDIR="/home/cybersnake/.config/zsh/"
+XDG_CONFIG_DIR="/home/cybersnake/.config/"
