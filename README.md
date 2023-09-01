@@ -1,6 +1,4 @@
-# Hypr
 # Hyprland Dotfiles  
-
 
 ## This is my rice of Hyprland Window Manager
 
