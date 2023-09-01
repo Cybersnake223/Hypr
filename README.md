@@ -1,5 +1,5 @@
 # Hypr
-Hyprland Dotfiles
+Hyprland Dotfiles  
 This is my rice of Hyprland Window Manager
 
 Default Applications  
