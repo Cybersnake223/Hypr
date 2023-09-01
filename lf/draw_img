@@ -1,0 +1,81 @@
+#!/bin/bash
+
+############################################################################################################
+##   ______  __      __  _______   ________  _______    ______   __    __   ______   __    __  ________   ##
+##  /      \|  \    /  \|       \ |        \|       \  /      \ |  \  |  \ /      \ |  \  /  \|        \  ##
+## |  $$$$$$\\$$\  /  $$| $$$$$$$\| $$$$$$$$| $$$$$$$\|  $$$$$$\| $$\ | $$|  $$$$$$\| $$ /  $$| $$$$$$$$  ##
+## | $$   \$$ \$$\/  $$ | $$__/ $$| $$__    | $$__| $$| $$___\$$| $$$\| $$| $$__| $$| $$/  $$ | $$__      ##
+## | $$        \$$  $$  | $$    $$| $$  \   | $$    $$ \$$    \ | $$$$\ $$| $$    $$| $$  $$  | $$  \     ##
+## | $$   __    \$$$$   | $$$$$$$\| $$$$$   | $$$$$$$\ _\$$$$$$\| $$\$$ $$| $$$$$$$$| $$$$$\  | $$$$$     ##
+## | $$__/  \   | $$    | $$__/ $$| $$_____ | $$  | $$|  \__| $$| $$ \$$$$| $$  | $$| $$ \$$\ | $$_____   ##
+##  \$$    $$   | $$    | $$    $$| $$     \| $$  | $$ \$$    $$| $$  \$$$| $$  | $$| $$  \$$\| $$     \  ##
+##   \$$$$$$     \$$     \$$$$$$$  \$$$$$$$$ \$$   \$$  \$$$$$$  \$$   \$$ \$$   \$$ \$$   \$$ \$$$$$$$$  ##
+##                                                                                                        ##
+## Created by Cybersnake                                                                                  ##
+############################################################################################################
+
+clear_screen() {
+	printf '\e[%sH\e[9999C\e[1J%b\e[1;%sr' \
+		"$((LINES - 2))" "${TMUX:+\e[2J}" "$max_items"
+}
+
+# Get a file's mime_type.
+mime_type=$(file -bi "$1")
+
+# File isn't an image file, give warning.
+if [[ $mime_type != image/* ]]; then
+	lf -remote "send $id echoerr 'Not an image'"
+	exit
+fi
+
+w3m_paths=(/usr/{local/,}{lib,libexec,lib64,libexec64}/w3m/w3mi*)
+read -r w3m _ < <(type -p w3mimgdisplay "${w3m_paths[@]}")
+read -r LINES COLUMNS < <(stty size)
+
+# Get terminal window size in pixels and set it to WIDTH and HEIGHT.
+export $(xdotool getactivewindow getwindowgeometry --shell)
+
+# Get the image size in pixels.
+read -r img_width img_height < <("$w3m" <<<"5;${CACHE:-$1}")
+
+((img_width > WIDTH)) && {
+	((img_height = img_height * WIDTH / img_width))
+	((img_width = WIDTH))
+}
+
+((img_height > HEIGHT)) && {
+	((img_width = img_width * HEIGHT / img_height))
+	((img_height = HEIGHT))
+}
+
+# Variable needed for centering image.
+HALF_HEIGHT=$(expr $HEIGHT / 2)
+HALF_WIDTH=$(expr $WIDTH / 2)
+HALF_IMG_HEIGHT=$(expr $img_height / 2)
+HALF_IMG_WIDTH=$(expr $img_width / 2)
+X_POS=$(expr $HALF_WIDTH - $HALF_IMG_WIDTH)
+Y_POS=$(expr $HALF_HEIGHT - $HALF_IMG_HEIGHT)
+
+clear_screen
+# Hide the cursor.
+printf '\e[?25l'
+
+# Display the image.
+printf '0;1;%s;%s;%s;%s;;;;;%s\n3;\n4\n' \
+	${X_POS:-0} \
+	${Y_POS:-0} \
+	"$img_width" \
+	"$img_height" \
+	"${CACHE:-$1}" | "$w3m" &>/dev/null
+
+# Wait for user input.
+read -ern 1
+
+# Clear the image.
+printf '6;%s;%s;%s;%s\n3;' \
+	"${X_POS:-0}" \
+	"${Y_POS:-0}" \
+	"$WIDTH" \
+	"$HEIGHT" | "$w3m" &>/dev/null
+
+clear_screen
