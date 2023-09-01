@@ -5,7 +5,7 @@ EDITOR="nvim"
 BROWSER="brave"
 LANG="en_US.UTF-8"
 DBUS_SESSION_BUS_ADDRESS='unix:path=/run/user/1000/bus'
-export PAGER="most"
+PAGER="most"
 GDK_BACKEND="wayland"
 XDG_CURRENT_DESKTOP=Hyprland
 XDG_SESSION_TYPE=wayland
