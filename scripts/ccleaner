@@ -11,37 +11,13 @@
 ##  \$$    $$   | $$    | $$    $$| $$     \| $$  | $$ \$$    $$| $$  \$$$| $$  | $$| $$  \$$\| $$     \  ##
 ##   \$$$$$$     \$$     \$$$$$$$  \$$$$$$$$ \$$   \$$  \$$$$$$  \$$   \$$ \$$   \$$ \$$   \$$ \$$$$$$$$  ##
 ##                                                                                                        ##
+## Cache Cleaner                                                                                          ##
 ## Created by Cybersnake                                                                                  ##
 ############################################################################################################
 
-if [[ $(pidof aria2c) ]]; then
-	pkill aria2c
-	notify-send "Aria Server Killed"
-fi
-
-if [[ $(pidof wl-copy) ]]; then
-	pkill wl-copy
-	notify-send "Clipboard Cleaned"
-fi
-
-if [[ $(pidof gvfsd) ]]; then
-	pkill gvfsd
-fi
-
-if [[ $(pidof tumblerd) ]]; then
-	pkill tumblerd
-	notify-send "Thumbnail Cache Cleaned"
-fi
-
-if [[ $(pidof gvfs-udisks2-volume-monitor) ]]; then
-	pkill gvfs-udisks2-vo
-fi
-
-if [[ $(pidof xfconfd) ]]; then
-	pkill xfconfd
-fi
-
-if [[ $(pidof lf) ]]; then
-	pkill lf
-	notify-send "Lf Killed"
-fi
+rm -r --force /home/cybersnake/.local/state/nvim
+notify-send "Nvim Cache Cleaned"
+brave=$(bleachbit -c brave.cache brave.sync | rg "Disk space*")
+notify-send "Brave Cache Cleaned" "$(echo $brave)"
+sys=$(bleachbit -c system.cache | rg "Disk space*")
+notify-send "System Cache Cleaned" "$(echo $sys)"
