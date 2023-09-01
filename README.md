@@ -40,6 +40,6 @@ make sure to copy the scripts folder in /home/.local/bin and also add it to your
 
 Colorscheme used in this is inspired by Ayu_Dark as i love it soo much 😉😉  
 
-I will keep improving this and will add new features also  
+I will keep improving this and will add new features also and i will also write a script to install it automatically.  
 
 ![Screenshot](img.png)
