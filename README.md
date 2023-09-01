@@ -8,6 +8,7 @@ alacritty
 nvim  
 hyprland  
 rofi  
+rofi-emoji  
 dunst  
 wlogout  
 wbg  
