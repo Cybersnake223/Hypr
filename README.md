@@ -2,7 +2,8 @@
 
 ## This is my rice of Hyprland Window Manager
 
-Default Applications  
+### Default Applications  
+
 Browser - Brave  
 Bar - Waybar  
 Terminal - Alacritty  
