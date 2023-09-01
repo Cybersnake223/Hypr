@@ -1,0 +1,19 @@
+#!/bin/bash
+###############################
+# CYBERSNAKE MPV VIDEO SCRIPT #
+###############################
+
+list_files() {
+	find "$1" -type f
+}
+
+directory=/home/cybersnake/Videos/
+files=$(list_files "$directory")
+
+selected_file=$(echo "$files" | rofi -dmenu -i -p "Select a file:")
+
+if [ -n "$selected_file" ]; then
+	mpv "$selected_file"
+else
+	notify-send "No file selected."
+fi

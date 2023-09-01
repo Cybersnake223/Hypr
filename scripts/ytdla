@@ -1,0 +1,17 @@
+#!/bin/bash
+
+#######################################
+# CYBERSNAKE YT AUDIO DOWNLOAD SCRIPT #
+#######################################
+
+dir='/home/cybersnake/Music/%(title)s.%(ext)s'
+selected_option=$(echo -e "Paste" | rofi -dmenu -p "Select action:")
+
+if [ "$selected_option" == "Paste" ]; then
+	pasted_content=$(wl-paste)
+	rofi -dmenu -p "Pasted content:$pasted_content"
+	yt-dlp -q -x --audio-quality 0 --audio-format flac -o $dir $pasted_content
+	notify-send "Download Complete" "Audio has been downloaded"
+else
+	notify-send "Download Aborted "
+fi

@@ -1,0 +1,58 @@
+############################################################################################################
+##   ______  __      __  _______   ________  _______    ______   __    __   ______   __    __  ________   ##
+##  /      \|  \    /  \|       \ |        \|       \  /      \ |  \  |  \ /      \ |  \  /  \|        \  ##
+## |  $$$$$$\\$$\  /  $$| $$$$$$$\| $$$$$$$$| $$$$$$$\|  $$$$$$\| $$\ | $$|  $$$$$$\| $$ /  $$| $$$$$$$$  ##
+## | $$   \$$ \$$\/  $$ | $$__/ $$| $$__    | $$__| $$| $$___\$$| $$$\| $$| $$__| $$| $$/  $$ | $$__      ##
+## | $$        \$$  $$  | $$    $$| $$  \   | $$    $$ \$$    \ | $$$$\ $$| $$    $$| $$  $$  | $$  \     ##
+## | $$   __    \$$$$   | $$$$$$$\| $$$$$   | $$$$$$$\ _\$$$$$$\| $$\$$ $$| $$$$$$$$| $$$$$\  | $$$$$     ##
+## | $$__/  \   | $$    | $$__/ $$| $$_____ | $$  | $$|  \__| $$| $$ \$$$$| $$  | $$| $$ \$$\ | $$_____   ##
+##  \$$    $$   | $$    | $$    $$| $$     \| $$  | $$ \$$    $$| $$  \$$$| $$  | $$| $$  \$$\| $$     \  ##
+##   \$$$$$$     \$$     \$$$$$$$  \$$$$$$$$ \$$   \$$  \$$$$$$  \$$   \$$ \$$   \$$ \$$   \$$ \$$$$$$$$  ##
+##                                                                                                        ##
+## Dunst Config                                                                                           ##
+## Created by Cybersnake                                                                                  ##
+############################################################################################################
+
+[global]
+monitor = 0
+follow = mouse
+padding = 4
+horizontal_padding = 4
+frame_width = 4
+sort = no
+font = JetBrainsMono Nerd 10
+line_height = 3
+markup = full
+format = "<b>%s</b>\n%b"
+alignment = left
+show_age_threshold = 30
+word_wrap = yes
+ignore_newline = yes
+stack_duplicates = true
+hide_duplicate_count = no
+icon_position = left
+min_icon_size = 0
+max_icon_size = 32
+show_indicators = yes
+icon_position = left
+max_icon_size = 48
+title = Dunst
+class = Dunst
+corner_radius = 0
+origin = top-right
+offset = 8x8
+
+[urgency_low]
+background = "#0a0e14"
+foreground = "#b3b1ab"
+frame_color = "#1f2430"
+
+[urgency_normal]
+background = "#0a0e14"
+foreground = "#b3b1ab"
+frame_color = "#1f2430"
+
+[urgency_critical]
+background = "#0a0e14"
+foreground = "#b3b1ab"
+frame_color = "#ff3333"
