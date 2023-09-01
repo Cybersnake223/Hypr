@@ -12,8 +12,8 @@ Editor - Nvim
 Media Player - Mpv  
 Dmenu Program - Rofi  
 Shell - Zsh  
-Wallpaper - Wbg
-GUI File Manager - Thunar
+Wallpaper - Wbg  
+GUI File Manager - Thunar  
 CLI File Manager - Ranger  
 
 
