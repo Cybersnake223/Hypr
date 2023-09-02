@@ -14,12 +14,8 @@
 ## Created by Cybersnake                                                                                  ##
 ############################################################################################################
 
-list_files() {
-	find "$1" -type f
-}
-
-directory=/home/cybersnake/Videos/
-files=$(list_files "$directory")
+dir=/home/cybersnake/Videos/
+files=$(fd . $dir -t f)
 
 selected_file=$(echo "$files" | rofi -dmenu -i -p "Select a file:")
 
