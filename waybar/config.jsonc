@@ -46,7 +46,7 @@
     "spacing": 4
   },
   "clock": {
-    "format": "{: %H:%M:%S   %a, %b %e}",
+    "format": "{: %H:%M:%S   %a,%b%e}",
     "interval": 1
   },
   "backlight": {
@@ -123,9 +123,9 @@
     "format-critical": "{temperatureC}°C "
   },
   "network": {
-    "tooltip-format": "  {signalStrength}%",
+    "tooltip-format": " {signalStrength}%",
     "format-disconnected": "Disconnected ⚠",
-    "format-wifi": "  {essid}"
+    "format-wifi": " {essid}"
   },
   "bluetooth": {
     "format": " {status}",

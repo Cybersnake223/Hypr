@@ -96,6 +96,9 @@ alias ls="exa --icons"
 alias gc='git clone'
 alias gi='git init'
 
+# Uptime
+alias uptime="uptime -p"
+
 # Yay
 alias sysupd="topgrade"
 alias ys="yay"
