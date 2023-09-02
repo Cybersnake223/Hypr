@@ -45,3 +45,8 @@ if [[ $(pidof lf) ]]; then
 	pkill lf
 	notify-send "Lf Killed"
 fi
+
+if [[ $(pidof persepolis) ]]; then
+	pkill persepolis
+	notify-send "Persepolis Killed"
+fi

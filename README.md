@@ -28,11 +28,12 @@ Editor - Nvim
 Media Player - Mpv  
 Dmenu Program - Rofi  
 Shell - Zsh  
-Wallpaper - Wbg  
+Wallpaper - Swaybg  
 GUI File Manager - Thunar  
 CLI File Manager - Lf  
 Music Player  - Cmus  
 Pager - Most  
+Download Manager - Persepolis
 
 This Repo also contains my custom scripts for Misc things like downloading youtube videos and audio , switching wallpaper in hyprland with keyboard shortcuts.
 make sure to copy the scripts folder in /home/.local/bin and also add it to your PATH variable
