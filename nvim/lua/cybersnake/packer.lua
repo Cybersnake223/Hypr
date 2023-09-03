@@ -45,14 +45,4 @@ return require('packer').startup(function(use)
     use {
         'jghauser/mkdir.nvim'
     }
-    --- Whichkey ---
-    use {
-        "folke/which-key.nvim",
-        config = function()
-            vim.o.timeout = true
-            vim.o.timeoutlen = 300
-            require("which-key").setup {
-            }
-        end
-    }
 end)
