@@ -44,4 +44,6 @@ Colorscheme used in this is inspired by Ayu Dark as i love it soo much 😉😉
 I will keep improving this and will add new features also and i will also write a script to install it automatically.  
 
 
-![Screenshot](img.png)  
+![Screenshot](img1.png)  
+![Screenshot](img2.png)  
+![Screenshot](img3.png)  
