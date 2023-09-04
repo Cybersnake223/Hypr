@@ -15,17 +15,13 @@
 ## Created by Cybersnake                                                                                  ##
 ############################################################################################################
 
-list_files() {
-	find "$1" -type f
-}
-
-directory="/home/cybersnake/.local/bin/scripts"
-files=$(list_files "$directory")
+dir="/home/cybersnake/.local/bin/scripts"
+files=$(fd . "$dir" -t f)
 
 selected_file=$(echo "$files" | rofi -dmenu -i -p "Edit Scripts:")
 
 if [ -n "$selected_file" ]; then
-	alacritty -e nvim "$selected_file"
+	foot -e nvim "$selected_file"
 else
 	notify-send "No file selected."
 fi

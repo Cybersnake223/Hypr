@@ -1,0 +1,32 @@
+color=2e3440ff
+image=~/Pictures/Wallpapers/Wall-91
+scaling=fill
+ignore-empty-password
+show-failed-attempts
+hide-keyboard-layout
+bs-hl-color=b48eadff
+caps-lock-bs-hl-color=d08770ff
+caps-lock-key-hl-color=ebcb8bff
+font=Hack Nerd
+font-size=30
+indicator-radius=100
+indicator-thickness=10
+inside-color=2e344050
+inside-clear-color=81a1c1ff
+inside-ver-color=5e81acff
+inside-wrong-color=bf616affg
+key-hl-color=a3be8cff
+layout-bg-color=2e344000
+line-uses-ring
+ring-color=e30022ff
+ring-clear-color=88c0d0ff
+ring-ver-color=81a1c1ff
+ring-wrong-color=d08770ff
+separator-color=3b4252ff
+text-color=eceff4ff
+text-clear-color=3b4252ff
+text-ver-color=3b4252ff
+text-wrong-color=3b4252ff
+clock
+timestr=%R
+datestr=%a, %e of %B

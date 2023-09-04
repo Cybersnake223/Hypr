@@ -4,14 +4,14 @@
 
 ## Dependencies  
 swaylock  
-alacritty  
+foot  
 nvim  
 hyprland  
 rofi  
 rofi-emoji  
 dunst  
 wlogout  
-wbg  
+swaybg  
 waybar  
 mpv  
 most (pager)  
@@ -22,7 +22,7 @@ yt-dlp (Youtube audio/video download script)
 
 Browser - Brave  
 Bar - Waybar  
-Terminal - Alacritty  
+Terminal - Foot  
 Notification Daemon - Dunst  
 Editor - Nvim  
 Media Player - Mpv  

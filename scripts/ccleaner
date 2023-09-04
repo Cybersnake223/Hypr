@@ -19,5 +19,5 @@ rm -r --force /home/cybersnake/.local/state/nvim
 notify-send "Nvim Cache Cleaned"
 brave=$(bleachbit -c brave.cache brave.sync | rg "Disk space*")
 notify-send "Brave Cache Cleaned" "$(echo $brave)"
-sys=$(bleachbit -c system.cache | rg "Disk space*")
-notify-send "System Cache Cleaned" "$(echo $sys)"
+#sys=$(bleachbit -c system.cache | rg "Disk space*")
+#notify-send "System Cache Cleaned" "$(echo $sys)"

@@ -1,5 +1,5 @@
 configuration {
-  matching: "regex";
+  matching: "prefix";
   display-drun: "Applications:";
   display-window: "Windows:";
   drun-display-format: "{name}";

@@ -20,10 +20,12 @@ aliases
 cava
 deadbeef
 dunst
+foot
 hyprland
 lf
 mpv
 mpv-input
+nvim
 rofi
 rofi-wifi
 swaylock
@@ -56,6 +58,9 @@ deadbeef)
 dunst)
 	choice="$HOME/.config/dunst/dunstrc"
 	;;
+foot)
+    choice="$HOME/.config/foot/foot.ini"
+    ;;
 hyprland)
 	choice="$HOME/.config/hypr/hyprland.conf"
 	;;
@@ -68,6 +73,9 @@ mpv)
 mpv-input)
 	choice="$HOME/.config/mpv/input.conf"
 	;;
+nvim)
+    choice="$HOME/.config/nvim"
+    ;;
 rofi)
 	choice="$HOME/.config/rofi/config.rasi"
 	;;
@@ -99,4 +107,5 @@ zsh)
 	exit 1
 	;;
 esac
-alacritty -e nvim "$choice"
+
+foot -e nvim "$choice"

@@ -10,22 +10,19 @@
 ## | $$__/  \   | $$    | $$__/ $$| $$_____ | $$  | $$|  \__| $$| $$ \$$$$| $$  | $$| $$ \$$\ | $$_____   ##
 ##  \$$    $$   | $$    | $$    $$| $$     \| $$  | $$ \$$    $$| $$  \$$$| $$  | $$| $$  \$$\| $$     \  ##
 ##   \$$$$$$     \$$     \$$$$$$$  \$$$$$$$$ \$$   \$$  \$$$$$$  \$$   \$$ \$$   \$$ \$$   \$$ \$$$$$$$$  ##
-##                                                                                                        ##
+## All in one Extraction Script                                                                                                       ##
 ## Created by Cybersnake                                                                                  ##
 ############################################################################################################
 
-# Function to display usage instructions
 usage() {
 	echo "Usage: $0 -f <compressed_file> -d <output_directory>"
 	exit 1
 }
 
-# Check if the required number of arguments is provided
 if [ "$#" -ne 4 ]; then
 	usage
 fi
 
-# Parse command-line arguments
 while getopts ":f:d:" opt; do
 	case $opt in
 	f)
@@ -45,18 +42,15 @@ while getopts ":f:d:" opt; do
 	esac
 done
 
-# Check if the compressed file exists
 if [ ! -f "$compressed_file" ]; then
 	echo "Error: The specified compressed file does not exist."
 	usage
 fi
 
-# Check if the output directory exists or create it
 if [ ! -d "$output_directory" ]; then
 	mkdir -p "$output_directory"
 fi
 
-# Determine the file format and extract accordingly
 case "$compressed_file" in
 *.zip)
 	unzip -q "$compressed_file" -d "$output_directory" | pv

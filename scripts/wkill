@@ -24,6 +24,11 @@ if [[ $(pidof wl-copy) ]]; then
 	notify-send "Clipboard Cleaned"
 fi
 
+if [[ $(pidof foot) ]]; then
+	pkill foot
+	notify-send "Foot Killed"
+fi
+
 if [[ $(pidof gvfsd) ]]; then
 	pkill gvfsd
 fi

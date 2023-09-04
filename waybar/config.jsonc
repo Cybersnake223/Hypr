@@ -3,7 +3,7 @@
   "position": "top",
   "mod": "dock",
   "exclusive": true,
-  "passthrough": false,
+  "passthrough": true,
   "gtk-layer-shell": true,
   "height": 40,
   "modules-left": [
