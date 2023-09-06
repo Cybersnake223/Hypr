@@ -25,7 +25,7 @@ fi
 pageno=$(rofi -dmenu -p "Enter Page Number")
 wpnum=$(echo -e "24\n48\n72" | rofi -dmenu -p "No. of Wallpapers:")
 STARTPAGE=$pageno
-APIKEY="u4YNdj6N0M7nkrM2Pbz7fHAY0EYIT5WL"
+APIKEY=""
 
 #####################################
 ###     Configuration Options     ###
