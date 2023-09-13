@@ -1,12 +1,9 @@
 local servers = {
-	--"lua_ls",
-	-- "cssls",
-	"html",
-	-- "tsserver",
-	"pyright",
-	"bashls",
-	"jsonls",
-	-- "yamlls",
+    "lua_ls",
+    "tsserver",
+    "pyright",
+    "bashls",
+    "yamlls",
 }
 
 local settings = {
@@ -19,7 +16,7 @@ local settings = {
 		},
 	},
 	log_level = vim.log.levels.INFO,
-	max_concurrent_installers = 5,
+	max_concurrent_installers = 15,
 }
 
 require("mason").setup(settings)

@@ -14,19 +14,19 @@
 ## Created by Cybersnake                                                                                  ##
 ############################################################################################################
 
+if [[ $(pidof keepassxc) ]]; then
+    pkill keepassxc
+    notify-send "Password Manager Killed"
+fi
+
 if [[ $(pidof aria2c) ]]; then
-	pkill aria2c
-	notify-send "Aria Server Killed"
+    pkill aria2c
+    notify-send "Aria Server Killed"
 fi
 
 if [[ $(pidof wl-copy) ]]; then
 	pkill wl-copy
 	notify-send "Clipboard Cleaned"
-fi
-
-if [[ $(pidof foot) ]]; then
-	pkill foot
-	notify-send "Foot Killed"
 fi
 
 if [[ $(pidof gvfsd) ]]; then
@@ -35,7 +35,7 @@ fi
 
 if [[ $(pidof tumblerd) ]]; then
 	pkill tumblerd
-	notify-send "Thumbnail Cache Cleaned"
+	notify-send "Thumbnail Daemon Killed"
 fi
 
 if [[ $(pidof gvfs-udisks2-volume-monitor) ]]; then

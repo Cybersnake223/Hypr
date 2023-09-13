@@ -23,9 +23,9 @@ else
     notify-send "Downloading wallpaper for" "$query"
 fi
 pageno=$(rofi -dmenu -p "Enter Page Number")
-wpnum=$(echo -e "24\n48\n72" | rofi -dmenu -p "No. of Wallpapers:")
+wpnum=$(echo -e "24\n48\n72\n96\n120" | rofi -dmenu -p "No. of Wallpapers:")
 STARTPAGE=$pageno
-APIKEY=""
+APIKEY="u4YNdj6N0M7nkrM2Pbz7fHAY0EYIT5WL"
 
 #####################################
 ###     Configuration Options     ###
@@ -35,8 +35,8 @@ WPNUMBER=$wpnum
 TYPE=$stype             # Download Type (standard,search)
 CATEGORIES=100          # General Anime People
 FILTER=100              # SFW SKETCHY NSFW
-RESOLUTION=2560x1440    # Preferred Resolution (3840x2160, 2560x1440, 1920x1080)
-ATLEAST=2560x1440       # Minimum Resolution
+RESOLUTION=1920x1080    # Preferred Resolution (3840x2160, 2560x1440, 1920x1080)
+ATLEAST=1920x1080       # Minimum Resolution
 ASPECTRATIO=16x9        # Monitor Aspect Ratio
 MODE=$smode             # relevance, random, date_added, views, favorites, toplist, toplist-beta 
 TOPRANGE=1y             # possible values: 1d (last day), 3d (last 3 days), 1w (last week),1M (last month), 3M (last 3 months), 6M (last 6 months), 1y (last year)

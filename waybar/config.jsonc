@@ -3,7 +3,7 @@
   "position": "top",
   "mod": "dock",
   "exclusive": true,
-  "passthrough": true,
+  "passthrough": false,
   "gtk-layer-shell": true,
   "height": 40,
   "modules-left": [
@@ -46,7 +46,7 @@
     "spacing": 4
   },
   "clock": {
-    "format": "{: %H:%M:%S   %a,%b%e}",
+    "format": "{: %H:%M:%S   %a,%b %e}",
     "interval": 1
   },
   "backlight": {

@@ -3,7 +3,7 @@
 #############################
 
 # Aria2c
-alias aria2cd="aria2c -j 5 -x 15 -k 50M --split=15 --enable-rpc=true --check-certificate=false --daemon=true"
+alias aria2c="aria2c -j 5 -x 15 -k 50M --split=15 --enable-rpc=true --check-certificate=false --daemon=true"
 
 # Cd
 alias ..="cd .."
@@ -11,11 +11,23 @@ alias ...="cd ../.."
 alias config="cd ~/.config"
 alias scripts="cd ~/.local/bin/scripts/"
 
+# Auto-cpu Conf
+alias cpuconf="sudoedit /etc/auto-cpufreq.conf"
+
 # Check Key Press
 alias whichkey="xev | grep -A2 --line-buffered '^KeyRelease' | sed -n '/keycode /s/^.*keycode \([0-9]*\).* (.*, \(.*\)).*$/\1 \2/p'"
 
 # Diff
 alias diff="diff --color=always"
+
+# Figlet
+alias figlet="figlet -w 140"
+
+# Disk Usage 
+alias ncdu="ncdu -2 -e --si --color off"
+
+# Ip Info
+alias ip="iftop"
 
 # Rfkill
 alias rfblock="rfkill block"
@@ -40,7 +52,7 @@ alias speedtest="speedtest-go"
 alias ping="prettyping"
 
 # DISK USAGE
-alias du="dust -sr -H"
+alias du="dust -sbr -HP"
 alias df="pydf -m"
 
 # Pdf Actions
@@ -60,13 +72,13 @@ alias pip="pipx"
 alias pip3="pipx"
 
 # Remove
-alias rmr="rm -R --force"
-alias rm="rm --force"
+alias rmr="rm -rf"
+alias rm="rm -f"
 # Clear
 alias cl="clear"
 
 # Find Files
-alias fd="fd -H"
+alias fdh="fd -H"
 alias fds="fd -s -H"
 
 # Copy
@@ -102,7 +114,7 @@ alias uptime="uptime -p"
 # Yay
 alias sysupd="topgrade"
 alias ys="yay"
-alias yi="yay -S --needed"
-alias y="yay -Syu --needed --noconfirm"
+alias yi="yay -S"
+alias y="yay -Syu --noconfirm"
 alias yr="yay -Rns"
 alias pkginf="yay -Qi"

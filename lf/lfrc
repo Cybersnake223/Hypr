@@ -13,11 +13,11 @@
 ############################################################################################################
 
 # Basic Settings
-set previewer ~/.config/lf/preview
+set previewer ~/.config/lf/image
 set preview true
 set hidden false
 set drawbox true
-set icons true
+set icons false
 set ignorecase true
 
 # Custom Functions
@@ -81,9 +81,6 @@ cmd broot_jump ${{
   lf -remote "send $id $cmd \"$res\""
 }}
 
-cmd open_config  ${{
-  $EDITOR $(bookmenu -b ~/.config/bookmenu/configs -f fzf -o)
-}}
 
 cmd dragon %dragon-drop -a -x $fx
 cmd dragon-stay %dragon-drop -a $fx
@@ -147,7 +144,7 @@ map d
 map c
 map e
 map f
-
+map q
 # File Openers
 map ee $$EDITOR "$f"
 map u $view "$f"
@@ -163,9 +160,6 @@ map au unarchive
 map dd trash
 map tc clear_trash
 map tr restore_trash
-
-# Broot Mapping
-map - $~/.config/lf/draw_img "$f"
 
 # Dragon Mapping
 map dr dragon

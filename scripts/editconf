@@ -15,10 +15,8 @@
 ## Created by Cybersnake                                                                                  ##
 ############################################################################################################
 
-options=("alacritty
-aliases
+options=("aliases
 cava
-deadbeef
 dunst
 foot
 hyprland
@@ -27,33 +25,21 @@ mpv
 mpv-input
 nvim
 rofi
-rofi-wifi
 swaylock
-topgrade
 waybar
 waybar-Style
 yay
 yt-dlp
-zsh
-quit")
+zsh")
 
 choice=$(echo -e "${options[@]}" | rofi -dmenu -p 'Edit config file: ')
 
 case "$choice" in
-quit)
-	notify-send "Program terminated." && exit 1
-	;;
-alacritty)
-	choice="$HOME/.config/alacritty/alacritty.yml"
-	;;
 aliases)
 	choice="$HOME/.config/zsh/.zsh_aliases"
 	;;
 cava)
 	choice="$HOME/.config/cava/config"
-	;;
-deadbeef)
-	choice="$HOME/.config/deadbeef/config"
 	;;
 dunst)
 	choice="$HOME/.config/dunst/dunstrc"
@@ -79,14 +65,8 @@ nvim)
 rofi)
 	choice="$HOME/.config/rofi/config.rasi"
 	;;
-rofi-wifi)
-	choice="$HOME/.config/rofi/wifi"
-	;;
 swaylock)
 	choice="$HOME/.config/swaylock/config"
-	;;
-topgrade)
-	choice="$HOME/.config/topgrade.toml"
 	;;
 waybar)
 	choice="$HOME/.config/waybar/config.jsonc"

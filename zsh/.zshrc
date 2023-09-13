@@ -4,7 +4,7 @@
 
 # Custom Prompt
 PROMPT='%B%F{red} %~ %B%F{cyan}  %F{white}'
-RPROMPT='%B%F{red}$(parse_git_branch)%F{cyan}$(parse_git_dirty) %B%F{red}%t'
+RPROMPT='%B%F{red}%t'
 precmd() { print "" }
 autoload -Uz compinit
 setopt PROMPT_SUBST
@@ -12,37 +12,45 @@ compinit
 zstyle ':completion:*' menu select 
 zstyle ':completion:*' matcher-list 'm:{a-zA-Z}={A-Za-z}'
 
-# Source Aliases
-source ~/.config/zsh/.zsh_aliases
 
 # Source Previous Commands
-SAVEHIST=1000
+SAVEHIST=10000
 HISTFILE=~/.config/zsh/.zsh_history
-HISTSIZE=1000
+HISTSIZE=10000
+setopt HIST_IGNORE_ALL_DUPS
+setopt HIST_IGNORE_SPACE
 
-# Git Status
-function parse_git_dirty {
-  STATUS="$(git status 2> /dev/null)"
-  if [[ $? -ne 0 ]]; then printf ""; return; else printf " ["; fi
-  if echo "${STATUS}" | grep -c "renamed:"         &> /dev/null; then printf " >"; else printf ""; fi
-  if echo "${STATUS}" | grep -c "branch is ahead:" &> /dev/null; then printf " !"; else printf ""; fi
-  if echo "${STATUS}" | grep -c "new file::"       &> /dev/null; then printf " +"; else printf ""; fi
-  if echo "${STATUS}" | grep -c "Untracked files:" &> /dev/null; then printf " ?"; else printf ""; fi
-  if echo "${STATUS}" | grep -c "modified:"        &> /dev/null; then printf " *"; else printf ""; fi
-  if echo "${STATUS}" | grep -c "deleted:"         &> /dev/null; then printf " -"; else printf ""; fi
-  printf " ]"
+# Rehash After Package Modification
+
+zshcache_time="$(date +%s%N)"
+
+autoload -Uz add-zsh-hook
+
+rehash_precmd() {
+  if [[ -a /var/cache/zsh/pacman ]]; then
+    local paccache_time="$(date -r /var/cache/zsh/pacman +%s%N)"
+    if (( zshcache_time < paccache_time )); then
+      rehash
+      zshcache_time="$paccache_time"
+    fi
+  fi
 }
 
-parse_git_branch() {
-  # Long form
-  # git rev-parse --abbrev-ref HEAD 2> /dev/null
- # Short form
-   git rev-parse --abbrev-ref HEAD 2> /dev/null | sed -e 's/.*\/\(.*\)/\1/'
-}
+add-zsh-hook -Uz precmd rehash_precmd
 
+# Keybindings Fix 
+bindkey -e
+bindkey "^[[1;5C" forward-word
+bindkey "^[[1;5D" backward-word
+bindkey "^[[3~" delete-char 
+bindkey "^[[F" end-of-line
+bindkey "^[[H" beginning-of-line
+
+# Source Aliases 
+source ~/.config/zsh/.zsh_aliases
 
 # Source Zsh Syntax Highlighting
-source ~/.config/zsh/plugins/fast-syntax-highlighting/fast-syntax-highlighting.plugin.zsh
+source ~/.config/zsh/plugins/fast-syntax-highlighting/fast-syntax-highlighting.plugin.zsh 2>/dev/null
 
 # Source Zsh Auto completion
-source ~/.config/zsh/plugins/zsh-autosuggestions/zsh-autosuggestions.zsh
+source ~/.config/zsh/plugins/zsh-autosuggestions/zsh-autosuggestions.zsh 2>/dev/null

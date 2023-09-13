@@ -1,9 +1,10 @@
 configuration {
   matching: "prefix";
   display-drun: "Applications:";
+  terminal : "foot";
   display-window: "Windows:";
   drun-display-format: "{name}";
-  font: "JetBrainsMono Nerd Font Medium 10";
+  font: "JetBrainsMono Nerd Font Regular 10";
   modi: "window,run,drun,emoji";
 }
 
@@ -36,11 +37,11 @@ configuration {
 
 window {
    background-color: @background-color;
-   width: 33%;
+   width: 25%;
    padding: 10px;
    fullscreen: false;
-   border:  2px;
-   border-radius: 0px;
+   border:  5px;
+   border-radius: 10px;
    border-color: @border-color;
 }
 
@@ -50,7 +51,7 @@ mainbox {
 }
 
 message {
-   padding: 6px 10px;
+   padding: 10px 10px;
    background-color: @background-color;
 }
 
@@ -64,7 +65,7 @@ listview {
    dynamic: true;
    scrollbar: false;
    spacing: 0px;
-   padding: 1px 0px 0px 0px;
+   padding: 5px 0px 0px 0px;
    margin: 0px 0px 1px 0px;
    background: @background-color;
 }

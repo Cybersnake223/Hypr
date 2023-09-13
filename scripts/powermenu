@@ -11,18 +11,28 @@
 ##  \$$    $$   | $$    | $$    $$| $$     \| $$  | $$ \$$    $$| $$  \$$$| $$  | $$| $$  \$$\| $$     \  ##
 ##   \$$$$$$     \$$     \$$$$$$$  \$$$$$$$$ \$$   \$$  \$$$$$$  \$$   \$$ \$$   \$$ \$$   \$$ \$$$$$$$$  ##
 ##                                                                                                        ##
-## YT AUDIO DOWNLOAD SCRIPT                                                                               ##
+## Power Menu                                                                                       ##
 ## Created by Cybersnake                                                                                  ##
 ############################################################################################################
 
-dir='/home/cybersnake/Music/%(title)s.%(ext)s'
-selected_option=$(echo -e "Paste" | rofi -dmenu -p "Audio Link:")
+up_time=$(uptime -p | sed 's/up//')
 
-if [ "$selected_option" == "Paste" ]; then
-    pasted_content=$(wl-paste)
-    rofi -dmenu -p "Pasted content:$pasted_content"
-    yt-dlp -q -x --audio-quality 0 --audio-format flac -o $dir $pasted_content
-    notify-send "Download Complete" "Audio has been downloaded"
-else
-    notify-send "Download Aborted "
-fi
+# Show menu
+selection="$(echo -e "Shut Down\nRestart\nSuspend\nLog Out" | rofi -l 4 -dmenu -steal-focus -p "$up_time")"
+
+# Command for specific choices
+case $selection in
+"Shut Down")
+	systemctl poweroff
+;;
+"Restart")
+	systemctl reboot
+;;
+"Suspend")
+	souce ./lockscreen
+	systemctl suspend
+;;
+"Log Out")
+    killall Hyprland
+;;
+esac

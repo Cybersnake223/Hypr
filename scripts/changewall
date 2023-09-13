@@ -19,9 +19,11 @@ DIR=$HOME/Pictures/Wallpapers
 
 RANDOMPIC=$(fd . "$DIR" -t f | shuf -n 1)
 
-if [[ $(pidof swaybg) ]]; then
-	pkill swaybg
-fi
+#if [[ $(pidof wbg) ]]; then
+#	pkill wbg
+#fi
 
-swaybg -i $RANDOMPIC
+pidof wbg && pkill wbg
+
+wbg $RANDOMPIC
 notify-send "Wallpaper Changed"
