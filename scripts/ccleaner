@@ -18,7 +18,6 @@
 rm -rf ~/.local/state/nvim/
 rm -rf ~/.cache/nvim/
 rm -rf ~/.cache/thumbnails/
-rm -rf ~/.cache/chat-gpt/
 notify-send "Applications Cache Cleaned"
 brave=$(bleachbit -c brave.cache brave.sync | rg "Disk space*")
 notify-send "Brave Cache Cleaned" "$(echo $brave)"

@@ -1,0 +1,43 @@
+#compdef fast-theme
+#----------------------------------------------------------------------------------------------------------------------
+# -*- mode: zsh; sh-indentation: 2; indent-tabs-mode: nil; sh-basic-offset: 2; -*-
+# vim: ft=zsh sw=2 ts=2 et
+#----------------------------------------------------------------------------------------------------------------------
+#
+# Copyright (c) 2018 Sebastian Gniazdowski
+# Copyright (c) 2022-present, Z-Shell Community
+#
+# Completion for theme-switching function, fast-theme,
+# part of z-shell/F-Sy-H, zdharma/fast-syntax-highlighting.
+
+builtin emulate -L zsh ${=${options[xtrace]:#off}:+-o xtrace}
+builtin setopt extended_glob local_options typeset_silent no_short_loops rc_quotes no_auto_pushd
+
+typeset -a themes themes2 arguments expl
+
+arguments=(
+  {-w,--workdir}'[cd into $FAST_WORK_DIR (if not set, then into the plugin directory)]'
+  {-R,--ov-reset}'[unset overlay, use styles only from main-theme (requires restart)]'
+  {-p,--palette}'[just print all 256 colors and exit (useful when creating a theme)]'
+  {-r,--reset}'[unset any theme (revert to default highlighting)]'
+  {-t,--test}'[test theme after setting it (show example code)]'
+  {-s,--show}'[get and display the theme currently being set]'
+  {-v,--verbose}'[more messages during operation]'
+  {-i,--info}'[additional information]'
+  {-l,--list}'[list available themes]'
+  {-q,--quiet}'[no default messages]'
+  {-h,--help}'[display help text]'
+)
+
+integer ret=1
+themes=( "$FAST_BASE_DIR"/themes/*.ini(:t:r) )
+
+if [[ -d ${XDG_CONFIG_HOME:-$HOME/.config}/f-sy-h ]]; then
+  themes2=( "${XDG_CONFIG_HOME:-$HOME/.config}"/f-sy-h/*.ini(:t:r) )
+  themes+=( CONFIG:${^themes2[@]} )
+fi
+
+_wanted themes expl "themes" compadd "$@" -a - themes && ret=0
+_arguments -s $arguments && ret=0
+
+return $ret

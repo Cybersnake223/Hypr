@@ -15,24 +15,39 @@
 ## Created by Cybersnake                                                                                  ##
 ############################################################################################################
 
-up_time=$(uptime -p | sed 's/up//')
+DIR="$HOME/.config"
+rofi_cmd="rofi -theme $DIR/rofi/themes/powermenu.rasi"
+uptime=$(uptime -p | sed -e 's/up //g')
+
+# Options
+Shutdown=""
+Reboot=""
+Lock=""
+Suspend=""
+Logout=""
+
+options="$Shutdown\n$Reboot\n$Lock\n$Suspend\n$Logout"
+
 
 # Show menu
-selection="$(echo -e "Shut Down\nRestart\nSuspend\nLog Out" | rofi -l 4 -dmenu -steal-focus -p "$up_time")"
+#selection="$(echo -e "Shut Down\nRestart\nSuspend\nLog Out" | rofi -l 4 -dmenu -steal-focus -p "$up_time")"
+chosen="$(echo -e "$options" | $rofi_cmd -p "UP - $uptime" -dmenu -selected-row 2)"
 
 # Command for specific choices
-case $selection in
-"Shut Down")
+case $chosen in
+"$Shutdown")
 	systemctl poweroff
 ;;
-"Restart")
+"$Reboot")
 	systemctl reboot
 ;;
-"Suspend")
-	souce ./lockscreen
+"$Suspend")
 	systemctl suspend
 ;;
-"Log Out")
-    killall Hyprland
+"$Lock")
+  lock
+;;
+"$Logout")
+  killall Hyprland
 ;;
 esac

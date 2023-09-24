@@ -8,6 +8,7 @@
   "height": 40,
   "modules-left": [
     "wlr/workspaces",
+    "memory",
     "network"
   ],
   "modules-center": [
@@ -116,16 +117,10 @@
     "on-scroll-down": "pamixer --default-source -d 5",
     "scroll-step": 5
   },
-  "temperature": {
-    "thermal-zone": 1,
-    "format": "{temperatureC}°C ",
-    "critical-threshold": 80,
-    "format-critical": "{temperatureC}°C "
-  },
   "network": {
-    "tooltip-format": " {signalStrength}%",
-    "format-disconnected": "Disconnected ⚠",
-    "format-wifi": " {essid}"
+    "format-disconnected": "Disconnected",
+    "format-wifi": " {essid}",
+    "tooltip-format": " {signalStrength}"
   },
   "bluetooth": {
     "format": " {status}",
@@ -134,5 +129,16 @@
     "tooltip-format": "{device_alias}",
     "tooltip-format-connected": " {device_enumerate}",
     "tooltip-format-enumerate-connected": "{device_alias}"
-  }
+  },
+
+  "memory": {
+    "interval": 1,
+    //"format": "  {used:0.1f} G "
+    "format": "  {used}G "
+  },
+
+"disk": {
+    "interval": 30,
+    "format": "  {free} / {total}",
+},
 }

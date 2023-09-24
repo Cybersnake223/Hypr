@@ -2,21 +2,23 @@
 # CYBERSNAKE CUSTOM ZSHRC #
 ########################### 
 
-# Custom Prompt
+# Custom Prompt 
 PROMPT='%B%F{red} %~ %B%F{cyan}  %F{white}'
-RPROMPT='%B%F{red}%t'
+RPROMPT='%B%F{red}%T'
 precmd() { print "" }
+
+# Tab Completion
 autoload -Uz compinit
 setopt PROMPT_SUBST
 compinit
 zstyle ':completion:*' menu select 
 zstyle ':completion:*' matcher-list 'm:{a-zA-Z}={A-Za-z}'
-
+_comp_options+=(globdots)
 
 # Source Previous Commands
-SAVEHIST=10000
+SAVEHIST=100000
 HISTFILE=~/.config/zsh/.zsh_history
-HISTSIZE=10000
+HISTSIZE=100000
 setopt HIST_IGNORE_ALL_DUPS
 setopt HIST_IGNORE_SPACE
 
@@ -45,12 +47,17 @@ bindkey "^[[1;5D" backward-word
 bindkey "^[[3~" delete-char 
 bindkey "^[[F" end-of-line
 bindkey "^[[H" beginning-of-line
+bindkey '^[[A' history-substring-search-up
+bindkey '^[[B' history-substring-search-down
 
 # Source Aliases 
 source ~/.config/zsh/.zsh_aliases
 
 # Source Zsh Syntax Highlighting
-source ~/.config/zsh/plugins/fast-syntax-highlighting/fast-syntax-highlighting.plugin.zsh 2>/dev/null
+source ~/.config/zsh/plugins/fast-syntax-highlighting/F-Sy-H.plugin.zsh 2>/dev/null
 
 # Source Zsh Auto completion
 source ~/.config/zsh/plugins/zsh-autosuggestions/zsh-autosuggestions.zsh 2>/dev/null
+
+# Soure Sub-String Search
+source ~/.config/zsh/plugins/zsh-history-substring-search.zsh 2>/dev/null

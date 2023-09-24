@@ -28,12 +28,14 @@ Editor - Nvim
 Media Player - Mpv  
 Dmenu Program - Rofi  
 Shell - Zsh  
-Wallpaper - Swaybg  
+Wallpaper - Wbg (Available in AUR)    
 GUI File Manager - Thunar  
 CLI File Manager - Lf  
 Music Player  - Cmus  
-Pager - Most  
-Download Manager - Persepolis
+Download Manager - Uget  
+Gtk Theme - Mayu Dark  
+Cursor Theme - Qogir-Recolored Catppuccin-Rosewater  
+Icon Theme - Reversal-purple-dark  
 
 This Repo also contains my custom scripts for Misc things like downloading youtube videos and audio , switching wallpaper in hyprland with keyboard shortcuts.
 make sure to copy the scripts folder in /home/.local/bin and also add it to your PATH variable

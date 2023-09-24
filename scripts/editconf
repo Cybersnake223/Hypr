@@ -88,4 +88,4 @@ zsh)
 	;;
 esac
 
-foot -e nvim "$choice"
+foot -e lvim "$choice"

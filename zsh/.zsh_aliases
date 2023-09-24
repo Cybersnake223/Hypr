@@ -3,7 +3,7 @@
 #############################
 
 # Aria2c
-alias aria2c="aria2c -j 5 -x 15 -k 50M --split=15 --enable-rpc=true --check-certificate=false --daemon=true"
+alias aria2cd="aria2c -j 5 -x 15 -k 50M --split=15 --enable-rpc=true --check-certificate=false --daemon=true"
 
 # Cd
 alias ..="cd .."
@@ -25,6 +25,9 @@ alias figlet="figlet -w 140"
 
 # Disk Usage 
 alias ncdu="ncdu -2 -e --si --color off"
+
+# Exit
+alias e="exit"
 
 # Ip Info
 alias ip="iftop"
@@ -73,7 +76,7 @@ alias pip3="pipx"
 
 # Remove
 alias rmr="rm -rf"
-alias rm="rm -f"
+alias rm="rm"
 # Clear
 alias cl="clear"
 
@@ -95,8 +98,7 @@ alias ugrub="sudo grub-mkconfig -o /boot/grub/grub.cfg"
 alias cat="bat -f"  
 
 # Nvim
-alias nv="nvim"
-alias nvs="nvim ~/Templates/Cybersnake/shellscripts"
+alias nv="lvim"
 alias snv="sudoedit"
 
 # Ls

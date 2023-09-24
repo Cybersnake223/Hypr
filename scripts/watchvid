@@ -14,7 +14,7 @@
 ## Created by Cybersnake                                                                                  ##
 ############################################################################################################
 
-files=$(fd . ~/Videos -t f)
+files=$(fd . ~/Videos/ -t f -e .mkv -e .mp4)
 selected_file=$(echo "$files" | rofi -dmenu -i -p "Select a file:")
 
 if [ -n "$selected_file" ]; then
@@ -22,4 +22,4 @@ if [ -n "$selected_file" ]; then
 else
 	notify-send "No file selected."
 fi
-exit
+pkill watchvid

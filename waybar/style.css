@@ -14,7 +14,7 @@ window#waybar {
 
 tooltip {
     background: #000000;
-    border-radius: 10px;
+    border-radius: 5px;
     border-width: 2px;
     border-style: solid;
     border-color: #11111b;
@@ -48,18 +48,17 @@ tooltip {
     border-radius: 10px;
 }
 
-#custom-power_profile,
-#custom-updates,
-#custom-wall,
+#cava,
 #window,
 #clock,
 #battery,
 #pulseaudio,
 #network,
 #bluetooth,
-#temperature,
 #workspaces,
 #tray,
+#memory,
+#disk,
 #backlight {
     background: #000000;
     opacity: 1.0;
@@ -67,25 +66,6 @@ tooltip {
     margin: 0px 0px;
     margin-top: 0px;
     border: 1px solid #181825;
-}
-
-#custom-updates {
-    border-radius: 10px;
-    margin-left: 5px;
-    margin-right: 5px;
-}
-#custom-tim {
-    border-radius: 10px;
-    margin-left: 5px;
-    margin-right: 5px;
-}
-
-#temperature {
-    border-radius: 10px 0px 0px 10px;
-}
-
-#temperature.critical {
-    color: #eba0ac;
 }
 
 #backlight {
@@ -103,12 +83,6 @@ tooltip {
     margin-left: 10px;
     padding-right: 0px;
     padding-left: 5px;
-}
-
-#custom-power_profile {
-    color: #a6e3a1;
-    border-left: 0px;
-    border-right: 0px;
 }
 
 #window {
@@ -131,6 +105,23 @@ tooltip {
     border-right: 0px;
     margin-left: 10px;
 }
+
+#memory {
+    color: #89b4fa;
+    border-radius: 10px 10px 10px 10px;
+    border-left: 0px;
+    border-right: 0px;
+    margin-left: 5px;
+}
+
+#disk {
+    color: #a6e3a1;
+    border-radius: 10px 10px 10px 10px;
+    border-left: 0px;
+    border-right: 0px;
+    margin-left: 5px;
+}
+
 
 #bluetooth {
     color: #89b4fa;
@@ -159,8 +150,14 @@ tooltip {
     border-left: 0px;
 }
 
-#custom-cpu_governer {
-    border-radius: 10px 10px 10px 10px;
-    border-right: 0px;
-    margin-left: 5px;
+#battery.critical:not(.charging) {
+
+background-color:           #F53C3C;
+color:                      #EEEEEE;
+animation-name:             blink;
+animation-duration:         0.5s;
+animation-timing-function:  linear;
+animation-iteration-count:  infinite;
+animation-direction:        alternate;
+
 }

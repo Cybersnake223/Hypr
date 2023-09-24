@@ -4,50 +4,25 @@ configuration {
   terminal : "foot";
   display-window: "Windows:";
   drun-display-format: "{name}";
-  font: "JetBrainsMono Nerd Font Regular 10";
+  font: "JetBrainsMono Nerd Font Regular 11.3";
   modi: "window,run,drun,emoji";
 }
 
-@theme "/dev/null"
-
-* {
-   blue:             #73d0ff;
-   darkblue:         #B48EAD;
-   cyan:             #95e6cb;
-   lightcyan:        #B48EAD;
-   green:            #bae67e;
-   red:              #ff3333;
-
-   dark1:            #0a0e14;
-   dark2:            #1f2430;
-   dark3:            #b3b1ad;
-   dark4:            #b3b1ad;
-
-   light1:           #e6e1cf;
-
-   background-color: @dark1;
-   border-color:     @dark2;
-   text-color:       @dark3;
-   dark-text-color:  @dark4;
-   main-color:       @blue;
-   highlight:        @light1;
-   urgent-color:     @red;
-   selected-color:   @lightcyan;
-}
+@import "colors.rasi"
 
 window {
    background-color: @background-color;
-   width: 25%;
-   padding: 10px;
+   width: 27%;
+   padding: 5px;
    fullscreen: false;
-   border:  5px;
-   border-radius: 10px;
+   border:  7px;
+   border-radius: 15px;
    border-color: @border-color;
 }
 
 mainbox {
    background-color: @background-color;
-   spacing:0px;
+   spacing:5px;
 }
 
 message {
@@ -66,7 +41,7 @@ listview {
    scrollbar: false;
    spacing: 0px;
    padding: 5px 0px 0px 0px;
-   margin: 0px 0px 1px 0px;
+   margin: 1px 1px 1px 1px;
    background: @background-color;
 }
 
@@ -163,7 +138,7 @@ case-indicator {
    background-color:@background-color;
 }
 
-#textbox-prompt-colon {
+textbox-prompt-colon {
 	padding:0px 0px;
     expand:     false;
     str:        ":";

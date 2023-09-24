@@ -51,7 +51,7 @@ if [[ $(pidof lf) ]]; then
 	notify-send "Lf Killed"
 fi
 
-if [[ $(pidof persepolis) ]]; then
-	pkill persepolis
-	notify-send "Persepolis Killed"
+if [[ $(pidof uget-gtk) ]]; then
+	pkill uget-gtk
+	notify-send "Uget Killed"
 fi

@@ -21,7 +21,7 @@ files=$(fd . "$dir" -t f)
 selected_file=$(echo "$files" | rofi -dmenu -i -p "Edit Scripts:")
 
 if [ -n "$selected_file" ]; then
-	foot -e nvim "$selected_file"
+	foot -e lvim "$selected_file"
 else
 	notify-send "No file selected."
 fi

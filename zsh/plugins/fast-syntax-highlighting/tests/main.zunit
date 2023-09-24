@@ -1,6 +1,6 @@
 #!/usr/bin/env zunit
 @setup {
-    load "../fast-highlight"
+    load "../functions/fast-highlight"
     setopt interactive_comments
     -fast-highlight-fill-option-variables
 }
@@ -120,5 +120,3 @@ reply=()
     assert "$reply[8]" same_as "47 49 ${FAST_HIGHLIGHT_STYLES[${FAST_THEME_NAME}double-paren]}"
     assert "$reply[9]" same_as ""
 }
-
-# vim:ft=zsh:sw=4:sts=4:et
