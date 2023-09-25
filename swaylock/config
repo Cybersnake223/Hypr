@@ -4,20 +4,20 @@ ignore-empty-password
 show-failed-attempts
 bs-hl-color=b48eadff
 caps-lock-bs-hl-color=d08770ff
-caps-lock-key-hl-color=ebcb8bff
+caps-lock-key-hl-color=#b48ead
 font=JetBrainsMono Nerd Font
 font-size=30
 indicator-radius=150
 indicator-thickness=25
 inside-color=2e344050
 inside-clear-color=81a1c1ff
-inside-ver-color=5e81acff
+inside-ver-color=#bae67e
 inside-wrong-color=bf616affg
 key-hl-color=a3be8cff
 layout-bg-color=2e344000
 line-uses-ring
-ring-color=e30022ff
-ring-clear-color=88c0d0ff
+ring-color=#ff3333
+ring-clear-color=#95ae6cb
 ring-ver-color=81a1c1ff
 ring-wrong-color=d08770ff
 separator-color=3b4252ff
@@ -25,3 +25,5 @@ text-color=eceff4ff
 text-clear-color=3b4252ff
 text-ver-color=3b4252ff
 text-wrong-color=3b4252ff
+fade-in=0.7
+effect-blur=12x5

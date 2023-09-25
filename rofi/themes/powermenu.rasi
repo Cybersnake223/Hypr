@@ -12,9 +12,9 @@ window {
     transparency:                   "real";
     background-color:               @dark1;
     text-color:                     @dark3;
-    border:                  		1px;
-    border-color:                  	@dark2;
-    border-radius:                  10px;
+    border:                  		5px;
+    border-color:                  	@dark3;
+    border-radius:                  15px;
     width:                          416px;
     location:                       center;
     anchor:                         center;
@@ -39,7 +39,7 @@ textbox-prompt-colon {
     border-radius:                  10px;
     background-color:               @dark4;
     text-color:                     @background-color;
-    padding:    					6px 10px 6px 10px;
+    padding:    					6px 15px 6px 15px;
 	font:							"JetBrainsMono Nerd Font 11.3";
 }
 
@@ -50,8 +50,8 @@ entry {
     placeholder:                    "";
     expand:                         true;
     horizontal-align:               0;
-    blink:                          false;
-    padding:                        6px;
+    blink:                          true;
+    padding:                        10px;
 }
 
 inputbar {
@@ -96,10 +96,10 @@ element {
     background-color:               @background-color;
     text-color:                     @dark3;
     orientation:                    horizontal;
-    border:                  		1px;
+    border:                  		2px;
     border-radius:                  10px;
     border-color:                  	@dark3;
-    padding:                        23.5px 25px 23.5px 25px;
+    padding:                        23px 23px 23px 23px;
 }
 
 element-icon {

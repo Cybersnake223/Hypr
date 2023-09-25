@@ -1,10 +1,10 @@
 configuration {
-  matching: "prefix";
+  matching: "normal";
   display-drun: "Applications:";
   terminal : "foot";
   display-window: "Windows:";
   drun-display-format: "{name}";
-  font: "JetBrainsMono Nerd Font Regular 11.3";
+  font: "JetBrainsMono Nerd Font 11.3";
   modi: "window,run,drun,emoji";
 }
 
@@ -12,12 +12,12 @@ configuration {
 
 window {
    background-color: @background-color;
-   width: 27%;
-   padding: 5px;
+   width: 26%;
+   padding: 7px;
    fullscreen: false;
-   border:  7px;
+   border:  5px;
    border-radius: 15px;
-   border-color: @border-color;
+   border-color: @dark3;
 }
 
 mainbox {
