@@ -1,4 +1,6 @@
-# Hyprland Dotfiles  
+# MAJOR UPDATE COMING SOON.......  
+
+## Hyprland Dotfiles  
 
 ## This is my rice of Hyprland on Arch Linux
 
