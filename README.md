@@ -1,60 +1,32 @@
-# Hyprland Dotfiles  
-
-## This is my rice of Hyprland on Arch Linux
-
-## Dependencies  
-swaylock  
-foot  
-nvim  
-hyprland  
-rofi  
-rofi-emoji  
-dunst  
-wlogout  
-swaybg  
-waybar  
-mpv  
-most (pager)  
-bleachbit (Cleaner Script)  
-yt-dlp (Youtube audio/video download script)  
-
-### Default Applications  
-
-Browser - Brave  
-Bar - Waybar  
-Terminal - Foot  
-Notification Daemon - Dunst  
-Editor - Nvim  
-Media Player - Mpv  
-Dmenu Program - Rofi  
-Shell - Zsh  
-Wallpaper - Wbg (Available in AUR)    
-GUI File Manager - Thunar  
-CLI File Manager - Lf  
-Music Player  - Cmus  
-Download Manager - Uget  
-Gtk Theme - Mayu Dark  
-Cursor Theme - Qogir-Recolored Catppuccin-Rosewater  
-Icon Theme - Reversal-purple-dark  
-
-This Repo also contains my custom scripts for Misc things like downloading youtube videos and audio , switching wallpaper in hyprland with keyboard shortcuts.
-make sure to copy the scripts folder in /home/.local/bin and also add it to your PATH variable
+<div align="center">
+  <p></p>
+  <p><b><i> ~ Hyprland Hypr ~ </i></b></p>
+  <img src="https://img.shields.io/github/last-commit/cybersnake223/Hypr?color=%23c4a7e7&style=for-the-badge">
+  <img src="https://img.shields.io/github/repo-size/cybersnake223/Hypr?color=%23c4a7e7&style=for-the-badge">
+  <img src="https://img.shields.io/github/stars/cybersnake223/Hypr?color=%23c4a7e7&style=for-the-badge">
+</div>
 
 
-Colorscheme used in this is inspired by Ayu Dark as i love it soo much 😉😉  
+<p></p>
 
-I will keep improving this and will add new features also and i will also write a script to install it automatically.  
-
-
-![Screenshot](img1.png)  
+| ![1](img1.png) | ![2](img2.png) | ![3](image3.png) | ![4](image4.png)
+| --- | --- |
 
 
-![Screenshot](img2.png)  
+<div align="center"><img src="https://raw.githubusercontent.com/catppuccin/catppuccin/main/assets/footers/gray0_ctp_on_line.png"></div>
 
-
-![Screenshot](img3.png)  
-
-
-![Screenshot](img4.png) 
-
+<div align="center">
+  <p></p>
+  
+  - 🍀 **Distro** - [Arch](https://archlinux.org/) 
+  - 🌼 **Wayland compositor** - [Hyprland](https://hyprland.org/) 
+  - ✨ **Bar** - [Waybar](https://github.com/Alexays/Waybar) 
+  - 💦 **File Manager** - [Thunar](https://gitlab.xfce.org/xfce/thunar) 
+  - 🌷 **Terminal** - [Foot](https://github.com/DanteAlighierin/foot) 
+  - 🍄 **Shell** - [Zsh](https://zsh.sourceforge.io/) 
+  - 🪵 **Notifications** - [Dunst](https://github.com/emersion/mako) 
+  - 🌻 **Launcher** - [Rofi](https://github.com/lbonn/rofi) 
+  - 🍁 **Wallpaper** - [swaybg](https://github.com/swaywm/swaybg) 
+  - ❄️ **Screen locker** - [swaylock](https://github.com/swaywm/swaylock) 
+</div>
 
