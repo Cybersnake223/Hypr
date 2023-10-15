@@ -17,7 +17,9 @@
 
 DIR="$HOME/.config"
 rofi_cmd="rofi -theme $DIR/rofi/themes/powermenu.rasi"
+
 uptime=$(uptime -p | sed -e 's/up //g')
+#bat_health=$(upower -i /org/freedesktop/UPower/devices/battery_BAT0 | rg capacity | awk '{print$2}')
 
 # Options
 Shutdown=""
@@ -30,8 +32,7 @@ options="$Shutdown\n$Reboot\n$Lock\n$Suspend\n$Logout"
 
 
 # Show menu
-#selection="$(echo -e "Shut Down\nRestart\nSuspend\nLog Out" | rofi -l 4 -dmenu -steal-focus -p "$up_time")"
-chosen="$(echo -e "$options" | $rofi_cmd -p "UPTIME - $uptime" -dmenu -selected-row 2)"
+chosen="$(echo -e "$options" | $rofi_cmd -p "Uptime <> $uptime" -dmenu)"
 
 # Command for specific choices
 case $chosen in
@@ -48,6 +49,6 @@ case $chosen in
   lock
 ;;
 "$Logout")
-  killall Hyprland
+  hyprctl dispatch exit
 ;;
 esac

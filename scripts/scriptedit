@@ -18,7 +18,7 @@
 dir="/home/cybersnake/.local/bin/scripts"
 files=$(fd . "$dir" -t f)
 
-selected_file=$(echo "$files" | rofi -dmenu -i -p "Edit Scripts:")
+selected_file=$(echo "$files" | rofi -dmenu -I -p "Edit Scripts:")
 
 if [ -n "$selected_file" ]; then
 	foot -e lvim "$selected_file"

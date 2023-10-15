@@ -5,10 +5,9 @@
   "exclusive": true,
   "passthrough": false,
   "gtk-layer-shell": true,
-  "height": 40,
+  "height": 30,
   "modules-left": [
-    "wlr/workspaces",
-    "memory",
+    "hyprland/workspaces",
     "network"
   ],
   "modules-center": [
@@ -25,21 +24,12 @@
   "hyprland/window": {
     "format": "{}"
   },
-  "wlr/workspaces": {
-    "disable-scroll": true,
-    "all-outputs": true,
-    "on-click": "activate",
+  "hyprland/workspaces": {
+    "sort-by-name": true,
+    "format": "{id}",
+    "show-special": true,
     "persistent_workspaces": {
-      "1": [],
-      "2": [],
-      "3": [],
-      "4": [],
-      "5": [],
-      "6": [],
-      "7": [],
-      "8": [],
-      "9": [],
-      "10": []
+      "*": 0
     }
   },
   "tray": {
@@ -47,8 +37,8 @@
     "spacing": 4
   },
   "clock": {
-    "format": "{: %H:%M:%S   %a,%b %e}",
-    "interval": 1
+    "format": "{: %H:%M   %a,%b %e}",
+    "interval": 60
   },
   "backlight": {
     "device": "intel_backlight",
@@ -58,10 +48,10 @@
       "",
       ""
     ],
-    "on-scroll-up": "brightnessctl -q s 10%+",
-    "on-scroll-down": "brightnessctl -q s 10%-",
-    "disable-scroll": true,
-    "min-length": 5
+   // "on-scroll-up": "brightnessctl -q s 10%+",
+   // "on-scroll-down": "brightnessctl -q s 10%-",
+   // "disable-scroll": true,
+   // "min-length": 5
   },
   "battery": {
     "states": {
@@ -88,7 +78,7 @@
   },
   "pulseaudio": {
     "format": "{icon} {volume}%",
-    "tooltip": false,
+    "tooltip": true,
     "format-muted": " Muted",
     "on-click": "pamixer -t",
     "on-scroll-up": "pactl set-sink-volume @DEFAULT_SINK@ +10%",
@@ -137,8 +127,8 @@
     "format": "  {used}G "
   },
 
-"disk": {
+  "disk": {
     "interval": 30,
     "format": "  {free} / {total}",
-},
+  },
 }

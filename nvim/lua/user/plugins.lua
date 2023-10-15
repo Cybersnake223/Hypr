@@ -94,7 +94,7 @@ return packer.startup(function(use)
 --        })
         
 -- Neo-Tree
-use {
+ use {
     "nvim-neo-tree/neo-tree.nvim",
     branch = "v3.x",
     requires = { 

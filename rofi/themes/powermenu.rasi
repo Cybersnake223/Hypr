@@ -46,7 +46,7 @@ textbox-prompt-colon {
 entry {
     background-color:               @background-color;
     text-color:                     @background-color;
-    placeholder-color:              @background-color;
+    placeholder-color:              @dark1;
     placeholder:                    "";
     expand:                         true;
     horizontal-align:               0;
@@ -122,7 +122,7 @@ element-text {
 }
 
 element selected {
-    background-color:               @dark2;
+    background-color:               @dark3;
     text-color:                     @background-color;
     border:                  		0px;
     border-radius:                  10px;

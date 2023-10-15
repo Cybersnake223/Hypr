@@ -1,6 +1,10 @@
+#!/bin/zsh
 ###########################
 # CYBERSNAKE CUSTOM ZSHRC #
-########################### 
+###########################
+
+# Fetch
+nitch
 
 # Custom Prompt 
 PROMPT='%B%F{red} %~ %B%F{cyan}  %F{white}'
@@ -19,8 +23,20 @@ _comp_options+=(globdots)
 SAVEHIST=100000
 HISTFILE=~/.config/zsh/.zsh_history
 HISTSIZE=100000
-setopt HIST_IGNORE_ALL_DUPS
-setopt HIST_IGNORE_SPACE
+setopt hist_expire_dups_first
+setopt hist_ignore_dups
+
+
+## Notify that a backround command has finished
+setopt notify
+
+## Clear the entire backbuffer
+function clear-screen-and-scrollback() {
+  clear && printf '\e[3J'
+  zle && zle .reset-prompt && zle -R
+}
+zle -N clear-screen-and-scrollback
+bindkey '^L' clear-screen-and-scrollback
 
 # Rehash After Package Modification
 
@@ -55,8 +71,11 @@ source ~/.config/zsh/.zsh_aliases
 
 # Source Zsh Syntax Highlighting
 source ~/.config/zsh/plugins/fast-syntax-highlighting/F-Sy-H.plugin.zsh 2>/dev/null
+fast-theme -q catppuccin-macchiato
 
 # Source Zsh Auto completion
+ZSH_AUTOSUGGEST_STRATEGY=(history completion)
+ZSH_AUTOSUGGEST_BUFFER_MAX_SIZE=50
 source ~/.config/zsh/plugins/zsh-autosuggestions/zsh-autosuggestions.zsh 2>/dev/null
 
 # Soure Sub-String Search

@@ -1,19 +1,24 @@
 configuration {
-  matching: "normal";
-  display-drun: "Applications:";
+  matching: "prefix";
+  display-drun: "   Apps ";
+  display-run: "   Run ";
+  display-Network: " 󰤨  Network";
   terminal : "foot";
   display-window: "Windows:";
   drun-display-format: "{name}";
-  font: "JetBrainsMono Nerd Font 11.3";
-  modi: "window,run,drun,emoji";
+  font: "JetBrainsMono Nerd Font 10.5";
+  modi: "run,drun";
+  hide-scrollbar: true;
+  show-icons: false;
+  icon-theme: "Reversal-purple-dark";
 }
 
 @import "colors.rasi"
 
 window {
    background-color: @background-color;
-   width: 26%;
-   padding: 7px;
+   width: 28%;
+   padding: 10px;
    fullscreen: false;
    border:  5px;
    border-radius: 15px;
@@ -21,18 +26,18 @@ window {
 }
 
 mainbox {
-   background-color: @background-color;
+   background-color: transparent;
    spacing:5px;
 }
 
 message {
    padding: 10px 10px;
-   background-color: @background-color;
+   background-color: transparent;
 }
 
 textbox {
-   text-color: @text-color;
-   background-color:@background-color;
+   text-color: @dark3;
+   background-color: @background-color;
 }
 
 listview {
@@ -52,66 +57,66 @@ element {
 element normal.normal {
    padding: 0px 15px;
    background-color: @background-color;
-   text-color: @dark-text-color;
+   text-color: @dark4;
 }
 
 element normal.urgent {
-   background-color: @background-color;
+   background-color: transparent;
    text-color: @urgent-color;
 }
 
 element normal.active {
-   background-color: @background-color;
-   text-color: @main-color;
+   background-color: transparent;
+   text-color: transparent;
 }
 
 element selected.normal {
-    background-color: @border-color;
-    text-color:       @selected-color;
+    background-color: @dark5;
+    text-color:       @dark4;
 }
 
 element selected.urgent {
-    background-color: @urgent-color;
-    text-color:       @background-color;
+    background-color: transparent;
+    text-color:       transparent;
 }
 
 element selected.active {
-    background-color: @border-color;
-    text-color:       @green;
+    background-color: transparent;
+    text-color:       transparent;
 }
 
 element alternate.normal {
-    background-color: @background-color;
-    text-color:       @dark-text-color;
+    background-color: transparent;
+    text-color:       @dark4;
 }
 
 element alternate.urgent {
-    background-color: @background-color;
+    background-color: transparent;
     text-color:       @urgent-color;
 }
 
 element alternate.active {
-    background-color: @background-color;
-    text-color:       @main-color;
+    background-color: transparent;
+    text-color:       transparent;
 }
 
 scrollbar {
-   background-color: @background-color;
-   handle-color: @background-color;
+   background-color: transparent;
+   handle-color: transparent;
    handle-width: 0px;
 }
 
 mode-switcher {
-   background-color: @background-color;
+   background-color: transparent;
 }
 
 button {
-   background-color: @background-color;
-   text-color:       @text-color;
+   background-color: transparent;
+   text-color:       @lightcyan;
 }
 
 button selected {
-    text-color:       @main-color;
+    text-color:       transparent;
 }
 
 inputbar {
@@ -123,26 +128,26 @@ inputbar {
 prompt {
    padding:0px 10px;
    background-color: @background-color;
-   text-color: @highlight;
+   text-color: @dark4;
 }
 
 entry {
    padding:0px 6px;
-   background-color:@background-color;
-   text-color:@light1;
+   background-color: transparent;
+   text-color: @light1;
 }
 
 case-indicator {
    padding:6px 10px;
-   text-color:@main-color;
-   background-color:@background-color;
+   text-color: transparent;
+   background-color: transparent;
 }
 
 textbox-prompt-colon {
 	padding:0px 0px;
     expand:     false;
-    str:        ":";
+    str:        "";
     margin:     0px 0.3em 0em 0em ;
-    text-color: @highlight;
-    background-color:@background-color;
+    text-color: @red;
+    background-color: transparent;
 }

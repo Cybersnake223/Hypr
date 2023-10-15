@@ -8,8 +8,12 @@ alias aria2cd="aria2c -j 5 -x 15 -k 50M --split=15 --enable-rpc=true --check-cer
 # Cd
 alias ..="cd .."
 alias ...="cd ../.."
+alias ....="cd ../../.."
 alias config="cd ~/.config"
 alias scripts="cd ~/.local/bin/scripts/"
+
+# Fetch
+alias fetch="nitch"
 
 # Auto-cpu Conf
 alias cpuconf="sudoedit /etc/auto-cpufreq.conf"
@@ -28,9 +32,6 @@ alias ncdu="ncdu -2 -e --si --color off"
 
 # Exit
 alias e="exit"
-
-# Ip Info
-alias ip="iftop"
 
 # Rfkill
 alias rfblock="rfkill block"

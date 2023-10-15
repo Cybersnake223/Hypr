@@ -34,5 +34,6 @@ else
 	bluetoothctl power off
 	rfkill block bluetooth
 fi
+
 killall bluetoothctl
 killall awk

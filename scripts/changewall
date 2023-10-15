@@ -12,14 +12,14 @@
 ##   \$$$$$$     \$$     \$$$$$$$  \$$$$$$$$ \$$   \$$  \$$$$$$  \$$   \$$ \$$   \$$ \$$   \$$ \$$$$$$$$  ##
 ##                                                                                                        ##
 ##                                                                                                        ##
-## Wallpaper Switcher created by Cybersnake                                                               ##
+## Wallpaper Switcher                                                                                     ##
+## Created by Cybersnake                                                                                  ##
 ############################################################################################################
 
 DIR=$HOME/Pictures/Wallpapers
 
-RANDOMPIC=$(fd . "$DIR" -t f -e .jpg -e .png | shuf -n 1)
+RANDOMPIC=$(fd . "$DIR" -t f | shuf -n 1)
 
-pidof wbg && pkill wbg
+pidof swaybg && pkill swaybg
 
-wbg "$RANDOMPIC"
-#notify-send "Wallpaper Applied" "$RANDOMPIC"
+swaybg -i "$RANDOMPIC"

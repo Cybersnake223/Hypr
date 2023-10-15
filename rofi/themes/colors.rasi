@@ -6,11 +6,11 @@
    green:            #bae67e;
    red:              #ff3333;
 
-   dark1:            #0a0e14;
+   dark1:            #1e1e2e;
    dark2:            #1f2430;
-   dark3:            #b3b1ad;
-   dark4:            #b3b1ad;
-
+   dark3:            #89b4fa;
+   dark4:            #89b4fa;
+   dark5:            #0a0e14;
    light1:           #e6e1cf;
    on:					#A3BE8C;
    off:				#BF616A;

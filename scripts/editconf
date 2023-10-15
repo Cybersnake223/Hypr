@@ -32,7 +32,7 @@ yay
 yt-dlp
 zsh")
 
-choice=$(echo -e "${options[@]}" | rofi -dmenu -p 'Edit config file: ')
+choice=$(echo -e "${options[@]}" | rofi -dmenu -I -p 'Edit config file: ')
 
 case "$choice" in
 aliases)

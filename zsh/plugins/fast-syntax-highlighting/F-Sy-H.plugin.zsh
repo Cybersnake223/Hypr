@@ -375,7 +375,7 @@ source "${0:h}/functions/fast-string-highlight"
 local __fsyh_theme
 zstyle -s :plugin:fast-syntax-highlighting theme __fsyh_theme
 
-[[ ( "${+termcap}" != 1 || "${termcap[Co]}" != <-> || "${termcap[Co]}" -lt "256" ) && "$__fsyh_theme" = (default|) ]] && {
+[[ ( "${+termcap}" != 1 || "${termcap[Co]}" != <-> || "${termcap[Co]}" -lt "256" ) && "$__fsyh_theme" = (catppuccin-macchiato|) ]] && {
   FAST_HIGHLIGHT_STYLES[defaultvariable]="none"
   FAST_HIGHLIGHT_STYLES[defaultglobbing-ext]="fg=blue,bold"
   FAST_HIGHLIGHT_STYLES[defaulthere-string-text]="bg=blue"

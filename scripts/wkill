@@ -55,3 +55,4 @@ if [[ $(pidof uget-gtk) ]]; then
 	pkill uget-gtk
 	notify-send "Uget Killed"
 fi
+pkill changewall
