@@ -26,7 +26,7 @@
   - 🍄 **Shell** - [Zsh](https://zsh.sourceforge.io/) 
   - 🪵 **Notifications** - [Dunst](https://github.com/emersion/mako) 
   - 🌻 **Launcher** - [Rofi](https://github.com/lbonn/rofi) 
-  - 🍁 **Wallpaper** - [swaybg](https://github.com/swaywm/swaybg) 
-  - ❄️ **Screen locker** - [swaylock](https://github.com/swaywm/swaylock) 
+  - 🍁 **Wallpaper** - [Swaybg](https://github.com/swaywm/swaybg) 
+  - ❄️ **Screen locker** - [Swaylock](https://github.com/swaywm/swaylock) 
 </div>
 
