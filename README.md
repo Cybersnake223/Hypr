@@ -10,7 +10,7 @@
 <p></p>
 
 | ![1](img1.png) | ![2](img2.png) | ![3](image3.png) | ![4](image4.png)
-| --- | --- |
+| --- | --- | --- | --- |
 
 
 <div align="center"><img src="https://raw.githubusercontent.com/catppuccin/catppuccin/main/assets/footers/gray0_ctp_on_line.png"></div>
