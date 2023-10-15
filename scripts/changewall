@@ -21,5 +21,5 @@ RANDOMPIC=$(fd . "$DIR" -t f -e .jpg -e .png | shuf -n 1)
 
 pidof wbg && pkill wbg
 
-wbg $RANDOMPIC
+wbg "$RANDOMPIC"
 #notify-send "Wallpaper Applied" "$RANDOMPIC"
