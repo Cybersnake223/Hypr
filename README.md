@@ -28,9 +28,9 @@
   - 🌻 **Launcher** - [Rofi](https://github.com/lbonn/rofi) 
   - 🍁 **Wallpaper** - [Swaybg](https://github.com/swaywm/swaybg) 
   - ❄️ **Screen locker** - [Swaylock](https://github.com/swaywm/swaylock) 
-</div>
-
-
+</div>  
+  
+  
 | To Do | Status |
 |---|---|
 | Adding Blur , Rounding and Transparency | Done |
