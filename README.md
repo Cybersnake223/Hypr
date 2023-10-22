@@ -30,3 +30,9 @@
   - ❄️ **Screen locker** - [Swaylock](https://github.com/swaywm/swaylock) 
 </div>
 
+
+| To Do | Status |
+|---|---|
+| Adding Blur , Rounding and Transparency | Done |
+| New Waybar | Work in progress |
+| Adding New Themes | Work in progress |
