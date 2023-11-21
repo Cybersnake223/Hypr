@@ -1,0 +1,152 @@
+configuration {
+    show-icons:                     false;
+    display-drun: 					"";
+    drun-display-format:            "{icon} {name}";
+    disable-history:                false;
+	click-to-exit: 					true;
+}
+
+@import "colors.rasi"
+
+window {
+    transparency:                   "real";
+    background-color:               @dark1;
+    text-color:                     @dark3;
+    border:                  		5px;
+    border-color:                  	@dark3;
+    border-radius:                  15px;
+    width:                          416px;
+    location:                       center;
+    anchor:                         center;
+    x-offset:                       0;
+    y-offset:                       0;
+}
+
+prompt {
+    enabled: 						true;
+	margin: 						0px 0px 0px 8px;
+    padding:    					6px 0px 6px 0px;
+	background-color: 				@background-color;
+	text-color: 					@dark3;
+    border:                  		0px 0px 0px 0px;
+    border-color:                  	@dark2;
+    border-radius:                  10px;
+}
+
+textbox-prompt-colon {
+	expand: 						false;
+	str: 							"";
+    border-radius:                  10px;
+    background-color:               @dark4;
+    text-color:                     @background-color;
+    padding:    					6px 15px 6px 15px;
+	font:							"JetBrainsMono Nerd Font 11.3";
+}
+
+entry {
+    background-color:               @background-color;
+    text-color:                     @background-color;
+    placeholder-color:              @dark1;
+    placeholder:                    "";
+    expand:                         true;
+    horizontal-align:               0;
+    blink:                          true;
+    padding:                        10px;
+}
+
+inputbar {
+	children: 						[ textbox-prompt-colon, prompt ];
+    spacing:                        0;
+    background-color:               @background-color;
+    text-color:                     @dark3;
+    border:                  		0px 0px 1px 0px;
+    border-radius:                  10px;
+    border-color:                  	@dark2;
+    expand:                         false;
+    margin:                         0px 0px 0px 0px;
+    padding:                        0px;
+    position:                       center;
+}
+
+case-indicator {
+    background-color:               @background-color;
+    text-color:                     @dark3;
+    spacing:                        0;
+}
+
+
+listview {
+    background-color:               @background-color;
+    columns:                        1;
+    lines:							5;
+    spacing:                        10px;
+    cycle:                          true;
+    dynamic:                        true;
+    layout:                         horizontal;
+}
+
+mainbox {
+    background-color:               @background-color;
+    children:                       [ inputbar, listview ];
+    spacing:                       	10px;
+    padding:                        10px;
+}
+
+element {
+    background-color:               @background-color;
+    text-color:                     @dark3;
+    orientation:                    horizontal;
+    border:                  		2px;
+    border-radius:                  10px;
+    border-color:                  	@dark3;
+    padding:                        23px 23px 23px 23px;
+}
+
+element-icon {
+    background-color: 				inherit;
+    text-color:       				inherit;
+    horizontal-align:               0.5;
+    vertical-align:                 0.5;
+    size:                           0px;
+    border:                         0px;
+}
+
+element-text {
+    background-color: 				inherit;
+    text-color:       				inherit;
+	font:							"feather 14";
+    expand:                         true;
+    horizontal-align:               0.5;
+    vertical-align:                 0.5;
+    margin:                         0px 0px 0px 0px;
+}
+
+element selected {
+    background-color:               @dark3;
+    text-color:                     @background-color;
+    border:                  		0px;
+    border-radius:                  10px;
+    border-color:                  	@dark2;
+}
+
+element.active,
+element.selected.urgent {
+  background-color: @on;
+  text-color: @background-color;
+  border-color: @on;
+}
+
+element.selected.urgent {
+  border-color: @dark2;
+}
+
+element.urgent,
+element.selected.active {
+  background-color: @dark2;
+  text-color: @background-color;
+  border-color: @dark2;
+}
+
+element.selected.active {
+  border-color: @dark2;
+}
