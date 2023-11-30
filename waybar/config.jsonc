@@ -48,10 +48,6 @@
       "",
       ""
     ],
-   // "on-scroll-up": "brightnessctl -q s 10%+",
-   // "on-scroll-down": "brightnessctl -q s 10%-",
-   // "disable-scroll": true,
-   // "min-length": 5
   },
   "battery": {
     "states": {
