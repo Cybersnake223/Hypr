@@ -1,0 +1,163 @@
+#!/usr/bin/env bash
+
+check() {
+	command -v "$1" 1>/dev/null
+}
+rootmgr="sudo"
+check doas && rootmgr="doas"
+
+notify() {
+	check notify-send && {
+		notify-send "$@"
+	} || {
+		echo "$@"
+	}
+}
+
+hyprctl=false
+cpupower=false
+
+declare -A perf
+perf[0]="performance"
+perf[4]="balance-performance"
+perf[6]="normal"
+perf[8]="balance-power"
+perf[15]="power"
+
+state="$(cat /sys/devices/system/cpu/cpu*/cpufreq/scaling_governor | sort -R | head -n1)"
+check hyprctl && {
+	hyprctl=true
+} || {
+	notify "hyprctl not found" "will fail to set hyprctl stuff"
+}
+check cpupower && {
+	cpupower=true
+} || {
+	notify "cpupower not found" "will fail to set cpupower stuff"
+}
+
+getEPB() {
+	state="$(sudo cpupower info | awk '{print $2}' | tail -n1)"
+	echo "${perf[$state]}"
+}
+
+hyprctlSave() {
+	hyprctl --batch "\
+      keyword animations:enabled 0;\
+      keyword decoration:drop_shadow 0;\
+      keyword decoration:blur:enabled 0;\
+      keyword general:gaps_in 0;\
+      keyword general:gaps_out 0;\
+      keyword general:border_size 1;\
+      keyword decoration:rounding 0"
+}
+
+save() {
+	if $hyprctl; then
+		hyprctlSave
+	fi
+	if $cpupower; then
+		sudo cpupower frequency-set -g "powersave"
+		sudo cpupower set -b 15
+	fi
+	pkill -SIGRTMIN+5 waybar
+	notify "Battery Saver" "Switched to Saving Mode"
+}
+
+normal() {
+	if $hyprctl; then
+		hyprctl reload
+	fi
+	if $cpupower; then
+		sudo cpupower frequency-set -g "powersave"
+		sudo cpupower set -b 6
+	fi
+	pkill -SIGRTMIN+5 waybar
+	notify "Battery Saver" "Switched to Normal Mode"
+
+}
+
+performance() {
+	if $hyprctl; then
+		hyprctl reload
+	fi
+	if $cpupower; then
+		sudo cpupower frequency-set -g "performance"
+		sudo cpupower set -b 0
+	fi
+	pkill -SIGRTMIN+5 waybar
+	notify "Battery Saver" "Switched to Performance Mode"
+}
+
+getdata() {
+	text="<b></b>"
+	tooltip=""
+	class=$state
+	if $hyprctl; then
+		glory=$(hyprctl getoption animations:enabled | awk 'NR==2{print $2}')
+		tooltip+="<b>Hyprland:\n</b>"
+		[ "$glory" -eq 1 ] && glory="enabled" || glory="disabled"
+		tooltip+="  Glory Stuff: $glory\n"
+	fi
+	if $cpupower; then
+		tooltip+="<b>EPB:\n</b>  Power-state: $(getEPB)"
+		class="$(getEPB)"
+	fi
+	cat <<EOF
+  { "text": "$text", "tooltip" : "$tooltip", "class" : "$class" }
+EOF
+}
+
+menu() {
+	arr=("Normal" "Powersave" "Performance")
+	str=""
+	state=$(getEPB)
+	for i in "${arr[@]}"; do
+		if [[ "${i,,}" = "$state"* ]]; then
+			str+=" $i\n"
+		else
+			str+="$i\n"
+		fi
+	done
+	str=${str::-2}
+	choice=$(echo -e "$str" | rofi -dmenu -i -l 3 -config ~/.config/rofi/menu.d/battery.rasi)
+	case $choice in
+	Powersave)
+		save
+		# eval "$0 rofi"
+		;;
+	Performance)
+		performance
+		# eval "$0 rofi"
+		;;
+	Normal)
+		normal
+		# eval "$0 rofi"
+		;;
+	*)
+		exit 0
+		;;
+	esac
+}
+
+case "$1" in
+"save")
+	save
+	;;
+"normal")
+	normal
+	;;
+"performance")
+	performance
+	;;
+"getdata")
+	getdata
+	;;
+"menu")
+	menu
+	;;
+*)
+	echo "Usage: $0 {save|normal|performance|getdata|menu}"
+	exit 1
+	;;
+esac

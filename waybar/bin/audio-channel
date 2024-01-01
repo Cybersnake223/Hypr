@@ -1,0 +1,27 @@
+#!/bin/bash
+
+# Get the list of available sinks, prepending each with an index
+sink_list=$(pactl list sinks)
+devices=$(printf '%s\n' "${sink_list}" | awk -F'= ' '/device.description/ {print ++i, $2}' | tr -d '"')
+
+readarray -t arr <<<"${devices}"
+curr="$(pactl -f json list sinks | jq ".[] | select(.name==\"$(pactl get-default-sink)\")" | jq '.["properties"]["device.description"]' | tr -d '\"')"
+
+str=""
+for i in "${arr[@]}"; do
+	currsel="$(echo "$i" | cut -d " " -f 2-)"
+	id="$(echo "$i" | cut -d " " -f 1)"
+	if [[ "$currsel" = "$curr" ]]; then
+		str+="$id  $currsel\n"
+	else
+		str+="$id $currsel\n"
+	fi
+done
+
+# Prompt the user for a device, storing the id of the selected option
+selected_id=$(echo -e "$str" | rofi -dmenu -i -p "Choose Device ::" -config ~/.config/rofi/menu.d/audio-channel.rasi | awk '{print $1}')
+[ -n "${selected_id}" ] || exit
+
+# Get the sink id of the selected device and change the default sink
+sink_id=$(printf '%s\n' "${sink_list}" | awk -F'= ' '/object.serial/ {print $2}' | tr -d '"' | sed -n "${selected_id}p")
+pactl set-default-sink "${sink_id}"

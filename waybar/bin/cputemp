@@ -1,0 +1,44 @@
+#!/usr/bin/env bash
+
+check() {
+	command -v "$1" 1>/dev/null
+}
+
+check sensors || exit
+
+data="$(sensors coretemp-isa-0000 | sed 's/+//g')"
+package="$(echo "$data" | awk -e '/Package/ {print $4}')"
+coretemp="$(echo "$data" | awk -e '/Core/ {print $3}')"
+
+tooltip="<b>Core Temp: $package </b>\n"
+
+# "format-icons" : [ "", "", "", "", "" ] ,
+tempint=${package%.*}
+icon="$package "
+class="cool"
+[ "$tempint" -gt 50 ] && {
+	icon="$package "
+	class="normal"
+}
+[ "$tempint" -gt 70 ] && {
+	icon="$package "
+	class="warm"
+}
+[ "$tempint" -gt 85 ] && {
+	icon="$package "
+	class="warn"
+}
+[ "$tempint" -gt 95 ] && {
+	icon="$package "
+	class="critical"
+}
+
+j=0
+for i in $coretemp; do
+	tooltip+="Core $j: $i\n"
+	((j = j + 1))
+done
+tooltip="${tooltip::-2}"
+cat <<EOF
+{"text":"$icon","tooltip":"$tooltip", "class": "$class"}
+EOF

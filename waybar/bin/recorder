@@ -1,0 +1,45 @@
+#!/usr/bin/env bash
+
+# Add user to render group `ls -la /dev/dri/`
+# sudo usermod -a -G render $USER
+# Make sure to have intel-media-driver installed
+
+check() {
+	command -v "$1" >/dev/null 2>&1
+}
+
+notify() {
+	if check notify-send; then
+		notify-send "$@"
+	else
+		echo "$@"
+	fi
+}
+
+check wl-screenrec || {
+	notify "wl-screenrec not found"
+	exit 1
+}
+check slurp || {
+	notify "slurp not found"
+	exit 1
+}
+
+dir="$HOME/Videos/Screencapture"
+[ -d "$dir" ] || mkdir -p "$dir"
+filename="$dir/$(date +%Y-%m-%d-%H-%M-%S).mkv"
+
+pgrep -x wl-screenrec &>/dev/null && {
+	kill -s SIGINT $(pgrep -x wl-screenrec) && notify "wl-screenrec stopped"
+	pkill -RTMIN+4 waybar
+	exit 1
+}
+
+[ $# -eq 0 ] && dim="$(slurp -o)" || dim="$(slurp)"
+wl-screenrec -f "$filename" -g "$dim" &
+pgrep -x wl-screenrec &>/dev/null && {
+	notify "wl-screenrec started"
+	pkill -RTMIN+4 waybar
+} || {
+	notify "wl-screenrec failed to start"
+}
