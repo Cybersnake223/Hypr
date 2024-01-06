@@ -34,6 +34,6 @@
 | To Do | Status |
 |---|---|
 | Adding Blur , Rounding and Transparency | Done |
-| New Waybar | Work in progress |
+| New Waybar | Done |
 | Adding New Themes | Work in progress |
 | Modular Config Files | Work in progress |
