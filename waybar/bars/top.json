@@ -140,52 +140,6 @@
     ],
     "tooltip-format": "{timeTo}\n{capacity} % | {power} W"
   },
-  "custom/batterysaver": {
-    "format": " {}",
-    "exec": "~/.config/waybar/bin/battsaver-toggle getdata",
-    "on-click": "~/.config/waybar/bin/battsaver-toggle menu",
-    "interval": "once",
-    "return-type": "json",
-    "signal": 5
-  },
-  "memory": {
-    "format": "{}% "
-  },
-  "disk": {
-    "interval": 600,
-    "format": "{percentage_used}% ",
-    "path": "/"
-  },
-  "cpu": {
-    "format": "{usage}% ",
-    "on-click": "foot btop"
-  },
-  "custom/cputemp": {
-    "format": "{}",
-    "exec": "~/.config/waybar/bin/cputemp",
-    "interval": 10,
-    "return-type": "json"
-  },
-  "custom/weather": {
-    "format": " {}° ",
-    "tooltip": true,
-    "interval": 1800,
-    "exec": "wttrbar --location 'delhi'",
-    "return-type": "json"
-  },
-  "idle_inhibitor": {
-    "format": "{icon}",
-    "tooltip-format-activated": "Idle Inhibitor is active",
-    "tooltip-format-deactivated": "Idle Inhibitor is not active",
-    "format-icons": {
-      "activated": " ",
-      "deactivated": " "
-    }
-  },
-  "hyprland/submap": {
-    "format": "{}",
-    "tooltip": false
-  },
   "custom/updates": {
     "format": "{}",
     "interval": 3600,
@@ -194,21 +148,6 @@
     "exec-if": "exit 0",
     "signal": 8,
     "on-click": "foot yay -Syu --noconfirm"
-  },
-  "gamemode": {
-    "hide-not-running": true,
-    "icon-spacing": 4,
-    "icon-size": 13,
-    "tooltip": true,
-    "tooltip-format": "Games running: {count}"
-  },
-  "custom/notifications": {
-    "format": "<b>{}</b> ",
-    "exec": "~/.config/waybar/bin/not-dnd -j",
-    "on-click": "~/.config/waybar/bin/not-dnd",
-    "return-type": "json",
-    "interval": "once",
-    "signal": 2
   },
   "clock": {
     //"format": "{:%H:%M}",

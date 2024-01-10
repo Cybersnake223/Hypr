@@ -17,7 +17,7 @@
 tooltip {
   background: @background;
   color: @active;
-  border: 1px solid shade(@active, 0.6);
+  border: 1px solid shade(@active, 0.4);
 }
 
 #scroll,
@@ -33,7 +33,7 @@ tooltip {
   padding: 2px;
   margin-right: 4px;
 
-  /* border: 1px solid alpha(shade(@active, 0.6),0.6); */
+  /* border: 1px solid alpha(shade(@active, 0.4),0.4); */
 }
 
 #tray {
@@ -42,7 +42,7 @@ tooltip {
 
 #workspaces button {
   padding: 0px;
-  border-radius: 50%;
+  border-radius: 10%;
   color: shade(@background, 0.8);
 }
 #workspaces button.urgent {
@@ -50,9 +50,9 @@ tooltip {
   font-weight: bold;
 }
 #workspaces button.active {
-  background: shade(alpha(@foreground, 0.2), 0.8);
-  color: shade(@foreground, 0.9);
-  border-radius: 8px;
+  background: shade(alpha(@foreground, 0.3), 0.8);
+  color: shade(@foreground, 1.0);
+  border-radius: 10px;
 }
 
 #cpu,
@@ -90,68 +90,17 @@ tooltip {
 #custom-github,
 #custom-updates,
 #bluetooth.connected {
-  background: shade(alpha(@foreground, 0.1), 0.8);
-  border-radius: 8px;
+  background: shade(alpha(@foreground, 0.4), 0.4);
+  border-radius : 10px;
 }
 
 #idle_inhibitor,
 #pulseaudio,
 #pulseaudio.mic {
-  /* color: #7aa2f7; */
+  color: #7aa2f7;
 }
-
-#backlight {
-  /* color: #fab387; */
-}
-
-#memory {
-  /* color: shade(#cca0e4, 0.8); */
-}
-
-#disk {
-  /* color: shade(#7aa2f7, 0.8); */
-}
-
-#custom-recorder {
-  /* color: #d78787; */
-}
-
-#cpu {
-  /* color: shade(#a6e3a1, 0.8); */
-}
-
-#custom-batterysaver.powersave,
-#custom-batterysaver.power {
-  color: #a6e3a1;
-}
-#custom-batterysaver.default,
-#custom-batterysaver.normal {
-  /* color: #7aa2f7; */
-}
-#custom-batterysaver.performance {
-  color: #d78787;
-}
-
-#custom-cputemp.cool {
-  color:#7AA2F7;
-}
-
-#custom-cputemp.warm {
-  color:#a6e3a1;
-}
-
-#custom-cputemp.warn {
-  color:#fab387;
-}
-
-#custom-cputemp.critical {
-  color:#d78787;
-}
-
-
 
 #network {
-  /* color: #a6e3a1; */
   border-radius: 10px 10px 10px 10px;
 }
 
@@ -161,13 +110,13 @@ tooltip {
 }
 @keyframes blink {
   to {
-    background-color: alpha(red, 0.6);
+    background-color: alpha(red, 0.4);
     color: @foreground;
   }
 }
 @keyframes blink-blue {
   to {
-    background-color: alpha(#7aa2f7, 0.6);
+    background-color: alpha(#7aa2f7, 0.4);
     color: @foreground;
   }
 }
@@ -175,7 +124,7 @@ tooltip {
 #battery.warning:not(.charging),
 #battery.critical:not(.charging) {
   animation-name: blink;
-  animation-duration: 2s;
+  animation-duration: 5s;
   animation-timing-function: linear;
   animation-iteration-count: infinite;
   animation-direction: alternate;
@@ -183,13 +132,6 @@ tooltip {
 
 #bluetooth.discoverable,
 #bluetooth.discovering,
-/* #bluetooth.pairable { */
-/*   animation-name: blink-blue; */
-/*   animation-duration: 2s; */
-/*   animation-timing-function: linear; */
-/*   animation-iteration-count: infinite; */
-/*   animation-direction: alternate; */
-/* } */
 
 /* Override */
 
@@ -198,7 +140,7 @@ tooltip {
   border-radius: 10px 10px 10px 10px;
 }
 #clock {
-  margin-left: 0px;
-  border-radius: 0px 8px 8px 0px;
-  background: alpha(@background, 0.6);
+  margin-left: 2px;
+  border-radius: 8px 8px 8px 8px;
+  background: alpha(@background, 0.9);
 }
