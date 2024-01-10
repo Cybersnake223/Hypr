@@ -24,7 +24,6 @@ tooltip {
 #clock,
 #hardware,
 #scripts,
-#custom-weather,
 #batteries,
 #workspaces,
 #tray {
@@ -55,20 +54,9 @@ tooltip {
   border-radius: 10px;
 }
 
-#cpu,
 #clock,
 #network,
-#custom-vpn,
-#custom-cputemp,
-#custom-colorpicker,
-#submap,
-#idle_inhibitor,
 #custom-updates,
-#gamemode,
-#custom-camera,
-#custom-notifications,
-#custom-recorder,
-#custom-batterysaver,
 #bluetooth,
 #disk,
 #memory,
@@ -77,24 +65,8 @@ tooltip {
 #backlight {
   padding: 0px 6px 0px 6px;
 }
-
-#custom-github {
-  padding-right: 6px;
-}
-
-/* subhighlight */
-#gamemode,
-#submap,
-#custom-recorder,
-#custom-vpn,
-#custom-github,
 #custom-updates,
-#bluetooth.connected {
-  background: shade(alpha(@foreground, 0.4), 0.4);
-  border-radius : 10px;
-}
 
-#idle_inhibitor,
 #pulseaudio,
 #pulseaudio.mic {
   color: #7aa2f7;
