@@ -7,8 +7,6 @@
 </div>
 
 
-<p></p>
-
 | ![1](asset1.png) | ![2](asset2.png)
 | ![3](asset3.png) | ![4](asset4.png)
 | --- | --- |  
