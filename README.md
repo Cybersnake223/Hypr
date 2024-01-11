@@ -35,5 +35,4 @@
 |---|---|
 | Adding Blur , Rounding and Transparency | Done |
 | New Waybar | Done |
-| Adding New Themes | Work in progress |
 | Modular Config Files | Work in progress |
