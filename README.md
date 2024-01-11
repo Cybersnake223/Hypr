@@ -26,7 +26,7 @@
   - 💦 **File Manager** - [Thunar](https://gitlab.xfce.org/xfce/thunar) 
   - 🌷 **Terminal** - [Foot](https://github.com/DanteAlighierin/foot) 
   - 🍄 **Shell** - [Zsh](https://zsh.sourceforge.io/) 
-  - 🪵 **Notifications** - [Dunst](https://github.com/emersion/mako) 
+  - 🪵 **Notifications** - [Mako](https://github.com/emersion/mako) 
   - 🌻 **Launcher** - [Rofi](https://github.com/lbonn/rofi) 
   - 🍁 **Wallpaper** - [Swaybg](https://github.com/swaywm/swaybg) 
   - ❄️ **Screen locker** - [Swaylock](https://github.com/swaywm/swaylock) 
