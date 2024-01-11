@@ -7,10 +7,13 @@
 </div>
 
 
-| ![1](asset1.png) | ![2](asset2.png)  
-| ![3](asset3.png) | ![4](asset4.png)  
+<p></p>
+
+| ![1](asset1.png) | ![2](asset2.png)
+| ![3](asset3.png) | ![4](asset4.png)
 | --- | --- |  
-| --- | --- |
+
+
 <div align="center"><img src="https://raw.githubusercontent.com/catppuccin/catppuccin/main/assets/footers/gray0_ctp_on_line.png"></div>
 
 <div align="center">
