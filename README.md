@@ -11,13 +11,13 @@
 
 New Waybar  
 
-![1](asset1.png)
-![2](asset2.png)
+![1](assets/asset1.png)
+![2](assets/asset2.png)
 
 Old Waybar  
 
-![3](asset3.png)
-![4](asset4.png)
+![3](assets/asset3.png)
+![4](assets/asset4.png)
 
 
 <div align="center"><img src="https://raw.githubusercontent.com/catppuccin/catppuccin/main/assets/footers/gray0_ctp_on_line.png"></div>
