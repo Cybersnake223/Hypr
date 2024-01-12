@@ -7,6 +7,7 @@
   ],
   "modules-center": [
     "custom/updates",
+    "custom/notifications",
   ],
   "modules-right": [
     "tray",
@@ -142,7 +143,7 @@
   },
   "custom/updates": {
     "format": "{}",
-    "interval": 3600,
+    "interval": 6000,
     "exec": "~/.config/waybar/bin/updatecheck",
     "return-type": "json",
     "exec-if": "exit 0",
@@ -171,5 +172,13 @@
     "format-disabled": "",
     "format-connected": "<b> {num_connections}</b>",
     "format-connected-battery": " {device_alias} {device_battery_percentage}%",
-  }
+  },
+    "custom/notifications": {
+    "format": "<b>{}</b> ",
+    "exec": "~/.config/waybar/bin/not-dnd -j",
+    "on-click": "~/.config/waybar/bin/not-dnd",
+    "return-type": "json",
+    "interval": "once",
+    "signal": 2
+  },
 }
