@@ -17,14 +17,15 @@
 
 options=("aliases
 cava
-dunst
 foot
 hyprland
 lf
+mako
 mpv
 mpv-input
 nvim
 rofi
+swayidle
 swaylock
 waybar
 waybar-Style
@@ -41,9 +42,6 @@ aliases)
 cava)
 	choice="$HOME/.config/cava/config"
 	;;
-dunst)
-	choice="$HOME/.config/dunst/dunstrc"
-	;;
 foot)
     choice="$HOME/.config/foot/foot.ini"
     ;;
@@ -53,6 +51,9 @@ hyprland)
 lf)
 	choice="$HOME/.config/lf/lfrc"
 	;;
+mako)
+    choice="$HOME/.config/mako/config"
+    ;;
 mpv)
 	choice="$HOME/.config/mpv/mpv.conf"
 	;;
@@ -65,11 +66,14 @@ nvim)
 rofi)
 	choice="$HOME/.config/rofi/config.rasi"
 	;;
+swayidle)
+	choice="$HOME/.config/swayidle/config"
+	;;
 swaylock)
 	choice="$HOME/.config/swaylock/config"
 	;;
 waybar)
-	choice="$HOME/.config/waybar/config.jsonc"
+	choice="$HOME/.config/waybar/bars/top.json"
 	;;
 waybar-Style)
 	choice="$HOME/.config/waybar/style.css"
