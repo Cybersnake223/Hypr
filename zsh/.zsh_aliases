@@ -2,9 +2,6 @@
 # CYBERSNAKE CUSTOM ALIASES #
 #############################
 
-# Aria2c
-alias aria2cd="aria2c -j 5 -x 15 -k 50M --split=15 --enable-rpc=true --check-certificate=false --daemon=true"
-
 # Cd
 alias ..="cd .."
 alias ...="cd ../.."

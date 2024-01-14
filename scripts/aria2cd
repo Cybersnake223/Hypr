@@ -1,3 +1,4 @@
+#!/bin/bash
 ############################################################################################################
 ##   ______  __      __  _______   ________  _______    ______   __    __   ______   __    __  ________   ##
 ##  /      \|  \    /  \|       \ |        \|       \  /      \ |  \  |  \ /      \ |  \  /  \|        \  ##
@@ -9,11 +10,13 @@
 ##  \$$    $$   | $$    | $$    $$| $$     \| $$  | $$ \$$    $$| $$  \$$$| $$  | $$| $$  \$$\| $$     \  ##
 ##   \$$$$$$     \$$     \$$$$$$$  \$$$$$$$$ \$$   \$$  \$$$$$$  \$$   \$$ \$$   \$$ \$$   \$$ \$$$$$$$$  ##
 ##                                                                                                        ##  
-## SwayIdle Config                                                                                        ##
+## Aria2c RPC                                                                                             ##
 ## Created by Cybersnake                                                                                  ##
 ############################################################################################################
 
-timeout 1800 'swaylock --config ~/.config/swaylock/config'
-timeout 2500 'hyprctl dispatch dpms off'
-timeout 3000 'systemctl suspend' resume 'hyprctl dispatch dpms on'
-before-sleep 'swaylock --config ~/.config/swaylock/config'
+if [[ $(pidof aria2c) ]]; then
+    pkill aria2c
+fi
+
+aria2c -j 5 -x 15 -k 50M --split=15 --enable-rpc=true --check-certificate=false --daemon=true
+notify-send "Aria2" "Daemon Started"
