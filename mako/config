@@ -1,6 +1,6 @@
 max-visible=10
 sort=-time
-layer=top
+layer=overlay
 anchor=top-right
 background-color=#24273a
 text-color=#cad3f5
@@ -20,6 +20,8 @@ group-by=none
 invisible=0
 format=<b>%s</b>\n%b
 font=JetBrainsMono Nerd Font 9.5
+markup=1
+
 
 [mode=do-not-disturb]
 invisible=1

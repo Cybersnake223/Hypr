@@ -14,6 +14,6 @@
 ############################################################################################################
 
 timeout 1800 'swaylock --config ~/.config/swaylock/config'
-timeout 300 'hyprctl dispatch dpms off'
-timeout 120 'systemctl suspend' resume 'hyprctl dispatch dpms on'
+timeout 1800 'hyprctl dispatch dpms off'
+timeout 1200 'systemctl suspend' resume 'hyprctl dispatch dpms on'
 before-sleep 'swaylock --config ~/.config/swaylock/config'
