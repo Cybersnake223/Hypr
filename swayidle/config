@@ -13,7 +13,7 @@
 ## Created by Cybersnake                                                                                  ##
 ############################################################################################################
 
-timeout 1800 'swaylock --config ~/.config/swaylock/config'
-timeout 2500 'hyprctl dispatch dpms off'
-timeout 3000 'systemctl suspend' resume 'hyprctl dispatch dpms on'
+timeout 1200 'swaylock --config ~/.config/swaylock/config'
+timeout 2000 'hyprctl dispatch dpms off'
+timeout 2000 'systemctl suspend' resume 'hyprctl dispatch dpms on'
 before-sleep 'swaylock --config ~/.config/swaylock/config'
