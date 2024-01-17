@@ -3,7 +3,7 @@ show-failed-attempts
 #screenshot
 #effect-blur=8x8
 color=1f1d2e80
-font="JetBrainsMono Nerd"
+font="JetBrainsMono Nerd Font"
 #indicator
 indicator-radius=120
 indicator-thickness=12

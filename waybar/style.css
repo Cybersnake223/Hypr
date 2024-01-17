@@ -5,7 +5,7 @@
   font-family: "JetBrainsMono Nerd Font";
   font-size: 14px;
   color: @foreground;
-  margin: 0.5px 0px 0.5px 0.5px;
+  margin: 1px 0px 1px 1px;
 }
 
 #waybar {
@@ -21,14 +21,16 @@ tooltip {
 }
 
 #scroll,
-#clock,
+#clock {
+padding: 2px;
+}
 #hardware,
 #scripts,
 #batteries,
 #workspaces,
 #tray {
   background: alpha(@background, 0.8);
-  border-radius: 8px;
+  border-radius: 10px;
   padding: 2px;
   margin-right: 4px;
 
@@ -36,7 +38,7 @@ tooltip {
 }
 
 #tray {
-  padding: 0px 8px 0px 8px;
+  padding: 0px 10px 0px 10px;
 }
 
 #workspaces button {
@@ -107,10 +109,10 @@ tooltip {
 
 #batteries {
   margin-right: 2px;
-  border-radius: 8px 8px 8px 8px;
+  border-radius: 10px 10px 10px 10px;
 }
 #clock {
   margin-left: 2px;
-  border-radius: 8px 8px 8px 8px;
-  background: alpha(@background, 0.9);
+  border-radius: 10px 10px 10px 10px;
+  background: alpha(@background, 0.5);
 }
