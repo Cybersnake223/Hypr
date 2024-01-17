@@ -1,8 +1,9 @@
+
 [
   {
   "output": [ "eDP-1" ],
     "include": [
-      "~/.config/waybar/bars/top.json",
+      "~/.config/waybar/config.jsonc",
     ],
   }
 ]

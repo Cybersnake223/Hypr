@@ -42,11 +42,12 @@ if [ -z "$monitor" ]; then
 fi
 
 cat <<EOF >"$HOME"/.config/waybar/config
+
 [
   {
   "output": [ $monitor ],
     "include": [
-      "~/.config/waybar/bars/top.json",
+      "~/.config/waybar/config.jsonc",
     ],
   }
 ]

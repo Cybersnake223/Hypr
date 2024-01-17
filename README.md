@@ -9,13 +9,6 @@
 
 <p></p>
 
-New Waybar  
-
-![1](assets/asset1.png)
-![2](assets/asset2.png)
-
-Old Waybar  
-
 ![3](assets/asset3.png)
 ![4](assets/asset4.png)
 
@@ -44,5 +37,4 @@ PS: Windows in the Screenshots are Floating.
 | To Do | Status |
 |---|---|
 | Adding Blur , Rounding and Transparency | Done |
-| New Waybar | Done |
 | Modular Config Files | Work in progress |
