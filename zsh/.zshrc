@@ -21,7 +21,8 @@ export BROWSER='thorium-browser'
 export HISTORY_IGNORE="(ls|cd|pwd|exit|sudo reboot|history|cd -|cd ..)"
 export DMENU='rofi'
 export IRQBALANCE_ARGS="--allcpus"
-export GIT_DISCOVERY_ACROSS_FILESYSTEM=false
+export GIT_DISCOVERY_ACROSS_FILESYSTEM=true
+export MANPAGER="lvim +Man!"
 
 # Fetch
 nitch
