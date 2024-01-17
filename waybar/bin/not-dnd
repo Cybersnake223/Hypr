@@ -58,7 +58,7 @@ toggle() {
 		*"disturb"*) output='{"text":" ","tooltip":"DND"}' ;;
 		*) output='{"text":" 󰂞 ","tooltip":"Notification Enabled"}' ;;
 		esac
-		echo "$output"
+		echo " $output "
 	fi
 } || {
 	toggle &>/dev/null
