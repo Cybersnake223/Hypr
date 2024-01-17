@@ -9,14 +9,16 @@
 
 <p></p>
 
-![3](assets/asset3.png)
-![4](assets/asset4.png)
+![1](assets/asset-1.png)
+![2](assets/asset-2.png)
+![3](assets/asset-3.png)
+![4](assets/asset-4.png)
 
 
 <div align="center"><img src="https://raw.githubusercontent.com/catppuccin/catppuccin/main/assets/footers/gray0_ctp_on_line.png"></div>
 
 <div align="center">
-  <p></p>
+  <p> </p>
   
   - 🍀 ** Distro ** - [Arch](https://archlinux.org/) 
   - 🌼 ** Wayland compositor ** - [Hyprland](https://hyprland.org/) 
@@ -29,10 +31,9 @@
   - 🍁 ** Wallpaper ** - [Swaybg](https://github.com/swaywm/swaybg) 
   - ❄️  ** Screen locker ** - [Swaylock](https://github.com/swaywm/swaylock) 
   - ⏬ ** Download Manager ** - [Aria2](https://github.com/aria2/aria2)
+
 </div>  
 
-PS: Windows in the Screenshots are Floating.
-  
   
 | To Do | Status |
 |---|---|
