@@ -173,7 +173,7 @@
     "format-connected": "<b> {num_connections}</b>",
     "format-connected-battery": " {device_alias} {device_battery_percentage}%",
   },
-    "custom/notifications": {
+  "custom/notifications": {
     "format": "<b>{}</b> ",
     "exec": "~/.config/waybar/bin/not-dnd -j",
     "on-click": "~/.config/waybar/bin/not-dnd",
