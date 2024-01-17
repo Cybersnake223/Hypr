@@ -37,6 +37,8 @@ Old Waybar
   - ❄️  ** Screen locker ** - [Swaylock](https://github.com/swaywm/swaylock) 
   - ⏬ ** Download Manager ** - [Aria2](https://github.com/aria2/aria2)
 </div>  
+
+PS: Windows in the Screenshots are Floating.
   
   
 | To Do | Status |
