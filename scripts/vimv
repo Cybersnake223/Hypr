@@ -22,7 +22,7 @@ trap '{ rm -f "${FILENAMES_FILE}" ; }' EXIT
 if [ $# -ne 0 ]; then
     src=( "$@" )
 else
-    IFS=$'\r\n' GLOBIGNORE='*' command eval 'src=($(ls))'
+    IFS=$'\r\n' GLOBIGNORE='*' command eval 'src=($(exa -a))'
 fi
 
 for ((i=0;i<${#src[@]};++i)); do
