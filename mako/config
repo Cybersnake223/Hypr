@@ -30,5 +30,8 @@ on-notify=none
 [mode=silent]
 on-notify=none
 
+[urgency=normal]
+border-color=#8aadf4
+
 [urgency=high]
 border-color=#f5a97f
