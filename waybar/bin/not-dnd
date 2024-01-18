@@ -55,7 +55,7 @@ toggle() {
 	else
 		case "$state" in
 		"default silent ") output='{"text":"  ","tooltip":"Silent"}' ;;
-		*"disturb"*) output='{"text":" ","tooltip":"DND"}' ;;
+		*"disturb"*) output='{"text":"   ","tooltip":"DND"}' ;;
 		*) output='{"text":" 󰂞 ","tooltip":"Notification Enabled"}' ;;
 		esac
 		echo " $output "
