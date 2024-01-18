@@ -63,18 +63,15 @@ tooltip {
 #disk,
 #backlight {
     background: #000000;
+    color: #f5a97f;
     opacity: 1.0;
     padding: 0px 10px;
     margin: 0px 0px;
     margin-top: 0px;
     border: 1px solid #181825;
-}
-
-#backlight {
     border-radius: 10px 10px 10px 10px;
     margin-right: 10px;
 }
-
 #tray {
     border-radius: 10px;
     margin-right: 10px;
@@ -136,7 +133,7 @@ tooltip {
 }
 
 #disk {
-    color: #a6e3a1;
+    color: #f5a97f;
     border-radius: 10px 10px 10px 10px;
     border-left: 0px;
     border-right: 0px;
