@@ -1,16 +1,10 @@
 {
   "layer": "top",
   "position": "top",
-  //"mod": "dock",
-  //"exclusive": true,
-  //"passthrough": false,
-  //"gtk-layer-shell": true,
   "height": 30,
   "modules-left": [
     "clock",
     "hyprland/workspaces",
-    "memory",
-    "disk",
   ],
   "modules-center": [
     "custom/updates",
