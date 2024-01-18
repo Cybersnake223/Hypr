@@ -1,4 +1,4 @@
-#!/usr/bin/env bash
+#!/bin/bash
 
 check() {
 	command -v "$1" 1>/dev/null
@@ -54,9 +54,9 @@ toggle() {
 		esac
 	else
 		case "$state" in
-		"default silent ") output='{"text":"  ","tooltip":"Silent"}' ;;
+		"default silent ") output='{"text":"   ","tooltip":"Silent"}' ;;
 		*"disturb"*) output='{"text":"   ","tooltip":"DND"}' ;;
-		*) output='{"text":" 󰂞 ","tooltip":"Notification Enabled"}' ;;
+		*) output='{"text": "  󰂞  " ,"tooltip":"Notification Enabled"}' ;;
 		esac
 		echo " $output "
 	fi
