@@ -96,7 +96,7 @@ tooltip {
 #clock {
     color: #a6e3a1;
     border-radius: 10px 10px 10px 10px;
-    margin-left: 0px;
+    margin-left: 5px;
     border-right: 3px;
 }
 
@@ -145,16 +145,16 @@ tooltip {
 
 
 #bluetooth {
-    color: #89b4fa;
-    border-radius: 10px 10px 10px 10px;
-    margin-left: 10px;
-    margin-right: 10px;
+  color: #89b4fa;
+  border-radius: 10px 10px 10px 10px;
+  margin-left: 10px;
+  margin-right: 10px;
 } 
 
 #pulseaudio {
-    color: #89b4fa;
-    border-left: 0px;
-    border-right: 0px;
+  color: #89b4fa;
+  border-left: 0px;
+  border-right: 0px;
   border-radius: 10px 0px 0px 10px;
 }
 
@@ -169,8 +169,8 @@ tooltip {
 #battery {
     color: #a6e3a1;
     border-radius: 10px 10px 10px 10px;
-    margin-right: 10px;
-    margin-left: 10px;
+    margin-right: 5px;
+    margin-left: 5px;
 }
 
 #battery.critical:not(.charging) {
