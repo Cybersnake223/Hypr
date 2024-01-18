@@ -9,6 +9,8 @@
   "modules-left": [
     "clock",
     "hyprland/workspaces",
+    "memory",
+    "disk",
   ],
   "modules-center": [
     "custom/updates",
@@ -117,16 +119,20 @@
     "tooltip-format": "{device_alias}",
     "tooltip-format-connected": " {device_enumerate}",
     "format-connected-battery": " {device_alias} {device_battery_percentage}%",
-    "tooltip-format-enumerate-connected": "{device_alias}"
+    "tooltip-format-enumerate-connected": "{device_alias}",
+    "on-click": "btblock",
   },
   "memory": {
-    "interval": 1,
+    "interval": 300,
     //"format": "  {used:0.1f} G "
-    "format": "  {used}G "
+    "format": "  {used}G ",
+    "tooltip-format": "{used} / {total} G",
+    
   },
   "disk": {
-    "interval": 30,
-    "format": "  {free} / {total}",
+    "interval": 600,
+    "format": "  {percentage_used}%",
+    "tooltip-format": "{used} used out of {total} on {path} ",
   },
   "custom/updates": {
     "format": "{}",
