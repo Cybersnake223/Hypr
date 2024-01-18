@@ -23,7 +23,8 @@
   - 🍀 ** Distro ** - [Arch](https://archlinux.org/) 
   - 🌼 ** Wayland compositor ** - [Hyprland](https://hyprland.org/) 
   - ✨ ** Bar ** - [Waybar](https://github.com/Alexays/Waybar) 
-  - 💦 ** File Manager ** - [Thunar](https://gitlab.xfce.org/xfce/thunar) 
+  - 💦 ** GUI File Manager ** - [Thunar](https://gitlab.xfce.org/xfce/thunar) 
+  - 🗄️ ** CLI File Manager ** - [Lf](https://github.com/gokcehan/lf) 
   - 🌷 ** Terminal ** - [Foot](https://github.com/DanteAlighierin/foot) 
   - 🍄 ** Shell ** - [Zsh](https://zsh.sourceforge.io/) 
   - 🪵 ** Notifications ** - [Mako](https://github.com/emersion/mako) 
@@ -34,6 +35,10 @@
 
 </div>  
 
+
+This Repo also contains my custom scripts for Misc things like downloading youtube videos and audio , switching wallpaper in hyprland with keyboard shortcuts. make sure to copy the scripts folder in /home/.local/bin and also add it to your PATH variable
+
+Colorscheme used in this is inspired by Catppuccin Mocha as i love it soo much 😉😉
   
 | To Do | Status |
 |---|---|
