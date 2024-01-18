@@ -15,26 +15,15 @@
 ## Created by Cybersnake                                                                                  ##
 ############################################################################################################
 
+status=$(rfkill list bluetooth | rg Soft |  awk '{print $3}' | head -n 1)
+
 ## Bluetooth
 
- if [ $status == unblocked ]; then
+ if [ $status == no ]; then
  	rfkill block bluetooth
  	notify-send "Bluetooth" "Blocked"
  fi
- if [ $status == blocked ]; then
+ if [ $status == yes ]; then
  	rfkill unblock bluetooth
  	notify-send "Bluetooth" "Unblocked"
  fi
-
-## Wlan  
-
-  if [ $status == unblocked ]; then
- 	rfkill block wlan
- 	notify-send "Wlan" "Blocked"
- fi
- if [ $status == blocked ]; then
- 	rfkill unblock wlan
- 	notify-send "Wlan" "Unblocked"
- fi
-
-
