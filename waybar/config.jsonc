@@ -104,7 +104,8 @@
   "network": {
     "format-disconnected": "Disconnected",
     "format-wifi": " {essid}",
-    "tooltip-format": " {signalStrength}"
+    "tooltip-format": " {signalStrength}",
+    "on-click": "wifimenu",
   },
   "bluetooth": {
     "format": " {status}",
