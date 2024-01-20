@@ -3,7 +3,7 @@
     border-radius: 0;
     font-family: "JetBrainsMono Nerd Font";
     font-weight: bold;
-    font-size: 14px;
+    font-size: 14.2px;
     min-height: 0;
 }
 
@@ -15,7 +15,7 @@ window#waybar {
 tooltip {
     background: #000000;
     border-radius: 15px;
-    border-width: 2px;
+    border-width: 2.5px;
     border-style: solid;
     border-color: #8aadf4;
 }
@@ -66,7 +66,7 @@ tooltip {
     opacity: 1.0;
     padding: 0px 10px;
     margin: 0px 0px;
-    margin-top: 0px;
+    margin-top: 1px;
 }
 
 #backlight {
@@ -175,7 +175,7 @@ tooltip {
   background-color:           #F53C3C;
   color:                      #EEEEEE;
   animation-name:             blink;
-  animation-duration:         0.5s;
+  animation-duration:         0.4s;
   animation-timing-function:  linear;
   animation-iteration-count:  infinite;
   animation-direction:        alternate;
