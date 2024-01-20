@@ -16,10 +16,20 @@
 ## Created by Cybersnake                                                                                  ##
 ############################################################################################################
 
-DIR=$HOME/Pictures/Wallpapers
+DIR="$HOME/Pictures/Wallpapers"
+TIMEOUT=120
 
-RANDOMPIC=$(fd . "$DIR" -e .jpg -e .png | shuf -n 1)
+kill_swaybg() {
+    pkill -x swaybg && wait
+}
 
-pidof swaybg && pkill swaybg
+kill_swaybg
 
-swaybg -i "$RANDOMPIC"
+files=("$DIR"/*.{jpg,png})
+RANDOMPIC=${files[RANDOM % ${#files[@]}]}
+
+swaybg -i "$RANDOMPIC" &
+
+sleep "$TIMEOUT"
+
+changewall
