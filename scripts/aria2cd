@@ -14,9 +14,18 @@
 ## Created by Cybersnake                                                                                  ##
 ############################################################################################################
 
-if [[ $(pidof aria2c) ]]; then
-    pkill aria2c
-fi
+check_and_kill_aria2c() {
+    if pgrep -x aria2c > /dev/null; then
+        pkill aria2c
+    fi
+}
 
-aria2c -j 5 -x 15 -k 50M --split=15 --enable-rpc=true --check-certificate=false --daemon=true
-notify-send "Aria2" "Daemon Started"
+check_and_kill_aria2c
+
+aria2c -j5 -x15 -k25M --split=15 --enable-rpc=true --check-certificate=false --daemon=true
+
+if [ $? -eq 0 ]; then
+    notify-send "Aria2" "Daemon Started"
+else
+    notify-send "Aria2" "Failed to start daemon"
+fi

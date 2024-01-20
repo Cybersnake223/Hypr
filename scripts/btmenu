@@ -16,22 +16,29 @@
 ############################################################################################################
 
 rfkill unblock bluetooth
-device_amount=$(bluetoothctl devices | wc -l)
 
-if [[ $device_amount = 1 ]]; then
-	MAC=$(bluetoothctl devices | awk {'print $2'})
-		[ -z $MAC ] && MAC=NoDeviceFound # Prevents accidental disconnect error
-else
-	select=$(bluetoothctl devices | awk {'print $3'} | rofi -dmenu -l 5)
-	MAC=$(bluetoothctl devices | grep $select | awk {'print $2'}) 
-		[ -z $MAC ] && MAC=NoDeviceFound # Prevents accidental disconnect error
-fi
+get_device_mac() {
+    local devices
+    devices=$(bluetoothctl devices)
 
-connect=$(bluetoothctl info $MAC | grep Connected: | awk '{print $2}')
-if [[ $connect = no ]]; then 
-	notify-send "Attempting to Connect"
-	bluetoothctl connect $MAC || notify-send "Failed to Connect"
-elif [[ $connect = yes ]]; then
-	notify-send "Attempting to Disconnect"
-	bluetoothctl disconnect $MAC 
+    if [ "$(echo "$devices" | wc -l)" -eq 1 ]; then
+        MAC=$(echo "$devices" | awk '{print $2}')
+    else
+        select=$(echo "$devices" | awk '{print $3}' | rofi -dmenu -l 5)
+        MAC=$(echo "$devices" | grep "$select" | awk '{print $2}')
+    fi
+
+    [ -z "$MAC" ] && MAC=NoDeviceFound
+}
+
+get_device_mac
+
+connect=$(bluetoothctl info "$MAC" | grep "Connected:" | awk '{print $2}')
+
+if [ "$connect" = "no" ]; then
+    notify-send "Attempting to Connect"
+    bluetoothctl connect "$MAC" || notify-send "Failed to Connect"
+elif [ "$connect" = "yes" ]; then
+    notify-send "Attempting to Disconnect"
+    bluetoothctl disconnect "$MAC"
 fi
