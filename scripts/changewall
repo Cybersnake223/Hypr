@@ -17,18 +17,25 @@
 ############################################################################################################
 
 DIR="$HOME/Pictures/Wallpapers"
-TIMEOUT=300
+RANDOMPIC=$(fd . "$DIR" -t f -e png -e jpg | shuf -n 1)
+LOCK_FILE="/tmp/wallpaper_change.lock"
 
-kill_swaybg() {
-    pkill -x swaybg
+if [ -e "$LOCK_FILE" ]; then
+    echo "Script is already running. Exiting."
+    exit 1
+fi
+
+touch "$LOCK_FILE"
+
+change_wallpaper() {
+    swaybg -i "$RANDOMPIC"
 }
 
-kill_swaybg
+INTERVAL=300
 
-RANDOMPIC=$(fd . "$DIR" -t f -e png -e jpg | shuf -n 1)
+while true; do
+    change_wallpaper
+    sleep "$INTERVAL"
+done
 
-swaybg -i "$RANDOMPIC" &
-
-sleep "$TIMEOUT"
-
-changewall
+trap 'rm -f "$LOCK_FILE"' EXIT
