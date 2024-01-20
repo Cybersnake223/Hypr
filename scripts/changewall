@@ -17,16 +17,15 @@
 ############################################################################################################
 
 DIR="$HOME/Pictures/Wallpapers"
-TIMEOUT=120
+TIMEOUT=300
 
 kill_swaybg() {
-    pkill -x swaybg && wait
+    pkill -x swaybg
 }
 
 kill_swaybg
 
-files=("$DIR"/*.{jpg,png})
-RANDOMPIC=${files[RANDOM % ${#files[@]}]}
+RANDOMPIC=$(fd . "$DIR" -t f -e png -e jpg | shuf -n 1)
 
 swaybg -i "$RANDOMPIC" &
 
