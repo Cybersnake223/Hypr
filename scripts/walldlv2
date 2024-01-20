@@ -1,15 +1,7 @@
 #!/bin/sh
 
-# https://github.com/pystardust/waldl
-# script to find and download wallpapers from wallhaven
 version="0.0.1"
 
-# Usage:
-# 	waldl <query>
-# if query left empty then sh_menu will be used (dmenu by default)
-# after the thumbnails are cached, nsxiv would open up with the thumbnails
-# Select the wallpapers using `m` on the image. ( marking the image in nsxiv )
-# press `q` to quit nsxiv, the marked images would start downloading
 
 ####################
 ## User variables ##
