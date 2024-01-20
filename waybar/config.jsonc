@@ -5,6 +5,7 @@
   "modules-left": [
     "clock",
     "hyprland/workspaces",
+    "bluetooth",
   ],
   "modules-center": [
     "custom/updates",
@@ -12,7 +13,6 @@
   ],
   "modules-right": [
     "tray",
-    "bluetooth",
     "network",
     "backlight",
     "pulseaudio",
