@@ -18,24 +18,6 @@
 
 DIR="$HOME/Pictures/Wallpapers"
 RANDOMPIC=$(fd . "$DIR" -t f -e png -e jpg | shuf -n 1)
-LOCK_FILE="/tmp/wallpaper_change.lock"
 
-if [ -e "$LOCK_FILE" ]; then
-    echo "Script is already running. Exiting."
-    exit 1
-fi
-
-touch "$LOCK_FILE"
-
-change_wallpaper() {
-    swaybg -i "$RANDOMPIC"
-}
-
-INTERVAL=300
-
-while true; do
-    change_wallpaper
-    sleep "$INTERVAL"
-done
-
-trap 'rm -f "$LOCK_FILE"' EXIT
+pidof swaybg && pkill swaybg
+swaybg -i "$RANDOMPIC"
