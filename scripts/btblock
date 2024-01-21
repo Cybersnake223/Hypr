@@ -21,9 +21,9 @@ status=$(rfkill list bluetooth | rg Soft |  awk '{print $3}' | head -n 1)
 
  if [ $status == no ]; then
  	rfkill block bluetooth
- 	notify-send "Bluetooth" "Blocked"
+ 	notify-send "Bluetooth"  "Disabled"
  fi
  if [ $status == yes ]; then
  	rfkill unblock bluetooth
- 	notify-send "Bluetooth" "Unblocked"
+ 	notify-send "Bluetooth" "Enabled"
  fi
