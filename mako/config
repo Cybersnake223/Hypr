@@ -1,12 +1,12 @@
-max-visible=10
+max-visible=5
 sort=-time
 layer=overlay
 anchor=top-right
 background-color=#24273a
 text-color=#cad3f5
-margin=10,10,10,10
-width=300
-height=200
+margin=0,5,5,0
+width=350
+height=180
 border-size=4
 border-color=#f5a97f
 border-radius=15
