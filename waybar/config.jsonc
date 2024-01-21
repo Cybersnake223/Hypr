@@ -35,8 +35,20 @@
     "spacing": 2
   },
   "clock": {
-    "format": "{: %H:%M   %a,%b%e}",
-    "interval": 60
+    //"format": "{: %H:%M   %a,%b%e}",
+    "interval": 60,
+    "format": "{:%A, %B %d (%R)} ",
+    "tooltip-format": "<tt><small>{calendar}</small></tt>",
+    "calendar": {
+      "mode": "year",
+      "mode-mon-col": 4,
+      "format": {
+        "months": "<span color='#e6e1cf'><b>{}</b></span>",
+        "days": "<span color='#cad3f5'><b>{}</b></span>",
+        "weekdays": "<span color='#ff3333'><b>{}</b></span>",
+        "today": "<span color='#f5a97f'><b><u>{}</u></b></span>"
+      }
+    },
   },
   "backlight": {
     "device": "intel_backlight",
@@ -122,7 +134,6 @@
     //"format": "  {used:0.1f} G "
     "format": "  {used}G ",
     "tooltip-format": "{used} / {total} G",
-    
   },
   "disk": {
     "interval": 600,
