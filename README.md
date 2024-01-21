@@ -30,7 +30,7 @@
   - 🪵 ** Notifications ** - [Mako](https://github.com/emersion/mako) 
   - 🌻 ** Launcher ** - [Rofi](https://github.com/lbonn/rofi) 
   - 🍁 ** Wallpaper ** - [Swaybg](https://github.com/swaywm/swaybg) 
-  - ❄️  ** Screen locker ** - [Swaylock](https://github.com/swaywm/swaylock) 
+  - ❄️  ** Screen locker ** - [Swaylock Effects](https://github.com/DRAGONTOS/swaylock-effects) 
   - ⏬ ** Download Manager ** - [Aria2](https://github.com/aria2/aria2)
   - 🤖 ** System Fetch ** - [Nitch](https://github.com/ssleert/nitch)
 

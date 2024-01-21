@@ -1,10 +1,11 @@
 show-failed-attempts
-#clock
+clock
+daemonize
 #screenshot
-#effect-blur=8x8
+effect-blur=8x8
 color=1f1d2e80
 font="JetBrainsMono Nerd Font"
-#indicator
+indicator
 indicator-radius=120
 indicator-thickness=12
 line-color=1f1d2e
@@ -27,9 +28,9 @@ ring-clear-color=9ccfd8
 line-clear-color=1f1d2e
 line-wrong-color=1f1d2e
 bs-hl-color=31748f
-#fade-in=0.3
+fade-in=0.4
 ignore-empty-password
 
-#24 HRS clock format and standard Europe Date Format
+# 24 HRS Clock Format
 timestr=%H:%M:%S
 datestr=%d %B, %a
