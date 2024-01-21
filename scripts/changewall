@@ -18,6 +18,12 @@
 
 DIR="$HOME/Pictures/Wallpapers"
 RANDOMPIC=$(fd . "$DIR" -t f -e png -e jpg | shuf -n 1)
+INTERVAL=10
 
 pidof swaybg && pkill swaybg
-swaybg -i "$RANDOMPIC"
+#swaybg -i "$RANDOMPIC"
+while true; do
+    sleep $((interval * 60))  # Sleep for the specified interval
+
+    swaybg -i "$RANDOMPIC"
+done
