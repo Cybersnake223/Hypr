@@ -48,7 +48,7 @@ toggle() {
 		*) str="Silent\nDND\n Notification" ;;
 		esac
 
-		choice=$(echo -e "$str" | rofi -dmenu -i -l 3 -config ~/.config/rofi/menu.d/notification.rasi)
+		choice=$(echo -e "$str" | rofi -dmenu -i -l 3 -config ~/.config/rofi/config.rasi)
 		case $choice in
 		Silent)
 			makoctl mode -r "silent" -r "do-not-disturb"
@@ -70,9 +70,9 @@ toggle() {
 		esac
 	else
 		case "$state" in
-		"default silent ") output='{"text":"   ","tooltip":"Silent"}' ;;
-		*"disturb"*) output='{"text":"   ","tooltip":"DND"}' ;;
-		*) output='{"text": "  󰂞  " ,"tooltip":"Notification Enabled"}' ;;
+		"default silent ")output='{"text":"   ","tooltip":"Silent"}' ;;
+		*"disturb"*)output='{"text":"   ","tooltip":"DND"}' ;;
+		*)output='{"text": "  󰂞  " ,"tooltip":"Notification Enabled"}' ;;
 		esac
 		echo " $output "
 	fi
