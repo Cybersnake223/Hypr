@@ -5,14 +5,15 @@ anchor=top-right
 background-color=#24273a
 text-color=#cad3f5
 margin=10,10,10,10
-width=350
+width=300
 height=200
 border-size=4
-border-color=#8aadf4
+border-color=#f5a97f
 border-radius=15
 text-alignment=right
 progress-color=over #363a4f
 icons=1
+icon-path=/usr/share/icons/Reversal-purple:/usr/share/icons/hicolor
 max-icon-size=42
 default-timeout=3600
 ignore-timeout=0
@@ -22,16 +23,12 @@ format=<b>%s</b>\n%b
 font=JetBrainsMono Nerd Font 9.5
 markup=1
 
-
 [mode=do-not-disturb]
 invisible=1
 on-notify=none
 
 [mode=silent]
 on-notify=none
-
-[urgency=normal]
-border-color=#8aadf4
 
 [urgency=high]
 border-color=#f5a97f
