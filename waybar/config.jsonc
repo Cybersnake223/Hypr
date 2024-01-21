@@ -37,7 +37,7 @@
   "clock": {
     //"format": "{: %H:%M   %a,%b%e}",
     "interval": 60,
-    "format": "{:%A, %B %d (%R)} ",
+    "format": " {:%A, %B %d (%R)}",
     "tooltip-format": "<tt><small>{calendar}</small></tt>",
     "calendar": {
       "mode": "year",
