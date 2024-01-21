@@ -32,6 +32,7 @@
   - 🍁 ** Wallpaper ** - [Swaybg](https://github.com/swaywm/swaybg) 
   - ❄️  ** Screen locker ** - [Swaylock](https://github.com/swaywm/swaylock) 
   - ⏬ ** Download Manager ** - [Aria2](https://github.com/aria2/aria2)
+  - 🤖 ** System Fetch ** - [Nitch](https://github.com/ssleert/nitch)
 
 </div>  
 
