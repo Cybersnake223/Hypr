@@ -39,14 +39,13 @@
 
 ### Needed packages:
 - (all of the above components) plus
-- `cava` `polkit-gnome`
-- `mako` - for notifications
+- `cava` - Audio Visualizer 
+- `polkit-gnome` - Authentication 
 - `grimblast-git` `wl-clipboard` - for screenshot
 - `brightnessctl`  - for monitor and keyboard brightness
 - `mpv` - for media
 - `swayimg` - for wallpaper 
 - `pamixer` - for volume control notification. 
-- `playerctl` - Keyboard hotkeys multimedia controls
 - `xorg-xwayland` - needed to run some non-wayland app especially games
 - `fonts` - required awesome fonts. Most of configs here I used JetBrains Mono Nerd Font.
 - `pipewire` - needed pipewire pipewire-pulse pipewire-alsa
