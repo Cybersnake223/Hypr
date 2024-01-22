@@ -20,6 +20,8 @@
 
 <div align="center">
   <p> </p>
+
+## Basic Info 
   
   - 🍀 ** Distro ** - [Arch](https://archlinux.org/) 
   - 🌼 ** Wayland compositor ** - [Hyprland](https://hyprland.org/) 
