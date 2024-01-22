@@ -9,9 +9,6 @@ alias ....="cd ../../.."
 alias config="cd ~/.config"
 alias scripts="cd ~/.local/bin/scripts/"
 
-# Fetch
-alias fetch="nitch"
-
 # Auto-cpu Conf
 alias cpuconf="sudoedit /etc/auto-cpufreq.conf"
 
