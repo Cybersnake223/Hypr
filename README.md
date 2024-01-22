@@ -6,6 +6,7 @@
   <img src="https://img.shields.io/github/stars/cybersnake223/Hypr?color=%23c4a7e7&style=for-the-badge">
 </div>
 
+# SHOWCASE
 
 <p></p>
 
