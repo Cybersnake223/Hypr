@@ -44,7 +44,7 @@
 - `grimblast-git` `wl-clipboard` - for screenshot
 - `brightnessctl`  - for monitor and keyboard brightness - not needed for desktop
 - `mpv` - for wofi beats to work
-- `swayimg`  
+- `swayimg` - for wallpaper 
 - `pamixer` - for volume control notification. 
 - `playerctl` - Keyboard hotkeys multimedia controls
 - `xorg-xwayland` - needed to run some non-wayland app especially games
