@@ -42,7 +42,7 @@
 - `cava` `polkit-gnome`
 - `mako` - for notifications
 - `grimblast-git` `wl-clipboard` - for screenshot
-- `brightnessctl`  - for monitor and keyboard brightness - not needed for desktop
+- `brightnessctl`  - for monitor and keyboard brightness
 - `mpv` - for media
 - `swayimg` - for wallpaper 
 - `pamixer` - for volume control notification. 
