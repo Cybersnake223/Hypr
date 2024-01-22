@@ -37,6 +37,21 @@
 </div>  
 
 
+### Needed packages:
+- (all of the above components) plus
+- `cava` `polkit-gnome`
+- `mako` - for notifications
+- `grimblast-git` `wl-clipboard` - for screenshot
+- `brightnessctl`  - for monitor and keyboard brightness - not needed for desktop
+- `mpv` - for wofi beats to work
+- `swayimg`  
+- `pamixer` - for volume control notification. 
+- `playerctl` - Keyboard hotkeys multimedia controls
+- `xorg-xwayland` - needed to run some non-wayland app especially games
+- `fonts` - required awesome fonts. AUR and official repo have... else most of the waybar modules wont work. Most of configs here I used Fantasque Sans Mono. I used Cascadia Code Semibold Italic on foot.
+- `pipewire` - needed pipewire pipewire-pulse pipewire-alsa
+
+
 This Repo also contains my custom scripts that i use with this setup for Misc things like downloading youtube videos and audio , switching wallpaper in hyprland with keyboard shortcuts. make sure to copy the scripts folder in /home/.local/bin and also add it to your PATH variable
 
 Colorscheme used in this is inspired by Catppuccin Mocha as i love it soo much 😉😉
