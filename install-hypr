@@ -52,20 +52,3 @@ fi
 
 # install Scripts Dir
 script_directory=install-scripts
-
-# Function to execute install scripts
-execute_script() {
-    local script="$1"
-    local script_path="$script_directory/$script"
-    if [ -f "$script_path" ]; then
-        chmod +x "$script_path"
-        if [ -x "$script_path" ]; then
-            env USE_PRESET=$use_preset  "$script_path"
-        else
-            echo "Failed to make script '$script' executable."
-        fi
-    else
-        echo "Script '$script' not found in '$script_directory'."
-    fi
-}
-
