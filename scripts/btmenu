@@ -16,6 +16,7 @@
 ############################################################################################################
 
 rfkill unblock bluetooth
+bluetoothctl power on
 
 get_device_mac() {
     local devices
