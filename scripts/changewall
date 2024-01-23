@@ -24,3 +24,4 @@ if [[ $(pidof swaybg) ]]; then
 fi
 
 swaybg -i "$RANDOMPIC"
+exit 0
