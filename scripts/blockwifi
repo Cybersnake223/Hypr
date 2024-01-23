@@ -15,13 +15,34 @@
 ## Created by Cybersnake                                                                                  ##
 ############################################################################################################
 
-status=$(rfkill list wlan | rg Soft |  awk '{print $3}' | head -n 1)
+# Check if rfkill command is available
+if ! command -v rfkill &> /dev/null; then
+    echo "Error: 'rfkill' command not found."
+    exit 1
+fi
 
- if [ $status == no ]; then
- 	rfkill block wlan
- 	notify-send "Wlan" "Blocked"
- fi
- if [ $status == yes ]; then
- 	rfkill unblock wlan
- 	notify-send "Wlan" "Unblocked"
- fi
+status=$(rfkill list wlan | awk '/Soft/{print $3; exit}')
+
+# if [[ "$status" == "no" ]]; then
+# 	rfkill block wlan
+# 	notify-send "Wlan" "Blocked"
+# fi
+# if [ $status == yes ]; then
+# 	rfkill unblock wlan
+# 	notify-send "Wlan" "Unblocked"
+# fi
+# Check the status and take appropriate actions
+case $status in
+    "no")
+        rfkill block wlan
+        notify-send "Wlan" "Blocked"
+        ;;
+    "yes")
+        rfkill unblock wlan
+        notify-send "Wlan" "Unblocked"
+        ;;
+    *)
+        echo "Unknown status: $status"
+        exit 1
+        ;;
+esac
