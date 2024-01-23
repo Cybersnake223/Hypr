@@ -11,19 +11,30 @@
 ##  \$$    $$   | $$    | $$    $$| $$     \| $$  | $$ \$$    $$| $$  \$$$| $$  | $$| $$  \$$\| $$     \  ##
 ##   \$$$$$$     \$$     \$$$$$$$  \$$$$$$$$ \$$   \$$  \$$$$$$  \$$   \$$ \$$   \$$ \$$   \$$ \$$$$$$$$  ##
 ##                                                                                                        ##
-## Flightmode Script                                                                                      ##
+## Bluetooth Block                                                                                        ##
 ## Created by Cybersnake                                                                                  ##
 ############################################################################################################
 
-status=$(rfkill list bluetooth | rg Soft |  awk '{print $3}' | head -n 1)
+# Check if rfkill command is available
+if ! command -v rfkill &> /dev/null; then
+    echo "Error: 'rfkill' command not found."
+    exit 1
+fi
 
-## Bluetooth
+status=$(rfkill list bluetooth | awk '/Soft/{print $3; exit}')
 
- if [ $status == no ]; then
- 	rfkill block bluetooth
- 	notify-send "Bluetooth"  "Disabled"
- fi
- if [ $status == yes ]; then
- 	rfkill unblock bluetooth
- 	notify-send "Bluetooth" "Enabled"
- fi
+# Check the status and take appropriate actions
+case $status in
+    "no")
+        rfkill block bluetooth
+        notify-send "Wlan" "Blocked"
+        ;;
+    "yes")
+        rfkill unblock bluetooth
+        notify-send "Wlan" "Unblocked"
+        ;;
+    *)
+        echo "Unknown status: $status"
+        exit 1
+        ;;
+esac
