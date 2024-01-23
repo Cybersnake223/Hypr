@@ -1,7 +1,7 @@
+
 <div align="center">
   <p></p>
-  <p><b><i>  </i></b></p>
-  <img src="https://readme-typing-svg.herokuapp.com?font=Righteous&size=60&duration=2500&pause=500&center=true&vCenter=true&multiline=true&random=false&width=500&height=100&lines=Hypr+Dots">
+  <p><b><i> <img src="https://readme-typing-svg.herokuapp.com?font=Righteous&size=60&duration=2500&pause=500&center=true&vCenter=true&multiline=true&random=false&width=500&height=100&lines=Hypr+Dots"> </i></b></p>
   <img src="https://img.shields.io/github/last-commit/cybersnake223/Hypr?color=%23c4a7e7&style=for-the-badge">
   <img src="https://img.shields.io/github/repo-size/cybersnake223/Hypr?color=%23c4a7e7&style=for-the-badge">
   <img src="https://img.shields.io/github/stars/cybersnake223/Hypr?color=%23c4a7e7&style=for-the-badge">
