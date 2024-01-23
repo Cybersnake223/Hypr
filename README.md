@@ -18,10 +18,11 @@
 
 <div align="center"><img src="https://raw.githubusercontent.com/catppuccin/catppuccin/main/assets/footers/gray0_ctp_on_line.png"></div>
 
+## Basic Info 
+
 <div align="center">
   <p> </p>
 
-## Basic Info 
   
   - 🍀 ** Distro ** - [Arch](https://archlinux.org/) 
   - 🌼 ** Wayland compositor ** - [Hyprland](https://hyprland.org/) 
