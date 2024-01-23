@@ -48,7 +48,6 @@
 - `grimblast-git` `wl-clipboard` - for screenshot
 - `brightnessctl`  - for monitor and keyboard brightness
 - `mpv` - for media
-- `swayimg` - for wallpaper 
 - `pamixer` - for volume control notification. 
 - `xorg-xwayland` - needed to run some non-wayland app especially games
 - `fonts` - required awesome fonts. Most of configs here I used JetBrains Mono Nerd Font.
