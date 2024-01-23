@@ -33,7 +33,7 @@
   - 🍄 ** Shell ** - [Zsh](https://zsh.sourceforge.io/) 
   - 🪵 ** Notifications ** - [Mako](https://github.com/emersion/mako) 
   - 🌻 ** Launcher ** - [Rofi](https://github.com/lbonn/rofi) 
-  - 🍁 ** Wallpaper ** - [Swaybg](https://github.com/swaywm/swaybg) 
+  - 🍁 ** Wallpaper ** - [Wbg](https://codeberg.org/dnkl/wbg) 
   - ❄️  ** Screen locker ** - [Swaylock Effects](https://github.com/DRAGONTOS/swaylock-effects) 
   - ⏬ ** Download Manager ** - [Aria2](https://github.com/aria2/aria2)
   - 🤖 ** System Fetch ** - [Nitch](https://github.com/ssleert/nitch)

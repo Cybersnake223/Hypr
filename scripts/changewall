@@ -19,5 +19,8 @@
 DIR="$HOME/Pictures/Wallpapers"
 RANDOMPIC=$(fd . "$DIR" -t f -e png -e jpg | shuf -n 1)
 
-pidof swaybg && pkill swaybg
-swaybg -i "$RANDOMPIC"
+if [[ $(pidof wbg) ]]; then
+  pkill wbg
+fi
+
+wbg "$RANDOMPIC"
