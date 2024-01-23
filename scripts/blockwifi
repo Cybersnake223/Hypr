@@ -23,14 +23,6 @@ fi
 
 status=$(rfkill list wlan | awk '/Soft/{print $3; exit}')
 
-# if [[ "$status" == "no" ]]; then
-# 	rfkill block wlan
-# 	notify-send "Wlan" "Blocked"
-# fi
-# if [ $status == yes ]; then
-# 	rfkill unblock wlan
-# 	notify-send "Wlan" "Unblocked"
-# fi
 # Check the status and take appropriate actions
 case $status in
     "no")
