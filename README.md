@@ -1,6 +1,8 @@
-[![Typing SVG](https://readme-typing-svg.herokuapp.com?font=JetBrainsMono+Nerd+&weight=1000&size=30&duration=3000&pause=1000&color=742CF7&center=true&vCenter=true&random=true&width=500&height=100&lines=Hypr+Dots)](https://git.io/typing-svg)
+[![Typing SVG](https://readme-typing-svg.herokuapp.com?font=Righteous&weight=1000&size=60&duration=2000&pause=1000&color=742CF7&center=true&vCenter=true&random=false&width=100&height=200&lines=Hypr+Dots)](https://git.io/typing-svg)
 
-<div>
+<div align="center">
+  <p></p>
+  <p><b><i>  </i></b></p>
   <img src="https://img.shields.io/github/last-commit/cybersnake223/Hypr?color=%23c4a7e7&style=for-the-badge">
   <img src="https://img.shields.io/github/repo-size/cybersnake223/Hypr?color=%23c4a7e7&style=for-the-badge">
   <img src="https://img.shields.io/github/stars/cybersnake223/Hypr?color=%23c4a7e7&style=for-the-badge">
@@ -33,7 +35,7 @@
   - 🍄 ** Shell ** - [Zsh](https://zsh.sourceforge.io/) 
   - 🪵 ** Notifications ** - [Mako](https://github.com/emersion/mako) 
   - 🌻 ** Launcher ** - [Rofi](https://github.com/lbonn/rofi) 
-  - 🍁 ** Wallpaper ** - [Swaybg](https://github.com/swaywm/swaybg) 
+  - 🍁 ** Wallpaper ** - [Swaybg](https://codeberg.org/dnkl/wbg) 
   - ❄️  ** Screen locker ** - [Swaylock Effects](https://github.com/DRAGONTOS/swaylock-effects) 
   - ⏬ ** Download Manager ** - [Aria2](https://github.com/aria2/aria2)
   - 🤖 ** System Fetch ** - [Nitch](https://github.com/ssleert/nitch)
