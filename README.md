@@ -1,4 +1,4 @@
-[![Typing SVG](https://readme-typing-svg.herokuapp.com?font=Righteous&size=50&duration=2500&pause=500&center=true&vCenter=true&multiline=true&random=false&width=500&height=200&lines=Hypr+Dots)](https://git.io/typing-svg)
+[![Typing SVG](https://readme-typing-svg.herokuapp.com?font=Righteous&size=60&duration=2500&pause=500&center=true&vCenter=true&multiline=true&random=false&width=500&height=100&lines=Hypr+Dots)](https://git.io/typing-svg)
 
 <div align="center">
   <p></p>
