@@ -41,6 +41,7 @@ alias ssdn="sudo systemctl disable --now"
 alias ssm="sudo systemctl mask"
 alias ssum="sudo systemctl unmask"
 alias ssr="sudo systemctl restart"
+alias ssdr="sudo systemctl daemon-reload"
 alias sss="systemctl status"
 
 # Speedtest
