@@ -60,4 +60,7 @@ This Repo also contains my custom scripts that i use with this setup for Misc th
 
 Colorscheme used in this is inspired by Catppuccin Mocha as i love it soo much 😉😉
 
-# Install Script Coming Soon.........
+<div align="center">
+  <p></p>
+  <p><b><i> <img src="https://readme-typing-svg.herokuapp.com?font=Righteous+&weight=100&size=60&duration=1500&pause=500&center=true&vCenter=true&random=false&width=1500&height=150&lines=Install+Script+Coming+Soon............." > <p></p>
+</div>
