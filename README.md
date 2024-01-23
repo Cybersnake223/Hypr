@@ -54,7 +54,7 @@
 - `pipewire` - needed pipewire pipewire-pulse pipewire-alsa
 
 
-### PS: This setup is more focused on laptops rather than desktops soo i keeping it super simple but you can also use it with desktops
+### PS: This setup is more focused on laptops rather than desktops soo i'm keeping it super simple but you can also use it with desktops
 
 This Repo also contains my custom scripts that i use with this setup for Misc things like downloading youtube videos and audio , switching wallpaper in hyprland with keyboard shortcuts. make sure to copy the scripts folder in /home/.local/bin and also add it to your PATH variable
 
