@@ -1,6 +1,7 @@
 <div align="center">
   <p></p>
-  <p><b><i> ~ Hypr Dots ~ </i></b></p>
+  <p><b><i> 
+[![Typing SVG](https://readme-typing-svg.herokuapp.com?font=JetBrainsMono+Nerd+&weight=1000&size=30&duration=3000&pause=1000&color=742CF7&center=true&vCenter=true&random=true&width=500&height=100&lines=Hypr+Dots)](https://git.io/typing-svg) </i></b></p>
   <img src="https://img.shields.io/github/last-commit/cybersnake223/Hypr?color=%23c4a7e7&style=for-the-badge">
   <img src="https://img.shields.io/github/repo-size/cybersnake223/Hypr?color=%23c4a7e7&style=for-the-badge">
   <img src="https://img.shields.io/github/stars/cybersnake223/Hypr?color=%23c4a7e7&style=for-the-badge">
