@@ -14,14 +14,9 @@
 ## Created by Cybersnake                                                                                  ##
 ############################################################################################################
 
-if [[ $(pidof keepassxc) ]]; then
-    pkill keepassxc
-    notify-send "Password Manager Killed"
-fi
-
 if [[ $(pidof aria2c) ]]; then
     pkill aria2c
-    notify-send "Aria Server Killed"
+    notify-send "Aria2" "Server Killed"
 fi
 
 if [[ $(pidof wl-copy) ]]; then
@@ -29,18 +24,11 @@ if [[ $(pidof wl-copy) ]]; then
 	notify-send "Clipboard Cleaned"
 fi
 
-if [[ $(pidof gvfsd) ]]; then
-	pkill gvfsd
-fi
-
 if [[ $(pidof tumblerd) ]]; then
 	pkill tumblerd
 	notify-send "Thumbnail Daemon Killed"
 fi
 
-if [[ $(pidof gvfs-udisks2-volume-monitor) ]]; then
-	pkill gvfs-udisks2-vo
-fi
 
 if [[ $(pidof xfconfd) ]]; then
 	pkill xfconfd
@@ -50,9 +38,3 @@ if [[ $(pidof lf) ]]; then
 	pkill lf
 	notify-send "Lf Killed"
 fi
-
-if [[ $(pidof uget-gtk) ]]; then
-	pkill uget-gtk
-	notify-send "Uget Killed"
-fi
-pkill changewall
