@@ -22,6 +22,8 @@ invisible=0
 format=%s\n%b
 font=JetBrainsMono Nerd Font 9.5
 markup=1
+on-button-left=dismiss
+outer-margin=10
 
 [mode=do-not-disturb]
 invisible=1
