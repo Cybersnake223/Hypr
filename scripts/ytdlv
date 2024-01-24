@@ -15,7 +15,7 @@
 ## Created by Cybersnake                                                                                  ##
 ############################################################################################################
 
-dir='/home/cybersnake/Videos/Youtube/%(title)s.%(ext)s'
+dir='$HOME/Videos/Youtube/%(title)s.%(ext)s'
 selected_option=$(echo -e "Paste" | rofi -dmenu -p "Select action:")
 if [ "$selected_option" == "Paste" ]; then
 	pasted_content=$(wl-paste)
