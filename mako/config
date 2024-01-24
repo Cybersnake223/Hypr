@@ -22,7 +22,6 @@ invisible=0
 format=%s\n%b
 font=JetBrainsMono Nerd Font 9.5
 markup=1
-actions=0
 
 [mode=do-not-disturb]
 invisible=1
