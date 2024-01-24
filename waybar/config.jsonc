@@ -6,7 +6,7 @@
     "hyprland/workspaces",
     "backlight",
     "bluetooth",
-    "custom/notifications"
+    "custom/notifications",
     "custom/updates",
   ],
   "modules-center": [
