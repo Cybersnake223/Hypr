@@ -6,8 +6,8 @@
     "hyprland/workspaces",
     "backlight",
     "bluetooth",
-    "custom/updates",
     "custom/notifications"
+    "custom/updates",
   ],
   "modules-center": [
     "clock",
