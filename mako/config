@@ -7,7 +7,7 @@ text-color=#cad3f5
 margin=0,5,5,0
 width=340
 height=180
-border-size=5
+border-size=3
 border-color=#f5a97f
 border-radius=15
 text-alignment=right
@@ -22,6 +22,7 @@ invisible=0
 format=%s\n%b
 font=JetBrainsMono Nerd Font 9.5
 markup=1
+actions=0
 
 [mode=do-not-disturb]
 invisible=1
