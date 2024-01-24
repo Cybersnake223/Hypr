@@ -120,7 +120,8 @@ tooltip {
     border-radius: 15px 15px 15px 15px;
     border-left: 0px;
     border-right: 0px;
-    margin-right: 5px;
+    margin-left: 5px;
+    margin-right: 0px;
 }
 
 
