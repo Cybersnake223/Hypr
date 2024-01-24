@@ -34,7 +34,7 @@
   - 🪵 ** Notifications ** - [Mako](https://github.com/emersion/mako) 
   - 🌻 ** Launcher ** - [Rofi](https://github.com/lbonn/rofi) 
   - 🍁 ** Wallpaper ** - [Swaybg](https://codeberg.org/dnkl/wbg)
-  - 🌐 ** Browser ** - [Thorium](https://thorium.rocks/welcome) 
+  - 🌐 ** Browser ** - [Thorium](https://thorium.rocks/) 
   - ❄️  ** Screen locker ** - [Swaylock Effects](https://github.com/DRAGONTOS/swaylock-effects) 
   - ⏬ ** Download Manager ** - [Aria2](https://github.com/aria2/aria2)
   - 🤖 ** System Fetch ** - [Nitch](https://github.com/ssleert/nitch)
