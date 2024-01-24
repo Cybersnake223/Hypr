@@ -15,7 +15,7 @@
 ## Created by Cybersnake                                                                                  ##
 ############################################################################################################
 
-dir='/home/cybersnake/Music/%(title)s.%(ext)s'
+dir='$HOME/Music/%(title)s.%(ext)s'
 selected_option=$(echo -e "Paste" | rofi -dmenu -p "Audio Link:")
 
 if [ "$selected_option" == "Paste" ]; then
