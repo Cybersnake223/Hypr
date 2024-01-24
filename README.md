@@ -63,5 +63,5 @@ Colorscheme used in this is inspired by Catppuccin Mocha as i love it soo much ð
 
 <div align="center">
   <p></p>
-  <p><b><i> <img src="https://readme-typing-svg.herokuapp.com?font=Righteous+&weight=90&size=60&duration=1500&pause=500&center=true&vCenter=true&random=false&width=1700&height=200&lines=Install+Script+Coming+Soon........." > <p></p>
+  <p><b><i> <img src="https://readme-typing-svg.herokuapp.com?font=Righteous+&weight=90&size=60&duration=1500&pause=500&center=true&vCenter=true&random=false&width=1500&height=150&lines=Install+Script+Coming+Soon........." > <p></p>
 </div>
