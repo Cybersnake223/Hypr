@@ -24,19 +24,19 @@
   <p> </p>
 
   
-  - 🍀 ** Distro ** - [Arch](https://archlinux.org/) 
-  - 🌼 ** Wayland compositor ** - [Hyprland](https://hyprland.org/) 
-  - ✨ ** Bar ** - [Waybar](https://github.com/Alexays/Waybar) 
-  - 💦 ** GUI File Manager ** - [Thunar](https://gitlab.xfce.org/xfce/thunar) 
-  - 🗄️ ** CLI File Manager ** - [Lf](https://github.com/gokcehan/lf) 
-  - 🌷 ** Terminal ** - [Foot](https://github.com/DanteAlighierin/foot) 
-  - 🍄 ** Shell ** - [Zsh](https://zsh.sourceforge.io/) 
-  - 🪵 ** Notifications ** - [Mako](https://github.com/emersion/mako) 
-  - 🌻 ** Launcher ** - [Rofi](https://github.com/lbonn/rofi) 
-  - 🍁 ** Wallpaper ** - [Swaybg](https://codeberg.org/dnkl/wbg) 
-  - ❄️  ** Screen locker ** - [Swaylock Effects](https://github.com/DRAGONTOS/swaylock-effects) 
-  - ⏬ ** Download Manager ** - [Aria2](https://github.com/aria2/aria2)
-  - 🤖 ** System Fetch ** - [Nitch](https://github.com/ssleert/nitch)
+   🍀 ** Distro ** - [Arch](https://archlinux.org/) 
+   🌼 ** Wayland compositor ** - [Hyprland](https://hyprland.org/) 
+   ✨ ** Bar ** - [Waybar](https://github.com/Alexays/Waybar) 
+   💦 ** GUI File Manager ** - [Thunar](https://gitlab.xfce.org/xfce/thunar) 
+   🗄️ ** CLI File Manager ** - [Lf](https://github.com/gokcehan/lf) 
+   🌷 ** Terminal ** - [Foot](https://github.com/DanteAlighierin/foot) 
+   🍄 ** Shell ** - [Zsh](https://zsh.sourceforge.io/) 
+   🪵 ** Notifications ** - [Mako](https://github.com/emersion/mako) 
+   🌻 ** Launcher ** - [Rofi](https://github.com/lbonn/rofi) 
+   🍁 ** Wallpaper ** - [Swaybg](https://codeberg.org/dnkl/wbg) 
+   ❄️  ** Screen locker ** - [Swaylock Effects](https://github.com/DRAGONTOS/swaylock-effects) 
+   ⏬ ** Download Manager ** - [Aria2](https://github.com/aria2/aria2)
+   🤖 ** System Fetch ** - [Nitch](https://github.com/ssleert/nitch)
 
 </div>  
 
