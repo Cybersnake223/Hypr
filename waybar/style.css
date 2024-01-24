@@ -53,6 +53,7 @@ tooltip {
 #clock,
 #battery,
 #pulseaudio,
+#pulseaudio.microphone,
 #network,
 #bluetooth,
 #custom-notifications,
@@ -61,17 +62,14 @@ tooltip {
 #tray,
 #memory,
 #disk,
+
 #backlight {
     background: #000000;
     opacity: 1.0;
-    padding: 0px 10px;
-    margin: 0px 0px;
+    padding: 1px 10px;
     margin-top: 1px;
-}
-
-#backlight {
     border-radius: 15px 15px 15px 15px;
-    margin-right: 10px;
+    margin-right: 5px;
 }
 
 #tray {
@@ -83,7 +81,7 @@ tooltip {
     background: #000000;
     border-radius: 15px;
     margin-left: 5px;
-    padding-right: 3px;
+    padding-right: 2px;
 }
 
 #window {
@@ -111,7 +109,8 @@ tooltip {
     color: #f9e2af;
     border-radius: 15px 15px 15px 15px;
     border-right: 0px;
-    margin-right: 0px;
+    margin-right: 5px;
+    margin-left : 5px;
     padding-right: 0px;
     padding-left: 2px;
 }
@@ -145,8 +144,8 @@ tooltip {
 #bluetooth {
   color: #89b4fa;
   border-radius: 15px 15px 15px 15px;
-  margin-left: 10px;
-  margin-right: 10px;
+  margin-left: 5px;
+  margin-right: 5px;
 } 
 
 #pulseaudio {
@@ -154,6 +153,7 @@ tooltip {
   border-left: 0px;
   border-right: 0px;
   border-radius: 15px 0px 0px 15px;
+  margin-right: 0px;
 }
 
 #pulseaudio.microphone {
@@ -161,7 +161,8 @@ tooltip {
     border-left: 0px;
     border-right: 0px;
     border-radius: 0px 15px 15px 0px;
-    margin-right: 2px;
+    margin-right: 0px;
+    margin-left: 0px;
 }
 
 #battery {

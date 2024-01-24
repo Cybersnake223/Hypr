@@ -3,18 +3,18 @@
   "position": "top",
   "height": 30,
   "modules-left": [
-    "clock",
     "hyprland/workspaces",
+    "backlight",
     "bluetooth",
-  ],
-  "modules-center": [
     "custom/updates",
     "custom/notifications"
+  ],
+  "modules-center": [
+    "clock",
   ],
   "modules-right": [
     "tray",
     "network",
-    "backlight",
     "pulseaudio",
     "pulseaudio#microphone",
     "battery",
