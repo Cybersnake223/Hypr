@@ -81,7 +81,6 @@ function clear-screen-and-scrollback() {
   zle && zle .reset-prompt && zle -R
 }
 zle -N clear-screen-and-scrollback
-bindkey '^L' clear-screen-and-scrollback
 
 # Rehash After Package Modification
 
@@ -106,6 +105,7 @@ bindkey -e
 bindkey "^[[1;5C" forward-word
 bindkey "^[[1;5D" backward-word
 bindkey "^[[3~" delete-char 
+bindkey '^L' clear-screen-and-scrollback
 bindkey "^[[F" end-of-line
 bindkey "^[[H" beginning-of-line
 bindkey '^[[A' history-substring-search-up

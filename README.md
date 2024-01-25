@@ -24,7 +24,7 @@
   <p> </p>
 
   
-  - 🍀 ** Distro ** - [Arch](https://archlinux.org/) 
+  - 🍀 ** Base ** - [Arch](https://archlinux.org/) 
   - 🌼 ** Wayland compositor ** - [Hyprland](https://hyprland.org/) 
   - ✨ ** Bar ** - [Waybar](https://github.com/Alexays/Waybar) 
   - 💦 ** GUI File Manager ** - [Thunar](https://gitlab.xfce.org/xfce/thunar) 
