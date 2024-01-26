@@ -22,7 +22,7 @@ invisible=0
 format=%s\n%b
 font=JetBrainsMono Nerd Font 9.5
 markup=1
-on-button-left=dismiss
+on-button-left=dismiss-all
 outer-margin=10
 
 [mode=do-not-disturb]
