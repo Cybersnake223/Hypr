@@ -23,5 +23,5 @@ if [[ $(pidof swaybg) ]]; then
   pkill swaybg
 fi
 
-swaybg -i "$RANDOMPIC"
+swaybg  -m fill -i "$RANDOMPIC"
 exit 0
