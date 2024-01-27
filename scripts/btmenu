@@ -37,9 +37,9 @@ get_device_mac
 connect=$(bluetoothctl info "$MAC" | grep "Connected:" | awk '{print $2}')
 
 if [ "$connect" = "no" ]; then
-    notify-send "Attempting to Connect"
+    notify-send "Attempting to Connect" "$select"
     bluetoothctl connect "$MAC" || notify-send "Failed to Connect"
 elif [ "$connect" = "yes" ]; then
-    notify-send "Attempting to Disconnect"
+    notify-send "Attempting to Disconnect" "$select"
     bluetoothctl disconnect "$MAC"
 fi
