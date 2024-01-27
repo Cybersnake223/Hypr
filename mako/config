@@ -8,7 +8,7 @@ margin=0,5,5,0
 width=340
 height=180
 border-size=3
-border-color=#f5a97f
+border-color=#8aadf4
 border-radius=15
 text-alignment=right
 progress-color=over #363a4f
@@ -31,6 +31,3 @@ on-notify=none
 
 [mode=silent]
 on-notify=none
-
-[urgency=high]
-border-color=#f5a97f
