@@ -16,6 +16,7 @@
 ## Created by Cybersnake                                                                                  ##
 ############################################################################################################
 
+if [[ $(command -v swaybg) ]]; then
 DIR="$HOME/Pictures/Wallpapers"
 RANDOMPIC=$(fd . "$DIR" -t f -e png -e jpg | shuf -n 1)
 
@@ -24,4 +25,7 @@ if [[ $(pidof swaybg) ]]; then
 fi
 
 swaybg  -m fill -i "$RANDOMPIC"
+else
+notify-send  "Swaybg not installed. Please install swaybg."
+fi
 exit 0
