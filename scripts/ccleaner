@@ -15,11 +15,19 @@
 ## Created by Cybersnake                                                                                  ##
 ############################################################################################################
 
-rm -rf ~/.cache/rofi3.druncache
-rm -rf ~/.cache/nsxiv
-rm -rf ~/.local/state/nvim/
-rm -rf ~/.cache/nvim/
-rm -rf ~/.cache/thumbnails/
-notify-send "Applications Cache Cleaned"
-sys=$(bleachbit -c system.cache | rg "Disk space*")
-notify-send "System Cache Cleaned" "$(echo $sys)"
+if [[ $(command -v bleachbit) ]]; then
+
+  rm -rf ~/.cache/rofi3.druncache
+  rm -rf ~/.cache/nsxiv
+  rm -rf ~/.local/state/nvim/
+  rm -rf ~/.cache/nvim/
+  notify-send "Applications Cache Cleaned"
+  notify-send "Cleaning System Cache....."
+  sys=$(bleachbit -c system.cache | rg "Disk space*")
+  notify-send "System Cache Cleaned" "$(echo $sys)"
+
+else 
+
+  notify-send "Bleachbit not installed. Please install bleachbit"
+
+fi
