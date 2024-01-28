@@ -101,8 +101,6 @@ tooltip {
 #network {
     color: #f9e2af;
     border-radius: 15px 15px 15px 15px;
-    border-left: 0px;
-    border-right: 0px;
     margin-right: 10px;
 }
 
@@ -111,8 +109,8 @@ tooltip {
     border-radius: 15px 15px 15px 15px;
     margin-right: 5px;
     margin-left : 5px;
-    padding-right: 3px;
-    padding-left: 3.5px;
+    padding-right: 2.5px;
+    padding-left: 5px;
 }
 
 #custom-updates {
@@ -128,16 +126,12 @@ tooltip {
 #memory {
     color: #89b4fa;
     border-radius: 15px 15px 15px 15px;
-    border-left: 0px;
-    border-right: 0px;
     margin-left: 5px;
 }
 
 #disk {
     color: #a6e3a1;
     border-radius: 15px 15px 15px 15px;
-    border-left: 0px;
-    border-right: 0px;
     margin-left: 5px;
 }
 
@@ -151,18 +145,13 @@ tooltip {
 
 #pulseaudio {
   color: #89b4fa;
-  border-left: 0px;
-  border-right: 0px;
   border-radius: 15px 0px 0px 15px;
   margin-right: 0px;
 }
 
 #pulseaudio.microphone {
     color: #cba6f7;
-    border-left: 0px;
-    border-right: 0px;
     border-radius: 0px 15px 15px 0px;
-    margin-right: 0px;
     margin-left: 0px;
 }
 
