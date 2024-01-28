@@ -103,7 +103,7 @@ alias la="exa -Glax --icons --sort=Name --no-permissions --no-time"
 alias ls="exa --icons"
 
 # Git
-alias gc='gh repo clone'
+alias gc='git clone'
 alias gi='git init'
 
 # Uptime
