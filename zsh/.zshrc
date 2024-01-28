@@ -55,7 +55,7 @@ HISTSIZE=100000
 # Git Status
 parse_git_dirty() {
   STATUS="$(git status 2> /dev/null)"
-  if [[ $? -ne 0 ]]; then printf ""; return; else printf " [ Up to date "; fi
+  if [[ $? -ne 0 ]]; then printf ""; return; else printf " [ "; fi
   if echo ${STATUS} | grep -c "renamed:"         &> /dev/null; then printf " Renamed "; else printf ""; fi
   if echo ${STATUS} | grep -c "branch is ahead:" &> /dev/null; then printf " Ahead"; else printf ""; fi
   if echo ${STATUS} | grep -c "new file::"       &> /dev/null; then printf " Added "; else printf ""; fi
