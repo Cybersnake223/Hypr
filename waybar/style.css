@@ -70,6 +70,7 @@ tooltip {
     margin-top: 1px;
     border-radius: 15px 15px 15px 15px;
     margin-right: 5px;
+    margin-left: 2px;
 }
 
 #tray {
@@ -108,11 +109,10 @@ tooltip {
 #custom-notifications {
     color: #f9e2af;
     border-radius: 15px 15px 15px 15px;
-    border-right: 0px;
     margin-right: 5px;
     margin-left : 5px;
     padding-right: 0px;
-    padding-left: 2px;
+    padding-left: 2.8px;
 }
 
 #custom-updates {
