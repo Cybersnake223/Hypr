@@ -53,7 +53,7 @@
 - `xorg-xwayland` - needed to run some non-wayland app especially games
 - `fonts` - required awesome fonts. Most of configs here I used JetBrains Mono Nerd Font.
 - `pipewire` - needed pipewire pipewire-pulse pipewire-alsa
-
+- 'bleachbit' - needed for the cleaner script
 
 ### PS: This setup is more focused on laptops rather than desktops soo i'm keeping it super simple but yeahh you can also use it with desktops
 
