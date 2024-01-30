@@ -27,11 +27,11 @@ status=$(rfkill list bluetooth | awk '/Soft/{print $3; exit}')
 case $status in
     "no")
         rfkill block bluetooth
-        notify-send "Bluetooth" "Blocked"
+        notify-send "Bluetooth" "Disabled"
         ;;
     "yes")
         rfkill unblock bluetooth
-        notify-send "Bluetooth" "Unblocked"
+        notify-send "Bluetooth" "Enabled"
         ;;
     *)
         echo "Unknown status: $status"
