@@ -133,7 +133,7 @@ fast-theme -q catppuccin-macchiato
 # Source Zsh Auto completion
 source ~/.config/zsh/plugins/zsh-autosuggestions/zsh-autosuggestions.zsh 2>/dev/null
 ZSH_AUTOSUGGEST_STRATEGY=(history completion)
-ZSH_AUTOSUGGEST_BUFFER_MAX_SIZE=25
+ZSH_AUTOSUGGEST_BUFFER_MAX_SIZE=15
 
 # Soure Sub-String Search
 source ~/.config/zsh/plugins/zsh-history-substring-search.zsh 2>/dev/null
