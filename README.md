@@ -14,6 +14,7 @@
 ![2](assets/asset-2.png)
 ![3](assets/asset-3.png)
 ![4](assets/asset-4.png)
+![5](assets/asset-5.png)
 
 
 <div align="center"><img src="https://raw.githubusercontent.com/catppuccin/catppuccin/main/assets/footers/gray0_ctp_on_line.png"></div>
