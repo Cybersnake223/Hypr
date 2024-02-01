@@ -21,8 +21,9 @@ if [[ $(command -v bleachbit) ]]; then
   rm -rf ~/.cache/nsxiv
   rm -rf ~/.local/state/nvim/
   rm -rf ~/.cache/nvim/
-  notify-send "Applications Cache Cleaned"
-  notify-send "Cleaning System Cache....."
+  rm -rf ~/.cache/lvim/
+  cache=$(du -hs ~/.cache | awk '{print $1}')
+  notify-send "Cache Found: $cache"
   sys=$(bleachbit -c system.cache | rg "Disk space*")
   notify-send "System Cache Cleaned" "$(echo $sys)"
 
