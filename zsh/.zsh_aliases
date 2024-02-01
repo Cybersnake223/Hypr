@@ -110,9 +110,9 @@ alias nv="lvim"
 alias snv="sudoedit"
 
 # Ls
-alias l="exa -Glax --icons --sort=Name --no-permissions --no-time"
-alias la="exa -Glax --icons --sort=Name --no-permissions --no-time"
-alias ls="exa --icons"
+alias l="eza -Glax --icons --sort=Name --no-permissions --no-time"
+alias la="eza -Glax --icons --sort=Name --no-permissions --no-time"
+alias ls="eza --icons"
 
 # Git
 alias gc='git clone'
