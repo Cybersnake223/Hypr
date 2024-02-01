@@ -29,7 +29,7 @@
   - 🌼 ** Wayland compositor ** - [Hyprland](https://hyprland.org/) 
   - ✨ ** Bar ** - [Waybar](https://github.com/Alexays/Waybar) 
   - 💦 ** GUI File Manager ** - [Thunar](https://gitlab.xfce.org/xfce/thunar) 
-  - 🗄️ ** CLI File Manager ** - [Lf](https://github.com/gokcehan/lf) 
+  - 🗄️ ** CLI File Manager ** - [Yazi](https://yazi-rs.github.io/docs/installation/) 
   - 🌷 ** Terminal ** - [Foot](https://github.com/DanteAlighierin/foot) 
   - 🍄 ** Shell ** - [Zsh](https://zsh.sourceforge.io/) 
   - 🪵 ** Notifications ** - [Mako](https://github.com/emersion/mako) 
