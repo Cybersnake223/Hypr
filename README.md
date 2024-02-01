@@ -10,11 +10,11 @@
 
 <p></p>
 
-![1](assets/asset-1.png)
-![2](assets/asset-2.png)
-![3](assets/asset-3.png)
-![4](assets/asset-4.png)
-![5](assets/asset-5.png)
+![1](assets/asset1.png)
+![2](assets/asset2.png)
+![3](assets/asset3.png)
+![4](assets/asset4.png)
+![5](assets/asset5.png)
 
 
 <div align="center"><img src="https://raw.githubusercontent.com/catppuccin/catppuccin/main/assets/footers/gray0_ctp_on_line.png"></div>
