@@ -19,4 +19,4 @@ DIR=$HOME/Pictures/Wallpapers
 img=$(fd . "$DIR" -e .jpg -e .png | shuf -n 1)
 
 # Applying Lockscreen
-swaylock --image $img --config ~/.config/swaylock/config
+swaylock --daemonize --image $img --config ~/.config/swaylock/config
