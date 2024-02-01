@@ -11,18 +11,20 @@
 ##                                                                                                        ##
 ## Created by Cybersnake                                                                                  ##
 ############################################################################################################
+"$schema" = "https://yazi-rs.github.io/schemas/yazi.json"
+
 [manager]
-ratio          = [ 1, 2, 4 ]
+ratio          = [ 1, 1, 5 ]
 sort_by        = "alphabetical"
 sort_sensitive = true
-sort_reverse   = true
+sort_reverse   = false
 sort_dir_first = true
 linemode       = "none"
 show_hidden    = false
 show_symlink   = true
 
 [preview]
-tab_size        = 2
+tab_size        = 4
 max_width       = 600
 max_height      = 900
 cache_dir       = ""
