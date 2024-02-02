@@ -13,8 +13,8 @@
 ############################################################################################################
 
 [manager]
-ratio          = [ 1 , 1 , 5 ]
-sort_by        = "alphabetical"
+ratio          = [ 1 , 3 , 4 ]
+sort_by        = "natural"
 sort_sensitive = true
 sort_reverse   = false
 sort_dir_first = true
@@ -28,7 +28,7 @@ max_width       = 600
 max_height      = 900
 cache_dir       = ""
 image_filter    = "triangle"
-image_quality   = 100
+image_quality   = 90
 sixel_fraction  = 15
 ueberzug_scale  = 1
 ueberzug_offset = [ 0, 0, 0, 0 ]
