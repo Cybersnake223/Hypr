@@ -24,12 +24,12 @@ show_symlink   = true
 
 [preview]
 tab_size        = 6
-max_width       = 600
+max_width       = 900
 max_height      = 900
 cache_dir       = ""
 image_filter    = "triangle"
 image_quality   = 90
-sixel_fraction  = 15
+sixel_fraction  = 10
 ueberzug_scale  = 1
 ueberzug_offset = [ 0, 0, 0, 0 ]
 
