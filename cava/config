@@ -1,14 +1,12 @@
 [general]
-
 bar_width = 2
 bar_spacing = 1
 framerate = 60
-[output]
 
+[output]
 method = ncurses
 
 [color]
-
 gradient = 1
 gradient_color_1 = '#80a0ff'
 gradient_color_2 = '#74b2ff'
