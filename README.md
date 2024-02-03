@@ -44,23 +44,28 @@
 
 
 ### Needed packages:
+
 - (all of the above components) plus
-- `cava` - Audio Visualizer 
-- `polkit-gnome` - Authentication 
-- `grimblast-git` `wl-clipboard` - for screenshot
-- `brightnessctl`  - for monitor and keyboard brightness
-- `mpv` - for media
-- `pamixer` - for volume control notification. 
-- `xorg-xwayland` - needed to run some non-wayland app especially games
-- `fonts` - required awesome fonts. Most of configs here I used JetBrains Mono Nerd Font.
-- `pipewire` - needed pipewire pipewire-pulse pipewire-alsa
-- `bleachbit` - needed for the cleaner script
+- `Cava` - Audio Visualizer 
+- `Polkit-gnome` - Authentication 
+- `Grimblast-git` `wl-clipboard` - Screenshot Wtility
+- `Brightnessctl`  - Monitor and Keyboard Brightness Control 
+- `Mpv` - Media Player
+- `Pavucontrol` - Volume Control Panel. 
+- `Xorg-Xwayland` - For Non-Wayland Apps and Games.
+- `Fonts` - JetBrains Mono Nerd Fonts and Awesome Fonts .
+- `Pipewire` - Audio Playback (pipewire, pipewire-pulse, pipewire-alsa)
+- `Bleachbit` - Needed for the cleaner script
+- `Cmus` - Terminal Audio Player
+- `Btop` - Resource Monitor
+- `Nmcli` - Connection Manager
+- 'Bluetootlctl' - Bluetooth Manager
 
 ### PS: This setup is more focused on laptops rather than desktops soo i'm keeping it super simple but yeahh you can also use it with desktops. This setup is mostly keyboard centric.  
 
-#### This Repo also contains my custom scripts that i use with this setup for Misc things like downloading videos and audios from different platforms , switching wallpaper in hyprland with keyboard shortcuts. make sure to copy the scripts folder in /home/.local/bin and also add it to your PATH variable
+#### This Repo also contains my custom scripts that i use with this setup for Misc things like downloading videos and audios from different platforms , switching wallpaper in hyprland with keyboard shortcuts. make sure to copy the scripts folder in /home/.local/bin and also add it to your PATH variable.
 
-#### Colorscheme used in this is inspired by Catppuccin Mocha as i love it soo much 😉😉
+#### Colorscheme used in this is inspired by Catppuccin Mocha as i love it soo much 😉😉 .
 
 # Feel free to fork this repo and suggest changes. I'll really appericiate it.  
 
