@@ -67,7 +67,11 @@
 
 #### Colorscheme used in this is inspired by Catppuccin Mocha as i love it soo much 😉😉 .
 
+```
+
 # Feel free to fork this repo and suggest changes. I'll really appericiate it.  
+
+```
 
 <!-- <div align="center"> -->
 <!--   <p></p> -->
