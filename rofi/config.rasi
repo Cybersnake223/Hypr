@@ -20,8 +20,8 @@ window {
    width: 28%;
    padding: 10px;
    fullscreen: false;
-   border:  5px;
-   border-radius: 18px;
+   border:  3px;
+   border-radius: 20px;
    border-color: @dark3;
 }
 
