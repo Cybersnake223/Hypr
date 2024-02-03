@@ -77,11 +77,12 @@ tooltip {
 #tray,
 #memory,
 #disk,
+#backlight,
 
 #backlight {
     background: #000000;
     opacity: 1.0;
-    padding: 0px 15px;
+    padding: 3px 12px;
     margin-top: 3px;
     margin-bottom: 3px;
     border-radius: 15px 15px 15px 15px;
