@@ -59,7 +59,7 @@
 - `Cmus` - Terminal Audio Player
 - `Btop` - Resource Monitor
 - `Nmcli` - Connection Manager
-- 'Bluetootlctl' - Bluetooth Manager
+- `Bluetoothctl` - Bluetooth Manager
 
 ### PS: This setup is more focused on laptops rather than desktops soo i'm keeping it super simple but yeahh you can also use it with desktops. This setup is mostly keyboard centric.  
 
