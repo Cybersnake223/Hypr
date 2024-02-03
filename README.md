@@ -47,8 +47,8 @@
 
 - (all of the above components) plus
 - `Cava` - Audio Visualizer 
-- `Polkit-gnome` - Authentication 
-- `Grimblast-git` `wl-clipboard` - Screenshot Wtility
+- `Polkit-gnome` - Authentication Agent
+- `Grimblast-git` `wl-clipboard` - Screenshot Utility
 - `Brightnessctl`  - Monitor and Keyboard Brightness Control 
 - `Mpv` - Media Player
 - `Pavucontrol` - Volume Control Panel. 
