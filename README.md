@@ -53,7 +53,7 @@
 - `Mpv` - Media Player
 - `Pavucontrol` - Volume Control Panel. 
 - `Xorg-Xwayland` - For Non-Wayland Apps and Games.
-- `Fonts` - JetBrains Mono Nerd Fonts and Awesome Fonts .
+- `Fonts` - JetBrains Mono Nerd Fonts, Awesome Fonts and Nerd Font Symbols.
 - `Pipewire` - Audio Playback (pipewire, pipewire-pulse, pipewire-alsa)
 - `Wireplumber` - Session Manager for Pipewire
 - `Bleachbit` - Needed for the cleaner script
