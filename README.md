@@ -6,7 +6,7 @@
   <img src="https://img.shields.io/github/stars/Cybersnake223/Hypr?color=%23c4a7e7&style=for-the-badge">
 </div>
 
-# SHOWCASE
+## SHOWCASE
 
 <p></p>
 
@@ -67,11 +67,8 @@
 
 #### Colorscheme used in this is inspired by Catppuccin Mocha as i love it soo much 😉😉 .
 
-```
-
 # Feel free to fork this repo and suggest changes. I'll really appericiate it.  
 
-```
 
 <!-- <div align="center"> -->
 <!--   <p></p> -->
