@@ -1,7 +1,8 @@
 [general]
+
 bar_width = 2
 bar_spacing = 1
-framerate = 60
+framerate = 120
 
 [output]
 method = ncurses
