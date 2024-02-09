@@ -6,6 +6,8 @@
   <img src="https://img.shields.io/github/stars/Cybersnake223/Hypr?color=%23c4a7e7&style=for-the-badge">
 </div>
 
+<div align="center"><img src="https://user-images.githubusercontent.com/73097560/115834477-dbab4500-a447-11eb-908a-139a6edaec5c.gif"></div>
+
 ## SHOWCASE
 
 <p></p>
