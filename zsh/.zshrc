@@ -17,7 +17,7 @@
 export VISUAL='lvim'
 export EDITOR='lvim'
 export TERMINAL='foot'
-export BROWSER='thorium-browser'
+export BROWSER='brave'
 export HISTORY_IGNORE="(ls|cd|pwd|exit|sudo reboot|history|cd -|cd ..)"
 export DMENU='rofi -dmenu'
 export IRQBALANCE_ARGS="--allcpus"
