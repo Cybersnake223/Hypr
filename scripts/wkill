@@ -14,6 +14,11 @@
 ## Created by Cybersnake                                                                                  ##
 ############################################################################################################
 
+if [[ $(pidof gvfsd ) ]]; then
+    pkill gvfsd
+    notify-send "Gvfs" "Killed"
+fi
+
 if [[ $(pidof aria2c) ]]; then
     pkill aria2c
     notify-send "Aria2" "Server Killed"
@@ -34,7 +39,6 @@ if [[ $(pidof xfconfd) ]]; then
 	pkill xfconfd
 fi
 
-if [[ $(pidof lf) ]]; then
-	pkill lf
-	notify-send "Lf Killed"
-fi
+
+trash-empty --all-users -f
+yazi --clear-cache
