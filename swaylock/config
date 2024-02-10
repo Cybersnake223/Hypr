@@ -1,6 +1,6 @@
 show-failed-attempts
 clock
-#daemonize
+daemonize
 color=1e1e2e
 bs-hl-color=f5e0dc
 caps-lock-bs-hl-color=f5e0dc
