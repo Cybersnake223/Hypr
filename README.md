@@ -1,7 +1,3 @@
-<div align="center"><img src="https://user-images.githubusercontent.com/73097560/115834477-dbab4500-a447-11eb-908a-139a6edaec5c.gif"></div>
-<div align="center"><img src="https://user-images.githubusercontent.com/73097560/115834477-dbab4500-a447-11eb-908a-139a6edaec5c.gif"></div>
-
-
 <div align="center">
   <p></p>
   <p><b><i> <img src="https://readme-typing-svg.herokuapp.com?font=Righteous&size=70&duration=1500&pause=500&color=A024F7&center=true&vCenter=true&random=false&width=500&height=100&lines=Vicious+Viper" > </i></b></p>
