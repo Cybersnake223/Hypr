@@ -14,9 +14,13 @@
 ## Lockscreen                                                                                             ##
 ## Created by Cybersnake                                                                                  ##
 ############################################################################################################
+
+
 #DIR=$HOME/Pictures/Wallpapers
-#
 #img=$(fd . "$DIR" -e .jpg -e .png | shuf -n 1)
 
-# Applying Lockscreen
+# Applying Lockscreen (With Random Images)
+#swaylock -f --image $img --config ~/.config/swaylock/config
+
+# Applying Lockscreen (With Screenshot)
 swaylock -f --screenshots --config ~/.config/swaylock/config
