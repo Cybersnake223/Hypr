@@ -108,7 +108,7 @@ cp -r .themes $HOME/.themes
 # Feel free to fork this repo and suggest changes. I'll really appericiate it.  
 
 
-<!-- <div align="center"> -->
-<!--   <p></p> -->
-<!--   <p><b><i> <img src="https://readme-typing-svg.herokuapp.com?font=Righteous+&weight=60&size=45&duration=1200&pause=700&center=true&vCenter=true&random=false&width=1200&height=150&lines=Install+Script+Coming+Soon....." > <p></p> -->
-<!-- </div> -->
+<div align="center">
+  <p></p>
+  <p><b><i> <img src="https://readme-typing-svg.herokuapp.com?font=Righteous+&weight=60&size=45&duration=1200&pause=700&center=true&vCenter=true&random=false&width=1200&height=150&lines=Working+on+Install+Script" > <p></p>
+</div>
