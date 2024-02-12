@@ -66,7 +66,9 @@
 - `Btop` - Resource Monitor
 - `Nmcli` - Connection Manager
 - `Bluetoothctl` - Bluetooth Manager
-
+- `Advcpmv` - Alternate to cp and mv commands
+- `Eza` - Alternative to ls command
+- `Fd` - Fast Alternative to Find command
 
 
 <div align="center"><img src="https://user-images.githubusercontent.com/73097560/115834477-dbab4500-a447-11eb-908a-139a6edaec5c.gif"></div>
