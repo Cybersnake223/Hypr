@@ -13,6 +13,8 @@
 ## Wallhaven Wallpaper Downloader                                                                         ##
 ## Created by Cybersnake                                                                                  ##
 ############################################################################################################
+
+
 stype=$(echo -e "standard\nsearch" | rofi -l 2 -dmenu -p "Search Type:")
 
 if [ "$stype" = "standard" ]; then 
@@ -25,7 +27,7 @@ fi
 pageno=$(rofi -l 0 -dmenu -p "Enter Page Number")
 wpnum=$(echo -e "24\n48\n72\n96\n120" | rofi -l 5 -dmenu -p "No. of Wallpapers:")
 STARTPAGE=$pageno
-APIKEY="u4YNdj6N0M7nkrM2Pbz7fHAY0EYIT5WL"
+APIKEY="your_api_here"
 
 #####################################
 ###     Configuration Options     ###
