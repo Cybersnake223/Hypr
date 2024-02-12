@@ -14,7 +14,7 @@
 ## Created by Cybersnake                                                                                  ##
 ############################################################################################################
 
-
+# Rofi menus
 stype=$(echo -e "standard\nsearch" | rofi -l 2 -dmenu -p "Search Type:")
 
 if [ "$stype" = "standard" ]; then 
