@@ -17,7 +17,7 @@ configuration {
 
 window {
    background-color: @background-color;
-   width: 20%;
+   width: 28%;
    padding: 10px;
    fullscreen: false;
    border:  4px;
