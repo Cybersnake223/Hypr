@@ -73,6 +73,33 @@
 <div align="center"><img src="https://user-images.githubusercontent.com/73097560/115834477-dbab4500-a447-11eb-908a-139a6edaec5c.gif"></div>
 
 
+# Installation Instructions
+
+```
+git clone https://github.com/Cybersnake223/Hypr
+
+```
+
+```
+cd Hypr
+```
+
+```
+cp -r .config/* $HOME/.config
+```
+
+```
+cp -r .local/bin/scripts $HOME/.local/bin
+```
+
+```
+cp -r .icons $HOME/.icons
+```
+
+```
+cp -r .themes $HOME/.themes
+```
+
 ### PS: This setup is more focused on laptops rather than desktops soo i'm keeping it super simple but yeahh you can also use it with desktops. This setup is mostly keyboard centric.  
 
 #### This Repo also contains my custom scripts that i use with this setup for Misc things like downloading videos and audios from different platforms , switching wallpaper in hyprland with keyboard shortcuts. make sure to copy the scripts folder in /home/.local/bin and also add it to your PATH variable.
