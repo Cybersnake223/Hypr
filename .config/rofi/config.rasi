@@ -17,10 +17,10 @@ configuration {
 
 window {
    background-color: @background-color;
-   width: 28%;
+   width: 20%;
    padding: 10px;
    fullscreen: false;
-   border:  3px;
+   border:  4px;
    border-radius: 20px;
    border-color: @dark3;
 }
