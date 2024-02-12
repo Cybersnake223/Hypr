@@ -52,7 +52,7 @@
 
 - (all of the above components) plus
 - `Cava` - Audio Visualizer 
-- `Xfce-polkit` - Authentication Agent
+- `Polkit-Gnome` - Authentication Agent
 - `Grimblast-git` `wl-clipboard` - Screenshot Utility
 - `Brightnessctl`  - Monitor and Keyboard Brightness Control 
 - `Mpv` - Media Player
