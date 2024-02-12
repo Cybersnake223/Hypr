@@ -115,7 +115,7 @@ alias la="eza -Glax --icons --sort=Name --no-permissions --no-time"
 alias ls="eza --icons"
 
 # Git
-alias gc='git clone --recursive'
+alias gc='git clone'
 alias gi='git init'
 
 # Uptime
