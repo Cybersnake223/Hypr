@@ -77,7 +77,9 @@
 
 # Installation Instructions
 
-## Note:- Backup your old config file before proceeding . I WILL NOT BE RESPONSIBLE IF YOU LOSE YOUR OLD CONFIGS .  
+## Note:- DO BACKUP YOUR CURRENT CONFIGS BEFORE PROCEEDING FURTHER . I WILL NOT BE HELD RESPONSIBLE IF YOU LOSE YOUR OLD CONFIGS .
+
+
 
 ```
 git clone https://github.com/Cybersnake223/Hypr
