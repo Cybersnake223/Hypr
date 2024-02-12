@@ -77,7 +77,6 @@
 
 ```
 git clone https://github.com/Cybersnake223/Hypr
-
 ```
 
 ```
