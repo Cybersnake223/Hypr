@@ -22,7 +22,7 @@ if type swaybg >/dev/null 2>&1; then
   DIR="$HOME/Pictures/Wallpapers"
   
   # Store a list of files for efficiency
-  FILES=("$DIR"/*.png "$DIR"/*.jpg)
+  FILES=("$DIR"/*.png)
   RANDOMPIC=${FILES[RANDOM % ${#FILES[@]}]}
   
   # Kill Existing swaybg processes
