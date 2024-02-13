@@ -23,6 +23,8 @@ check_and_kill_aria2c() {
 
 # Combine process check and kill for conciseness
 check_and_kill_aria2c
+
+# Starting Aria RPC
 aria2c -j5 -x15 -k25M --split=15 --enable-rpc=true --check-certificate=false --daemon=true
 
 # Direct notification based on process status
