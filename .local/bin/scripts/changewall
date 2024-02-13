@@ -29,7 +29,7 @@ if type swaybg >/dev/null 2>&1; then
   killall swaybg
   
   # Applying Random Wallpaper 
-  swaybg  -m fill -i "$RANDOMPIC"
+  swaybg  -m fill -i "$RANDOMPIC" &
   else
   notify-send  "Swaybg not installed. Please install swaybg."
   
