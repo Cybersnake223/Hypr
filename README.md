@@ -51,6 +51,7 @@
 ### Needed packages:
 
 - (all of the above components) plus
+- `xdg-desktop-portal` `xdg-desktop-portal-gtk` `xdg-desktop-portal-hyprland` - For Better Functionality and Compatiblity 
 - `Cava` - Audio Visualizer 
 - `Polkit-Gnome` - Authentication Agent
 - `Grimblast-git` `wl-clipboard` - Screenshot Utility
@@ -58,7 +59,7 @@
 - `Mpv` - Media Player
 - `Pavucontrol` - Volume Control Panel. 
 - `Xorg-Xwayland` - For Non-Wayland Apps and Games.
-- `Fonts` - JetBrains Mono Nerd Fonts, Awesome Fonts and Nerd Font Symbols.
+- `Fonts` - JetBrains Mono Nerd Fonts, Awesome Fonts and Nerd Font Symbols
 - `Pipewire` - Audio Playback (pipewire, pipewire-pulse, pipewire-alsa)
 - `Wireplumber` - Session Manager for Pipewire
 - `Bleachbit` - Needed for the cleaner script
