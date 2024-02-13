@@ -157,8 +157,7 @@
     "exec": "~/.config/waybar/bin/updatecheck",
     "return-type": "json",
     "exec-if": "exit 0",
-    "signal": 8,
-    "on-click": "foot yay -Syu --noconfirm"
+    "signal": 8
   },
   "custom/notifications": {
     "format": "<b>{}</b> ",
