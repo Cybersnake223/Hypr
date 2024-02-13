@@ -123,17 +123,25 @@ setopt HIST_FIND_NO_DUPS
 setopt COMPLETE_IN_WORD    
 
 
-# Source Aliases 
-source ~/.config/zsh/.zsh_aliases
+# Source Aliases (if exists) 
+if [[ -f "$HOME/.config/zsh/.zsh_aliases" ]]; then
+  source "$HOME/.config/zsh/.zsh_aliases"
+fi
 
-# Source Zsh Syntax Highlighting
-source ~/.config/zsh/plugins/fast-syntax-highlighting/F-Sy-H.plugin.zsh 2>/dev/null
-fast-theme -q catppuccin-macchiato
+# Source Zsh Syntax Highlighting (if exists) 
+if [[ -f "$HOME/.config/zsh/plugins/fast-syntax-highlighting/F-Sy-H.plugin.zsh" ]]; then
+  source "$HOME/.config/zsh/plugins/fast-syntax-highlighting/F-Sy-H.plugin.zsh" 2>/dev/null
+  fast-theme -q catppuccin-macchiato
+fi
 
-# Source Zsh Auto completion
-source ~/.config/zsh/plugins/zsh-autosuggestions/zsh-autosuggestions.zsh 2>/dev/null
-ZSH_AUTOSUGGEST_STRATEGY=(history completion)
-ZSH_AUTOSUGGEST_BUFFER_MAX_SIZE=15
+# Source Zsh Auto completion (if exists)
+if [[ -f "$HOME/.config/zsh/plugins/zsh-autosuggestions/zsh-autosuggestions.zsh" ]]; then
+  source "$HOME/.config/zsh/plugins/zsh-autosuggestions/zsh-autosuggestions.zsh" 2>/dev/null
+  ZSH_AUTOSUGGEST_STRATEGY=(history completion)
+  ZSH_AUTOSUGGEST_BUFFER_MAX_SIZE=10
+fi
 
-# Soure Sub-String Search
-source ~/.config/zsh/plugins/zsh-history-substring-search.zsh 2>/dev/null
+# Soure Sub-String Search (if exists)
+if [[ -f "$HOME/.config/zsh/plugins/zsh-history-substring-search.zsh" ]]; then
+  source "$HOME/.config/zsh/plugins/zsh-history-substring-search.zsh" 2>/dev/null
+fi
