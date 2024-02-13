@@ -39,6 +39,9 @@ if [[ $(pidof xfconfd) ]]; then
 	pkill xfconfd
 fi
 
-
+trash_size=$(du -hs $HOME/.local/share/Trash/ | awk '{print $1}')
 trash-empty --all-users -f
+notify-send "Trash" "Cleaned: $trash_size"
+yazi_cache=$(du -hs /tmp/yazi/ | awk '{print $1}')
 yazi --clear-cache
+notify-send "Yazi" "Cache Cleaned: $yazi_cache"
