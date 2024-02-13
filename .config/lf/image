@@ -1,0 +1,99 @@
+#!/bin/bash
+############################################################################################################
+##   ______  __      __  _______   ________  _______    ______   __    __   ______   __    __  ________   ##
+##  /      \|  \    /  \|       \ |        \|       \  /      \ |  \  |  \ /      \ |  \  /  \|        \  ##
+## |  $$$$$$\\$$\  /  $$| $$$$$$$\| $$$$$$$$| $$$$$$$\|  $$$$$$\| $$\ | $$|  $$$$$$\| $$ /  $$| $$$$$$$$  ##
+## | $$   \$$ \$$\/  $$ | $$__/ $$| $$__    | $$__| $$| $$___\$$| $$$\| $$| $$__| $$| $$/  $$ | $$__      ##
+## | $$        \$$  $$  | $$    $$| $$  \   | $$    $$ \$$    \ | $$$$\ $$| $$    $$| $$  $$  | $$  \     ##
+## | $$   __    \$$$$   | $$$$$$$\| $$$$$   | $$$$$$$\ _\$$$$$$\| $$\$$ $$| $$$$$$$$| $$$$$\  | $$$$$     ##
+## | $$__/  \   | $$    | $$__/ $$| $$_____ | $$  | $$|  \__| $$| $$ \$$$$| $$  | $$| $$ \$$\ | $$_____   ##
+##  \$$    $$   | $$    | $$    $$| $$     \| $$  | $$ \$$    $$| $$  \$$$| $$  | $$| $$  \$$\| $$     \  ##
+##   \$$$$$$     \$$     \$$$$$$$  \$$$$$$$$ \$$   \$$  \$$$$$$  \$$   \$$ \$$   \$$ \$$   \$$ \$$$$$$$$  ##
+##                                                                                                        ##
+## Created by Cybersnake                                                                                  ##
+############################################################################################################
+
+input_file="$1"
+output_cache="$HOME/.cache/lf/thumbnail.$(stat --printf '%n\0%i\0%F\0%s\0%W\0%Y' -- "$(readlink -f "$input_file")" | sha256sum | awk '{print $1}')"
+
+get_terminal_size() {
+    echo $(tput cols) $(tput lines)
+}
+
+image() {
+    local geometry="$(($2 - 2))x$3"
+    local terminal_size=($(get_terminal_size))
+    
+    # Adjust image dimensions if it exceeds terminal size
+    if [ "$2" -gt "${terminal_size[0]}" ] || [ "$3" -gt "${terminal_size[1]}" ]; then
+        geometry="${terminal_size[0]}x${terminal_size[1]}"
+    fi
+
+    chafa "$1" -f sixel -s "$geometry" --animate false
+}
+
+batorcat() {
+    local file="$1"
+    shift
+    if command -v bat > /dev/null 2>&1; then
+        bat --color=always --style=plain --pager=never "$file" "$@"
+    else
+        cat "$file"
+    fi
+}
+
+glowormdcat() {
+    local file="$1"
+    shift
+    if command -v glow > /dev/null 2>&1; then
+        glow "$file"
+    else
+        mdcat "$file"
+    fi
+}
+
+process_image() {
+    [ ! -f "${output_cache}.jpg" ] && convert "$1" "${output_cache}.jpg"
+    image "${output_cache}.jpg" "$2" "$3" "$4" "$5"
+}
+
+case "$(printf "%s\n" "$(readlink -f "$input_file")" | awk '{print tolower($0)}')" in
+    # ... (unchanged cases)
+
+    *.svg)
+        process_image "$input_file" "$2" "$3" "$4" "$5"
+        ;;
+
+    *.pdf)
+        [ ! -f "${output_cache}.jpg" ] && pdftoppm -jpeg -f 1 -singlefile "$input_file" "$output_cache"
+        image "${output_cache}.jpg" "$2" "$3" "$4" "$5"
+        ;;
+
+    *.epub)
+        [ ! -f "$output_cache" ] && epub-thumbnailer "$input_file" "$output_cache" 1024
+        image "$output_cache" "$2" "$3" "$4" "$5"
+        ;;
+
+    *.cbz|*.cbr|*.cbt)
+        [ ! -f "$output_cache" ] && comicthumb "$input_file" "$output_cache" 1024
+        image "$output_cache" "$2" "$3" "$4" "$5"
+        ;;
+
+    *.avi|*.mp4|*.wmv|*.dat|*.3gp|*.ogv|*.mkv|*.mpg|*.mpeg|*.vob|*.fl[icv]|*.m2v|*.mov|*.webm|*.ts|*.mts|*.m4v|*.r[am]|*.qt|*.divx)
+        [ ! -f "${output_cache}.jpg" ] && ffmpegthumbnailer -i "$input_file" -o "${output_cache}.jpg" -s 0 -q 5
+        image "${output_cache}.jpg" "$2" "$3" "$4" "$5"
+        ;;
+
+    *.bmp|*.jpg|*.jpeg|*.png|*.xpm|*.webp|*.tiff|*.gif|*.jfif|*.ico)
+        image "$input_file" "$2" "$3" "$4" "$5"
+        ;;
+
+    *.ino)
+        batorcat --language=cpp "$input_file"
+        ;;
+
+    *)
+        batorcat "$input_file"
+        ;;
+esac
+exit 0
