@@ -25,7 +25,7 @@ get_device_mac() {
     if [ "$(echo "$devices" | wc -l)" -eq 1 ]; then
         MAC=$(echo "$devices" | awk '{print $2}')
     else
-        select=$(echo "$devices" | awk '{print $3}' | rofi -dmenu -l 2)
+        select=$(echo "$devices" | awk '{print $3}' | rofi -dmenu -l 3)
         MAC=$(echo "$devices" | grep "$select" | awk '{print $2}')
     fi
 
