@@ -1,0 +1,155 @@
+#!/bin/sh
+
+declare -r myname='checkupdates'
+declare -r myver='1.10.1'
+
+LIBRARY=${LIBRARY:-'/usr/share/makepkg'}
+
+DOWNLOAD_CACHE=0
+USE_COLOR='y'
+
+# Import libmakepkg
+# shellcheck source=/dev/null
+source "$LIBRARY"/util/message.sh
+# shellcheck source=/dev/null
+source "$LIBRARY"/util/parseopts.sh
+
+die() {
+	error "$@"
+	exit 1
+}
+
+runcmd() {
+	if (( EUID != 0 )); then
+		msg 'Escalating privileges using sudo'
+		if sudo -v &>/dev/null && sudo -l &>/dev/null; then
+			sudo "$@"
+		else
+			die 'Failed to escalate'
+		fi
+	else
+		"$@"
+	fi
+}
+
+usage() {
+	cat <<EOF
+${myname} v${myver}
+
+Safely print a list of pending updates.
+
+Usage: ${myname} [options]
+
+Options:
+  -d, --download  download pending updates to the pacman cache
+      --nocolor   do not colorize output
+  -n, --nosync    do not sync the temporary database
+  -c, --change    print only when available updates differ from the last --change run
+  -h, --help      display this help message and exit
+  -V, --version   display version information and exit
+
+Environment Variables:
+  CHECKUPDATES_DB      override the path of the temporary database
+                       (default: "\${TMPDIR:-/tmp}/checkup-db-\${UID}")
+  CHECKUPDATES_CHANGE  override the path of the temporary files for the "change" option
+                       (default: "\${XDG_STATE_HOME:-\$HOME/.local/state}/${myname}")
+  TMPDIR               override the temporary directory (default: '/tmp')
+  XDG_STATE_HOME       override the state directory (default: '\$HOME/.local/state')
+EOF
+}
+
+version() {
+	printf "%s %s\n" "$myname" "$myver"
+}
+
+OPT_SHORT='dnchV'
+OPT_LONG=('download' 'nocolor' 'nosync' 'change' 'help' 'version')
+
+if ! parseopts "$OPT_SHORT" "${OPT_LONG[@]}" -- "$@"; then
+	exit 1
+fi
+set -- "${OPTRET[@]}"
+unset OPT_SHORT OPT_LONG OPTRET
+
+SYNC=1
+while :; do
+	case $1 in
+		-d|--download)
+			DOWNLOAD_CACHE=1 ;;
+		--nocolor)
+			USE_COLOR='n';;
+		-n|--nosync)
+			SYNC=0 ;;
+		-c|--change)
+			CHANGE=1 ;;
+		-h|--help)
+			usage
+			exit 0 ;;
+		-V|--version)
+			version
+			exit 0 ;;
+		--)
+			shift
+			break ;;
+	esac
+	shift
+done
+
+# check if messages are to be printed using color
+if [[ -t 2 && $USE_COLOR != "n" ]]; then
+	colorize
+else
+	unset ALL_OFF BOLD BLUE GREEN RED YELLOW
+fi
+
+if ! type -P fakeroot >/dev/null; then
+	die 'Cannot find the fakeroot binary'
+fi
+
+if [[ -z $CHECKUPDATES_DB ]]; then
+	CHECKUPDATES_DB="${TMPDIR:-/tmp}/checkup-db-${UID}/"
+fi
+
+trap 'rm -f $CHECKUPDATES_DB/db.lck' INT TERM EXIT
+
+if [[ -z $CHECKUPDATES_CHANGE ]]; then
+	CHECKUPDATES_CHANGE="${XDG_STATE_HOME:-$HOME/.local/state}/${myname}/"
+fi
+
+DBPath="$(pacman-conf DBPath)"
+if [[ -z "$DBPath" ]] || [[ ! -d "$DBPath" ]]; then
+	DBPath="/var/lib/pacman/"
+fi
+
+if (( SYNC )); then
+	mkdir -p "$CHECKUPDATES_DB"
+	ln -s "${DBPath}/local" "$CHECKUPDATES_DB" &> /dev/null
+	if ! fakeroot -- pacman -Sy --dbpath "$CHECKUPDATES_DB" --logfile /dev/null &> /dev/null; then
+		die 'Cannot fetch updates'
+	fi
+fi
+mapfile -t updates < <(pacman -Qu --dbpath "$CHECKUPDATES_DB" 2> /dev/null | grep -v '\[.*\]')
+
+if (( ${#updates[@]} )); then
+	if (( CHANGE )); then
+		mkdir -p "$CHECKUPDATES_CHANGE"
+		printf '%s\n' "${updates[@]}" > "$CHECKUPDATES_CHANGE/current_check"
+
+		if ! diff "$CHECKUPDATES_CHANGE/current_check" "$CHECKUPDATES_CHANGE/last_check" &>/dev/null; then
+			cat "$CHECKUPDATES_CHANGE/current_check"
+		fi
+
+		mv -f "$CHECKUPDATES_CHANGE/current_check" "$CHECKUPDATES_CHANGE/last_check"
+	else
+		printf '%s\n' "${updates[@]}"
+		if (( DOWNLOAD_CACHE )); then
+			runcmd pacman -Sw --noconfirm "${updates[@]%% *}" --dbpath "$CHECKUPDATES_DB" --logfile /dev/null
+		fi
+	fi
+else
+	if (( CHANGE )); then
+		mkdir -p "$CHECKUPDATES_CHANGE"
+		true > "$CHECKUPDATES_CHANGE/last_check"
+	fi
+	exit 2
+fi
