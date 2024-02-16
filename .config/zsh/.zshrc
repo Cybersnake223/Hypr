@@ -28,7 +28,7 @@ export MANPAGER="lvim +Man!"
 nitch
 
 # Custom Prompt 
-PROMPT='%B%F{red} %~ %B%F{cyan}  %F{white}'
+PROMPT='%B%F{cyan} %~ %B%F{red}  %F{white}'
 RPROMPT='%B%F{red}$(parse_git_branch)%F{magenta}$(parse_git_dirty)%B%F{red}%T'
 precmd() { print "" }
 
