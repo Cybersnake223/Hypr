@@ -2,7 +2,7 @@ configuration {
   matching: "normal";
   display-drun: "   Apps ";
   display-run: "   Run ";
-  display-Network: " 󰤨  Network";
+  display-Network: " 󰀂  Network";
   terminal : "foot";
   display-window: "Windows:";
   drun-display-format: "{name}";
