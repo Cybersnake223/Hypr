@@ -21,7 +21,7 @@ window {
    padding: 10px;
    fullscreen: false;
    border:  4px;
-   border-radius: 30px;
+   border-radius: 15px;
    border-color: @dark3;
 }
 
