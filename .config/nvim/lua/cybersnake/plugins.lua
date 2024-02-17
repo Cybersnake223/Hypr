@@ -42,6 +42,10 @@ require("lazy").setup({
         vim.cmd('colorscheme catppuccin-mocha')
 end };
 
+  -- Mason ---
+{
+    "williamboman/mason.nvim"
+},
   --- Mason Lsp ---
 
   {

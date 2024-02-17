@@ -15,5 +15,6 @@
 require "cybersnake.plugins"
 require "cybersnake.alpha"
 require "cybersnake.keymaps"
+require "cybersnake.mason"
 require "cybersnake.transparency"
 require "cybersnake.settings"

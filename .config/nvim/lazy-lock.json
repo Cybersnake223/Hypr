@@ -3,6 +3,7 @@
   "catppuccin": { "branch": "main", "commit": "9703f227bfab20d04bcee62d2f08f1795723b4ae" },
   "lazy.nvim": { "branch": "main", "commit": "aedcd79811d491b60d0a6577a9c1701063c2a609" },
   "mason-lspconfig.nvim": { "branch": "main", "commit": "fe4cce44dec93c69be17dad79b21de867dde118a" },
+  "mason.nvim": { "branch": "main", "commit": "c43eeb5614a09dc17c03a7fb49de2e05de203924" },
   "neoconf.nvim": { "branch": "main", "commit": "4ef6c6c5882e7e16209173fb8c47414202843384" },
   "neodev.nvim": { "branch": "main", "commit": "de3685b8c1cd439dd96b7958793f6f381f98652d" },
   "nvim-treesitter": { "branch": "master", "commit": "eb1914bb10dc9b114a61197de0ec58a308c40071" },
