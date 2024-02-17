@@ -121,14 +121,21 @@ end };
     lazy = true,
   },
 
---- Transparency ---
+  --- Transparency ---
 { "xiyaowong/transparent.nvim",
   lazy = false,
 },
-  -- Dashboard
+  --- Dashboard ---
 {
     "goolord/alpha-nvim",
     dependencies = { 'nvim-tree/nvim-web-devicons' },
+},
+
+  --- Markdown Preview ---
+{
+    "iamcco/markdown-preview.nvim",
+    cmd = { "MarkdownPreviewToggle", "MarkdownPreview", "MarkdownPreviewStop" },
+    ft = { "markdown" },
 }
 
 })
