@@ -120,5 +120,11 @@ end };
 --- Transparency ---
 { "xiyaowong/transparent.nvim",
   lazy = false,
+},
+  -- Dashboard
+{
+    "goolord/alpha-nvim",
+    dependencies = { 'nvim-tree/nvim-web-devicons' },
 }
+
 })

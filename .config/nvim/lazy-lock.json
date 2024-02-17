@@ -1,4 +1,5 @@
 {
+  "alpha-nvim": { "branch": "main", "commit": "1356b9ef31b985d541d94314f2cf73c61124bf1d" },
   "lazy.nvim": { "branch": "main", "commit": "28126922c9b54e35a192ac415788f202c3944c9f" },
   "mason-lspconfig.nvim": { "branch": "main", "commit": "fe4cce44dec93c69be17dad79b21de867dde118a" },
   "neoconf.nvim": { "branch": "main", "commit": "cbff4b61e967b5b3961cfafdacc605d1dbc4e0c1" },
