@@ -128,4 +128,3 @@ alias yi="yay -S"
 alias y="yay -Syu --noconfirm"
 alias yr="yay -Rns"
 alias pkginfo="yay -Qi"
-
