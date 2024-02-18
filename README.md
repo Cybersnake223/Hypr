@@ -8,7 +8,7 @@
   <img src="https://shields.io/github/license/Cybersnake223/Hypr?style=for-the-badge">
 </div>
 
-# SHOWCASE
+## SHOWCASE
 
 <p></p>
 
