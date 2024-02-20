@@ -32,26 +32,6 @@ PROMPT='%B%F{cyan} %~ %B%F{red}  %F{white}'
 RPROMPT='%B%F{red}$(parse_git_branch)%F{magenta}$(parse_git_dirty)%B%F{red}%T'
 precmd() { print "" }
 
-# Tab Completion
-autoload -Uz compinit
-setopt PROMPT_SUBST
-compinit
-zstyle ':completion:*' menu select 
-_comp_options+=(globdots)
-
-zstyle ':completion:*' verbose true
-zstyle ':completion:*:*:*:*:*' menu select
-zstyle ':completion:*:default' list-colors ${(s.:.)LS_COLORS} 'ma=48;5;197;1'
-zstyle ':completion:*' matcher-list '' 'm:{a-zA-Z}={A-Za-z}' 'r:|[._-]=* r:|=*' 'l:|=* r:|=*'
-zstyle ':completion:*:warnings' format "%B%F{red}No matches for:%f %F{magenta}%d%b"
-zstyle ':completion:*:descriptions' format '%F{yellow}[-- %d --]%f'
-zstyle ':vcs_info:*' formats ' %B%s-[%F{magenta}%f %F{yellow}%b%f]-'
-
-# Source Previous Commands
-SAVEHIST=100000
-HISTFILE=~/.config/zsh/.zsh_history
-HISTSIZE=100000
-
 # Git Status
 parse_git_dirty() {
   STATUS="$(git status 2> /dev/null)"
@@ -67,10 +47,35 @@ parse_git_dirty() {
 
 parse_git_branch() {
   # Long form
-   git rev-parse --abbrev-ref HEAD 2> /dev/null
+  git rev-parse --abbrev-ref HEAD 2> /dev/null
   # Short form
-   # git rev-parse --abbrev-ref HEAD 2> /dev/null | sed -e 's/.*\/\(.*\)/\1/'
+  # git rev-parse --abbrev-ref HEAD 2> /dev/null | sed -e 's/.*\/\(.*\)/\1/'
 }
+
+# Tab Completion
+autoload -Uz compinit
+setopt PROMPT_SUBST
+compinit
+zstyle ':completion:*' menu select 
+_comp_options+=(globdots)
+
+zstyle ':completion:*' verbose true
+zstyle ':completion:*:*:*:*:*' menu select
+zstyle ':completion:*:default' list-colors ${(s.:.)LS_COLORS} 'ma=48;5;197;1'
+zstyle ':completion:*' matcher-list '' 'm:{a-zA-Z}={A-Za-z}' 'r:|[._-]=* r:|=*' 'l:|=* r:|=*'
+zstyle ':completion:*:warnings' format "%B%F{red}No matches for:%f %F{magenta}%d%b"
+zstyle ':completion:*:descriptions' format '%F{yellow}[-- %d --]%f'
+zstyle ':vcs_info:*' formats ' %B%s-[%F{magenta}%f %F{yellow}%b%f]-'
+
+# Tab Completion for pipx
+autoload -U bashcompinit
+bashcompinit
+eval "$(register-python-argcomplete pipx)"
+
+# Source Previous Commands
+SAVEHIST=100000
+HISTFILE=~/.config/zsh/.zsh_history
+HISTSIZE=100000
 
 ## Notify that a backround command has finished
 setopt notify
@@ -100,6 +105,16 @@ rehash_precmd() {
 
 add-zsh-hook -Uz precmd rehash_precmd
 
+# Zsh Options
+setopt AUTOCD       
+setopt PROMPT_SUBST 
+setopt MENU_COMPLETE
+setopt LIST_PACKED	
+setopt AUTO_LIST    
+setopt HIST_IGNORE_DUPS
+setopt HIST_FIND_NO_DUPS
+setopt COMPLETE_IN_WORD    
+
 # Keybindings Fix 
 bindkey -e
 bindkey "^[[1;5C" forward-word
@@ -111,16 +126,6 @@ bindkey "^[[F" end-of-line
 bindkey "^[[H" beginning-of-line
 bindkey '^[[A' history-substring-search-up
 bindkey '^[[B' history-substring-search-down
-
-# Zsh Options
-setopt AUTOCD       
-setopt PROMPT_SUBST 
-setopt MENU_COMPLETE
-setopt LIST_PACKED	
-setopt AUTO_LIST    
-setopt HIST_IGNORE_DUPS
-setopt HIST_FIND_NO_DUPS
-setopt COMPLETE_IN_WORD    
 
 
 # Source Aliases (if exists) 
