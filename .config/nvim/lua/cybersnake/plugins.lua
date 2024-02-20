@@ -81,7 +81,6 @@ end };
   },
 
   --- Treesitter ---  
-  
   {
     "nvim-treesitter/nvim-treesitter",
     -- run = ":TSUpdate",
@@ -136,6 +135,11 @@ end };
     "iamcco/markdown-preview.nvim",
     cmd = { "MarkdownPreviewToggle", "MarkdownPreview", "MarkdownPreviewStop" },
     ft = { "markdown" },
-}
+},
 
+  --- Lualine ---
+{
+    'nvim-lualine/lualine.nvim',
+    dependencies = { 'nvim-tree/nvim-web-devicons' , opt = true }
+}
 })
