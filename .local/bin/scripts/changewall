@@ -26,13 +26,12 @@ if type swaybg >/dev/null 2>&1; then
   RANDOMPIC=${FILES[RANDOM % ${#FILES[@]}]}
   
   # Kill Existing swaybg processes
-  killall swaybg
+  killall swaybg 2>/dev/null
   
   # Applying Random Wallpaper 
-  swaybg  -m fill -i "$RANDOMPIC" &
+  swaybg  -m fill -i "$RANDOMPIC" 2>/dev/null &
   else
   notify-send  "Swaybg not installed. Please install swaybg."
   
 fi
 exit 0
-
