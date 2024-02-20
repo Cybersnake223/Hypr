@@ -97,11 +97,11 @@
   },
   "pulseaudio": {
     "format": "{icon} {volume}%",
-    "tooltip": true,
+    "tooltip": false,
     "format-muted": " Muted",
     "on-click": "pamixer -t",
-    "on-scroll-up": "pactl set-sink-volume @DEFAULT_SINK@ +10%",
-    "on-scroll-down": "pactl set-sink-volume @DEFAULT_SINK@ -10%",
+    "on-scroll-up": "wpctl set-volume @DEFAULT_SINK@ 10%+",
+    "on-scroll-down": "wpctl set-volume @DEFAULT_SINK@ 10%-",
     "scroll-step": 10,
     "format-icons": {
       "headphone": "",
