@@ -25,7 +25,7 @@ check_and_kill_aria2c() {
 check_and_kill_aria2c
 
 # Starting Aria RPC
-aria2c -j5 -x15 -k25M --split=15 --enable-rpc=true --check-certificate=false --daemon=true
+aria2c -j5 -x15 -k25M --split=15 --enable-rpc=true --check-certificate=false --daemon=true --save-session=$HOME/.local/share/aria2c/session --input-file=$HOME/.local/share/aria2c/session
 
 # Direct notification based on process status
 if pgrep -x aria2c > /dev/null; then
