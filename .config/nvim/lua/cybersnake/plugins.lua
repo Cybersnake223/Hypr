@@ -79,7 +79,9 @@ end };
     build = "make",
     lazy = true,
   },
-
+{
+    'nvim-lua/plenary.nvim'
+  },
   --- Treesitter ---  
   {
     "nvim-treesitter/nvim-treesitter",
