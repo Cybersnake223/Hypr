@@ -31,7 +31,7 @@ text-caps-lock-color=fab387
 text-ver-color=89b4fa
 text-wrong-color=eba0ac
 effect-blur=8x8
-font="JetBrainsMono Nerd Font"
+font="JetBrainsMono Nerd Font Bold"
 indicator
 indicator-radius=120
 indicator-thickness=12
