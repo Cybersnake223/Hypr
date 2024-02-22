@@ -24,6 +24,8 @@
 window#waybar {
     background: rgba(21, 18, 27, 0);
     color: #cdd6f4;
+    padding-right: 0px;
+    padding-left:  0px;
 }
 
 tooltip {
@@ -43,24 +45,34 @@ tooltip {
 
 #workspaces button.active {
     color: #f5a97f;
+    padding-right: 0px;
+    padding-left:  0px;
 }
 
 #workspaces button.focused {
     color: #a6adc8;
     background: #eba0ac;
     border-radius: 15px;
+    padding-right: 0px;
+    padding-left:  0px;
+
 }
 
 #workspaces button.urgent {
     color: #11111b;
     background: #a6e3a1;
     border-radius: 15px;
+    padding-right: 0px;
+    padding-left:  0px;
+
 }
 
 #workspaces button:hover {
     background: #11111b;
     color: #cdd6f4;
     border-radius: 15px;
+    padding-right: 0px;
+    padding-left:  0px;
 }
 
 #cava,
