@@ -28,7 +28,7 @@ end
 vim.opt.rtp:prepend(lazypath)
 
 --- ### Plugins Setup ### ---
-  
+
   --- Neoconf ---
 
 require("lazy").setup({
@@ -64,7 +64,7 @@ end };
   },
 
   --- Telescope ---
-  
+
   {
     "nvim-telescope/telescope.nvim",
     branch = "0.1.x",
@@ -112,7 +112,6 @@ end };
     require("project_nvim").setup {
       -- your configuration comes here
       -- or leave it empty to use the default settings
-      -- refer to the configuration section below
     }
   end
 },
@@ -143,5 +142,18 @@ end };
 {
     'nvim-lualine/lualine.nvim',
     dependencies = { 'nvim-tree/nvim-web-devicons' , opt = true }
+},
+
+  --- Autopair ---
+{
+    'windwp/nvim-autopairs',
+    event = "InsertEnter",
+    opts = {} -- this is equalent to setup({}) function
+},
+
+  --- Bufferline ---
+{
+    'akinsho/bufferline.nvim', version = "*",
+    dependencies = 'nvim-tree/nvim-web-devicons'
 },
 })
