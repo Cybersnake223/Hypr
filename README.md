@@ -1,6 +1,5 @@
-<div style="text-align: center;">
-  ![9](assets/icon.png)
-</div>
+|---|---|
+| ![9](assets/icon.png) |
 
 <div align="center">
   <p></p>
