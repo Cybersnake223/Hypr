@@ -8,8 +8,6 @@
   <img src="https://shields.io/github/license/Cybersnake223/Hypr?style=for-the-badge">
 </div>
 
-## SHOWCASE
-
 <p></p>
 
 ![1](assets/asset1.png)
