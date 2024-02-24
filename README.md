@@ -105,7 +105,7 @@ cp -r .themes $HOME/.themes
 
 ### This Repo also contains my custom scripts that i use with this setup for Misc things like downloading videos and audios from different platforms , switching wallpaper in hyprland with keyboard shortcuts. make sure to copy the scripts folder in /home/.local/bin and also add it to your PATH variable.
 
-### Colorscheme used in this is inspired by Catppuccin Mocha as i love it soo much 😉😉 .
+### Colorscheme used in this is inspired by Catppuccin Mocha as i love it soo much 😉😉
 
 
 <!-- <div align="center"> -->
