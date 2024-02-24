@@ -1,4 +1,4 @@
-|---|---|
+|---|
 | ![9](assets/icon.png) |
 
 <div align="center">
