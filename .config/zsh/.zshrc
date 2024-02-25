@@ -74,8 +74,9 @@ eval "$(register-python-argcomplete pipx)"
 
 # Source Previous Commands
 SAVEHIST=100000
-HISTFILE=~/.config/zsh/.zsh_history
+HISTFILE=$HOME/.config/zsh/.zsh_history
 HISTSIZE=100000
+HISTCONTROL=ignorespace
 
 ## Notify that a backround command has finished
 setopt notify
