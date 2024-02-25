@@ -22,13 +22,13 @@ Config(
   x: Fraction(0.5),
 
   // The vertical position, works the same as `x`
-  y: Absolute(200),
+  y: Absolute(80),
 
   // The width of the runner
-  width: Absolute(600),
+  width: Absolute(800),
 
   // The minimum height of the runner, the runner will expand to fit all the entries
-  height: Absolute(0),
+  height: Absolute(10),
   
   // Hide match and plugin info icons  
   hide_icons: true, 
