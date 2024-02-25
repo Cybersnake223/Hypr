@@ -14,7 +14,7 @@
 //############################################################################################################
 
 Config(
-  prefix: "?",
+  prefix: "",
   // Options: Google, Ecosia, Bing, DuckDuckGo, Custom
   engines: [DuckDuckGo] 
 )
