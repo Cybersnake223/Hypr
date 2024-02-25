@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/sh
 ############################################################################################################
 ##   ______  __      __  _______   ________  _______    ______   __    __   ______   __    __  ________   ##
 ##  /      \|  \    /  \|       \ |        \|       \  /      \ |  \  |  \ /      \ |  \  /  \|        \  ##
@@ -69,11 +69,11 @@ toggle() {
 		esac
 	else
 		case "$state" in
-		"default silent ")output='{"text":"  ","tooltip":"Silent"}' ;;
-		*"disturb"*)output='{"text":"  ","tooltip":"DND"}' ;;
-		*)output='{"text": " 󰂞 " ,"tooltip":"Notification Enabled"}' ;;
+		"default silent ")output='{"text":"","tooltip":"Silent"}' ;;
+		*"disturb"*)output='{"text":"","tooltip":"DND"}' ;;
+		*)output='{"text":"󰂞","tooltip":"Notification Enabled"}' ;;
 		esac
-		echo " $output "
+		echo "$output"
 	fi
 } || {
 	toggle &>/dev/null
