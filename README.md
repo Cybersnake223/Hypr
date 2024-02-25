@@ -53,7 +53,7 @@
 ### Needed packages:
 
 - (all of the above components) plus
-- `xdg-desktop-portal-gtk` `xdg-desktop-portal-hyprland` - For Better Functionality and Compatiblity 
+- `xdg-desktop-portal-hyprland` - For Better Functionality and Compatiblity 
 - `Cava` - Audio Visualizer 
 - `Polkit-Gnome` - Authentication Agent
 - `Grimblast-git` `wl-clipboard` - Screenshot Utility
