@@ -10,7 +10,7 @@
 
 <p></p>
 
-[!(https://readme-typing-svg.herokuapp.com?font=Righteous&size=30&duration=1500&pause=1500&color=A024F7&center=true&vCenter=true&random=true&width=200&height=50&lines=SHOWCASE) ]
+[![](https://readme-typing-svg.herokuapp.com?font=Righteous&size=30&duration=1500&pause=1500&color=A024F7&center=true&vCenter=true&random=true&width=200&height=50&lines=SHOWCASE) ]
 
 ![1](assets/asset1.png)
 
