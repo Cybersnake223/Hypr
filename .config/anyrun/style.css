@@ -80,7 +80,7 @@ list > #plugin:hover {
 box#main {
   border-color: rgba(137, 180, 250, 1);    
   color: white;
-  border-width: 3px;
+  border-width: 4px;
   border-style: solid;
   margin-top: 15px;
   background-color: rgba(0,0,0,0.6);
