@@ -40,7 +40,7 @@
   - 🍄 ** Shell ** - [Zsh](https://zsh.sourceforge.io/) 
   - 🪵 ** Notifications ** - [Mako](https://github.com/emersion/mako) 
   - 🌻 ** Launcher ** - [Anyrun](https://github.com/Kirottu/anyrun) 
-  - 🚀 ** Dmenu Program ** - [Rofi](https://github.com/lbonn/rofi)
+  - 🚀 ** Dmenu Program ** - [Rofi (Lbonn Fork)](https://github.com/lbonn/rofi)
   - 🍁 ** Wallpaper ** - [Swaybg](https://codeberg.org/dnkl/wbg)
   - 🌐 ** Browser ** - [Thorium](https://thorium.rocks/) 
   - ❄️  ** Screen locker ** - [Swaylock Effects](https://github.com/DRAGONTOS/swaylock-effects) 
