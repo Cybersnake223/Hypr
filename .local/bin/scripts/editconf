@@ -16,21 +16,21 @@
 ############################################################################################################
 
 options=("aliases
+anyrun
 cava
 foot
 hyprland
-lf
 mako
 mpv
 mpv-input
 nvim
 rofi
-swayidle
 swaylock
 waybar
 waybar-Style
 yay
 yt-dlp
+yazi
 zsh")
 
 choice=$(echo -e "${options[@]}" | rofi -dmenu -I -p 'Edit config file: ')
@@ -39,6 +39,9 @@ case "$choice" in
 aliases)
 	choice="$HOME/.config/zsh/.zsh_aliases"
 	;;
+anyrun)
+    choice="$HOME/.config/anyrun/config.ron"
+    ;;
 cava)
 	choice="$HOME/.config/cava/config"
 	;;
@@ -47,9 +50,6 @@ foot)
     ;;
 hyprland)
 	choice="$HOME/.config/hypr/hyprland.conf"
-	;;
-lf)
-	choice="$HOME/.config/lf/lfrc"
 	;;
 mako)
     choice="$HOME/.config/mako/config"
@@ -66,14 +66,11 @@ nvim)
 rofi)
 	choice="$HOME/.config/rofi/config.rasi"
 	;;
-swayidle)
-	choice="$HOME/.config/swayidle/config"
-	;;
 swaylock)
 	choice="$HOME/.config/swaylock/config"
 	;;
 waybar)
-	choice="$HOME/.config/waybar/bars/top.json"
+	choice="$HOME/.config/waybar/config.jsonc"
 	;;
 waybar-Style)
 	choice="$HOME/.config/waybar/style.css"
@@ -84,6 +81,9 @@ yay)
 yt-dlp)
 	choice="$HOME/.config/yt-dlp/config"
 	;;
+yazi)
+    choice="$HOME/.config/yazi/yazi.toml"
+    ;;
 zsh)
 	choice="$HOME/.config/zsh/.zshrc"
 	;;
