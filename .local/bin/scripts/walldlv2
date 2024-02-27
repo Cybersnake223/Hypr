@@ -13,7 +13,7 @@ walldir="$HOME/Pictures/Wallpapers"
 # the dir used to cache thumbnails
 cachedir="$HOME/.cache/wallhaven"
 # nsxiv options
-sxiv_otps=" -tfpo -z 100" # o is needed for selection
+nsxiv_otps=" -tfpo -z 100" # o is needed for selection
 # number of pages to show in search results
 # each page contains 24 results
 max_pages=50
@@ -30,8 +30,6 @@ atleast=1920x1080
 # the menu command used when no query is provided
 sh_menu () {
 	: | rofi -dmenu -l 0 -p "Search wallhaven:"
-	# ROFI: comment the previous line and uncomment the next line for rofi
-	# rofi -dmenu -l 0 -p "search wallpapers"
 }
 
 ##########################
@@ -130,7 +128,7 @@ done | curl -Z -K -
 ###########################
 
 # extract the id's out of the thumbnail name
-image_ids="$($VIEWER $sxiv_otps "$cachedir")"
+image_ids="$($VIEWER $nsxiv_otps "$cachedir")"
 [ -z "$image_ids" ] && exit
 
 #########################
