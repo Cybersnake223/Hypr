@@ -30,7 +30,7 @@ text-clear-color=f5e0dc
 text-caps-lock-color=fab387
 text-ver-color=89b4fa
 text-wrong-color=eba0ac
-effect-blur=10x10
+effect-blur=15x15
 font="JetBrainsMono Nerd Font Bold"
 indicator
 indicator-radius=120
