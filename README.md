@@ -80,7 +80,7 @@
 ### Colorscheme used is inspired by Catppuccin Mocha as i absolutely love it 😉😉
 
 
-# *Install Instructions*
+# **Install Instructions**
 
 > [!IMPORTANT] 
 > DO BACKUP YOUR CURRENT CONFIGS BEFORE PROCEEDING FURTHER . I WILL NOT BE HELD RESPONSIBLE IF YOU LOSE YOUR OLD CONFIGS .
@@ -114,7 +114,7 @@ cp -r .themes $HOME/.themes
 > [!NOTE]
 > This setup is more focused on laptops rather than desktops soo i'm keeping it super simple but yeahh you can also use it with desktops.    
 
-### *This Repo also contains my custom scripts that i use with this setup for Misc things like downloading videos and audios from different platforms , switching wallpaper in hyprland with keyboard shortcuts. make sure to copy the scripts folder in /home/.local/bin and also add it to your PATH variable.*
+### _This Repo also contains my custom scripts that i use with this setup for Misc things like downloading videos and audios from different platforms , switching wallpaper in hyprland with keyboard shortcuts. make sure to copy the scripts folder in /home/.local/bin and also add it to your PATH variable._
 
 
 
