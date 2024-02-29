@@ -1,7 +1,8 @@
+[![Typing SVG](https://readme-typing-svg.herokuapp.com?font=Righteous&weight=600&size=70&duration=1500&pause=1500&color=A024F7&center=true&vCenter=true&random=false&width=600&height=100&lines=Vicious+Viper)]
+
 <div align="center">
   <p></p>
-  <p><b><i> <img src="https://readme-typing-svg.herokuapp.com?font=Righteous&size=70&duration=1500&pause=1500&color=A024F7&center=true&vCenter=true&random=false&width=500&height=100&lines=Vicious+Viper" > </i></b></p>
-  <img src="https://img.shields.io/github/last-commit/Cybersnake223/Hypr?style=for-the-badge">
+  <p><b><i> <img src="https://img.shields.io/github/last-commit/Cybersnake223/Hypr?style=for-the-badge"> </i></b></p>
   <img src="https://img.shields.io/github/repo-size/Cybersnake223/Hypr?style=for-the-badge">
   <img src="https://img.shields.io/github/stars/Cybersnake223/Hypr?color=%23c4a7e7&style=for-the-badge">
   <img src="https://shields.io/maintenance/yes/2024?style=for-the-badge">
