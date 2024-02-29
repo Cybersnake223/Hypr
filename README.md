@@ -3,24 +3,20 @@
   <p><b><i> <img src="assets/vvlogo.png" </i></b></p> 
   <img src="https://readme-typing-svg.herokuapp.com?font=Righteous&weight=600&size=75&duration=1200&pause=1000&color=A024F7&center=true&vCenter=true&random=false&width=600&height=80&lines=Vicious+Viper"> 
 </div>
-
 <p></p>
 
 <div align="center">
   <p></p>
-  <p><b><i> <img src="https://img.shields.io/github/last-commit/Cybersnake223/Hypr?style=for-the-badge"> </i></b></p>
+  <p><b><i> <img src="https://img.shields.io/github/last-commit/Cybersnake223/Hypr?style=for-the-badge"> <img src="https://shields.io/maintenance/yes/2024?style=for-the-badge"> </i></b></p>
   <img src="https://img.shields.io/github/repo-size/Cybersnake223/Hypr?style=for-the-badge">
   <img src="https://img.shields.io/github/stars/Cybersnake223/Hypr?color=%23c4a7e7&style=for-the-badge">
-  <img src="https://shields.io/maintenance/yes/2024?style=for-the-badge">
   <img src="https://shields.io/github/license/Cybersnake223/Hypr?style=for-the-badge">
 </div>
-
 <p></p>
 
 
 
 ![1](assets/asset1.png)
-
 | ![2](assets/asset2.png) | ![3](assets/asset3.png) |
 |---|---|
 | ![4](assets/asset4.png) | ![5](assets/asset5.png) |
