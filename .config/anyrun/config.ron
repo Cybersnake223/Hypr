@@ -22,13 +22,13 @@ Config(
   x: Fraction(0.5),
 
   // The vertical position, works the same as `x`
-  y: Absolute(80),
+  y: Fraction(0.1),
 
   // The width of the runner
   width: Absolute(800),
 
   // The minimum height of the runner, the runner will expand to fit all the entries
-  height: Absolute(10),
+  height: Absolute(5),
   
   // Hide match and plugin info icons  
   hide_icons: true, 
@@ -56,7 +56,6 @@ Config(
   plugins: [
     "libapplications.so",
     "libshell.so",
-    "libtranslate.so",
     "libdictionary.so",
     "librink.so",
     "libwebsearch.so",
