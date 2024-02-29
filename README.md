@@ -1,7 +1,7 @@
 <div align="center">
   <p></p>
   <p><b><i> <img src="assets/vvlogo.png" </i></b></p> 
-  <img src="https://readme-typing-svg.herokuapp.com?font=Righteous&weight=600&size=70&duration=1500&pause=1500&color=A024F7&center=true&vCenter=true&random=false&width=600&height=100&lines=Vicious+Viper"> 
+  <img src="https://readme-typing-svg.herokuapp.com?font=Righteous&weight=600&size=70&duration=1500&pause=1000&color=A024F7&center=true&vCenter=true&random=false&width=600&height=100&lines=Vicious+Viper"> 
 </div>
 
 <p></p>
