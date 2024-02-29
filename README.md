@@ -28,7 +28,7 @@
 <div align="center"><img src="https://raw.githubusercontent.com/catppuccin/catppuccin/main/assets/footers/gray0_ctp_on_line.png"></div>
 
 
-## Basic Info 
+## _Basic Info_ 
 
 <div align="center">
   <p> </p>
@@ -53,7 +53,7 @@
 </div>  
 
 
-### Needed packages:
+### _Needed packages:_
 
 - (all of the above components) plus
 - `xdg-desktop-portal-hyprland` - For Better Functionality and Compatiblity 
