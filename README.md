@@ -17,7 +17,7 @@
 
 
 ![1](assets/asset1.png)
-![10](asstes/asset10.png)
+![10](assets/asset10.png)
 
 | ![2](assets/asset2.png) | ![3](assets/asset3.png) |
 |---|---|
