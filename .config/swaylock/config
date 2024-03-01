@@ -30,12 +30,12 @@ text-clear-color=f5e0dc
 text-caps-lock-color=fab387
 text-ver-color=89b4fa
 text-wrong-color=eba0ac
-effect-blur=12x12
+effect-blur=25x2
 font="JetBrainsMono Nerd Font Bold"
 indicator
 indicator-radius=120
 indicator-thickness=12
-fade-in=0.2
+fade-in=0.0
 ignore-empty-password
 
 # 24 HRS Clock Format
