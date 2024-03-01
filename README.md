@@ -21,8 +21,7 @@
 |---|---|
 | ![4](assets/asset4.png) | ![5](assets/asset5.png) |
 | ![6](assets/asset6.png) | ![7](assets/asset7.png) |
-
-![8](assets/asset8.png)
+| ![8](assets/asset8.png) | ![9](assets/asset9.png) |
 
 
 <div align="center"><img src="https://raw.githubusercontent.com/catppuccin/catppuccin/main/assets/footers/gray0_ctp_on_line.png"></div>
