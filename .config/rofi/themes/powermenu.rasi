@@ -17,7 +17,7 @@ configuration {
     show-icons:                     false;
     display-drun: 					"";
     drun-display-format:            "{icon} {name}";
-    disable-history:                false;
+    disable-history:                true;
 	click-to-exit: 					true;
 }
 
@@ -25,7 +25,7 @@ configuration {
 
 window {
     transparency:                   "real";
-    background-color:               @dark1;
+    background-color:               transparent;
     text-color:                     @dark3;
     border:                  		5px;
     border-color:                  	@dark3;
@@ -39,10 +39,10 @@ window {
 
 prompt {
     enabled: 						true;
-	margin: 						0px 0px 0px 8px;
+  	margin: 						0px 0px 0px 8px;
     padding:    					6px 0px 6px 0px;
-	background-color: 				@background-color;
-	text-color: 					@dark3;
+  	background-color: 				transparent;
+  	text-color: 					@dark3;
     border:                  		0px 0px 0px 0px;
     border-color:                  	@dark2;
     border-radius:                  10px;
@@ -52,14 +52,14 @@ textbox-prompt-colon {
 	expand: 						false;
 	str: 							"";
     border-radius:                  10px;
-    background-color:               @dark4;
-    text-color:                     @background-color;
+    background-color:               transparent;
+    text-color:                     @dark4;
     padding:    					6px 15px 6px 15px;
 	font:							"JetBrainsMono Nerd Font 11.3";
 }
 
 entry {
-    background-color:               @background-color;
+    background-color:               transparent;
     text-color:                     @background-color;
     placeholder-color:              @dark1;
     placeholder:                    "";
@@ -72,7 +72,7 @@ entry {
 inputbar {
 	children: 						[ textbox-prompt-colon, prompt ];
     spacing:                        0;
-    background-color:               @background-color;
+    background-color:               transparent;
     text-color:                     @dark3;
     border:                  		0px 0px 1px 0px;
     border-radius:                  10px;
@@ -84,14 +84,14 @@ inputbar {
 }
 
 case-indicator {
-    background-color:               @background-color;
+    background-color:               transparent;
     text-color:                     @dark3;
     spacing:                        0;
 }
 
 
 listview {
-    background-color:               @background-color;
+    background-color:               transparent;
     columns:                        1;
     lines:							5;
     spacing:                        10px;
@@ -101,14 +101,14 @@ listview {
 }
 
 mainbox {
-    background-color:               @background-color;
+    background-color:               transparent;
     children:                       [ inputbar, listview ];
     spacing:                       	10px;
     padding:                        10px;
 }
 
 element {
-    background-color:               @background-color;
+    background-color:               transparent;
     text-color:                     @dark3;
     orientation:                    horizontal;
     border:                  		2px;
@@ -118,7 +118,7 @@ element {
 }
 
 element-icon {
-    background-color: 				inherit;
+    background-color: 				transparent;
     text-color:       				inherit;
     horizontal-align:               0.5;
     vertical-align:                 0.5;
@@ -146,7 +146,7 @@ element selected {
 
 element.active,
 element.selected.urgent {
-  background-color: @on;
+  background-color: transparent;
   text-color: @background-color;
   border-color: @on;
 }
@@ -157,7 +157,7 @@ element.selected.urgent {
 
 element.urgent,
 element.selected.active {
-  background-color: @dark2;
+  background-color: transparent;
   text-color: @background-color;
   border-color: @dark2;
 }

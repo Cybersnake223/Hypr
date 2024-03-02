@@ -31,7 +31,7 @@ configuration {
 @import "colors.rasi"
 
 window {
-   background-color: @background-color;
+   background-color: transparent;
    width: 28%;
    padding: 10px;
    fullscreen: false;
@@ -52,7 +52,7 @@ message {
 
 textbox {
    text-color: @dark3;
-   background-color: @background-color;
+   background-color: transparent;
 }
 
 listview {
@@ -62,7 +62,7 @@ listview {
    spacing: 0px;
    padding: 5px 0px 0px 0px;
    margin: 1px 1px 1px 1px;
-   background: @background-color;
+   background-color: transparent;
 }
 
 element {
@@ -71,7 +71,7 @@ element {
 
 element normal.normal {
    padding: 0px 15px;
-   background-color: @background-color;
+   background-color: transparent;
    text-color: @dark4;
 }
 
@@ -135,14 +135,14 @@ button selected {
 }
 
 inputbar {
-   background-color: @background-color;
+   background-color: transparent;
    spacing: 0px;
    children:   [ prompt,textbox-prompt-colon,entry,case-indicator ];
 }
 
 prompt {
    padding:0px 10px;
-   background-color: @background-color;
+   background-color: transparent;
    text-color: @dark4;
 }
 
