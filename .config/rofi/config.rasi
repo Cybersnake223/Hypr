@@ -53,7 +53,7 @@ message {
 }
 
 textbox {
-   text-color: @dark4;
+   text-color: @dark5;
    background-color: transparent;
    border-radius: 20px;
 }
@@ -85,7 +85,7 @@ element normal.urgent {
 
 element normal.active {
    background-color: transparent;
-   text-color: transparent;
+   text-color: @dark5;
 }
 
 element selected.normal {
@@ -100,7 +100,7 @@ element selected.urgent {
 
 element selected.active {
     background-color: transparent;
-    text-color:       transparent;
+    text-color:       @dark5;
 }
 
 element alternate.normal {
@@ -152,7 +152,7 @@ prompt {
 entry {
    padding:0px 6px;
    background-color: transparent;
-   text-color: @dark3;
+   text-color: @dark4;
 }
 
 case-indicator {
