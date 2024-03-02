@@ -43,16 +43,19 @@ window {
 mainbox {
    background-color: transparent;
    spacing:5px;
+   border-radius: 20px;
 }
 
 message {
    padding: 10px 10px;
    background-color: transparent;
+   border-radius: 20px;
 }
 
 textbox {
    text-color: @dark3;
    background-color: transparent;
+   border-radius: 20px;
 }
 
 listview {
