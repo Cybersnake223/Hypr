@@ -21,7 +21,7 @@ configuration {
   terminal : "foot";
   display-window: "Windows:";
   drun-display-format: "{name}";
-  font: "JetBrainsMono Nerd Font Bold 9.5";
+  font: "JetBrainsMono Nerd Font Bold 10";
   modi: "run,drun";
   hide-scrollbar: true;
   show-icons: false;
@@ -60,7 +60,7 @@ textbox {
 
 listview {
    fixed-height: true;
-   dynamic: true;
+   dynamic: false;
    scrollbar: false;
    spacing: 0px;
    padding: 5px 0px 0px 0px;
