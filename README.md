@@ -117,9 +117,6 @@ cp -r .themes $HOME/.themes
 
 ### _This Repo also contains my custom scripts that i use with this setup for Misc things like downloading videos and audios from different platforms , switching wallpaper in hyprland with keyboard shortcuts. make sure to copy the scripts folder in /home/.local/bin and also add it to your PATH variable._
 
+# LICENSE  
 
-
-<!-- <div align="center"> -->
-<!--   <p></p> -->
-<!--   <p><b><i> <img src="https://readme-typing-svg.herokuapp.com?font=Righteous+&weight=60&size=45&duration=1200&pause=700&center=true&vCenter=true&random=false&width=1200&height=150&lines=Working+on+Install+Script" > <p></p> -->
-<!-- </div> -->
+This Project is licensed under MIT License - see LICENSE fir more details.   
