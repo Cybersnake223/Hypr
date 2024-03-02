@@ -36,13 +36,13 @@ ignore-timeout=0
 text-alignment=right
 default-timeout=3000
 on-button-left=dismiss-all
-font=JetBrainsMono Nerd Font Bold 9.5
+font=JetBrainsMono Nerd Font Bold 10 
 icon-path=/usr/share/icons/Reversal-purple:/usr/share/icons/hicolor
 
 
 # Colors (Catppuccin Mocha)
 
-background-color=#1e1e2e
+background-color=#FF1e1e2e
 text-color=#cdd6f4
 border-color=#89b4fa
 progress-color=over #313244

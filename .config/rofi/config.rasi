@@ -53,7 +53,7 @@ message {
 }
 
 textbox {
-   text-color: @dark3;
+   text-color: @dark4;
    background-color: transparent;
    border-radius: 20px;
 }
@@ -75,7 +75,7 @@ element {
 element normal.normal {
    padding: 0px 15px;
    background-color: transparent;
-   text-color: @dark4;
+   text-color: @dark3;
 }
 
 element normal.urgent {
@@ -89,8 +89,8 @@ element normal.active {
 }
 
 element selected.normal {
-    background-color: @dark5;
-    text-color:       @dark4;
+    background-color: @dark4;
+    text-color:       @dark5;
 }
 
 element selected.urgent {
@@ -130,7 +130,7 @@ mode-switcher {
 
 button {
    background-color: transparent;
-   text-color:       @lightcyan;
+   text-color:       @dark5;
 }
 
 button selected {
@@ -152,7 +152,7 @@ prompt {
 entry {
    padding:0px 6px;
    background-color: transparent;
-   text-color: @light1;
+   text-color: @dark3;
 }
 
 case-indicator {

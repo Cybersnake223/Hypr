@@ -40,7 +40,7 @@ window {
 prompt {
     enabled: 						true;
   	margin: 						0px 0px 0px 8px;
-    padding:    					6px 0px 6px 0px;
+    padding:    					6px 6px 6px 6px;
   	background-color: 				transparent;
   	text-color: 					@dark3;
     border:                  		0px 0px 0px 0px;
@@ -55,13 +55,13 @@ textbox-prompt-colon {
     background-color:               transparent;
     text-color:                     @dark4;
     padding:    					6px 15px 6px 15px;
-	font:							"JetBrainsMono Nerd Font 11.3";
+	font:							"JetBrainsMono Nerd Font 11";
 }
 
 entry {
     background-color:               transparent;
     text-color:                     @background-color;
-    placeholder-color:              @dark1;
+    placeholder-color:              @dark5;
     placeholder:                    "";
     expand:                         true;
     horizontal-align:               0;
@@ -73,10 +73,10 @@ inputbar {
 	children: 						[ textbox-prompt-colon, prompt ];
     spacing:                        0;
     background-color:               transparent;
-    text-color:                     @dark3;
+    text-color:                     @dark5;
     border:                  		0px 0px 1px 0px;
     border-radius:                  10px;
-    border-color:                  	@dark2;
+    border-color:                  	@dark3;
     expand:                         false;
     margin:                         0px 0px 0px 0px;
     padding:                        0px;
@@ -85,7 +85,7 @@ inputbar {
 
 case-indicator {
     background-color:               transparent;
-    text-color:                     @dark3;
+    text-color:                     @dark5;
     spacing:                        0;
 }
 
@@ -109,17 +109,17 @@ mainbox {
 
 element {
     background-color:               transparent;
-    text-color:                     @dark3;
+    text-color:                     @dark4;
     orientation:                    horizontal;
     border:                  		2px;
     border-radius:                  10px;
-    border-color:                  	@dark3;
+    border-color:                  	@dark4;
     padding:                        23px 23px 23px 23px;
 }
 
 element-icon {
     background-color: 				transparent;
-    text-color:       				inherit;
+    text-color:       				@dark5;
     horizontal-align:               0.5;
     vertical-align:                 0.5;
     size:                           0px;
@@ -137,8 +137,8 @@ element-text {
 }
 
 element selected {
-    background-color:               @dark3;
-    text-color:                     @background-color;
+    background-color:               @dark4;
+    text-color:                     @dark5;
     border:                  		0px;
     border-radius:                  10px;
     border-color:                  	@dark2;
@@ -163,5 +163,5 @@ element.selected.active {
 }
 
 element.selected.active {
-  border-color: @dark2;
+  border-color: @dark5;
 }
