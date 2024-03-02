@@ -128,8 +128,8 @@
   },
   "network": {
     "format-disconnected": "Disconnected",
-    "format-wifi": " {essid}",
-    "tooltip-format": " {signalStrength}",
+    "format-wifi": "  {essid}",
+    "tooltip-format": "  {signalStrength}",
     "on-click": "wifimenu",
   },
   "bluetooth": {
