@@ -42,7 +42,7 @@ icon-path=/usr/share/icons/Reversal-purple:/usr/share/icons/hicolor
 
 # Colors (Catppuccin Mocha)
 
-background-color=#FF1e1e2e
+background-color=#FF000000
 text-color=#cdd6f4
 border-color=#89b4fa
 progress-color=over #313244
