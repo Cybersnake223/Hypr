@@ -131,4 +131,4 @@ fc-cache -f
 
 # LICENSE  
 
-This Project is licensed under MIT License - see LICENSE fir more details.   
+This Project is licensed under MIT License - see LICENSE for more details.   
