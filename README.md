@@ -78,7 +78,7 @@
 - `Fd` - Fast Alternative to Find command
 
 
-### Colorscheme used is inspired by Catppuccin Mocha as i absolutely love it 😉😉
+> ### Colorscheme used is inspired by Catppuccin Mocha as i absolutely love it 😉😉
 
 
 # **Install Instructions**
