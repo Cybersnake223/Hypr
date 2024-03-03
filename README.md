@@ -112,6 +112,18 @@ cp -r .icons $HOME/.icons
 cp -r .themes $HOME/.themes
 ```
 
+> [!CAUTION]
+> You need root privileges to do this.
+
+```
+cp -r icon-fonts /usr/share/icon-fonts
+```
+> Then Rebuild Font Cache with
+
+```
+fc-cache -f
+```
+
 > [!NOTE]
 > This setup is more focused on laptops rather than desktops soo i'm keeping it super simple but yeahh you can also use it with desktops.    
 
