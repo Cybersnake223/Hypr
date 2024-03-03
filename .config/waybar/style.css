@@ -185,7 +185,7 @@ tooltip {
   background-color:           #F53C3C;
   color:                      #EEEEEE;
   animation-name:             blink;
-  animation-duration:         0.4s;
+  animation-duration:         0.5s;
   animation-timing-function:  linear;
   animation-iteration-count:  infinite;
   animation-direction:        alternate;
