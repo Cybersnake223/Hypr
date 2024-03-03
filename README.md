@@ -127,6 +127,7 @@ fc-cache -f
 > [!NOTE]
 > This setup is more focused on laptops rather than desktops soo i'm keeping it super simple but yeahh you can also use it with desktops.    
 
+> [!IMPORTANT]
 > _This Repo also contains my custom scripts that i use with this setup for Misc things like downloading videos and audios from different platforms, switching wallpaper in hyprland with keyboard shortcuts._  
 > _Make sure to copy the scripts folder in `$HOME/.local/bin` and also add it to your PATH variable otherwise it won't work as intended._
 
