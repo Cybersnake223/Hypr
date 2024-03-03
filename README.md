@@ -83,7 +83,7 @@
 
 # **Install Instructions**
 
-> [!IMPORTANT] 
+> [!CAUTION] 
 > DO BACKUP YOUR CURRENT CONFIGS BEFORE PROCEEDING FURTHER . I WILL NOT BE HELD RESPONSIBLE IF YOU LOSE YOUR OLD CONFIGS .
 
 
@@ -112,13 +112,13 @@ cp -r .icons $HOME/.icons
 cp -r .themes $HOME/.themes
 ```
 
-> [!CAUTION]
+> [!IMPORTANT]
 > You need root privileges to do this.
 
 ```
 cp -r icon-fonts /usr/share/icon-fonts
 ```
-> Then Rebuild Font Cache with
+Then Rebuild Font Cache with
 
 ```
 fc-cache -f
