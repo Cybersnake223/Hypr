@@ -27,7 +27,7 @@
 }
   
 #match.activatable {
-  border-radius: 15px;
+  border-radius: 7px;
   padding: 3px 3px;
   margin-top: 1px;
 }
@@ -35,7 +35,7 @@
 #match.activatable:last-child { margin-bottom: 1px; }
 
 #plugin:hover #match.activatable {
-  border-radius: 10px;
+  border-radius: 7px;
   padding: .3rem;
   margin-top: .01rem;
   margin-bottom: 0;
@@ -45,11 +45,11 @@
 #match:selected {
   color: @theme_selected_fg_color;
   background: @theme_selected_bg_color;
-  border-radius: 20px;
+  border-radius: 7px;
 }
 
 #entry {
-  border-radius: 15px;
+  border-radius: 7px;
   margin: 3px;
   padding: 5px 10px;
   caret-color: white;
@@ -84,7 +84,7 @@ box#main {
   border-style: solid;
   margin-top: 15px;
   background-color: rgba(0,0,0,0.6);
-  border-radius: 40px;
+  border-radius: 7px;
   padding: 5px;
 }
 
