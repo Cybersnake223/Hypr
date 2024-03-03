@@ -87,8 +87,8 @@ tooltip {
     background: #000000;
     opacity: 1.0;
     padding: 0px 8px;
-    margin-top: 3px;
-    margin-bottom: 3px;
+    margin-top: 5px;
+    margin-bottom: 5px;
     border-radius: 7px 7px 7px 7px;
     margin-right: 5px;
     margin-left: 5px;
@@ -96,14 +96,14 @@ tooltip {
 
 #tray {
     border-radius: 7px;
-    margin-right: 5px;
+    margin-right: 7px;
 }
 
 #workspaces {
     background: #000000;
     border-radius: 7px;
     margin-left: 5px;
-    padding-right: 1px;
+    padding-right: 0px;
 }
 
 #window {
@@ -120,7 +120,7 @@ tooltip {
 #network {
     color: #f9e2af;
     border-radius: 7px 7px 7px 7px;
-    margin-right: 10px;
+    margin-right: 5px;
 }
 
 #custom-notifications {
