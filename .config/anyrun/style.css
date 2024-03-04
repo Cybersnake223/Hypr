@@ -51,14 +51,14 @@
 #entry {
   border-radius: 7px;
   margin: 3px;
-  padding: 5px 10px;
+  padding: 5px 5px;
   caret-color: white;
-  font-size: 26px;
-  font-weight: 500;
+  font-size: 20px;
+  font-weight: 700;
 }
 
 list > #plugin {
-  border-top: 1px solid rgba(255,255,255,.11);
+  border-top: 1px solid rgba(255,255,255,0.3);
   margin: 3px;
   padding-top: 3px;
   padding-left: 3px;
@@ -83,11 +83,11 @@ box#main {
   border-width: 4px;
   border-style: solid;
   margin-top: 15px;
-  background-color: rgba(0,0,0,0.6);
+  background-color: rgba(0,0,0,0.7);
   border-radius: 7px;
   padding: 5px;
 }
 
 zlabel#plugin {
-  font-size:14px;
+  font-size:20px;
 }
