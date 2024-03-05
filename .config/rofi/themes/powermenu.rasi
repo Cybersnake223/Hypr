@@ -21,7 +21,7 @@ configuration {
 	click-to-exit: 					true;
 }
 
-@import "colors.rasi"
+@import "colors/colors.rasi"
 
 window {
     transparency:                   "real";

@@ -28,7 +28,7 @@ configuration {
   icon-theme: "Reversal-purple-dark";
 }
 
-@import "colors.rasi"
+@import "colors/colors.rasi"
 
 window {
    background-color: transparent;
