@@ -116,7 +116,7 @@ cp -r .themes $HOME/.themes
 > You need root privileges to do this.
 
 ```
-cp -r icon-fonts /usr/share/icon-fonts
+cp -r .fonts $HOME/.fonts
 ```
 Then Rebuild Font Cache with
 
