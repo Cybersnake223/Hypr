@@ -134,6 +134,7 @@ fc-cache -f
 
 - [ ] Scratchpads  
 - [ ] Adding shortcut table in README.md
+- [ ] Adding windows quick jump  
 - [x] Adding transparency in rofi and mako  
 - [x] Fixing some decorations  
 
