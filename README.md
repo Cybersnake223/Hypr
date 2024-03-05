@@ -112,9 +112,6 @@ cp -r .icons $HOME/.icons
 cp -r .themes $HOME/.themes
 ```
 
-> [!IMPORTANT]
-> You need root privileges to do this.
-
 ```
 cp -r .fonts $HOME/.fonts
 ```
