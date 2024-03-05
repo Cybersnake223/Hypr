@@ -129,5 +129,14 @@ fc-cache -f
 > _This Repo also contains my custom scripts that i use with this setup for Misc things like downloading videos and audios from different platforms, switching wallpaper in hyprland with keyboard shortcuts._  
 > _Make sure to copy the scripts folder in `$HOME/.local/bin` and also add it to your PATH variable otherwise the setup won't work as intended._
 
+
+## Todo 
+
+- [ ] Scratchpads  
+- [ ] Adding shortcut table in README.md
+- [x] Adding transparency in rofi and mako  
+- [x] Fixing some decorations  
+
+
 # LICENSE  
 This Project is licensed under MIT License - see LICENSE for more details.   
