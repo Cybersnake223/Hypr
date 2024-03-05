@@ -78,6 +78,7 @@
 - `Fd` - Fast Alternative to Find command
 
 
+> [!NOTE]
 > ### **_Colorscheme used is inspired by Catppuccin Mocha as i absolutely love it._** 😉😉
 
 
