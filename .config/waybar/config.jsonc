@@ -16,10 +16,12 @@
   "layer": "top",
   "position": "top",
   "height": 30,
+  "fixed-center": true,
   "modules-left": [
     "hyprland/workspaces",
     "backlight",
     "bluetooth",
+    "network",
     "custom/notifications",
     "custom/updates",
   ],
@@ -28,7 +30,7 @@
   ],
   "modules-right": [
     "tray",
-    "network",
+    "custom/player",
     "pulseaudio",
     "pulseaudio#microphone",
     "battery",
@@ -49,8 +51,8 @@
     "spacing": 2
   },
   "clock": {
-    "interval": 60,
-    "format": " {:%A, %B %d [%R]}",
+    "interval": 1,
+    "format": " {:%A, %B %d [%R:%S]}",
     "tooltip-format": "<tt><small>{calendar}</small></tt>",
     "calendar": {
       "mode": "year",
@@ -166,5 +168,11 @@
     "return-type": "json",
     "interval": "once",
     "signal": 2
+  },
+  "custom/player": {
+    "format": "{}",
+    "interval": 1,
+    "exec": "~/.config/waybar/bin/playerinfo",
+    "tooltip": false,
   },
 }
