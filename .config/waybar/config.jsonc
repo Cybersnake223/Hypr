@@ -22,7 +22,6 @@
     "backlight",
     "bluetooth",
     "network",
-    "custom/notifications",
     "custom/updates",
   ],
   "modules-center": [
@@ -30,6 +29,7 @@
   ],
   "modules-right": [
     "tray",
+    "custom/notifications",
     "custom/player",
     "pulseaudio",
     "pulseaudio#microphone",
@@ -171,7 +171,7 @@
   },
   "custom/player": {
     "format": "{}",
-    "interval": 1,
+    "interval": 5,
     "exec": "~/.config/waybar/bin/playerinfo",
     "tooltip": false,
   },
