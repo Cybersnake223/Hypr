@@ -15,7 +15,7 @@
 ############################################################################################################
 
 # Getting title of the playing content
-song_info=$(playerctl metadata --format '{{ title }}' | awk '{print $1" "$2" "$3" "$4" "$5}')
+song_info=$(playerctl metadata --format '{{ title }}' | awk '{print $1" "$2" "$3" "$4}')
 
 # Printing output to stdout
 echo " 󰎆 $song_info"
