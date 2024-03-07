@@ -130,14 +130,5 @@ fc-cache -f
 > _Make sure to copy the scripts folder in `$HOME/.local/bin` and also add it to your PATH variable otherwise the setup won't work as intended._
 
 
-## Todo 
-
-- [ ] Scratchpads  
-- [ ] Adding shortcut table in README.md
-- [ ] Adding windows quick jump  
-- [x] Adding transparency in rofi and mako  
-- [x] Fixing some decorations  
-
-
 # LICENSE  
 This Project is licensed under MIT License - see LICENSE for more details.   
