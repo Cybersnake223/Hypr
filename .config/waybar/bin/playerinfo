@@ -10,7 +10,7 @@
 ##  \$$    $$   | $$    | $$    $$| $$     \| $$  | $$ \$$    $$| $$  \$$$| $$  | $$| $$  \$$\| $$     \  ##
 ##   \$$$$$$     \$$     \$$$$$$$  \$$$$$$$$ \$$   \$$  \$$$$$$  \$$   \$$ \$$   \$$ \$$   \$$ \$$$$$$$$  ##
 ##                                                                                                        ##
-## Custom Player Info                                                                                     ##
+## Custom Player Info (Waybar Module)                                                                     ##
 ## Created by Cybersnake                                                                                  ##
 ############################################################################################################
 
@@ -20,7 +20,6 @@ if playerctl metadata >/dev/null 2>&1; then
 else
   song_info="No Song Playing"
 fi
-
 
 # Printing output to stdout
 echo "$song_info"
