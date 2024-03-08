@@ -15,7 +15,7 @@
 {
   "layer": "top",
   "position": "top",
-  "height": 30,
+  "height": 28,
   "modules-left": [
     "hyprland/workspaces",
     "backlight",
@@ -56,13 +56,13 @@
     "tooltip-format": "<tt><small>{calendar}</small></tt>",
     "calendar": {
       "mode": "year",
-      "mode-mon-col": 4,
+      "mode-mon-col": 3,
       "format": {
         "months": "<span color='#e6e1cf'><b>{}</b></span>",
         "days": "<span color='#cad3f5'><b>{}</b></span>",
         "weekdays": "<span color='#ff3333'><b>{}</b></span>",
         "today": "<span color='#f5a97f'><b><u>{}</u></b></span>"
-      }
+      },
     },
   },
   "backlight": {
