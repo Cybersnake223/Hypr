@@ -15,7 +15,12 @@
 ############################################################################################################
 
 # Getting title of the playing content
-song_info=$(playerctl metadata --format '{{ title }}' | awk '{print $1" "$2" "$3" "$4" "$5}')
+if playerctl metadata >/dev/null 2>&1; then
+  song_info=$(playerctl metadata --format '{{ title }}' | awk '{print $1" "$2" "$3" "$4" "$5}')
+else
+  song_info="No Song Playing"
+fi
+
 
 # Printing output to stdout
-echo " 󰎆 $song_info"
+echo "$song_info"

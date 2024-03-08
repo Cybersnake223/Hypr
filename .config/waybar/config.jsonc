@@ -162,7 +162,7 @@
     "signal": 8
   },
   "custom/notifications": {
-    "format": "<b>{}</b> ",
+    "format": "{}",
     "exec": "~/.config/waybar/bin/not-dnd -j",
     "on-click": "~/.config/waybar/bin/not-dnd",
     "return-type": "json",
@@ -170,7 +170,7 @@
     "signal": 2
   },
   "custom/player": {
-    "format": "{}",
+    "format": "󰎆 {}",
     "interval": 5,
     "exec": "~/.config/waybar/bin/playerinfo",
     "tooltip": false,

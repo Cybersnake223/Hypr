@@ -129,7 +129,8 @@ tooltip {
 #custom-notifications {
     color: #f9e2af;
     border-radius: 7px 7px 7px 7px;
-    padding-left: 12px;
+    padding-left: 9px;
+    padding-right: 13px;
     margin-left:  2px;
     margin-right: 2px;
 
