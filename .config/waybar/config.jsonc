@@ -43,7 +43,7 @@
     "format": "{id}",
     "show-special": true,
     "persistent_workspaces": {
-      "*": 0
+    "*":0,
     }
   },
   "tray": {
