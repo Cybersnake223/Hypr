@@ -173,6 +173,7 @@
     "format": "󰎆 {}",
     "interval": 5,
     "exec": "~/.config/waybar/bin/playerinfo",
-    "tooltip": false,
+    "max-length": 45,
+    "tooltip": true,
   },
 }

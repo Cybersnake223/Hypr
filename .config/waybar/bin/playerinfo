@@ -14,12 +14,14 @@
 ## Created by Cybersnake                                                                                  ##
 ############################################################################################################
 
-# Getting title of the playing content
+# Checking if anything is playing
 if playerctl metadata >/dev/null 2>&1; then
-  song_info=$(playerctl metadata --format '{{ title }}' | awk '{print $1" "$2" "$3" "$4" "$5}')
+# Getting title of the playing content
+  song_info=$(playerctl metadata --format '{{ title }}')
 else
+# Prinitng when nothing is playing
   song_info="No Song Playing"
 fi
 
-# Printing output to stdout
+# Printing Output
 echo "$song_info"
