@@ -1,7 +1,7 @@
 <div align="center">
   <p></p>
   <p><b><i> <img src="assets/cslogo.png" </i></b></p> 
-  <img src="https://readme-typing-svg.herokuapp.com?font=Righteous&weight=600&size=75&duration=1200&pause=1000&color=A024F7&center=true&vCenter=true&random=false&width=600&height=80&lines=Vicious+Vypr"> 
+  <img src="https://readme-typing-svg.herokuapp.com?font=Righteous&weight=600&size=75&duration=1200&pause=1000&color=A024F7&center=true&vCenter=true&random=false&width=600&height=80&lines=Vicious+Viper"> 
 </div>
 <p></p>
 
