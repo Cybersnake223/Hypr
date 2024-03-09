@@ -20,12 +20,12 @@ anyrun
 cava
 foot
 hyprland
+hyprlock
 mako
 mpv
 mpv-input
 nvim
 rofi
-swaylock
 waybar
 waybar-Style
 yay
@@ -51,6 +51,9 @@ foot)
 hyprland)
 	choice="$HOME/.config/hypr/hyprland.conf"
 	;;
+hyprlock)
+    choice="$HOME/.config/swaylock/config"
+    ;;
 mako)
     choice="$HOME/.config/mako/config"
     ;;
@@ -65,9 +68,6 @@ nvim)
     ;;
 rofi)
 	choice="$HOME/.config/rofi/config.rasi"
-	;;
-swaylock)
-	choice="$HOME/.config/swaylock/config"
 	;;
 waybar)
 	choice="$HOME/.config/waybar/config.jsonc"
