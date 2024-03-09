@@ -21,7 +21,7 @@ configuration {
   terminal : "foot";
   display-window: "Windows:";
   drun-display-format: "{name}";
-  font: "JetBrainsMono Nerd Font Bold 10";
+  font: "JetBrainsMono Nerd Font Bold 10.5";
   modi: "run,drun";
   hide-scrollbar: true;
   show-icons: false;
