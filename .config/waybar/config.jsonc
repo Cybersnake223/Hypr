@@ -171,9 +171,9 @@
   },
   "custom/player": {
     "format": "󰎆 {}",
-    "interval": 5,
+    "interval": 10,
     "exec": "~/.config/waybar/bin/playerinfo",
-    "max-length": 34,
+    "max-length": 35,
     "tooltip": true,
   },
 }
