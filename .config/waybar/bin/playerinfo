@@ -20,7 +20,7 @@ if playerctl metadata >/dev/null 2>&1; then
   song_info=$(playerctl metadata --format '{{ title }}')
 else
 # Prinitng when nothing is playing
-  song_info="No Song Playing"
+  song_info="No Audio Playing"
 fi
 
 # Printing Output
