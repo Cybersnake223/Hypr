@@ -24,7 +24,7 @@ if [[ $(command -v bleachbit) ]]; then
   rm -rf ~/.cache/lvim/
   cache=$(du -hs ~/.cache | awk '{print $1}')
   notify-send "Application Cache Found: $cache"
-  sys=$(bleachbit -c system.cache brave.cache brave.sync | rg "Disk space*")
+  sys=$(bleachbit -c system.cache brave.cache | rg "Disk space*")
   notify-send "System Cache Cleaned" "$(echo $sys)"
 
 else 
