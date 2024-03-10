@@ -37,7 +37,7 @@ text-alignment=right
 default-timeout=3000
 on-button-left=dismiss-all
 font=JetBrainsMono Nerd Font Bold 9.5
-icon-path=/usr/share/icons/hicolor:/usr/share/icons/Reversal-purple
+icon-path=/usr/share/icons/hicolor
 
 
 # Colors (Catppuccin Mocha)
