@@ -18,8 +18,8 @@
 icons=1
 markup=1
 actions=1
-width=320
-height=190
+width=300
+height=200
 sort=-time
 invisible=0
 group-by=none
@@ -37,7 +37,7 @@ text-alignment=right
 default-timeout=3000
 on-button-left=dismiss-all
 font=JetBrainsMono Nerd Font Bold 9.5
-icon-path=/usr/share/icons/Reversal-purple:/usr/share/icons/hicolor
+icon-path=/usr/share/icons/hicolor:/usr/share/icons/Reversal-purple
 
 
 # Colors (Catppuccin Mocha)

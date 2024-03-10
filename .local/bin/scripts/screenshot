@@ -13,7 +13,7 @@
 ## Created by Cybersnake                                                                                  ##
 ############################################################################################################
 
-
+# Commands
 rofi_command="rofi -l 5"
 grimblast="grimblast --notify --freeze"
 
@@ -24,14 +24,7 @@ window=" Capture active window"
 infive="󱑀 Take in 5s"
 inten="󱑇 Take in 10s"
 
-# countdown
-#countdown() {
-#    for sec in $(seq $1 -1 1); do
-#        dunstify -t 1000 --replace=699 "Taking shot in : $sec"
-#        sleep 1
-#    done
-#    sleep 0.1
-#}
+# Countdown Function
 countdown() {
   local seconds=$1
 
