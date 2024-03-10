@@ -51,8 +51,8 @@
     "spacing": 2
   },
   "clock": {
-    "interval": 1,
-    "format": " {:%A, %B %d [%H:%M:%S]}",
+    "interval": 60,
+    "format": " {:%A, %B %d [%H:%M]}",
     "tooltip-format": "<tt><small>{calendar}</small></tt>",
     "calendar": {
       "mode": "year",
