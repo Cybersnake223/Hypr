@@ -46,7 +46,7 @@ case $chosen in
 	systemctl suspend
 ;;
 "$Lock")
-  lock
+  hyprlock
 ;;
 "$Logout")
   hyprctl dispatch exit
