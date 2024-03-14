@@ -4,6 +4,7 @@
 #Added quotes from quotes.json
 #Added recursive to grab everything
 #requires image magick convert for it to work.
+#quotes grabbed from https://github.com/dwyl/quotes/blob/main/quotes.json
 
 if type swaybg >/dev/null 2>&1; then
 DIR="$HOME/Pictures/wallpapers"
