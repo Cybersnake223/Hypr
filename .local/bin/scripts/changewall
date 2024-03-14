@@ -1,37 +1,53 @@
 #!/bin/bash
+# Check if swaybg is installed
+#Modded from cybersnake
+#Added quotes from quotes.json
+#Added recursive to grab everything
+#requires image magick convert for it to work.
 
-############################################################################################################
-##   ______  __      __  _______   ________  _______    ______   __    __   ______   __    __  ________   ##
-##  /      \|  \    /  \|       \ |        \|       \  /      \ |  \  |  \ /      \ |  \  /  \|        \  ##
-## |  $$$$$$\\$$\  /  $$| $$$$$$$\| $$$$$$$$| $$$$$$$\|  $$$$$$\| $$\ | $$|  $$$$$$\| $$ /  $$| $$$$$$$$  ##
-## | $$   \$$ \$$\/  $$ | $$__/ $$| $$__    | $$__| $$| $$___\$$| $$$\| $$| $$__| $$| $$/  $$ | $$__      ##
-## | $$        \$$  $$  | $$    $$| $$  \   | $$    $$ \$$    \ | $$$$\ $$| $$    $$| $$  $$  | $$  \     ##
-## | $$   __    \$$$$   | $$$$$$$\| $$$$$   | $$$$$$$\ _\$$$$$$\| $$\$$ $$| $$$$$$$$| $$$$$\  | $$$$$     ##
-## | $$__/  \   | $$    | $$__/ $$| $$_____ | $$  | $$|  \__| $$| $$ \$$$$| $$  | $$| $$ \$$\ | $$_____   ##
-##  \$$    $$   | $$    | $$    $$| $$     \| $$  | $$ \$$    $$| $$  \$$$| $$  | $$| $$  \$$\| $$     \  ##
-##   \$$$$$$     \$$     \$$$$$$$  \$$$$$$$$ \$$   \$$  \$$$$$$  \$$   \$$ \$$   \$$ \$$   \$$ \$$$$$$$$  ##
-##                                                                                                        ##
-##                                                                                                        ##
-## Wallpaper Switcher                                                                                     ##
-## Created by Cybersnake                                                                                  ##
-############################################################################################################
-
-# Check if swaybg is installed 
 if type swaybg >/dev/null 2>&1; then
-
-  DIR="$HOME/Pictures/Wallpapers"
+DIR="$HOME/Pictures/wallpapers"
+QUOTES_FILE="$HOME/.local/bin/scripts/quotes.json"
+while true
+  do
   
   # Store a list of files for efficiency
-  FILES=("$DIR"/*.png)
+  #FILES=("$DIR"/*.png)
+  
+  FILES=($(find "$DIR" -type f -name "*.png"))
   RANDOMPIC=${FILES[RANDOM % ${#FILES[@]}]}
   
   # Kill Existing swaybg processes
   killall swaybg 2>/dev/null
+  # Select a random quote from the JSON file
+          # Count the number of quotes in the JSON file
+        NUM_QUOTES=$(jq '. | length' "$QUOTES_FILE")
   
+        # Generate a random index within the range of quotes
+        RANDOM_INDEX=$((RANDOM % NUM_QUOTES))
+  
+        # Select a random quote using the generated index
+        QUOTE=$(jq -r --argjson idx "$RANDOM_INDEX" '.[$idx]' "$QUOTES_FILE")
+        AUTHOR=$(jq -r '.author' <<< "$QUOTE")
+        TEXT=$(jq -r '.text' <<< "$QUOTE")
+        # Adding quote at the bottom of the wallpaper
+        # Get image dimensions
+        IMAGE_SIZE=$(identify -format "%wx%h" "$RANDOMPIC")
+        # Extract width from the size string
+        WIDTH=$(echo "$IMAGE_SIZE" | cut -d'x' -f1)
+  
+        # Calculate font size as 5% of the image width
+        FONT_SIZE=$((WIDTH * 1 / 100))
+  
+        # Adding quote at the bottom of the wallpaper with calculated font size
+        convert "$RANDOMPIC" -gravity South -pointsize "$FONT_SIZE" -fill white -annotate +0+10 " \"$TEXT\" - $AUTHOR" /$HOME/.config/.scripts/temp_wallpaper.png 
   # Applying Random Wallpaper 
-  swaybg  -m fit -i "$RANDOMPIC" 2>/dev/null &
-  else
-  notify-send  "Swaybg not installed. Please install swaybg."
+  swaybg -m stretch -i /$HOME/.config/.scripts/temp_wallpaper.png 2>/dev/null &
+  
+  sleep 300
+  done
+  #else
+  #notify-send  "Swaybg not installed. Please install swaybg."
   
 fi
 exit 0
