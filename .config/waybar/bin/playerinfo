@@ -14,32 +14,14 @@
 ## Created by Cybersnake                                                                                  ##
 ############################################################################################################
 
-# Get list of active players
-players=$(playerctl -l)
-
-# Check if any player is active
-if [ -n "$players" ]; then
-    # Iterate through each player
-    for player in $players; do
-        # Get player's status
-        status=$(playerctl -p "$player" status 2>/dev/null)
-
-        # Check if player is playing
-        if [ "$status" = "Playing" ]; then
-            # Get metadata for the player
-            metadata=$(playerctl -p "$player" metadata --format {{'title'}} 2>/dev/null)
-
-            if [ -n "$metadata" ]; then
-                # Print filtered metadata
-                echo "$player":"$metadata" | sed -E 's/[[:space:]]+/-/g' 
-            else
-                echo "No artist or title found for $player"
-            fi
-        fi
-    done
-#if a player is paused or w/e still displayed on playerctl -l
-    echo "No Audio Player is Active"
-else 
-#all other isntances
-    echo "No Audio Player is Active"
+# Checking if anything is playing
+if playerctl metadata >/dev/null 2>&1; then
+# Getting title of the playing content
+song_info=$(playerctl metadata --format '{{ title }}' | tr -d '[:punct:]')
+else
+# Prinitng when nothing is playing
+  song_info="No Audio Playing"
 fi
+
+# Printing Output
+echo "$song_info"

@@ -17,8 +17,10 @@
 alias ..="cd .."
 alias ...="cd ../.."
 alias ....="cd ../../.."
-alias config="cd ~/.config"
-alias scripts="cd ~/.local/bin/scripts/"
+alias .....="cd ../../../.."
+alias config="cd $HOME/.config"
+alias scripts="cd $HOME/.local/bin/scripts/"
+alias testing="cd $HOME/Templates/Tests"
 
 # Auto-cpu Conf
 alias cpuconf="sudoedit /etc/auto-cpufreq.conf"
@@ -29,11 +31,15 @@ alias whichkey="xev | grep -A2 --line-buffered '^KeyRelease' | sed -n '/keycode 
 # Diff
 alias diff="diff --color=always"
 
+# Directory
+alias mkdir="mkdir -pv"
+
 # Figlet
 alias figlet="figlet -w 140"
 
 # Disk Usage 
 alias ncdu="ncdu -2 -e --si --color off"
+
 
 # Exit
 alias e="exit"
@@ -95,6 +101,8 @@ alias fds="fd -s -H"
 # Copy
 alias cp='advcp -rvgi'
 alias sucp='sudo advcp -rvgi'
+
+# Move
 alias mv='advmv -vg'
 alias sumv='sudo advmv -vg'
 

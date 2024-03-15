@@ -43,7 +43,7 @@
     "format": "{id}",
     "show-special": true,
     "persistent_workspaces": {
-    "*":0,
+      "*": 0,
     }
   },
   "tray": {
@@ -154,24 +154,24 @@
   "custom/updates": {
     "format": "{}",
     "interval": 7200,
-    "exec": "~/.config/waybar/bin/updatecheck",
+    "exec": "$HOME/.config/waybar/bin/updatecheck",
     "return-type": "json",
     "exec-if": "exit 0",
     "signal": 8
   },
   "custom/notifications": {
     "format": "{}",
-    "exec": "~/.config/waybar/bin/not-dnd -j",
-    "on-click": "~/.config/waybar/bin/not-dnd",
+    "exec": "$HOME/.config/waybar/bin/not-dnd -j",
+    "on-click": "$HOME/.config/waybar/bin/not-dnd",
     "return-type": "json",
     "interval": "once",
     "signal": 2
   },
   "custom/player": {
     "format": "󰎆 {}",
-    "interval": 10,
-    "exec": "~/.config/waybar/bin/playerinfo",
-    "max-length": 35,
+    "interval": 5,
+    "exec": "$HOME/.config/waybar/bin/playerinfo",
+    "max-length": 40,
     "tooltip": true,
   },
 }
