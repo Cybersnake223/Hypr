@@ -14,5 +14,5 @@
 
 Config(
   prefix: "",
-  max_entries: 5,
+  max_entries: 2,
 )
