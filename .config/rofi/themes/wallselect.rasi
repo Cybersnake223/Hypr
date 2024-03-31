@@ -1,0 +1,110 @@
+/* ############################################################################################################ */
+/* ##   ______  __      __  _______   ________  _______    ______   __    __   ______   __    __  ________   ## */
+/* ##  /      \|  \    /  \|       \ |        \|       \  /      \ |  \  |  \ /      \ |  \  /  \|        \  ## */
+/* ## |  $$$$$$\\$$\  /  $$| $$$$$$$\| $$$$$$$$| $$$$$$$\|  $$$$$$\| $$\ | $$|  $$$$$$\| $$ /  $$| $$$$$$$$  ## */
+/* ## | $$   \$$ \$$\/  $$ | $$__/ $$| $$__    | $$__| $$| $$___\$$| $$$\| $$| $$__| $$| $$/  $$ | $$__      ## */
+/* ## | $$        \$$  $$  | $$    $$| $$  \   | $$    $$ \$$    \ | $$$$\ $$| $$    $$| $$  $$  | $$  \     ## */
+/* ## | $$   __    \$$$$   | $$$$$$$\| $$$$$   | $$$$$$$\ _\$$$$$$\| $$\$$ $$| $$$$$$$$| $$$$$\  | $$$$$     ## */
+/* ## | $$__/  \   | $$    | $$__/ $$| $$_____ | $$  | $$|  \__| $$| $$ \$$$$| $$  | $$| $$ \$$\ | $$_____   ## */
+/* ##  \$$    $$   | $$    | $$    $$| $$     \| $$  | $$ \$$    $$| $$  \$$$| $$  | $$| $$  \$$\| $$     \  ## */
+/* ##   \$$$$$$     \$$     \$$$$$$$  \$$$$$$$$ \$$   \$$  \$$$$$$  \$$   \$$ \$$   \$$ \$$   \$$ \$$$$$$$$  ## */
+/* ##                                                                                                        ## */
+/* ## Rofi Colors (Catppuccin Mocha)                                                                         ## */
+/* ## Created by Cybersnake                                                                                  ## */
+/* ############################################################################################################ */
+
+
+configuration {
+    modi:                        "drun";
+    show-icons:                  true;
+    drun-display-format:         "{name}";
+    font:                        "JetBrainsMono Nerd Font Bold 10.5";
+}
+
+@import "colors/colors.rasi"
+
+//----- Main Window -----//
+
+window {
+    enabled:                     true;
+    fullscreen:                  false;
+    width:                       90%;
+    cursor:                      pointer;
+    spacing:                     0px;
+    padding:                     0px;
+    border:                      5px;
+    border-radius:               40px;
+    border-color:                @dark4;
+    background-color:            @dark3;
+}
+
+//----- Main Box -----//
+
+mainbox {
+    enabled:                     true;
+    children:                    [ "listview" ];
+    background-color:            @dark2;
+    text-color:                  @dark4;
+}
+
+//----- Listview -----//
+
+listview {
+    enabled:                     true;
+    columns:                     6;
+    lines:                       1;
+    spacing:                     50px;
+    padding:                     20px 30px;
+    cycle:                       true;
+    dynamic:                     false;
+    scrollbar:                   false;
+    layout:                      vertical;
+    reverse:                     false;
+    fixed-height:                true;
+    fixed-columns:               true;
+    cursor:                      "default";
+    background-color:            @dark1;
+    text-color:                  @dark4;
+}
+
+//----- Elements -----//
+
+element {
+    enabled:                     true;
+    orientation:                 horizontal;
+    spacing:                     0px;
+    padding:                     0px;
+    border-radius:               20px;
+    cursor:                      pointer;
+    background-color:            transparent;
+    text-color:                  @dark4;
+}
+
+@media(max-aspect-ratio: 1.6) {
+    element {
+        orientation:             vertical;
+        border-radius:               20px;
+    }
+}
+
+element selected.normal {
+    background-color:            @red;
+    text-color:                  @red;
+
+}
+
+element-icon {
+    size:                        40%;
+    border-radius:               5px;
+    background-color:            @dark1;
+    text-color:                  @dark4;
+}
+
+element-text {
+    vertical-align:              1;
+    horizontal-align:            1;
+    padding:                     20px;
+    cursor:                      @red;
+    background-color:            @dark1;
+    text-color:                  @dark4;
+}
