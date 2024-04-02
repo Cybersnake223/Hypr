@@ -13,7 +13,6 @@
 /* ## Created by Cybersnake                                                                                  ## */
 /* ############################################################################################################ */
 
-
 configuration {
     modi:                        "drun";
     show-icons:                  true;
@@ -28,14 +27,15 @@ configuration {
 window {
     enabled:                     true;
     fullscreen:                  false;
-    width:                       90%;
-    cursor:                      pointer;
+    width:                       100%;
+    transparency:                "real";
+    cursor:                      "default";
     spacing:                     0px;
     padding:                     0px;
-    border:                      5px;
-    border-radius:               40px;
-    border-color:                @dark4;
-    background-color:            @dark3;
+    border:                      0px;
+    border-radius:               0px;
+    border-color:                transparent;
+    background-color:            transparent;
 }
 
 //----- Main Box -----//
@@ -43,8 +43,7 @@ window {
 mainbox {
     enabled:                     true;
     children:                    [ "listview" ];
-    background-color:            @dark2;
-    text-color:                  @dark4;
+    background-color:            @main-bg;
 }
 
 //----- Listview -----//
@@ -63,8 +62,8 @@ listview {
     fixed-height:                true;
     fixed-columns:               true;
     cursor:                      "default";
-    background-color:            @dark1;
-    text-color:                  @dark4;
+    background-color:            transparent;
+    text-color:                  @main-fg;
 }
 
 //----- Elements -----//
@@ -77,34 +76,33 @@ element {
     border-radius:               20px;
     cursor:                      pointer;
     background-color:            transparent;
-    text-color:                  @dark4;
+    text-color:                  @main-fg;
 }
 
-@media(max-aspect-ratio: 1.6) {
+@media(max-aspect-ratio: 1.8) {
     element {
         orientation:             vertical;
-        border-radius:               20px;
     }
 }
 
 element selected.normal {
-    background-color:            @red;
-    text-color:                  @red;
-
+    background-color:            @select-bg;
+    text-color:                  @select-fg;
 }
 
 element-icon {
-    size:                        40%;
-    border-radius:               5px;
-    background-color:            @dark1;
-    text-color:                  @dark4;
+    size:                        33%;
+    cursor:                      inherit;
+    border-radius:               0px;
+    background-color:            transparent;
+    text-color:                  inherit;
 }
 
 element-text {
-    vertical-align:              1;
-    horizontal-align:            1;
+    vertical-align:              0.5;
+    horizontal-align:            0.5;
     padding:                     20px;
-    cursor:                      @red;
-    background-color:            @dark1;
-    text-color:                  @dark4;
+    cursor:                      inherit;
+    background-color:            transparent;
+    text-color:                  inherit;
 }
