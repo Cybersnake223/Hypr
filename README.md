@@ -46,7 +46,7 @@
   - 🌻 ** Launcher ** - [Anyrun](https://github.com/Kirottu/anyrun) 
   - 🚀 ** Dmenu Program ** - [Rofi (Lbonn Fork)](https://github.com/lbonn/rofi)
   - 🍁 ** Wallpaper ** - [Swaybg](https://codeberg.org/dnkl/wbg)
-  - 🌐 ** Browser ** - [Brave](https://brave.com/linux/) 
+  - 🌐 ** Browser ** - [Cromite](https://github.com/uazo/cromite) 
   - ❄️  ** Screen locker ** - [Hyprlock](https://github.com/hyprwm/hyprlock) 
   - ⏬ ** Download Manager ** - [Aria2](https://github.com/aria2/aria2)
   - 🤖 ** System Fetch ** - [Nitch](https://github.com/ssleert/nitch)
