@@ -15,7 +15,7 @@
 {
   "layer": "top",
   "position": "top",
-  "height": 28,
+  "height": 42,
   "modules-left": [
     "hyprland/workspaces",
     "backlight",
@@ -42,7 +42,7 @@
     "sort-by-name": true,
     "format": "{id}",
     "show-special": true,
-    "persistent_workspaces": {
+    "persistent-workspaces": {
       "*": 0,
     }
   },
