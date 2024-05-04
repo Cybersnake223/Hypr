@@ -159,7 +159,7 @@ tooltip {
 }
 
 #disk {
-    color: #a6e3a1;
+    color: #f9e2af;
     border-radius: 7px 7px 7px 7px;
     margin-left: 5px;
 }
@@ -196,6 +196,16 @@ tooltip {
   color:                      #EEEEEE;
   animation-name:             blink;
   animation-duration:         0.5s;
+  animation-timing-function:  linear;
+  animation-iteration-count:  infinite;
+  animation-direction:        alternate;
+}
+
+#battery.charging {
+  background-color:           #a6e3a1;
+  color:                      #F53C3C;
+  animation-name:             blink;
+  animation-duration:         0.1s;
   animation-timing-function:  linear;
   animation-iteration-count:  infinite;
   animation-direction:        alternate;

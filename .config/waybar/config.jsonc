@@ -24,9 +24,11 @@
   ],
   "fixed-center": true,
   "modules-center": [
+    "memory",
     "custom/updates",
     "clock",
     "custom/notifications",
+    "disk",
   ],
   "modules-right": [
     "tray",
@@ -142,18 +144,18 @@
     "on-click": "btblock",
   },
   "memory": {
-    "interval": 300,
-    "format": "  {used}G ",
+    "interval": 1,
+    "format": " {used}G",
     "tooltip-format": "{used} / {total} G",
   },
   "disk": {
     "interval": 600,
-    "format": "  {percentage_used}%",
+    "format": " {percentage_used}%",
     "tooltip-format": "{used} used out of {total} on {path} ",
   },
   "custom/updates": {
     "format": "{}",
-    "interval": 7200,
+    "interval": 150,
     "exec": "$HOME/.config/waybar/bin/updatecheck",
     "return-type": "json",
     "exec-if": "exit 0",
