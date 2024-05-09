@@ -77,7 +77,7 @@
     ],
   },
   "battery": {
-    "interval": 1,
+    "interval": 5,
     "states": {
       "good": 100,
       "warning": 30,
@@ -145,7 +145,7 @@
     "on-click": "btblock",
   },
   "memory": {
-    "interval": 1,
+    "interval": 30,
     "format": " {used}G",
     "tooltip-format": "{used} / {total} G",
   },
