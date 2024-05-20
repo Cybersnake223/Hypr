@@ -52,6 +52,12 @@ parse_git_branch() {
   # git rev-parse --abbrev-ref HEAD 2> /dev/null | sed -e 's/.*\/\(.*\)/\1/'
 }
 
+# Git Caching
+
+export USE_CCACHE=1
+export CCACHE_COMPRESS=1
+export CCACHE_MAXSIZE=50G # 50 GB
+
 # Tab Completion
 autoload -Uz compinit
 setopt PROMPT_SUBST
