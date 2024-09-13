@@ -156,6 +156,7 @@
   },
   "custom/updates": {
     "format": "{}",
+    "tooltip": false,
     "interval": 1200,
     "exec": "$HOME/.config/waybar/bin/updatecheck",
     "return-type": "json",

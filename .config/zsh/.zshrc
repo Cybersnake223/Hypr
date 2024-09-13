@@ -14,15 +14,15 @@
 ############################################################################################################
 
 # Env Variables 
-export VISUAL='lvim'
-export EDITOR='lvim'
+export VISUAL='nvim'
+export EDITOR='nvim'
 export TERMINAL='foot'
 export BROWSER='brave'
 export HISTORY_IGNORE="(ls|cd|pwd|exit|sudo reboot|history|cd -|cd ..)"
 export DMENU='rofi -dmenu'
 export IRQBALANCE_ARGS="--allcpus"
 export GIT_DISCOVERY_ACROSS_FILESYSTEM=false
-export MANPAGER="lvim +Man!"
+export MANPAGER="nvim +Man!"
 
 # Fetch
 nitch

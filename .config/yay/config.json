@@ -1,7 +1,7 @@
 {
 	"aururl": "https://aur.archlinux.org",
 	"aurrpcurl": "https://aur.archlinux.org/rpc?",
-	"buildDir": "/home/cybersnake/.cache/yay",
+	"buildDir": "$HOME/.cache/yay",
 	"editor": "nvim",
 	"editorflags": "",
 	"makepkgbin": "makepkg",

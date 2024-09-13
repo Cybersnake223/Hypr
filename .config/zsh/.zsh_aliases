@@ -114,7 +114,7 @@ alias ugrub="sudo grub-mkconfig -o /boot/grub/grub.cfg"
 alias cat="bat --theme=catppuccin-mocha"  
 
 # Nvim
-alias nv="lvim"
+alias nv="nvim"
 alias snv="sudoedit"
 
 # Ls
