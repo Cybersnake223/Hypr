@@ -21,7 +21,7 @@ configuration {
   terminal : "foot";
   display-window: "Windows:";
   drun-display-format: "{name}";
-  font: "JetBrainsMono Nerd Font Bold 11";
+  font: "JetBrainsMono Nerd Font Bold 12";
   modi: "run,drun";
   hide-scrollbar: true;
   show-icons: false;
@@ -32,11 +32,11 @@ configuration {
 
 window {
    background-color: transparent;
-   width: 28%;
+   width: 30%;
    padding: 10px;
    fullscreen: false;
-   border:  4px;
-   border-radius: 7px;
+   border:  3px;
+   border-radius: 10px;
    border-color: @dark4;
 }
 
