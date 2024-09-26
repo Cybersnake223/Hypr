@@ -12,6 +12,7 @@
 //## Waybar Config                                                                                          ##
 //## Created by Cybersnake                                                                                  ##
 //############################################################################################################
+
 {
   "layer": "top",
   "position": "top",
@@ -77,7 +78,7 @@
     ],
   },
   "battery": {
-    "interval": 5,
+    "interval": 1,
     "states": {
       "good": 100,
       "warning": 30,
@@ -145,12 +146,12 @@
     "on-click": "btblock",
   },
   "memory": {
-    "interval": 30,
+    "interval": 60,
     "format": " {used}G",
     "tooltip-format": "{used} / {total} G",
   },
   "disk": {
-    "interval": 600,
+    "interval": 6000,
     "format": " {percentage_used}%",
     "tooltip-format": "{used} used out of {total} on {path} ",
   },
