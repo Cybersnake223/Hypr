@@ -31,7 +31,7 @@ configuration {
 @import "colors/colors.rasi"
 
 window {
-   background-color: transparent;
+   background-color: #1e1e2e;
    width: 30%;
    padding: 10px;
    fullscreen: false;
@@ -41,20 +41,20 @@ window {
 }
 
 mainbox {
-   background-color: transparent;
+   background-color: #1e1e2e;
    spacing:5px;
    border-radius: 20px;
 }
 
 message {
    padding: 10px 10px;
-   background-color: transparent;
+   background-color: #1e1e2e;
    border-radius: 20px;
 }
 
 textbox {
    text-color: @dark5;
-   background-color: transparent;
+   background-color: #1e1e2e;
    border-radius: 20px;
 }
 
@@ -65,7 +65,7 @@ listview {
    spacing: 0px;
    padding: 5px 0px 0px 0px;
    margin: 1px 1px 1px 1px;
-   background-color: transparent;
+   background-color: #1e1e2e;
    border-radius: 20px;
 }
 
@@ -76,18 +76,18 @@ element {
 
 element normal.normal {
    padding: 0px 15px;
-   background-color: transparent;
+   background-color: #1e1e2e;
    text-color: @dark3;
    border-radius: 20px;
 }
 
 element normal.urgent {
-   background-color: transparent;
+   background-color: #1e1e2e;
    text-color: @urgent-color;
 }
 
 element normal.active {
-   background-color: transparent;
+   background-color: #1e1e2e;
    text-color: @dark5;
    border-radius: 20px;
 }
@@ -99,60 +99,60 @@ element selected.normal {
 }
 
 element selected.urgent {
-    background-color: transparent;
-    text-color:       transparent;
+    background-color: #1e1e2e;
+    text-color:       #1e1e2e;
     border-radius: 20px;
 }
 
 element selected.active {
-    background-color: transparent;
+    background-color: #1e1e2e;
     text-color:       @dark5;
     border-radius: 20px;
 }
 
 element alternate.normal {
-    background-color: transparent;
+    background-color: #1e1e2e;
     text-color:       @dark4;
     border-radius: 20px;
 }
 
 element alternate.urgent {
-    background-color: transparent;
+    background-color: #1e1e2e;
     text-color:       @urgent-color;
     border-radius: 20px;
 }
 
 element alternate.active {
-    background-color: transparent;
-    text-color:       transparent;
+    background-color: #1e1e2e;
+    text-color:       #1e1e2e;
     border-radius: 20px;
 }
 
 scrollbar {
-   background-color: transparent;
-   handle-color: transparent;
+   background-color: #1e1e2e;
+   handle-color: #1e1e2e;
    handle-width: 0px;
    border-radius: 20px;
 }
 
 mode-switcher {
-   background-color: transparent;
+   background-color: #1e1e2e;
    border-radius: 20px;
 }
 
 button {
-   background-color: transparent;
+   background-color: #1e1e2e;
    text-color:       @dark5;
    border-radius: 20px;
 }
 
 button selected {
-    text-color:       transparent;
+    text-color:       #1e1e2e;
     border-radius: 20px;
 }
 
 inputbar {
-   background-color: transparent;
+   background-color: #1e1e2e;
    spacing: 0px;
    children:   [ prompt,textbox-prompt-colon,entry,case-indicator ];
    border-radius: 20px;
@@ -160,22 +160,22 @@ inputbar {
 
 prompt {
    padding:0px 10px;
-   background-color: transparent;
+   background-color: #1e1e2e;
    text-color: @dark4;
    border-radius: 20px;
 }
 
 entry {
    padding:0px 6px;
-   background-color: transparent;
+   background-color: #1e1e2e;
    text-color: @dark4;
    border-radius: 20px;
 }
 
 case-indicator {
    padding:6px 10px;
-   text-color: transparent;
-   background-color: transparent;
+   text-color: #1e1e2e;
+   background-color: #1e1e2e;
    border-radius: 20px;
 }
 
@@ -185,6 +185,6 @@ textbox-prompt-colon {
     str:        "";
     margin:     0px 0.3em 0em 0em ;
     text-color: @red;
-    background-color: transparent;
+    background-color: #1e1e2e;
     border-radius: 20px;
 }

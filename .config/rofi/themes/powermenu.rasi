@@ -25,7 +25,7 @@ configuration {
 
 window {
     transparency:                   "real";
-    background-color:               transparent;
+    background-color:               #1e1e2e;
     text-color:                     @dark3;
     border:                  		5px;
     border-color:                  	@dark3;
@@ -41,7 +41,7 @@ prompt {
     enabled: 						true;
   	margin: 						0px 0px 0px 8px;
     padding:    					6px 6px 6px 6px;
-  	background-color: 				transparent;
+  	background-color: 				#1e1e2e;
   	text-color: 					@dark3;
     border:                  		0px 0px 0px 0px;
     border-color:                  	@dark2;
@@ -52,14 +52,14 @@ textbox-prompt-colon {
 	expand: 						false;
 	str: 							"⏻";
     border-radius:                  10px;
-    background-color:               transparent;
+    background-color:               #1e1e2e;
     text-color:                     @dark4;
     padding:    					6px 15px 6px 15px;
 	font:							"JetBrainsMono Nerd Font 11";
 }
 
 entry {
-    background-color:               transparent;
+    background-color:               #1e1e2e;
     text-color:                     @background-color;
     placeholder-color:              @dark5;
     placeholder:                    "";
@@ -72,7 +72,7 @@ entry {
 inputbar {
 	children: 						[ textbox-prompt-colon, prompt ];
     spacing:                        0;
-    background-color:               transparent;
+    background-color:               #1e1e2e;
     text-color:                     @dark5;
     border:                  		0px 0px 1px 0px;
     border-radius:                  10px;
@@ -84,14 +84,14 @@ inputbar {
 }
 
 case-indicator {
-    background-color:               transparent;
+    background-color:               #1e1e2e;
     text-color:                     @dark5;
     spacing:                        0;
 }
 
 
 listview {
-    background-color:               transparent;
+    background-color:               #1e1e2e;
     columns:                        1;
     lines:							5;
     spacing:                        10px;
@@ -101,14 +101,14 @@ listview {
 }
 
 mainbox {
-    background-color:               transparent;
+    background-color:               #1e1e2e;
     children:                       [ inputbar, listview ];
     spacing:                       	10px;
     padding:                        10px;
 }
 
 element {
-    background-color:               transparent;
+    background-color:               #1e1e2e;
     text-color:                     @dark4;
     orientation:                    horizontal;
     border:                  		2px;
@@ -118,7 +118,7 @@ element {
 }
 
 element-icon {
-    background-color: 				transparent;
+    background-color: 				#1e1e2e;
     text-color:       				@dark5;
     horizontal-align:               0.5;
     vertical-align:                 0.5;
@@ -146,7 +146,7 @@ element selected {
 
 element.active,
 element.selected.urgent {
-  background-color: transparent;
+  background-color: #1e1e2e;
   text-color: @background-color;
   border-color: @on;
 }
@@ -157,7 +157,7 @@ element.selected.urgent {
 
 element.urgent,
 element.selected.active {
-  background-color: transparent;
+  background-color: #1e1e2e;
   text-color: @background-color;
   border-color: @dark2;
 }
