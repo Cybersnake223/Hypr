@@ -61,8 +61,6 @@ alias ssr="sudo systemctl restart"
 alias ssdr="sudo systemctl daemon-reload"
 alias sss="systemctl status"
 
-# Speedtest
-alias speedtest="speedtest++"
 
 # Ping 
 alias ping="prettyping"
