@@ -128,7 +128,6 @@ alias gi='git init'
 alias uptime="uptime -p"
 
 # Yay
-alias sysupd="topgrade"
 alias ys="yay"
 alias yi="yay -S"
 alias y="yay -Syyu --noconfirm"
