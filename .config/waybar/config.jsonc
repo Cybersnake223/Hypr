@@ -16,7 +16,11 @@
 {
   "layer": "top",
   "position": "top",
-  "height": 42,
+  "mode": "dock",
+  "exclusive": true,
+  "passthrough": false,
+  "gtk-layer-shell": true,
+  "height": 0,
   "modules-left": [
     "hyprland/workspaces",
     "backlight",
