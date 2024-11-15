@@ -45,7 +45,7 @@
   - 🪵 ** Notifications ** - [Mako](https://github.com/emersion/mako) 
   - 🌻 ** Launcher ** - [Anyrun](https://github.com/Kirottu/anyrun) 
   - 🚀 ** Dmenu Program ** - [Rofi (Lbonn Fork)](https://github.com/lbonn/rofi)
-  - 🍁 ** Wallpaper ** - [Swaybg](https://codeberg.org/dnkl/wbg)
+  - 🍁 ** Wallpaper ** - [Hyprpaper](https://github.com/hyprwm/hyprpaper)
   - 🌐 ** Browser ** - [Brave](https://brave.com/linux) 
   - ❄️  ** Screen locker ** - [Hyprlock](https://github.com/hyprwm/hyprlock) 
   - ⏬ ** Download Manager ** - [Aria2](https://github.com/aria2/aria2)
