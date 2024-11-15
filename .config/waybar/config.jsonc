@@ -110,7 +110,7 @@
     "tooltip": false,
     "format-muted": " Muted",
     "on-click": "wpctl set-mute @DEFAULT_SINK@ toggle",
-    "on-scroll-up": "wpctl set-volume @DEFAULT_SINK@ 10%+",
+    "on-scroll-up": "wpctl set-volume @DEFAULT_SINK@ 10%+ --limit 1.15",
     "on-scroll-down": "wpctl set-volume @DEFAULT_SINK@ 10%-",
     "format-icons": {
       "headphone": "",
@@ -131,7 +131,7 @@
     "format-source": " {volume}%",
     "format-source-muted": " Muted",
     "on-click": "wpctl set-mute @DEFAULT_SOURCE@ toggle",
-    "on-scroll-up": "wpctl set-volume @DEFAULT_SOURCE@ 5%+",
+    "on-scroll-up": "wpctl set-volume @DEFAULT_SOURCE@ 5%+ --limit 1.15",
     "on-scroll-down": "wpctl set-volume @DEFAULT_SOURCE@ 5%-",
   },
   "network": {
