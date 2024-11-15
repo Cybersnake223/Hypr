@@ -16,7 +16,7 @@
 ############################################################################################################
 
 # Check if swaybg is installed 
-if type swaybg >/dev/null 2>&1; then
+if type hyprpaper >/dev/null 2>&1; then
 
   DIR="$HOME/Pictures/Wallpapers"
   
@@ -24,13 +24,14 @@ if type swaybg >/dev/null 2>&1; then
   FILES=("$DIR"/*.png)
   RANDOMPIC=${FILES[RANDOM % ${#FILES[@]}]}
   
-  # Kill Existing swaybg processes
-  killall swaybg 2>/dev/null
+  # Unload Previous Wallpapers
+  hyprctl hyprpaper unload all
   
   # Applying Random Wallpaper 
-  swaybg  -m fill -i "$RANDOMPIC" 2>/dev/null &
+  hyprctl hyprpaper preload "$RANDOMPIC" 2>/dev/null &
+  hyprctl hyprpaper wallpaper ",$RANDOMPIC" 2>/dev/null &
   else
-  notify-send  "Swaybg not installed. Please install swaybg."
+  notify-send  "Hyprpaper not installed. Please install Hyprpaper."
   
 fi
 exit 1
