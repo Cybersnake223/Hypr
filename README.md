@@ -43,7 +43,7 @@
   - 🌷 ** Terminal ** - [Foot](https://github.com/DanteAlighierin/foot) 
   - 🍄 ** Shell ** - [Zsh](https://zsh.sourceforge.io/) 
   - 🪵 ** Notifications ** - [Mako](https://github.com/emersion/mako) 
-  - 🌻 ** Launcher ** - [Anyrun](https://github.com/Kirottu/anyrun) 
+  - 🌻 ** Launcher ** - [Rofi (Lbonn Fork)](https://github.com/lbonn/rofi) 
   - 🚀 ** Dmenu Program ** - [Rofi (Lbonn Fork)](https://github.com/lbonn/rofi)
   - 🍁 ** Wallpaper ** - [Hyprpaper](https://github.com/hyprwm/hyprpaper)
   - 🌐 ** Browser ** - [Brave](https://brave.com/linux) 
