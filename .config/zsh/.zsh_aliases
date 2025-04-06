@@ -82,7 +82,7 @@ alias targ="tar -xvzf"
 alias tar="tar -xvf"
 
 # PIP 
-alias pip="pipx"
+#alias pip="pipx"
 alias pip3="pipx"
 
 # Remove
@@ -97,11 +97,11 @@ alias fdh="fd -H"
 alias fds="fd -s -H"
 
 # Copy
-alias cp='advcp -rvgi'
+alias cp='advcp -rvgf'
 alias sucp='sudo advcp -rvgi'
 
 # Move
-alias mv='advmv -vg'
+alias mv='advmv -vgf'
 alias sumv='sudo advmv -vg'
 
 # GRUB
@@ -121,7 +121,7 @@ alias la="eza -Glax --icons --sort=Name --no-permissions --no-time"
 alias ls="eza --icons"
 
 # Git
-alias gc='git clone'
+alias gc='gh repo clone'
 alias gi='git init'
 
 # Uptime
