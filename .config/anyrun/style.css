@@ -1,0 +1,93 @@
+/* ############################################################################################################ */
+/* ##   ______  __      __  _______   ________  _______    ______   __    __   ______   __    __  ________   ## */
+/* ##  /      \|  \    /  \|       \ |        \|       \  /      \ |  \  |  \ /      \ |  \  /  \|        \  ## */
+/* ## |  $$$$$$\\$$\  /  $$| $$$$$$$\| $$$$$$$$| $$$$$$$\|  $$$$$$\| $$\ | $$|  $$$$$$\| $$ /  $$| $$$$$$$$  ## */
+/* ## | $$   \$$ \$$\/  $$ | $$__/ $$| $$__    | $$__| $$| $$___\$$| $$$\| $$| $$__| $$| $$/  $$ | $$__      ## */
+/* ## | $$        \$$  $$  | $$    $$| $$  \   | $$    $$ \$$    \ | $$$$\ $$| $$    $$| $$  $$  | $$  \     ## */
+/* ## | $$   __    \$$$$   | $$$$$$$\| $$$$$   | $$$$$$$\ _\$$$$$$\| $$\$$ $$| $$$$$$$$| $$$$$\  | $$$$$     ## */
+/* ## | $$__/  \   | $$    | $$__/ $$| $$_____ | $$  | $$|  \__| $$| $$ \$$$$| $$  | $$| $$ \$$\ | $$_____   ## */
+/* ##  \$$    $$   | $$    | $$    $$| $$     \| $$  | $$ \$$    $$| $$  \$$$| $$  | $$| $$  \$$\| $$     \  ## */
+/* ##   \$$$$$$     \$$     \$$$$$$$  \$$$$$$$$ \$$   \$$  \$$$$$$  \$$   \$$ \$$   \$$ \$$   \$$ \$$$$$$$$  ## */
+/* ##                                                                                                        ## */
+/* ## Anyrun Style (Catppuccin Mocha)                                                                        ## */
+/* ## Created by Cybersnake                                                                                  ## */
+/* ############################################################################################################ */
+
+* {
+    all: unset;
+    font-size: 1rem;
+  }
+  
+#window,
+#match,
+#entry,
+#plugin,
+#main { 
+  background: transparent; 
+}
+  
+#match.activatable {
+  border-radius: 7px;
+  padding: 3px 3px;
+  margin-top: 1px;
+}
+#match.activatable:first-child { margin-top: 9px; }
+#match.activatable:last-child { margin-bottom: 1px; }
+
+#plugin:hover #match.activatable {
+  border-radius: 7px;
+  padding: .3rem;
+  margin-top: .01rem;
+  margin-bottom: 0;
+}
+
+
+#match:selected {
+  color: @theme_selected_fg_color;
+  background: @theme_selected_bg_color;
+  border-radius: 7px;
+}
+
+#entry {
+  border-radius: 7px;
+  margin: 3px;
+  padding: 5px 5px;
+  caret-color: white;
+  font-size: 20px;
+  font-weight: 700;
+}
+
+list > #plugin {
+  border-top: 1px solid rgba(255,255,255,0.3);
+  margin: 3px;
+  padding-top: 3px;
+  padding-left: 3px;
+  font-weight: 400;
+}
+
+list > #plugin:first-child { 
+  margin-top: .3rem;
+}
+
+list > #plugin:last-child { 
+  margin-bottom: .3rem; 
+}
+
+list > #plugin:hover { 
+  padding: 5px; 
+}
+
+box#main {
+  border-color: rgba(137, 180, 250, 1);    
+  color: white;
+  border-width: 4px;
+  border-style: solid;
+  margin-top: 15px;
+  background-color: rgba(0,0,0,0.7);
+  border-radius: 7px;
+  padding: 5px;
+}
+
+zlabel#plugin {
+  font-size:20px;
+}
