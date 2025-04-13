@@ -58,8 +58,8 @@
     "spacing": 2
   },
   "clock": {
-    "interval": 60,
-    "format": " {:%A, %B %d [%H:%M]}",
+    "interval": 1,
+    "format": " {:%A, %B %d [%H:%M:%S]}",
     "tooltip-format": "<tt><small>{calendar}</small></tt>",
     "calendar": {
       "mode": "year",
@@ -136,7 +136,8 @@
   },
   "network": {
     "format-disconnected": "Disconnected",
-    "format-wifi": "  {essid}",
+    //"interval": 1,
+    "format-wifi": "  {essid}  {bandwidthDownBytes}",
     "tooltip-format": " {signalStrength}",
     "on-click": "wifimenu",
   },
