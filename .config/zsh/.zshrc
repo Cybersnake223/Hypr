@@ -143,7 +143,7 @@ fi
 # Source Zsh Syntax Highlighting (if exists) 
 if [[ -f "$HOME/.config/zsh/plugins/fast-syntax-highlighting/F-Sy-H.plugin.zsh" ]]; then
   source "$HOME/.config/zsh/plugins/fast-syntax-highlighting/F-Sy-H.plugin.zsh" 2>/dev/null
-  fast-theme -q catppuccin-macchiato
+  fast-theme -q catppuccin-mocha
 fi
 
 # Source Zsh Auto completion (if exists)
