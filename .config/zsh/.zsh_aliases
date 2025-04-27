@@ -66,7 +66,7 @@ alias sss="systemctl status"
 alias ping="prettyping"
 
 # DISK USAGE
-alias du="dust -sbr -HP"
+alias du="dust -sbr"
 alias df="pydf -m"
 
 # Pdf Actions
