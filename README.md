@@ -35,21 +35,21 @@
   <p> </p>
 
   
-  - 🍀 ** Base ** - [Arch](https://archlinux.org/) 
-  - 🌼 ** Wayland compositor ** - [Hyprland](https://hyprland.org/) 
-  - ✨ ** Bar ** - [Waybar](https://github.com/Alexays/Waybar) 
-  - 💦 ** GUI File Manager ** - [Thunar](https://gitlab.xfce.org/xfce/thunar) 
-  - 🗄️ ** CLI File Manager ** - [Yazi](https://yazi-rs.github.io/docs/installation/) 
-  - 🌷 ** Terminal ** - [Foot](https://github.com/DanteAlighierin/foot) 
-  - 🍄 ** Shell ** - [Zsh](https://zsh.sourceforge.io/) 
-  - 🪵 ** Notifications ** - [Mako](https://github.com/emersion/mako) 
-  - 🌻 ** Launcher ** - [Rofi (Lbonn Fork)](https://github.com/lbonn/rofi) 
-  - 🚀 ** Dmenu Program ** - [Rofi (Lbonn Fork)](https://github.com/lbonn/rofi)
-  - 🍁 ** Wallpaper ** - [Hyprpaper](https://github.com/hyprwm/hyprpaper)
-  - 🌐 ** Browser ** - [Brave](https://brave.com/linux) 
-  - ❄️  ** Screen locker ** - [Hyprlock](https://github.com/hyprwm/hyprlock) 
-  - ⏬ ** Download Manager ** - [Aria2](https://github.com/aria2/aria2)
-  - 🤖 ** System Fetch ** - [Nitch](https://github.com/ssleert/nitch)
+  - 🍀 **Base** - [Arch](https://archlinux.org/) 
+  - 🌼 **Wayland compositor** - [Hyprland](https://hyprland.org/) 
+  - ✨ **Bar** - [Waybar](https://github.com/Alexays/Waybar) 
+  - 💦 **GUI File Manager** - [Thunar](https://gitlab.xfce.org/xfce/thunar) 
+  - 🗄️ **CLI File Manager** - [Yazi](https://yazi-rs.github.io/docs/installation/) 
+  - 🌷 **Terminal** - [Foot](https://github.com/DanteAlighierin/foot) 
+  - 🍄 **Shell** - [Zsh](https://zsh.sourceforge.io/) 
+  - 🪵 **Notifications** - [Mako](https://github.com/emersion/mako) 
+  - 🌻 **Launcher** - [Rofi (Lbonn Fork)](https://github.com/lbonn/rofi) 
+  - 🚀 **Dmenu Program** - [Rofi (Lbonn Fork)](https://github.com/lbonn/rofi)
+  - 🍁 **Wallpaper** - [Hyprpaper](https://github.com/hyprwm/hyprpaper)
+  - 🌐 **Browser** - [Brave](https://brave.com/linux) 
+  - ❄️  **Screen locker** - [Hyprlock](https://github.com/hyprwm/hyprlock) 
+  - ⏬ **Download Manager** - [Aria2](https://github.com/aria2/aria2)
+  - 🤖 **System Fetch** - [Nitch](https://github.com/ssleert/nitch)
 
 </div>  
 
