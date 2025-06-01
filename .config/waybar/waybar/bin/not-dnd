@@ -1,0 +1,81 @@
+#!/bin/sh
+############################################################################################################
+##   ______  __      __  _______   ________  _______    ______   __    __   ______   __    __  ________   ##
+##  /      \|  \    /  \|       \ |        \|       \  /      \ |  \  |  \ /      \ |  \  /  \|        \  ##
+## |  $$$$$$\\$$\  /  $$| $$$$$$$\| $$$$$$$$| $$$$$$$\|  $$$$$$\| $$\ | $$|  $$$$$$\| $$ /  $$| $$$$$$$$  ##
+## | $$   \$$ \$$\/  $$ | $$__/ $$| $$__    | $$__| $$| $$___\$$| $$$\| $$| $$__| $$| $$/  $$ | $$__      ##
+## | $$        \$$  $$  | $$    $$| $$  \   | $$    $$ \$$    \ | $$$$\ $$| $$    $$| $$  $$  | $$  \     ##
+## | $$   __    \$$$$   | $$$$$$$\| $$$$$   | $$$$$$$\ _\$$$$$$\| $$\$$ $$| $$$$$$$$| $$$$$\  | $$$$$     ##
+## | $$__/  \   | $$    | $$__/ $$| $$_____ | $$  | $$|  \__| $$| $$ \$$$$| $$  | $$| $$ \$$\ | $$_____   ##
+##  \$$    $$   | $$    | $$    $$| $$     \| $$  | $$ \$$    $$| $$  \$$$| $$  | $$| $$  \$$\| $$     \  ##
+##   \$$$$$$     \$$     \$$$$$$$  \$$$$$$$$ \$$   \$$  \$$$$$$  \$$   \$$ \$$   \$$ \$$   \$$ \$$$$$$$$  ##
+##                                                                                                        ##
+## Notification Toggle                                                                                    ##
+## Created by Cybersnake                                                                                  ##
+############################################################################################################
+
+
+check() {
+	command -v "$1" 1>/dev/null
+}
+
+check makoctl || exit
+
+notify() {
+	check notify-send && {
+		notify-send "$@"
+		return
+	}
+	echo "$@"
+}
+
+state="$(makoctl mode | sed -z 's/\n/ /g')"
+
+toggle() {
+	case "$state" in
+	"default silent ") notify "DND Enabled" && makoctl mode -a "do-not-disturb" ;;
+	*"disturb"*) makoctl mode -r "silent" -r "do-not-disturb" && notify "DND Disabled" ;;
+	*) makoctl mode -a "silent" && notify "Silent Mode" ;;
+	esac
+}
+
+[ $# -eq 1 ] && {
+	if [[ "$1" = *"rofi"* ]]; then
+		case "$state" in
+		"default silent ") str=" Silent\nDND\nNotification" ;;
+		*"disturb"*) str="Silent\n DND\nNotification" ;;
+		*) str="Silent\nDND\n Notification" ;;
+		esac
+
+		choice=$(echo -e "$str" | rofi -dmenu -i -l 3 -config ~/.config/rofi/config.rasi)
+		case $choice in
+		Silent)
+			makoctl mode -r "silent" -r "do-not-disturb"
+			makoctl mode -a "silent" && notify "Silent Mode"
+			pkill -SIGRTMIN+2 waybar
+			;;
+		DND)
+          notify "DND Enabled" && makoctl mode -a "do-not-disturb"
+			makoctl mode -r "silent" -r "do-not-disturb"
+			pkill -SIGRTMIN+2 waybar
+			;;
+		Notification)
+			makoctl mode -r "silent" -r "do-not-disturb"
+			pkill -SIGRTMIN+2 waybar
+			;;
+		*)
+			notify "Battery Saver" "No option selected"
+			;;
+		esac
+	else
+		case "$state" in
+		"default silent ")output='{"text":"","tooltip":"Silent"}' ;;
+		*"disturb"*)output='{"text":"","tooltip":"DND"}' ;;
+		*)output='{"text":"󰂞","tooltip":"Notification Enabled"}' ;;
+		esac
+		echo "$output"
+	fi
+} || {
+	toggle &>/dev/null
+	pkill -SIGRTMIN+2 waybar
+}
