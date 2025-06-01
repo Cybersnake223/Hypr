@@ -23,7 +23,6 @@
   "height": 0,
   "modules-left": [
     "hyprland/workspaces",
-    "backlight",
     "bluetooth",
     "network",
   ],
@@ -37,7 +36,7 @@
   ],
   "modules-right": [
     "tray",
-    "custom/player",
+    "backlight",
     "pulseaudio",
     "pulseaudio#microphone",
     "battery",
@@ -136,8 +135,8 @@
   },
   "network": {
     "format-disconnected": "Disconnected",
-    //"interval": 1,
-    "format-wifi": "  {essid}  {bandwidthDownBytes}",
+    //"interval": 5,
+    "format-wifi": "  {essid}",
     "tooltip-format": " {signalStrength}",
     "on-click": "wifimenu",
   },
@@ -157,6 +156,7 @@
   },
   "disk": {
     "interval": 6000,
+    "path": "/home/cybersnake/",
     "format": " {percentage_used}%",
     "tooltip-format": "{used} used out of {total} on {path} ",
   },
