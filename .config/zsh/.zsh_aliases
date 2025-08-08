@@ -1,0 +1,135 @@
+############################################################################################################
+##   ______  __      __  _______   ________  _______    ______   __    __   ______   __    __  ________   ##
+##  /      \|  \    /  \|       \ |        \|       \  /      \ |  \  |  \ /      \ |  \  /  \|        \  ##
+## |  $$$$$$\\$$\  /  $$| $$$$$$$\| $$$$$$$$| $$$$$$$\|  $$$$$$\| $$\ | $$|  $$$$$$\| $$ /  $$| $$$$$$$$  ##
+## | $$   \$$ \$$\/  $$ | $$__/ $$| $$__    | $$__| $$| $$___\$$| $$$\| $$| $$__| $$| $$/  $$ | $$__      ##
+## | $$        \$$  $$  | $$    $$| $$  \   | $$    $$ \$$    \ | $$$$\ $$| $$    $$| $$  $$  | $$  \     ##
+## | $$   __    \$$$$   | $$$$$$$\| $$$$$   | $$$$$$$\ _\$$$$$$\| $$\$$ $$| $$$$$$$$| $$$$$\  | $$$$$     ##
+## | $$__/  \   | $$    | $$__/ $$| $$_____ | $$  | $$|  \__| $$| $$ \$$$$| $$  | $$| $$ \$$\ | $$_____   ##
+##  \$$    $$   | $$    | $$    $$| $$     \| $$  | $$ \$$    $$| $$  \$$$| $$  | $$| $$  \$$\| $$     \  ##
+##   \$$$$$$     \$$     \$$$$$$$  \$$$$$$$$ \$$   \$$  \$$$$$$  \$$   \$$ \$$   \$$ \$$   \$$ \$$$$$$$$  ##
+##                                                                                                        ##
+## ZSH CUSTOM ALIASES                                                                                     ##  
+## Created by Cybersnake                                                                                  ##
+############################################################################################################
+
+# Cd
+alias ..="cd .."
+alias ...="cd ../.."
+alias ....="cd ../../.."
+alias .....="cd ../../../.."
+alias config="cd $HOME/.config"
+alias scripts="cd $HOME/.local/bin/scripts/"
+alias testing="cd $HOME/Templates/Tests"
+
+# Auto-cpu Conf
+alias cpuconf="sudoedit /etc/auto-cpufreq.conf"
+
+# Check Key Press
+alias whichkey="xev | grep -A2 --line-buffered '^KeyRelease' | sed -n '/keycode /s/^.*keycode \([0-9]*\).* (.*, \(.*\)).*$/\1 \2/p'"
+
+# Diff
+alias diff="diff --color=always"
+
+# Directory
+alias mkdir="mkdir -pv"
+
+# Figlet
+alias figlet="figlet -w 140"
+
+# Disk Usage 
+alias ncdu="ncdu -2 -e --si --color off"
+
+
+# Exit
+alias e="exit"
+
+# Rfkill
+alias rfblock="rfkill block"
+alias rfublock="rfkill unblock"
+alias bwifi="rfkill block wlan"
+alias bbt="rfkill block bluetooth"
+alias ubbt="rfkill unblock bluetooth"
+alias ubwifi="rfkill unblock wlan"
+
+# Systemctl
+alias ssen="sudo systemctl enable --now"
+alias ssdn="sudo systemctl disable --now"
+alias ssm="sudo systemctl mask"
+alias ssum="sudo systemctl unmask"
+alias ssr="sudo systemctl restart"
+alias ssdr="sudo systemctl daemon-reload"
+alias sss="systemctl status"
+
+
+# Ping 
+alias ping="prettyping"
+
+# DISK USAGE
+alias du="dust -sbr"
+alias df="pydf -m"
+
+# Pdf Actions
+alias pdfcomp="gs -sDEVICE=pdfwrite -dCompatibilityLevel=1.4 -dPDFSETTINGS=/ebook -dNOPAUSE -dQUIET -dBATCH -sOutputFile=compressed.pdf"
+alias topdf="soffice --headless --convert-to pdf"
+
+# Image Actions
+alias topng="mogrify -quality 0 -format png"
+alias tojpg="mogrify -quality 0 -format jpeg"
+
+# Unzip
+alias targ="tar -xvzf"
+alias tar="tar -xvf"
+
+# PIP 
+#alias pip="pipx"
+alias pip3="pipx"
+
+# Remove
+alias rmr="rm -rf"
+alias rm="rm"
+
+# Clear
+alias cl="clear"
+
+# Find Files
+alias fdh="fd -H"
+alias fds="fd -s -H"
+
+# Copy
+alias cp='advcp -rvgf'
+alias sucp='sudo advcp -rvgi'
+
+# Move
+alias mv='advmv -vgf'
+alias sumv='sudo advmv -vg'
+
+# GRUB
+alias egrub="sudoedit /etc/default/grub"
+alias ugrub="sudo grub-mkconfig -o /boot/grub/grub.cfg"
+
+# Cat
+alias cat="bat --theme=catppuccin-mocha"  
+
+# Nvim
+alias nv="nvim"
+alias snv="sudoedit"
+
+# Ls
+alias l="eza -Glax --icons --sort=Name --no-permissions --no-time"
+alias la="eza -Glax --icons --sort=Name --no-permissions --no-time"
+alias ls="eza --icons"
+
+# Git
+alias gc='gh repo clone'
+alias gi='git init'
+
+# Uptime
+alias uptime="uptime -p"
+
+# Yay
+alias ys="yay"
+alias yi="yay -S"
+alias y="yay -Syyu --noconfirm"
+alias yr="yay -Rns"
+alias pkginfo="yay -Qi"

@@ -1,0 +1,6 @@
+tap: false
+directories:
+  tests: tests
+time_limit: 0
+fail_fast: false
+allow_risky: false

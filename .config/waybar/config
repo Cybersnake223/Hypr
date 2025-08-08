@@ -1,0 +1,8 @@
+
+[
+  {
+    "include": [
+      "$HOME/.config/waybar/config.jsonc",
+    ],
+  }
+]

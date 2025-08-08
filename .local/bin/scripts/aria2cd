@@ -1,0 +1,35 @@
+#!/bin/sh
+############################################################################################################
+##   ______  __      __  _______   ________  _______    ______   __    __   ______   __    __  ________   ##
+##  /      \|  \    /  \|       \ |        \|       \  /      \ |  \  |  \ /      \ |  \  /  \|        \  ##
+## |  $$$$$$\\$$\  /  $$| $$$$$$$\| $$$$$$$$| $$$$$$$\|  $$$$$$\| $$\ | $$|  $$$$$$\| $$ /  $$| $$$$$$$$  ##
+## | $$   \$$ \$$\/  $$ | $$__/ $$| $$__    | $$__| $$| $$___\$$| $$$\| $$| $$__| $$| $$/  $$ | $$__      ##
+## | $$        \$$  $$  | $$    $$| $$  \   | $$    $$ \$$    \ | $$$$\ $$| $$    $$| $$  $$  | $$  \     ##
+## | $$   __    \$$$$   | $$$$$$$\| $$$$$   | $$$$$$$\ _\$$$$$$\| $$\$$ $$| $$$$$$$$| $$$$$\  | $$$$$     ##
+## | $$__/  \   | $$    | $$__/ $$| $$_____ | $$  | $$|  \__| $$| $$ \$$$$| $$  | $$| $$ \$$\ | $$_____   ##
+##  \$$    $$   | $$    | $$    $$| $$     \| $$  | $$ \$$    $$| $$  \$$$| $$  | $$| $$  \$$\| $$     \  ##
+##   \$$$$$$     \$$     \$$$$$$$  \$$$$$$$$ \$$   \$$  \$$$$$$  \$$   \$$ \$$   \$$ \$$   \$$ \$$$$$$$$  ##
+##                                                                                                        ##  
+## Aria2c RPC                                                                                             ##
+## Created by Cybersnake                                                                                  ##
+############################################################################################################
+
+# Efficiently check and stop aria2c, handling multiple processes
+check_and_kill_aria2c() {
+    while pgrep -x aria2c > /dev/null; do
+      pkill aria2c
+    done
+}
+
+# Combine process check and kill for conciseness
+check_and_kill_aria2c
+
+# Starting Aria RPC
+aria2c -j5 -x15 -k25M --split=15 --enable-rpc=true --check-certificate=false --daemon=true --always-resume=true
+
+# Direct notification based on process status
+if pgrep -x aria2c > /dev/null; then
+    notify-send "Aria2" "Daemon Started"
+else
+    notify-send "Aria2" "Failed to start daemon"
+fi

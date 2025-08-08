@@ -1,0 +1,17 @@
+Server = https://in-3-mirror.chaotic.cx/$repo/$arch
+Server = https://geo-mirror.chaotic.cx/$repo/$arch
+Server = https://us-tx-mirror.chaotic.cx/$repo/$arch
+Server = https://de-2-mirror.chaotic.cx/$repo/$arch
+Server = https://ca-mirror.chaotic.cx/$repo/$arch
+Server = https://bg-mirror.chaotic.cx/$repo/$arch
+Server = https://in-2-mirror.chaotic.cx/$repo/$arch
+Server = https://in-mirror.chaotic.cx/$repo/$arch
+Server = https://cdn-mirror.chaotic.cx/$repo/$arch
+Server = https://kr-mirror.chaotic.cx/$repo/$arch
+Server = https://de-3-mirror.chaotic.cx/$repo/$arch
+Server = https://us-mi-mirror.chaotic.cx/$repo/$arch
+Server = https://us-ut-mirror.chaotic.cx/$repo/$arch
+Server = https://es-2-mirror.chaotic.cx/$repo/$arch
+Server = https://gr-mirror.chaotic.cx/$repo/$arch
+Server = https://fr-mirror.chaotic.cx/$repo/$arch
+Server = https://cl-mirror.chaotic.cx/$repo/$arch

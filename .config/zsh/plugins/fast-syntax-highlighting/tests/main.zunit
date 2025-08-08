@@ -1,0 +1,122 @@
+#!/usr/bin/env zunit
+@setup {
+    load "../functions/fast-highlight"
+    setopt interactive_comments
+    -fast-highlight-fill-option-variables
+}
+
+@test 'ls /usr/bin' {
+reply=()
+    PREBUFFER=""
+    BUFFER="ls /usr/bin"
+    evl -fast-highlight-process "$PREBUFFER" "$BUFFER" 0
+
+    assert "$reply[1]" same_as "0 2 ${FAST_HIGHLIGHT_STYLES[${FAST_THEME_NAME}command]}"
+    assert "$reply[2]" same_as "3 11 ${FAST_HIGHLIGHT_STYLES[${FAST_THEME_NAME}path-to-dir]}"
+    assert "$reply[3]" same_as ""
+}
+
+@test 'ls /bin/df' {
+    reply=()
+    PREBUFFER=""
+    BUFFER="ls /bin/df"
+    evl -fast-highlight-process "$PREBUFFER" "$BUFFER" 0
+
+    assert "$reply[1]" same_as "0 2 ${FAST_HIGHLIGHT_STYLES[${FAST_THEME_NAME}command]}"
+    assert "$reply[2]" same_as "3 10 ${FAST_HIGHLIGHT_STYLES[${FAST_THEME_NAME}path]}"
+    assert "$reply[3]" same_as ""
+}
+
+
+@test 'ls /bin/ls\\n # a comment\\nls /usr/bin' {
+    reply=()
+    PREBUFFER=""
+    BUFFER=$'ls /bin/df\n # a comment\nls /usr/bin'
+    evl -fast-highlight-process "$PREBUFFER" "$BUFFER" 0
+
+    assert "$reply[1]" same_as "0 2 ${FAST_HIGHLIGHT_STYLES[${FAST_THEME_NAME}command]}"
+    assert "$reply[2]" same_as "3 10 ${FAST_HIGHLIGHT_STYLES[${FAST_THEME_NAME}path]}"
+    assert "$reply[3]" same_as "12 23 ${FAST_HIGHLIGHT_STYLES[${FAST_THEME_NAME}comment]}"
+    assert "$reply[4]" same_as "24 26 ${FAST_HIGHLIGHT_STYLES[${FAST_THEME_NAME}command]}"
+    assert "$reply[5]" same_as "27 35 ${FAST_HIGHLIGHT_STYLES[${FAST_THEME_NAME}path-to-dir]}"
+    assert "$reply[6]" same_as ""
+}
+
+
+@test 'exec {FD}< <( ls /bin )' {
+    reply=()
+    PREBUFFER=""
+    BUFFER=$'exec {FD}< <( ls /bin )'
+    evl -fast-highlight-process "$PREBUFFER" "$BUFFER" 0
+
+    assert "$reply[1]" same_as "0 4 ${FAST_HIGHLIGHT_STYLES[${FAST_THEME_NAME}precommand]}"
+    assert "$reply[2]" same_as "5 9 ${FAST_HIGHLIGHT_STYLES[${FAST_THEME_NAME}exec-descriptor]}"
+    assert "$reply[3]" same_as ""
+}
+
+
+@test 'case x in x) a;; (y) ;; esac' {
+    reply=()
+    PREBUFFER=""
+    BUFFER=$'case x in\nx) a;;\n(y)\n;;\nesac'
+    evl -fast-highlight-process "$PREBUFFER" "$BUFFER" 0
+
+    assert "$reply[1]" same_as "0 4 ${FAST_HIGHLIGHT_STYLES[${FAST_THEME_NAME}reserved-word]}"
+    assert "$reply[2]" same_as "5 6 ${FAST_HIGHLIGHT_STYLES[${FAST_THEME_NAME}case-input]}"
+    assert "$reply[3]" same_as "7 9 ${FAST_HIGHLIGHT_STYLES[${FAST_THEME_NAME}case-parentheses]}"
+    assert "$reply[4]" same_as "10 11 ${FAST_HIGHLIGHT_STYLES[${FAST_THEME_NAME}case-condition]}"
+    assert "$reply[5]" same_as "11 12 ${FAST_HIGHLIGHT_STYLES[${FAST_THEME_NAME}case-parentheses]}"
+    assert "$reply[6]" same_as "13 14 ${FAST_HIGHLIGHT_STYLES[${FAST_THEME_NAME}unknown-token]}"
+    assert "$reply[7]" same_as "17 18 ${FAST_HIGHLIGHT_STYLES[${FAST_THEME_NAME}case-parentheses]}"
+    assert "$reply[8]" same_as "18 19 ${FAST_HIGHLIGHT_STYLES[${FAST_THEME_NAME}case-condition]}"
+    assert "$reply[9]" same_as "19 20 ${FAST_HIGHLIGHT_STYLES[${FAST_THEME_NAME}case-parentheses]}"
+    assert "$reply[10]" same_as "24 28 ${FAST_HIGHLIGHT_STYLES[${FAST_THEME_NAME}reserved-word]}"
+    assert "$reply[11]" same_as ""
+}
+
+@test '-fast-highlight-process "$PREBUFFER" "$BUFFER" 0' {
+    reply=()
+    PREBUFFER=""
+    BUFFER='-fast-highlight-process "$PREBUFFER" "$BUFFER" 0'
+    evl -fast-highlight-process "\$PREBUFFER" "\$BUFFER" 0
+
+    assert "$reply[1]" same_as "0 23 ${FAST_HIGHLIGHT_STYLES[${FAST_THEME_NAME}function]}"
+    assert "$reply[2]" same_as "24 36 ${FAST_HIGHLIGHT_STYLES[${FAST_THEME_NAME}double-quoted-argument]}"
+    assert "$reply[3]" same_as "25 35 ${FAST_HIGHLIGHT_STYLES[${FAST_THEME_NAME}back-or-dollar-double-quoted-argument]}"
+    assert "$reply[4]" same_as "37 46 ${FAST_HIGHLIGHT_STYLES[${FAST_THEME_NAME}double-quoted-argument]}"
+    assert "$reply[5]" same_as "38 45 ${FAST_HIGHLIGHT_STYLES[${FAST_THEME_NAME}back-or-dollar-double-quoted-argument]}"
+    assert "$reply[6]" same_as ""
+}
+
+@test 'tr : \\\\n <<<$PATH' {
+    reply=()
+    PREBUFFER=""
+    BUFFER='command tr : \\n <<<test$PATH'
+    evl -fast-highlight-process "\$PREBUFFER" "\$BUFFER" 0
+
+    assert "$reply[1]" same_as "0 7 ${FAST_HIGHLIGHT_STYLES[${FAST_THEME_NAME}precommand]}"
+    assert "$reply[2]" same_as "8 10 ${FAST_HIGHLIGHT_STYLES[${FAST_THEME_NAME}command]}"
+    assert "$reply[3]" same_as "16 19 ${FAST_HIGHLIGHT_STYLES[${FAST_THEME_NAME}here-string-tri]}"
+    # BUG?: the text spans over non-text (i.e. var) part
+    assert "$reply[4]" same_as "19 28 ${FAST_HIGHLIGHT_STYLES[${FAST_THEME_NAME}here-string-text]}"
+    assert "$reply[5]" same_as "23 28 ${FAST_HIGHLIGHT_STYLES[${FAST_THEME_NAME}here-string-var]}"
+    assert "$reply[6]" same_as ""
+}
+
+@test 'local var1; (( var + var1 + $var + $var1 + 123 ))' {
+    reply=()
+    PREBUFFER=""
+    BUFFER='local var1; (( var + var1 + $var + $var1 + 123 ))'
+    evl -fast-highlight-process "\$PREBUFFER" "\$BUFFER" 0
+
+    # Should actually be `reserved-word', but the type -w call returns `builtin'…
+    assert "$reply[1]" same_as "0 5 ${FAST_HIGHLIGHT_STYLES[${FAST_THEME_NAME}builtin]}"
+    assert "$reply[2]" same_as "12 14 ${FAST_HIGHLIGHT_STYLES[${FAST_THEME_NAME}double-paren]}"
+    assert "$reply[3]" same_as "15 18 ${FAST_HIGHLIGHT_STYLES[${FAST_THEME_NAME}matherr]}"
+    assert "$reply[4]" same_as "21 25 ${FAST_HIGHLIGHT_STYLES[${FAST_THEME_NAME}mathvar]}"
+    assert "$reply[5]" same_as "28 32 ${FAST_HIGHLIGHT_STYLES[${FAST_THEME_NAME}matherr]}"
+    assert "$reply[6]" same_as "35 40 ${FAST_HIGHLIGHT_STYLES[${FAST_THEME_NAME}back-or-dollar-double-quoted-argument]}"
+    assert "$reply[7]" same_as "43 46 ${FAST_HIGHLIGHT_STYLES[${FAST_THEME_NAME}mathnum]}"
+    assert "$reply[8]" same_as "47 49 ${FAST_HIGHLIGHT_STYLES[${FAST_THEME_NAME}double-paren]}"
+    assert "$reply[9]" same_as ""
+}

@@ -1,0 +1,95 @@
+#!/bin/bash
+
+############################################################################################################
+##   ______  __      __  _______   ________  _______    ______   __    __   ______   __    __  ________   ##
+##  /      \|  \    /  \|       \ |        \|       \  /      \ |  \  |  \ /      \ |  \  /  \|        \  ##
+## |  $$$$$$\\$$\  /  $$| $$$$$$$\| $$$$$$$$| $$$$$$$\|  $$$$$$\| $$\ | $$|  $$$$$$\| $$ /  $$| $$$$$$$$  ##
+## | $$   \$$ \$$\/  $$ | $$__/ $$| $$__    | $$__| $$| $$___\$$| $$$\| $$| $$__| $$| $$/  $$ | $$__      ##
+## | $$        \$$  $$  | $$    $$| $$  \   | $$    $$ \$$    \ | $$$$\ $$| $$    $$| $$  $$  | $$  \     ##
+## | $$   __    \$$$$   | $$$$$$$\| $$$$$   | $$$$$$$\ _\$$$$$$\| $$\$$ $$| $$$$$$$$| $$$$$\  | $$$$$     ##
+## | $$__/  \   | $$    | $$__/ $$| $$_____ | $$  | $$|  \__| $$| $$ \$$$$| $$  | $$| $$ \$$\ | $$_____   ##
+##  \$$    $$   | $$    | $$    $$| $$     \| $$  | $$ \$$    $$| $$  \$$$| $$  | $$| $$  \$$\| $$     \  ##
+##   \$$$$$$     \$$     \$$$$$$$  \$$$$$$$$ \$$   \$$  \$$$$$$  \$$   \$$ \$$   \$$ \$$   \$$ \$$$$$$$$  ##
+##                                                                                                        ##
+## Config Edit Script                                                                                     ##
+## Created by Cybersnake                                                                                  ##
+############################################################################################################
+
+options=("aliases
+anyrun
+cava
+foot
+hyprland
+hyprlock
+mako
+mpv
+mpv-input
+nvim
+rofi
+waybar
+waybar-Style
+yay
+yt-dlp
+yazi
+zsh")
+
+choice=$(echo -e "${options[@]}" | rofi -dmenu -I -p 'Edit config file: ')
+
+case "$choice" in
+aliases)
+	choice="$HOME/.config/zsh/.zsh_aliases"
+	;;
+anyrun)
+    choice="$HOME/.config/anyrun/config.ron"
+    ;;
+cava)
+	choice="$HOME/.config/cava/config"
+	;;
+foot)
+    choice="$HOME/.config/foot/foot.ini"
+    ;;
+hyprland)
+	choice="$HOME/.config/hypr/hyprland.conf"
+	;;
+hyprlock)
+    choice="$HOME/.config/swaylock/config"
+    ;;
+mako)
+    choice="$HOME/.config/mako/config"
+    ;;
+mpv)
+	choice="$HOME/.config/mpv/mpv.conf"
+	;;
+mpv-input)
+	choice="$HOME/.config/mpv/input.conf"
+	;;
+nvim)
+    choice="$HOME/.config/nvim"
+    ;;
+rofi)
+	choice="$HOME/.config/rofi/config.rasi"
+	;;
+waybar)
+	choice="$HOME/.config/waybar/config.jsonc"
+	;;
+waybar-Style)
+	choice="$HOME/.config/waybar/style.css"
+	;;
+yay)
+	choice="$HOME/.config/yay/config.json"
+	;;
+yt-dlp)
+	choice="$HOME/.config/yt-dlp/config"
+	;;
+yazi)
+    choice="$HOME/.config/yazi/yazi.toml"
+    ;;
+zsh)
+	choice="$HOME/.config/zsh/.zshrc"
+	;;
+*)
+	exit 1
+	;;
+esac
+
+foot -e lvim "$choice"

@@ -1,0 +1,312 @@
+#!/bin/bash
+############################################################################################################
+##   ______  __      __  _______   ________  _______    ______   __    __   ______   __    __  ________   ##
+##  /      \|  \    /  \|       \ |        \|       \  /      \ |  \  |  \ /      \ |  \  /  \|        \  ##
+## |  $$$$$$\\$$\  /  $$| $$$$$$$\| $$$$$$$$| $$$$$$$\|  $$$$$$\| $$\ | $$|  $$$$$$\| $$ /  $$| $$$$$$$$  ##
+## | $$   \$$ \$$\/  $$ | $$__/ $$| $$__    | $$__| $$| $$___\$$| $$$\| $$| $$__| $$| $$/  $$ | $$__      ##
+## | $$        \$$  $$  | $$    $$| $$  \   | $$    $$ \$$    \ | $$$$\ $$| $$    $$| $$  $$  | $$  \     ##
+## | $$   __    \$$$$   | $$$$$$$\| $$$$$   | $$$$$$$\ _\$$$$$$\| $$\$$ $$| $$$$$$$$| $$$$$\  | $$$$$     ##
+## | $$__/  \   | $$    | $$__/ $$| $$_____ | $$  | $$|  \__| $$| $$ \$$$$| $$  | $$| $$ \$$\ | $$_____   ##
+##  \$$    $$   | $$    | $$    $$| $$     \| $$  | $$ \$$    $$| $$  \$$$| $$  | $$| $$  \$$\| $$     \  ##
+##   \$$$$$$     \$$     \$$$$$$$  \$$$$$$$$ \$$   \$$  \$$$$$$  \$$   \$$ \$$   \$$ \$$   \$$ \$$$$$$$$  ##
+##                                                                                                        ##
+## Wallhaven Wallpaper Downloader                                                                         ##
+## Created by Cybersnake                                                                                  ##
+############################################################################################################
+
+# Rofi menus
+stype=$(echo -e "standard\nsearch" | rofi -l 2 -dmenu -p "Search Type:")
+
+if [ "$stype" = "standard" ]; then 
+    smode=$(echo -e "toplist\nrandom" | rofi -l 2 -dmenu -p "Search Mode")
+    notify-send "Downloading wallpaper for" "$smode"
+else
+    query=$(echo -e "sci-fi\nfuturistic\nconcept art" | rofi -l 4 -dmenu -p "Search Query: ")
+    notify-send "Downloading wallpaper for" "$query"
+fi
+pageno=$(rofi -l 0 -dmenu -p "Enter Page Number")
+wpnum=$(echo -e "24\n48\n72\n96\n120" | rofi -l 5 -dmenu -p "No. of Wallpapers:")
+STARTPAGE=$pageno
+APIKEY="your_api_here"
+
+#####################################
+###     Configuration Options     ###
+#####################################
+LOCATION=/home/cybersnake/Pictures/Wallpapers
+WPNUMBER=$wpnum 
+TYPE=$stype             # Download Type (standard,search)
+CATEGORIES=100          # General Anime People
+FILTER=100              # SFW SKETCHY NSFW
+RESOLUTION=1920x1080    # Preferred Resolution (3840x2160, 2560x1440, 1920x1080)
+ATLEAST=1920x1080       # Minimum Resolution
+ASPECTRATIO=16x9        # Monitor Aspect Ratio
+MODE=$smode             # relevance, random, date_added, views, favorites, toplist, toplist-beta 
+TOPRANGE=1y             # possible values: 1d (last day), 3d (last 3 days), 1w (last week),1M (last month), 3M (last 3 months), 6M (last 6 months), 1y (last year)
+ORDER=desc              # Download Order 
+COLLECTION="Default"    
+QUERY="$query"          
+COLOR=""                
+PARALLEL=1              
+THUMBS=24               # valid values: 24, 32, 64 (if set to 32 or 64 you need to provide an api key)
+ 
+#####################################
+###   End Configuration Options   ###
+#####################################
+
+
+function setAPIkeyHeader {
+    # checking parameters -> if not ok print error and exit script
+    if [ $# -lt 1 ] || [ "$1" == '' ]
+    then
+        printf "Please make sure to enter a valid API key,\n"
+        printf "it is needed for NSFW Content and downloading \n"
+        printf "your Collections also make sure your Thumbnails per\n"
+        printf "Page Setting matches the THUMBS Variable\n\n"
+        printf "Press any key to exit\n"
+        read -r
+        exit
+    fi
+
+    # everythings ok --> set api key header
+    httpHeader="X-API-Key: $APIKEY"
+} # /setAPIkeyHeader
+
+#
+# downloads Page with Thumbnails
+#
+function getPage {
+    # checking parameters -> if not ok print error and exit script
+    if [ $# -lt 1 ]
+    then
+        printf "getPage expects at least 1 argument\\n"
+        printf "arg1:\\tparameters for the wget -q command\\n\\n"
+        printf "press any key to exit\\n"
+        read -r
+        exit
+    fi
+
+    # parameters ok --> get page
+    WGET -O tmp "https://wallhaven.cc/api/v1/$1"
+} # /getPage
+
+#
+# downloads all the wallpaper from a wallpaperfile
+# arg1: the file containing the wallpapers
+#
+function downloadWallpapers {
+    if (( "$page" >= "$(jq -r ".meta.last_page" tmp)" ))
+    then
+        downloadEndReached=true
+    fi
+
+    for ((i=0; i<THUMBS; i++))
+    do
+        imgURL=$(jq -r ".data[$i].path" tmp)
+
+        filename=$(echo "$imgURL"| sed "s/.*\///" )
+        if grep -w "$filename" downloaded.txt >/dev/null
+        then
+            printf "\\tWallpaper %s already downloaded!\\n" "$imgURL"
+        elif [ $PARALLEL == 1 ]
+        then
+            echo "$imgURL" >> download.txt
+        else
+            # check if downloadWallpaper was successful
+            if downloadWallpaper "$imgURL"
+            then
+                echo "$filename" >> downloaded.txt
+            fi
+        fi
+    done
+
+    if [ $PARALLEL == 1 ] && [ -f ./download.txt ]
+    then
+        # export wget wrapper and download function to make it
+        # available for parallel
+        export -f WGET coolDown downloadWallpaper
+        # shellcheck disable=SC2016
+        SHELL=$(type -p bash) parallel --gnu --no-notice \
+            'imgURL={} && downloadWallpaper $imgURL && echo "$imgURL"| sed "s/.*\///" >> downloaded.txt' < download.txt
+            rm tmp download.txt
+        else
+            rm tmp
+    fi
+} # /downloadWallpapers
+
+#
+# downloads a single Wallpaper by guessing its extension, this eliminates
+# the need to download each wallpaper page, now only the thumbnail page
+# needs to be downloaded
+#
+function downloadWallpaper {
+    if [[ "$1" != null ]]
+    then
+        WGET "$1"
+    else
+        return 1
+    fi
+} # /downloadWallpaper
+
+#
+# Waits for 30 seconds if rate limiting is detected
+#
+function coolDown {
+    printf "\\t -Rate Limiting detected, sleeping for 30 seconds\\n"
+    sleep 30
+    WGET "$@"
+} # /coolDown
+
+#
+# wrapper for wget with some default arguments
+# arg0: additional arguments for wget (optional)
+# arg1: file to download
+#
+function WGET {
+    # checking parameters -> if not ok print error and exit script
+    if [ $# -lt 1 ]
+    then
+        printf "WGET expects at least 1 argument\\n"
+        printf "arg0:\\tadditional arguments for wget (optional)\\n"
+        printf "arg1:\\tfile to download\\n\\n"
+        printf "press any key to exit\\n"
+        read -r
+        exit
+    fi
+
+    # default wget command
+    wget --server-response -q --header="$httpHeader" --keep-session-cookies \
+         --save-cookies cookies.txt --load-cookies cookies.txt "$@" 2>&1 | \
+         grep "429 Too Many Requests" >/dev/null && coolDown "$@"
+
+    return "${PIPESTATUS[0]}"
+} # /WGET
+
+
+# optionally create a separate subfolder for each search query
+# might download duplicates as each search query has its own list of
+# downloaded wallpapers
+if [ "$TYPE" == search ] && [ "$SUBFOLDER" == 1 ]
+then
+    LOCATION+=/$(echo "$QUERY" | sed -e "s/ /_/g" -e "s/+/_/g" -e  "s/\\//_/g")
+fi
+
+# creates Location folder if it does not exist
+if [ ! -d "$LOCATION" ]
+then
+    mkdir -p "$LOCATION"
+fi
+
+cd "$LOCATION" || exit
+
+# creates downloaded.txt if it does not exist
+if [ ! -f ./downloaded.txt ]
+then
+    touch downloaded.txt
+fi
+
+# set auth header only when it is required ( for example to download your
+# own collections or nsfw content... )
+if  [ "$FILTER" == 001 ] || [ "$FILTER" == 011 ] || [ "$FILTER" == 111 ] \
+    || [ "$TYPE" == collections ] || [ "$THUMBS" != 24 ]
+then
+    setAPIkeyHeader "$APIKEY"
+fi
+
+if [ "$TYPE" == standard ]
+then
+    for ((  count=0, page="$STARTPAGE";
+            count< "$WPNUMBER";
+            count=count+"$THUMBS", page=page+1 ));
+    do
+        printf "Download Page %s\\n" "$page"
+        s1="search?page=$page&categories=$CATEGORIES&purity=$FILTER&"
+        s1+="atleast=$ATLEAST&resolutions=$RESOLUTION&ratios=$ASPECTRATIO"
+        s1+="&sorting=$MODE&order=$ORDER&topRange=$TOPRANGE&colors=$COLOR"
+        getPage "$s1"
+        printf "\\t- done!\\n"
+        printf "Download Wallpapers from Page %s\\n" "$page"
+        downloadWallpapers
+        printf "\\t- done!\\n"
+        if [ "$downloadEndReached" = true ]
+        then
+            break
+        fi
+    done
+
+elif [ "$TYPE" == search ]
+then
+    for ((  count=0, page="$STARTPAGE";
+            count< "$WPNUMBER";
+            count=count+"$THUMBS", page=page+1 ));
+    do
+        printf "Download Page %s\\n" "$page"
+        s1="search?page=$page&categories=$CATEGORIES&purity=$FILTER&"
+        s1+="atleast=$ATLEAST&resolutions=$RESOLUTION&ratios=$ASPECTRATIO"
+        s1+="&sorting=$MODE&order=desc&topRange=$TOPRANGE&colors=$COLOR"
+        if [ "$TYPE" == search ]
+        then
+            s1+="&q=$QUERY"
+        fi
+
+        getPage "$s1"
+        printf "\\t- done!\\n"
+        printf "Download Wallpapers from Page %s\\n" "$page"
+        downloadWallpapers
+        printf "\\t- done!\\n"
+        if [ "$downloadEndReached" = true ]
+        then
+            break
+        fi
+    done
+
+elif [ "$TYPE" == collections ]
+then
+    if [ "$USR" == "" ]
+    then
+        printf "Please check the value specified for USR\\n"
+        printf "to download a Collection it is necessary to specify a User\\n\\n"
+        printf "Press any key to exit\\n"
+        read -r
+        exit
+    fi
+
+    getPage "collections/$USR"
+
+
+    i=0
+    while
+        label=$(jq -e -r ".data[$i].label" tmp)
+        id=$(jq -e -r ".data[$i].id" tmp)
+        collectionsize=$(jq -e -r ".data[$i].count" tmp)
+        [[ $label != "$COLLECTION" && $label != null ]]
+    do
+        (( i++ ))
+    done
+
+    if [ -z "$id" ]
+    then
+        printf "Please check the value specified for COLLECTION\\n"
+        printf "it seems that a collection with the name \"%s\" does not exist\\n\\n" \
+                "$COLLECTION"
+        printf "Press any key to exit\\n"
+        read -r
+        exit
+    fi
+
+    for ((  count=0, page="$STARTPAGE";
+            count< "$WPNUMBER" && count< "$collectionsize";
+            count=count+"$THUMBS", page=page+1 ));
+    do
+        printf "Download Page %s\\n" "$page"
+        getPage "collections/$USR/$id?page=$page"
+        printf "\\t- done!\\n"
+        printf "Download Wallpapers from Page %s\\n" "$page"
+        downloadWallpapers
+        printf "\\t- done!\\n"
+    done
+else
+    printf "error in TYPE please check Variable\\n"
+fi
+
+rm -rf cookies.txt
+notify-send "Wallpapers Downloaded" "$LOCATION"

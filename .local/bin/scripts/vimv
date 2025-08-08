@@ -1,0 +1,54 @@
+#!/bin/bash
+############################################################################################################
+##   ______  __      __  _______   ________  _______    ______   __    __   ______   __    __  ________   ##
+##  /      \|  \    /  \|       \ |        \|       \  /      \ |  \  |  \ /      \ |  \  /  \|        \  ##
+## |  $$$$$$\\$$\  /  $$| $$$$$$$\| $$$$$$$$| $$$$$$$\|  $$$$$$\| $$\ | $$|  $$$$$$\| $$ /  $$| $$$$$$$$  ##
+## | $$   \$$ \$$\/  $$ | $$__/ $$| $$__    | $$__| $$| $$___\$$| $$$\| $$| $$__| $$| $$/  $$ | $$__      ##
+## | $$        \$$  $$  | $$    $$| $$  \   | $$    $$ \$$    \ | $$$$\ $$| $$    $$| $$  $$  | $$  \     ##
+## | $$   __    \$$$$   | $$$$$$$\| $$$$$   | $$$$$$$\ _\$$$$$$\| $$\$$ $$| $$$$$$$$| $$$$$\  | $$$$$     ##
+## | $$__/  \   | $$    | $$__/ $$| $$_____ | $$  | $$|  \__| $$| $$ \$$$$| $$  | $$| $$ \$$\ | $$_____   ##
+##  \$$    $$   | $$    | $$    $$| $$     \| $$  | $$ \$$    $$| $$  \$$$| $$  | $$| $$  \$$\| $$     \  ##
+##   \$$$$$$     \$$     \$$$$$$$  \$$$$$$$$ \$$   \$$  \$$$$$$  \$$   \$$ \$$   \$$ \$$   \$$ \$$$$$$$$  ##
+##                                                                                                        ##
+## Created by Cybersnake                                                                                  ##
+############################################################################################################
+
+set -eu
+
+declare -r FILENAMES_FILE=$(mktemp "${TMPDIR:-/tmp}/vimv.XXXXXX")
+
+trap '{ rm -f "${FILENAMES_FILE}" ; }' EXIT
+
+if [ $# -ne 0 ]; then
+    src=( "$@" )
+else
+    IFS=$'\r\n' GLOBIGNORE='*' command eval 'src=($(exa -a))'
+fi
+
+for ((i=0;i<${#src[@]};++i)); do
+    echo "${src[i]}" >> "${FILENAMES_FILE}"
+done
+
+${EDITOR:-vi} "${FILENAMES_FILE}"
+
+IFS=$'\r\n' GLOBIGNORE='*' command eval 'dest=($(cat "${FILENAMES_FILE}"))'
+
+if (( ${#src[@]} != ${#dest[@]} )); then
+    echo "WARN: Number of files changed. Did you delete a line by accident? Aborting.." >&2
+    exit 1
+fi
+
+declare -i count=0
+for ((i=0;i<${#src[@]};++i)); do
+    if [ "${src[i]}" != "${dest[i]}" ]; then
+        mkdir -p "$(dirname "${dest[i]}")"
+        if git ls-files --error-unmatch "${src[i]}" > /dev/null 2>&1; then
+            git mv "${src[i]}" "${dest[i]}"
+        else
+            mv "${src[i]}" "${dest[i]}"
+        fi
+        ((++count))
+    fi
+done
+
+echo "$count" files renamed.
