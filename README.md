@@ -45,8 +45,8 @@
   - 🪵 ** Notifications ** - [Mako](https://github.com/emersion/mako) 
   - 🌻 ** Launcher ** - [Rofi (Lbonn Fork)](https://github.com/lbonn/rofi) 
   - 🚀 ** Dmenu Program ** - [Rofi (Lbonn Fork)](https://github.com/lbonn/rofi)
-  - 🍁 ** Wallpaper ** - [Hyprpaper](https://github.com/hyprwm/hyprpaper)
-  - 🌐 ** Browser ** - [Brave](https://brave.com/linux) 
+  - 🍁 ** Wallpaper ** - [Swww](https://github.com/LGFae/swww.git)
+  - 🌐 ** Browser ** - [Zen Browser](https://zen-browser.app/) 
   - ❄️  ** Screen locker ** - [Hyprlock](https://github.com/hyprwm/hyprlock) 
   - ⏬ ** Download Manager ** - [Aria2](https://github.com/aria2/aria2)
   - 🤖 ** System Fetch ** - [Nitch](https://github.com/ssleert/nitch)
@@ -56,6 +56,7 @@
 ### _Needed packages:_
 
 - (all of the above components) plus
+- `Matugen` - For Color Palete Generation
 - `xdg-desktop-portal-hyprland` - For Better Functionality and Compatiblity 
 - `Cava` - Audio Visualizer 
 - `Polkit-Gnome` - Authentication Agent
@@ -78,7 +79,7 @@
 
 
 > [!NOTE]
-> ### **_Colorscheme used is inspired by Catppuccin Mocha as i absolutely love it._** 😉😉
+> ### **_Colorscheme will change depending on your wallpaper._** 😉😉
 
 
 # **Install Instructions**

@@ -24,9 +24,12 @@ if [[ $(command -v bleachbit) ]]; then
   rm -rf ~/.cache/lvim/
   cache=$(du -hs ~/.cache | awk '{print $1}')
   notify-send "Application Cache Found: $cache"
-  sys=$(bleachbit -c system.cache brave.cache | rg "Disk space*")
+  sys=$(bleachbit -c system.cache brave.cache firefox.cache | rg "Disk space*")
   notify-send "System Cache Cleaned" "$(echo $sys)"
-
+  #trash=$(du -hs ~/.local/share/Trash | awk '{print $1}')
+  #notify-send "Trash Found: $trash"
+  #rm -rf ~/.local/share/Trash/*
+  #notify-send "Trash Cleared: $trash"
 else 
 
   notify-send "Bleachbit not installed. Please install bleachbit"

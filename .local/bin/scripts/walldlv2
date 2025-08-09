@@ -16,7 +16,7 @@ cachedir="$HOME/.cache/wallhaven"
 nsxiv_otps=" -tfpo -z 100" # o is needed for selection
 # number of pages to show in search results
 # each page contains 24 results
-max_pages=50
+max_pages=48
 # sorting : date_added, relevance, random, views, favorites, toplist
 sorting=relevance
 # quality : large original small

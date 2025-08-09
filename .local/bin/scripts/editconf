@@ -52,7 +52,7 @@ hyprland)
 	choice="$HOME/.config/hypr/hyprland.conf"
 	;;
 hyprlock)
-    choice="$HOME/.config/swaylock/config"
+    choice="$HOME/.config/hypr/hyprlock.conf"
     ;;
 mako)
     choice="$HOME/.config/mako/config"
@@ -92,4 +92,4 @@ zsh)
 	;;
 esac
 
-foot -e lvim "$choice"
+foot -e nvim "$choice"

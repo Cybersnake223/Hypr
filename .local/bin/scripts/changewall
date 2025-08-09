@@ -16,22 +16,23 @@
 ############################################################################################################
 
 # Check if swaybg is installed 
-if type hyprpaper >/dev/null 2>&1; then
+if type swww >/dev/null 2>&1; then
 
   DIR="$HOME/Pictures/Wallpapers"
   
   # Store a list of files for efficiency
   FILES=("$DIR"/*.png)
   RANDOMPIC=${FILES[RANDOM % ${#FILES[@]}]}
-  
-  # Unload Previous Wallpapers
-  hyprctl hyprpaper unload all
-  
   # Applying Random Wallpaper 
-  hyprctl hyprpaper preload "$RANDOMPIC" 2>/dev/null &
-  hyprctl hyprpaper wallpaper ",$RANDOMPIC" 2>/dev/null &
+  #hyprctl hyprpaper preload "$RANDOMPIC" 2>/dev/null &
+  #swaybg -m fit -i "$RANDOMPIC" 2>/dev/null &
+  swww clear-cache
+  sleep 1.9 &
+  swww img "$RANDOMPIC" --transition-type grow --transition-fps 60 --transition-duration 2.5 --transition-step 255 --transition-pos bottom-left  #2>/dev/null &
+  matugen image "$RANDOMPIC" -t scheme-rainbow --contrast 1.0 
+  notify-send "Wallpapers Applied" "Reloading Theme"
   else
-  notify-send  "Hyprpaper not installed. Please install Hyprpaper."
+  notify-send  "Swww not installed. Please install Swww."
   
 fi
 exit 1

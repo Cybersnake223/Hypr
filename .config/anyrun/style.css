@@ -13,6 +13,8 @@
 /* ## Created by Cybersnake                                                                                  ## */
 /* ############################################################################################################ */
 
+@import "colors.css";
+
 * {
     all: unset;
     font-size: 1rem;
@@ -43,8 +45,8 @@
 
 
 #match:selected {
-  color: @theme_selected_fg_color;
-  background: @theme_selected_bg_color;
+  color: @background;
+  background: @tertiary;
   border-radius: 7px;
 }
 
@@ -78,13 +80,13 @@ list > #plugin:hover {
 }
 
 box#main {
-  border-color: rgba(137, 180, 250, 1);    
+  border-color: @tertiary;    
   color: white;
   border-width: 4px;
   border-style: solid;
   margin-top: 15px;
-  background-color: rgba(0,0,0,0.7);
-  border-radius: 7px;
+  background-color: @background;
+  border-radius: 15px;
   padding: 5px;
 }
 

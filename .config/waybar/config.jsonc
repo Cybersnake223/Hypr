@@ -20,22 +20,19 @@
   "exclusive": true,
   "passthrough": false,
   "gtk-layer-shell": true,
-  "height": 0,
+  "height": 40,
   "modules-left": [
-    "hyprland/workspaces",
-    "bluetooth",
+    "clock",
     "network",
   ],
   "fixed-center": true,
   "modules-center": [
-    "memory",
+    "hyprland/workspaces",
     "custom/updates",
-    "clock",
-    "custom/notifications",
-    "disk",
   ],
   "modules-right": [
     "tray",
+    "bluetooth",
     "backlight",
     "pulseaudio",
     "pulseaudio#microphone",
@@ -57,8 +54,8 @@
     "spacing": 2
   },
   "clock": {
-    "interval": 1,
-    "format": " {:%A, %B %d [%H:%M:%S]}",
+    "interval": 60,
+    "format": " {:%A, %B %d [%H:%M]}",
     "tooltip-format": "<tt><small>{calendar}</small></tt>",
     "calendar": {
       "mode": "year",
@@ -76,8 +73,8 @@
     "format": "{icon} {percent}%",
     "format-icons": [
       "",
-      "",
-      ""
+      "󰃟",
+      "󰃠"
     ],
   },
   "battery": {
@@ -91,17 +88,17 @@
     "format-charging": " {capacity}%",
     "format-plugged": " {capacity}%",
     "format-icons": [
-      "",
-      "",
-      "",
-      "",
-      "",
-      "",
-      "",
-      "",
-      "",
-      "",
-      ""
+      "󰂎",
+      "󰁺",
+      "󰁻",
+      "󰁼",
+      "󰁽",
+      "󰁾",
+      "󰁿",
+      "󰂀",
+      "󰂁",
+      "󰂂",
+      "󰁹"
     ]
   },
   "pulseaudio": {
@@ -136,16 +133,16 @@
   "network": {
     "format-disconnected": "Disconnected",
     //"interval": 5,
-    "format-wifi": "  {essid}",
+    "format-wifi": "󰤥 {essid}",
     "tooltip-format": " {signalStrength}",
     "on-click": "wifimenu",
   },
   "bluetooth": {
-    "format": " {status}",
-    "format-disabled": " {status}",
-    "format-connected": " {num_connections}",
+    "format": " {status}",
+    "format-disabled": " {status}",
+    "format-connected": " {num_connections}",
     "tooltip-format": "{device_alias}",
-    "format-connected-battery": " {device_alias} {device_battery_percentage}%",
+    "format-connected-battery": " {device_alias} {device_battery_percentage}%",
     "tooltip-format-enumerate-connected": "{device_alias}",
     "on-click": "btblock",
   },
@@ -162,8 +159,8 @@
   },
   "custom/updates": {
     "format": "{}",
-    "tooltip": false,
-    "interval": 1200,
+    "tooltip": true,
+    "interval": 300,
     "exec": "$HOME/.config/waybar/bin/updatecheck",
     "return-type": "json",
     "exec-if": "exit 0",

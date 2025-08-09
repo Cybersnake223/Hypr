@@ -25,36 +25,20 @@ invisible=0
 group-by=none
 format=%s\n%b
 layer=overlay
-border-size=4
+border-size=2
+padding=5
 max-visible=10
 margin=2,2,2,2
 outer-margin=15
 max-icon-size=42
 anchor=top-right
-border-radius=7
+border-radius=10
 ignore-timeout=0
 text-alignment=right
 default-timeout=3000
 on-button-left=dismiss-all
-font=JetBrainsMono Nerd Font Bold 9.5
+font=JetBrainsMono Nerd Font Propo Bold 10
 icon-path=/usr/share/icons/hicolor
 
-
-# Colors (Catppuccin Mocha)
-
-background-color=#1e1e2e
-text-color=#cdd6f4
-border-color=#89b4fa
-progress-color=over #313244
-
-# Per-mode settings
-
-[mode=do-not-disturb]
-invisible=1
-on-notify=none
-
-[mode=silent]
-on-notify=none
-
-[urgency=high]
-border-color=#fab387
+# Import Colors 
+include=~/.config/mako/mako-colors

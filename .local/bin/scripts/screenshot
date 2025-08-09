@@ -34,11 +34,11 @@ countdown() {
     return 1
   fi
 
-  for sec in $(seq $seconds -1 1); do
-    # Create notification content with urgency set to normal (2)
-    notify-send "Taking shot in:" "$sec seconds remaining" -u normal
-    sleep 1
-  done
+  # for sec in $(seq $seconds -1 1); do
+  #   # Create notification content with urgency set to normal (2)
+  #   notify-send "Taking shot in:" "$sec seconds remaining" -u normal
+  #   sleep 1
+  # done
 
   # Sleep for 0.1 seconds after the countdown finishes
   sleep 0.1

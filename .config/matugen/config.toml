@@ -1,0 +1,54 @@
+[config]
+
+[templates.waybar]
+input_path = '~/.config/matugen/templates/colors.css'
+output_path = '~/.config/waybar/colors.css'
+post_hook = 'sleep 2 & reloadway'
+
+[templates.rofi]
+input_path = '~/.config/matugen/templates/rofi-color.rasi'
+output_path = '~/.config/rofi/colors.rasi'
+
+[templates.hyprland]
+input_path = '~/.config/matugen/templates/hyprland-color.conf'
+output_path = '~/.config/hypr/colors/colors.conf'
+post_hook = 'hyprctl reload'
+
+[templates.mako]
+input_path = '~/.config/matugen/templates/mako'
+output_path = '~/.config/mako/mako-colors'
+post_hook = 'makoctl reload'
+
+[templates.anyrun]
+input_path = '~/.config/matugen/templates/colors.css'
+output_path = '~/.config/anyrun/colors.css'
+
+[templates.btop]
+input_path = '~/.config/matugen/templates/btop.theme'
+output_path = '~/.config/btop/themes/btop.theme'
+
+[templates.zathura]
+input_path = '~/.config/matugen/templates/zathura-colors'
+output_path = '~/.config/zathura/zathurarc'
+
+[templates.yazi]
+input_path = '~/.config/matugen/templates/yazi-theme.toml'
+output_path = '~/.config/yazi/theme.toml'
+
+# [templates.cava]
+# input_path = '~/.config/matugen/templates/cava-colors.ini'
+# output_path = '~/.config/cava/themes/material-you'
+# post_hook = "pkill -USR1 cava"
+
+#[templates.foot]
+#input_path = '/home/cybersnake/.config/matugen/templates/foot-colors.ini'
+#output_path = '~/.config/foot/foot-colors.ini'
+
+# [templates.gtk3]
+# input_path = '/home/cybersnake/.config/matugen/templates/gtk-colors.css'
+# output_path = '~/.config/gtk-3.0/colors.css'
+# #post_hook = 'gsettings set org.gnome.desktop.interface gtk-theme ""; gsettings set org.gnome.desktop.interface gtk-theme adw-gtk3-{{mode}}'
+
+# [templates.gtk4]
+# input_path = '/home/cybersnake/.config/matugen/templates/gtk-colors.css'
+# output_path = '~/.config/gtk-4.0/colors.css'

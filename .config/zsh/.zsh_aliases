@@ -86,8 +86,8 @@ alias tar="tar -xvf"
 alias pip3="pipx"
 
 # Remove
-alias rmr="rm -rf"
-alias rm="rm"
+alias rmr="trash-put -rf"
+alias rm="trash-put"
 
 # Clear
 alias cl="clear"
