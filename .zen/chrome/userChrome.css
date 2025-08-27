@@ -1,0 +1,180 @@
+/* ############################################################################################################ */
+/* ##   ______  __      __  _______   ________  _______    ______   __    __   ______   __    __  ________   ## */
+/* ##  /      \|  \    /  \|       \ |        \|       \  /      \ |  \  |  \ /      \ |  \  /  \|        \  ## */
+/* ## |  $$$$$$\\$$\  /  $$| $$$$$$$\| $$$$$$$$| $$$$$$$\|  $$$$$$\| $$\ | $$|  $$$$$$\| $$ /  $$| $$$$$$$$  ## */
+/* ## | $$   \$$ \$$\/  $$ | $$__/ $$| $$__    | $$__| $$| $$___\$$| $$$\| $$| $$__| $$| $$/  $$ | $$__      ## */
+/* ## | $$        \$$  $$  | $$    $$| $$  \   | $$    $$ \$$    \ | $$$$\ $$| $$    $$| $$  $$  | $$  \     ## */
+/* ## | $$   __    \$$$$   | $$$$$$$\| $$$$$   | $$$$$$$\ _\$$$$$$\| $$\$$ $$| $$$$$$$$| $$$$$\  | $$$$$     ## */
+/* ## | $$__/  \   | $$    | $$__/ $$| $$_____ | $$  | $$|  \__| $$| $$ \$$$$| $$  | $$| $$ \$$\ | $$_____   ## */
+/* ##  \$$    $$   | $$    | $$    $$| $$     \| $$  | $$ \$$    $$| $$  \$$$| $$  | $$| $$  \$$\| $$     \  ## */
+/* ##   \$$$$$$     \$$     \$$$$$$$  \$$$$$$$$ \$$   \$$  \$$$$$$  \$$   \$$ \$$   \$$ \$$   \$$ \$$$$$$$$  ## */
+/* ##                                                                                                        ## */
+/* ## Created by Cybersnake                                                                                  ## */
+/* ############################################################################################################ */
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --zen-colors-primary: #000000 !important;
+    --zen-primary-color: #b4befe !important;
+    --zen-colors-secondary: #000000 !important;
+    --zen-colors-tertiary: #000000 !important;
+    --zen-colors-border: #b4befe !important;
+    --toolbarbutton-icon-fill: #b4befe !important;
+    --lwt-text-color: #cdd6f4 !important;
+    --toolbar-field-color: #cdd6f4 !important;
+    --tab-selected-textcolor: rgb(192, 202, 249) !important;
+    --toolbar-field-focus-color: #cdd6f4 !important;
+    --toolbar-color: #cdd6f4 !important;
+    --newtab-text-primary-color: #cdd6f4 !important;
+    --arrowpanel-color: #cdd6f4 !important;
+    --arrowpanel-background: #000000 !important;
+    --sidebar-text-color: #cdd6f4 !important;
+    --lwt-sidebar-text-color: #cdd6f4 !important;
+    --lwt-sidebar-background-color: #11111b !important;
+    --toolbar-bgcolor: #000000 !important;
+    --newtab-background-color: #000000 !important;
+    --zen-themed-toolbar-bg: #000000 !important;
+    --zen-main-browser-background: #000000 !important;
+    --toolbox-bgcolor-inactive: #000000 !important;
+  }
+
+  #permissions-granted-icon {
+    color: #b4befe !important;
+  }
+
+  .sidebar-placesTree {
+    background-color: #000000 !important;
+  }
+
+  #zen-workspaces-button {
+    background-color: #000000 !important;
+  }
+
+  #TabsToolbar {
+    background-color: #000000 !important;
+  }
+
+  #urlbar-background {
+    background-color: #000000 !important;
+  }
+
+  .content-shortcuts {
+    background-color: #000000 !important;
+    border-color: #b4befe !important;
+  }
+
+  .urlbarView-url {
+    color: #b4befe !important;
+  }
+
+  #zenEditBookmarkPanelFaviconContainer {
+    background: #000000 !important;
+  }
+
+  #zen-media-controls-toolbar {
+    & #zen-media-progress-bar {
+      &::-moz-range-track {
+        background: #0000000 !important;
+      }
+    }
+  }
+
+  toolbar .toolbarbutton-1 {
+    &:not([disabled]) {
+      &:is([open], [checked])
+        > :is(
+          .toolbarbutton-icon,
+          .toolbarbutton-text,
+          .toolbarbutton-badge-stack
+        ) {
+        fill: #b4befe;
+      }
+    }
+  }
+
+  .identity-color-blue {
+    --identity-tab-color: #89b4fa !important;
+    --identity-icon-color: #89b4fa !important;
+  }
+
+  .identity-color-turquoise {
+    --identity-tab-color: #94e2d5 !important;
+    --identity-icon-color: #94e2d5 !important;
+  }
+
+  .identity-color-green {
+    --identity-tab-color: #a6e3a1 !important;
+    --identity-icon-color: #a6e3a1 !important;
+  }
+
+  .identity-color-yellow {
+    --identity-tab-color: #f9e2af !important;
+    --identity-icon-color: #f9e2af !important;
+  }
+
+  .identity-color-orange {
+    --identity-tab-color: #fab387 !important;
+    --identity-icon-color: #fab387 !important;
+  }
+
+  .identity-color-red {
+    --identity-tab-color: #f38ba8 !important;
+    --identity-icon-color: #f38ba8 !important;
+  }
+
+  .identity-color-pink {
+    --identity-tab-color: #f5c2e7 !important;
+    --identity-icon-color: #f5c2e7 !important;
+  }
+
+  .identity-color-purple {
+    --identity-tab-color: #cba6f7 !important;
+    --identity-icon-color: #cba6f7 !important;
+  }
+
+  hbox#titlebar {
+    background-color: #000000 !important;
+  }
+
+  #zen-appcontent-navbar-container {
+    background-color: #000000 !important;
+  }
+}
+
+/* Hide Workspace Indicator */
+
+.zen-current-workspace-indicator {
+  display: none !important;
+}
+
+/* Download Background */
+
+#downloads-indicator-progress-outer::after {
+  content: "";
+  display: block;
+  position: absolute;
+  inset: 0;
+  z-index: -40;
+  background: var(--toolbar-field-background-color);
+}
+
+/*  Show Search result only when typing */
+
+#urlbar[open] {
+  background-image: var(--zen-main-browser-background-toolbar) !important;
+  border-radius: 20px !important;
+  left: 50%;
+  position: absolute !important;
+}
+ 
+#urlbar[open] #urlbar-background {
+  margin: 4px !important;
+}
+ 
+#urlbar .urlbarView-body-inner {
+  display: none !important;
+}
+ 
+#urlbar[usertyping] .urlbarView-body-inner {
+  display: block !important;
+}

@@ -1,0 +1,809 @@
+/*******************************************\
+ * Base variables.
+\*******************************************/
+
+:root {
+  --pbmh-private-browsing-mode-base-color: #32064e;
+  --pbmh-private-browsing-mode-gradient-stop-color: rgb(
+    from var(--pbmh-private-browsing-mode-color) r g b / 0%
+  );
+  --pbmg-private-browsing-mode-gradient-stop-position: 50px;
+  --pbmg-private-browsing-mode-border-size: 2px;
+}
+
+/* Name: Back Fwd Always Hidden */
+/* Description: Back and forward buttons will always be hidden. Useful if your mouse has the relevant buttons */
+
+:root:not([customizing]) #back-button {
+    display: none !important;
+  }
+  :root:not([customizing]) #forward-button {
+    display: none !important;
+  }
+
+/* Name: Load Bar */
+/* Description: Creates a sleek loading bar and mute status for single toolbar mode. */
+@media (-moz-bool-pref: "zen.view.use-single-toolbar") {
+    .browserSidebarContainer.deck-selected::before {
+      content: "" !important;
+      position: absolute !important;
+      top: 0px !important;
+      left: 0px !important;
+      height: 5px !important; /* Height of the top background */
+      max-width: 100% !important;
+      width: var(--bar-pcent) !important; /* Ensure full width or customizable width */
+      background-color: var(--bar-colour) !important; /* Solid color for the bar */
+      border-radius: 0 2px 2px 0; /* Adjust this value to control the roundness of the ends */
+      z-index: 1 !important;
+      transition: width 0.5s ease-in-out, background 0.2s ease !important; /* Apply smooth transition on width and background */
+    }    /* Current tab loading progress and muted status */
+    
+    
+    .browserSidebarContainer.deck-selected:has([zen-glance-selected])::before,
+    .browserSidebarContainer.deck-selected.zen-glance-overlay::before {
+      max-width: calc(85%) !important;
+      left: calc(15%/2) !important;
+      border-radius: 6px !important;
+    }
+    
+    .browserSidebarContainer.deck-selected.zen-glance-background::before {
+      background: transparent !important;
+      height: 0px !important;
+    }
+    
+    :root {
+      &:has(.tabbrowser-tab[selected][busy]) {
+        --bar-colour: 	#A565E2;
+        --bar-pcent: 15%;
+      }
+      &:has(.tabbrowser-tab[selected][busy][pendingicon]) {
+        --bar-colour: 	#A565E2;
+        --bar-pcent: 45%;
+      }
+      &:has(.tabbrowser-tab[selected][busy][pendingicon][progress]) {
+        --bar-colour: #A565E2;
+        --bar-pcent: 85%;
+      }
+      &:has(.tabbrowser-tab[selected][busy][progress]) {
+        --bar-colour: #A565E2;
+        --bar-pcent: 95%;
+      }
+      &:has(.tabbrowser-tab[selected][muted]:not([busy])) {
+        --bar-colour: orangered;
+        --bar-pcent: 100%;
+        
+        .browserSidebarContainer.deck-selected::before {
+          border-radius: 0;
+        }
+      }
+    }
+  }
+
+
+
+/* Name: Disable Status Bar */
+/* Description: This removes the bottom-left status bar when hovering over a URL. */
+/* Author: @F-U-B-AR */
+#statuspanel {
+  display: none !important;
+}
+
+/* Name: Transparent Zen */
+/* Description: Make the Zen Browser's tab background transparent, get smooth animations and more. Enable  features in mod settings and visit the homepage below to learn more about the features. 👇 */
+/* Author: @sameerasw */
+/* variables */
+:root {
+  @media -moz-pref( "mod.sameerasw.zen_bg_color_enabled") {
+    --zen-main-browser-background: var(
+      --mod-sameerasw-zen_transparency_color,
+      #00000000
+    ) !important;
+  }
+}
+
+/* animation smoothness */
+:root:has([mod-sameerasw_zen_animations="0"]) {
+  --mod-sameerasw-zen-animation-smoothness: all 0.20s
+      cubic-bezier(0.175, 0.885, 0.3, 1.3),
+    filter 0.15s ease-in-out, opacity 0.4s ease-in-out !important;
+}
+
+:root:has([mod-sameerasw_zen_animations="1"]) {
+  --mod-sameerasw-zen-animation-smoothness: all 0.30s
+      cubic-bezier(0.175, 0.885, 0.32, 1.35),
+    filter 0.3s ease-in-out, opacity 0.3s ease-in-out !important;
+}
+
+:root:has([mod-sameerasw_zen_animations="2"]) {
+  --mod-sameerasw-zen-animation-smoothness: all 0.6s
+      cubic-bezier(0.175, 0.885, 0.32, 1.55),
+    filter 0.4s ease-in-out, opacity 0.45s ease-in-out !important;
+}
+
+:root:has([mod-sameerasw_zen_animations="3"]) {
+  --mod-sameerasw-zen-animation-smoothness: all 0.30s
+      cubic-bezier(0.575, 0.685, 0.52, 1.55),
+    filter 0.3s ease-in-out, opacity 0.35s ease-in-out !important;
+}
+/* default */
+:root:not(:has([mod-sameerasw_zen_animations])) {
+  --mod-sameerasw-zen-animation-smoothness: all 0.30s
+      cubic-bezier(0.175, 0.885, 0.32, 1.35),
+    filter 0.3s ease-in-out, opacity 0.3s ease-in-out !important;
+}
+
+/* tab tint */
+:root:has([mod-sameerasw_zen_light_tint="1"]) {
+  .browserStack {
+    browser {
+      background-color: light-dark(
+        rgba(0, 0, 0, 0),
+        rgba(0, 0, 0, 0)
+      ) !important;
+    }
+  }
+}
+
+:root:has([mod-sameerasw_zen_light_tint="2"]) {
+  .browserStack {
+    browser {
+      background-color: transparent !important;
+    }
+  }
+}
+
+/* hide shadows */
+hbox.browserSidebarContainer,
+#zen-tabbox-wrapper {
+  @media -moz-pref( "mod.sameerasw.zen_no_shadow") {
+    box-shadow: none !important;
+  }
+}
+
+/* Animations */
+
+/* Tab switch animation */
+#tabbrowser-tabpanels
+  > hbox:not([zen-split="true"]):not(:has(.zen-glance-background)) {
+  @media -moz-pref( "mod.sameerasw.zen_tab_switch_anim") {
+    transition: var(--mod-sameerasw-zen-animation-smoothness) !important;
+    scale: 1.0 !important;
+    opacity: 0;
+  }
+}
+#tabbrowser-tabpanels > hbox.deck-selected:not([zen-split="true"]) {
+  @media -moz-pref( "mod.sameerasw.zen_tab_switch_anim") {
+    scale: 1 !important;
+    opacity: 1 !important;
+  }
+}
+
+/* website switch animations */
+#browser:not(:has(.zen-glance-background)) #tabbrowser-tabpanels {
+  @media -moz-pref( "mod.sameerasw.zen_urlbar_zoom_anim") {
+    transition: var(--mod-sameerasw-zen-animation-smoothness) !important;
+  }
+}
+
+/* URL bar zoom animation */
+#browser:has(#urlbar[open][zen-floating-urlbar="true"]) #tabbrowser-tabpanels {
+  @media -moz-pref( "mod.sameerasw.zen_urlbar_zoom_anim") {
+    pointer-events: none;
+    scale: 1.05 !important;
+    filter: blur(2px) brightness(30%) !important;
+  }
+}
+
+#urlbar[open][zen-floating-urlbar="true"] #urlbar-background {
+  @media -moz-pref( "mod.sameerasw.zen_urlbar_zoom_anim") {
+    border-radius: 2em !important;
+  }
+}
+
+/* trackpad gestures*/
+tabpanels .browserStack browser {
+  @media -moz-pref( "mod.sameerasw.zen_trackpad_anim") {
+    transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.1) 0.1s !important;
+  }
+}
+
+/* Previous animation*/
+.browserStack:has(
+    #historySwipeAnimationPreviousArrow:not([style="translate: none;"])
+  )
+  browser {
+  @media -moz-pref( "mod.sameerasw.zen_trackpad_anim") {
+    scale: 0.95 !important;
+    transform: translateX(3%) !important;
+    border-radius: 2em !important;
+  }
+}
+
+/* Next animation*/
+.browserStack:has(
+    #historySwipeAnimationNextArrow:not([style="translate: none;"])
+  )
+  browser {
+  @media -moz-pref( "mod.sameerasw.zen_trackpad_anim") {
+    scale: 0.95 !important;
+    transform: translateX(-3%) !important;
+    border-radius: 2em !important;
+  }
+}
+
+/* no tab image */
+#browser:has([zen-empty-tab="true"][selected="true"]) .browserStack {
+  @media -moz-pref( "mod.sameerasw.zen_notab_img_enabled") {
+    background-image: var(
+      --mod-sameerasw-zen_notab_img,
+      url("/home/cybersnake/Pictures/Wallpapers/Wall-2.png")
+    ) !important;
+
+    background-position: center !important;
+    background-repeat: no-repeat !important;
+
+    background-size: var(--mod-sameerasw-zen_notab_img_size, 1920px) !important;
+
+    opacity: var(--mod-sameerasw-zen_notab_img_opacity,0.5) !important;
+
+    @media -moz-pref( "mod.sameerasw.zen_notab_img_saturate") {
+      filter: saturate(0) !important;
+
+      @media -moz-pref( "mod.sameerasw.zen_notab_img_invert") {
+        @media (prefers-color-scheme: light) {
+          filter: saturate(0) invert(1) !important;
+        }
+      }
+    }
+  }
+}
+
+/* ============= Transparent Sidebar: Mask or Push ============= */
+
+:root:has(
+    [mod-sameerasw_zen_compact_sidebar_type="1"],
+    [mod-sameerasw_zen_compact_sidebar_type="2"]
+  ) {
+  #zen-main-app-wrapper {
+    --zen-sidebar-custom-width: var(
+      --mod-sameerasw-zen_compact_sidebar_width,
+      165px
+    ) !important;
+  }
+
+  [zen-compact-mode="true"] #navigator-toolbox {
+    --zen-sidebar-width: var(--zen-sidebar-custom-width) !important;
+    --actual-zen-sidebar-width: var(--zen-sidebar-custom-width) !important;
+    width: var(--zen-sidebar-custom-width) !important;
+  }
+}
+
+/* Shared: Soft mask background and shadow */
+#main-window:has([mod-sameerasw_zen_compact_sidebar_type="2"])
+  #titlebar::before {
+  box-shadow: light-dark(#0000, #0000) 0px -36px 30px 0px inset,
+    rgba(0, 0, 0, 0) 0px 2px 1px, rgba(0, 0, 0, 0) 0px 4px 2px,
+    rgba(0, 0, 0, 0) 0px 8px 4px, rgba(0, 0, 0, 0) 0px 16px 8px,
+    rgba(0, 0, 0, 0) 0px 32px 16px !important;
+  background-color: light-dark(#0000, #0000) !important;
+}
+
+/* Shared: Content reveal trigger condition */
+#zen-main-app-wrapper[zen-compact-mode="true"]:has(
+    [zen-user-show=""],
+    #navigator-toolbox[zen-has-hover="true"],
+    [has-popup-menu=""]
+  ) {
+  /* Content styles when sidebar is revealed */
+}
+
+/* Mask type - left sidebar */
+#main-window:not([zen-right-side="true"]):has(
+    [mod-sameerasw_zen_compact_sidebar_type="2"]
+  )
+  #zen-main-app-wrapper[zen-compact-mode="true"]:has(
+    [zen-user-show=""],
+    #navigator-toolbox[zen-has-hover="true"],
+    [has-popup-menu=""]
+  )
+  #tabbrowser-tabpanels {
+  mask-image: linear-gradient(
+    to right,
+    transparent 0,
+    transparent calc(var(--zen-sidebar-custom-width) + 4px),
+    black calc(var(--zen-sidebar-custom-width) + 8px),
+    black 100%
+  ) !important;
+}
+
+/* Mask type - right sidebar */
+#main-window[zen-right-side="true"]:has(
+    [mod-sameerasw_zen_compact_sidebar_type="2"]
+  )
+  #zen-main-app-wrapper[zen-compact-mode="true"]:has(
+    [zen-user-show=""],
+    #navigator-toolbox[zen-has-hover="true"],
+    [has-popup-menu=""]
+  )
+  #tabbrowser-tabpanels {
+  mask-image: linear-gradient(
+    to left,
+    transparent 0,
+    transparent calc(var(--zen-sidebar-custom-width) + 4px),
+    black calc(var(--zen-sidebar-custom-width) + 8px),
+    black 100%
+  ) !important;
+}
+
+/* Push type - left sidebar */
+#main-window:not([zen-right-side="true"]):has(
+    [mod-sameerasw_zen_compact_sidebar_type="1"]
+  )
+  #zen-main-app-wrapper[zen-compact-mode="true"]:has(
+    [zen-user-show=""],
+    #navigator-toolbox[zen-has-hover="true"],
+    [has-popup-menu=""]
+  )
+  #zen-appcontent-wrapper {
+  transform: translateX(var(--zen-sidebar-custom-width)) !important;
+}
+
+/* Push type - right sidebar */
+#main-window[zen-right-side="true"]:has(
+    [mod-sameerasw_zen_compact_sidebar_type="1"]
+  )
+  #zen-main-app-wrapper[zen-compact-mode="true"]:has(
+    [zen-user-show=""],
+    #navigator-toolbox[zen-has-hover="true"],
+    [has-popup-menu=""]
+  )
+  #zen-appcontent-wrapper {
+  transform: translateX(calc(0px - var(--zen-sidebar-custom-width))) !important;
+}
+
+/* Shared Push Transition (used in both left and right) */
+#main-window:has([mod-sameerasw_zen_compact_sidebar_type="1"])
+  #zen-appcontent-wrapper {
+  --zen-compact-mode-func: linear(
+    0 0%,
+    0.002748 1%,
+    0.010544 2%,
+    0.022757 3%,
+    0.038804 4%,
+    0.058151 5%,
+    0.080308 6%,
+    0.104828 7%,
+    0.131301 8%,
+    0.159358 9%,
+    0.188662 10%,
+    0.21891 11%,
+    0.249828 12%,
+    0.281172 13%,
+    0.312724 14%,
+    0.344288 15%,
+    0.375693 16%,
+    0.40679 17%,
+    0.437447 18%,
+    0.467549 19%,
+    0.497 20%,
+    0.525718 21%,
+    0.553633 22%,
+    0.580688 23%,
+    0.60684 24%,
+    0.632052 25%,
+    0.656298 26%,
+    0.679562 27%,
+    0.701831 28%,
+    0.723104 29%,
+    0.743381 30%,
+    0.76267 31%,
+    0.780983 32%,
+    0.798335 33%,
+    0.814744 34%,
+    0.830233 35%,
+    0.844826 36%,
+    0.858549 37%,
+    0.87143 38%,
+    0.883498 39%,
+    0.894782 40%,
+    0.905314 41%,
+    0.915125 42%,
+    0.924247 43%,
+    0.93271 44%,
+    0.940547 45%,
+    0.947787 46%,
+    0.954463 47%,
+    0.960603 48%,
+    0.966239 49%,
+    0.971397 50%,
+    0.976106 51%,
+    0.980394 52%,
+    0.984286 53%,
+    0.987808 54%,
+    0.990984 55%,
+    0.993837 56%,
+    0.99639 57%,
+    0.998664 58%,
+    1.000679 59%,
+    1.002456 60%,
+    1.004011 61%,
+    1.005363 62%,
+    1.006528 63%,
+    1.007522 64%,
+    1.008359 65%,
+    1.009054 66%,
+    1.009618 67%,
+    1.010065 68%,
+    1.010405 69%,
+    1.010649 70%,
+    1.010808 71%,
+    1.01089 72%,
+    1.010904 73%,
+    1.010857 74%,
+    1.010757 75%,
+    1.010611 76%,
+    1.010425 77%,
+    1.010205 78%,
+    1.009955 79%,
+    1.009681 80%,
+    1.009387 81%,
+    1.009077 82%,
+    1.008754 83%,
+    1.008422 84%,
+    1.008083 85%,
+    1.00774 86%,
+    1.007396 87%,
+    1.007052 88%,
+    1.00671 89%,
+    1.006372 90%,
+    1.00604 91%,
+    1.005713 92%,
+    1.005394 93%,
+    1.005083 94%,
+    1.004782 95%,
+    1.004489 96%,
+    1.004207 97%,
+    1.003935 98%,
+    1.003674 99%,
+    1.003423 100%
+  ) !important;
+  transition: transform 0.25s var(--zen-compact-mode-func) !important;
+}
+
+/* Push: transparent titlebar */
+#main-window:has([mod-sameerasw_zen_compact_sidebar_type="1"])
+  #titlebar::before {
+  background-color: transparent !important;
+  outline: none !important;
+  box-shadow: none !important;
+}
+
+/* Sidebar background transparency */
+#sidebar-box {
+  @media -moz-pref( "mod.sameerasw.zen_transparent_sidebar_enabled") {
+  background-color: transparent !important;
+  box-shadow: none !important;
+  }
+}
+
+/* Name: Cleaned URL bar */
+/* Description: Cleans up zen's URL bar. */
+/* Author: @Dinno-DEV */
+
+/* Blurs the background */
+#urlbar[breakout-extend="true"] #urlbar-background {
+    border: solid 0px color-mix(in hsl, hsl(0 0 0), transparent 0%) !important;
+    border-radius: 25px !important;
+    background-color: color-mix(in hsl, var(--mod-cleanedurlbar-customcolor), transparent var(--mod-cleanedurlbar-customtransparency)) !important;
+    backdrop-filter: blur(80px) saturate(0) !important;
+}
+
+/* Custom URL result selected color */
+.urlbarView-row {
+  &[selected] {
+    background-color: var(--mod-cleanedurlbar-customselectcolor) !important;
+    color: var(--mod-cleanedurlbar-customselectfontcolor) !important;
+  }
+}
+
+/* Unifies the border radius */
+.urlbarView-row {
+  border-radius: 25px !important;
+}
+
+/* Deletes the border */
+.urlbarView-body-inner {
+   border: none !important;
+}
+
+/* Styles the search options */
+.search-one-offs {
+  border-top: none !important;
+  border-radius: 25px !important;
+  padding: 4px !important;
+  margin: 0px 0px 7px 0px !important;
+  backdrop-filter: brightness(100%);
+}
+
+.searchbar-engine-one-off-item {
+  border-radius: 10px !important;
+  margin-right: 3px !important;
+}
+
+#urlbar-anon-search-settings {
+  margin-right: 0px !important;
+}
+/* Name: Better Active Tab */
+/* Description: Adds a bright line next to the active tab to better highlight it. */
+/* Author: @HliasOuzounis */
+.tab-background {
+  position: relative;
+}
+
+.tab-background[selected=""]::after {
+  content: "";
+  position: absolute;
+  width: 5px;
+  height: 100%;
+  background-color: #A565E2;
+}
+
+/* Name: Better Find Bar */
+/* Description: Improves the find bar, making it floating with theme match and customization. */
+/* Author: @RobotoSkunk */
+
+:root {
+	--better-findbar-transform-translateY: 150px;
+	--better-findbar-transform-translateX: -50%;
+	--better-findbar-position-top: auto;
+	--better-findbar-position-bottom: 15px;
+	--better-findbar-position-left: 50%;
+	--better-findbar-position-right: auto;
+}
+.browserContainer {
+	overflow: clip
+}
+
+findbar {
+	display: flex !important;
+
+	border-radius: var(--zen-border-radius) !important;
+	margin: 0px !important;
+
+	width: 90% !important;
+	max-width: calc(var(--theme-better_find_bar-textbox_width) * 1px); 
+
+	height: auto !important;
+
+	position: absolute !important;
+	top: var(--better-findbar-position-top);
+	bottom: var(--better-findbar-position-bottom);
+	left: var(--better-findbar-position-left);
+	right: var(--better-findbar-position-right);
+	transform: translateX(var(--better-findbar-transform-translateX)) translateY(0);
+
+	overflow: unset !important;
+	box-shadow: var(--box-shadow-10);
+
+	background: var(--zen-colors-tertiary) !important;
+	border: 1px solid var(--zen-colors-border) !important;
+
+	transition: transform 0.35s ease !important;
+
+	visibility: visible !important;
+	opacity: 1 !important;
+
+	& .findbar-container {
+		flex-wrap: wrap;
+		overflow-x: auto !important;
+		height: auto !important;
+
+		row-gap: 10px;
+
+		& > :first-child {
+			width: 100% !important;
+		}
+
+		& .findbar-textbox {
+			flex-grow: 1;
+		}
+	}
+
+	&[hidden="true"] {
+		transform: translateX(var(--better-findbar-transform-translateX)) translateY(var(--better-findbar-transform-translateY));
+	}
+
+	@starting-style {
+		transform: translateX(var(--better-findbar-transform-translateX)) translateY(var(--better-findbar-transform-translateY));
+	}
+}
+
+/* Horizontal Position */
+body:has(
+		#theme-Better-Find-Bar[theme-better_find_bar-horizontal_position="left"]
+	) {
+	--better-findbar-transform-translateX: 0%;
+	--better-findbar-position-left: 15px;
+	--better-findbar-position-right: auto;
+}
+
+body:has(
+		#theme-Better-Find-Bar[theme-better_find_bar-horizontal_position="right"]
+	) {
+	--better-findbar-transform-translateX: 0%;
+	--better-findbar-position-left: auto;
+	--better-findbar-position-right: 15px;
+}
+
+/* Vertical Position */
+body:has(
+		#theme-Better-Find-Bar[theme-better_find_bar-vertical_position="top"]
+	) {
+	--better-findbar-transform-translateY: -150px;
+	--better-findbar-position-bottom: auto;
+	--better-findbar-position-top: 15px;
+}
+
+
+/* Background blur */
+@media (-moz-bool-pref: "theme.better_find_bar.transparent_background") {
+	findbar, findbar .findbar-textbox:not([status="notfound"]) {
+		backdrop-filter: blur(5px);
+
+		background: color-mix(in hsl, var(--zen-colors-tertiary), transparent 30%) !important;
+	}
+
+	findbar .findbar-textbox:not([status="notfound"]) {
+		background: color-mix(in hsl, var(--zen-colors-tertiary), transparent 10%) !important;
+	}
+}
+
+/* Hide highlight checkbox */
+body:has(
+		#theme-Better-Find-Bar[theme-better_find_bar-hide_highlight="hide_immediately"]
+	) {
+	findbar .findbar-highlight {
+		display: none !important;
+	}
+}
+
+body:has(
+		#theme-Better-Find-Bar[theme-better_find_bar-hide_highlight="hide_on_disable"]
+	) {
+	findbar checkbox.findbar-highlight:not([checked]) {
+		display: none !important;
+	}
+}
+
+/* Hide match case checkbox */
+body:has(
+		#theme-Better-Find-Bar[theme-better_find_bar-hide_match_case="hide_immediately"]
+	) {
+	findbar .findbar-case-sensitive {
+		display: none !important;
+	}
+}
+
+body:has(
+		#theme-Better-Find-Bar[theme-better_find_bar-hide_match_case="hide_on_disable"]
+	) {
+	findbar checkbox.findbar-case-sensitive:not([checked]) {
+		display: none !important;
+	}
+}
+
+/* Hide match diacritics checkbox */
+body:has(
+		#theme-Better-Find-Bar[theme-better_find_bar-hide_match_diacritics="hide_immediately"]
+	) {
+	findbar .findbar-match-diacritics {
+		display: none !important;
+	}
+}
+
+body:has(
+		#theme-Better-Find-Bar[theme-better_find_bar-hide_match_diacritics="hide_on_disable"]
+	) {
+	findbar checkbox.findbar-match-diacritics:not([checked]) {
+		display: none !important;
+	}
+}
+
+/* Hide whole words checkbox */
+body:has(
+		#theme-Better-Find-Bar[theme-better_find_bar-hide_whole_words="hide_immediately"]
+	) {
+	findbar .findbar-entire-word {
+		display: none !important;
+	}
+}
+
+body:has(
+		#theme-Better-Find-Bar[theme-better_find_bar-hide_whole_words="hide_on_disable"]
+	) {
+	findbar .findbar-entire-word:not([checked]) {
+		display: none !important;
+	}
+}
+
+/* Hide find status label */
+@media (-moz-bool-pref: "theme.better_find_bar.hide_find_status") {
+	findbar .findbar-find-status {
+		display: none !important;
+	}
+}
+
+/* Hide found matches label */
+@media (-moz-bool-pref: "theme.better_find_bar.hide_found_matches") {
+	findbar .findbar-label.found-matches {
+		display: none !important;
+	}
+}
+
+/* Name: Remove Browser Padding */
+/* Description: Remove the right and bottom paddings of the browser views on zen! */
+/* Author: @mauro-balades */
+:root:not([zen-compact-mode="true"]) {
+  #tabbrowser-tabpanels {
+    padding: 0 !important;
+    & .browserSidebarContainer:not([zen-split="true"]) {
+      --zen-webview-border-radius: var(--zen-border-radius) 0 0 0;
+      --zen-element-separation: 0;
+    }
+  }
+
+  @media (-moz-bool-pref: "zen.tabs.vertical.right-side") {
+    #tabbrowser-tabpanels {
+      & .browserSidebarContainer:not([zen-split="true"]) {
+        --zen-webview-border-radius: 0 var(--zen-border-radius) 0 0;
+      }
+    }
+  }
+}
+
+/* Name: smaller zen toast popup */
+/* Description: Makes the 'New background tab opened!' toast popup notification less distracting and adds hover */
+/* Author: @lenzfliker */
+
+#zen-toast-container {
+  top: calc(var(--zen-element-separation) * 6) !important;
+  
+  :root:not([zen-right-side='true']) & {
+    right: calc(var(--zen-element-separation) * 2) !important;
+  }
+
+  :root[zen-right-side='true'] & {
+    left: calc(var(--zen-element-separation) * 2) !important;
+  }
+
+  & .zen-toast {
+    padding: 10px !important;
+    border-radius: 25px !important;
+    font-weight: 600 !important;
+    font-size: 12px !important;
+    box-shadow: 0px !important ;
+    background: rgba(165, 101, 226, var(--mod-zentoast-background_opacity, 1.0)) !important;
+    border: 0px solid rgba(0, 0, 0, var(--mod-zentoast-border_opacity, 1.0)) !important;
+    color: rgba(0, 0, 0, var(--mod-zentoast-text_opacity, 1.0)) !important;
+    
+    & .description {
+        font-size: 10px !important;
+    }
+
+    &:hover {
+      background: #A565E2 !important;
+      color: #A565E2 !important;
+      border: 1px solid rgba(0, 0, 0, 0.0) !important;
+      transition: 0.3s !important;
+    }
+  }
+
+}
+
+/* Disable Tab close button */ 
+image.tab-close-button {
+  display: none !important;
+}
+
+
+/* End of Zen Mods */
