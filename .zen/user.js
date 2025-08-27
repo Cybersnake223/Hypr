@@ -12,6 +12,11 @@
 /* ## Created by Cybersnake                                                                                  ## */
 /* ############################################################################################################ */
 
+
+/*******************************************************************************
+ * SECTION: Painting and Rendering                                             *
+*******************************************************************************/
+
 user_pref("content.notify.interval", 100000); //25000//50000//100000
 user_pref("nglayout.initialpaint.delay", 5); // DEFAULT; formerly 250
 user_pref("nglayout.initialpaint.delay_in_oopif", 5); // DEFAULT
@@ -20,10 +25,20 @@ user_pref("gfx.canvas.accelerated.cache-size", 512);
 user_pref("gfx.content.skia-font-cache-size", 20);
 user_pref("browser.cache.disk.enable", true);
 user_pref("browser.sessionhistory.max_total_viewers", 2);
+
+/****************************************************************************
+ * SECTION: Caching and Memory                                              *
+****************************************************************************/
+
 user_pref("media.memory_cache_max_size", 255000);
 user_pref("media.cache_readahead_limit", 72000);
 user_pref("media.cache_resume_threshold", 36000);
 user_pref("image.mem.decode_bytes_at_a_time", 32768);
+
+/****************************************************************************
+ * SECTION: Networking                                                      *
+****************************************************************************/
+
 user_pref("network.http.max-connections", 1800); //1800//900//
 user_pref("network.http.max-persistent-connections-per-server", 10);
 user_pref("network.http.max-urgent-start-excessive-connections-per-host", 5);
@@ -32,6 +47,11 @@ user_pref("network.http.pacing.requests.min-parallelism", 12); // default=6
 user_pref("network.http.pacing.requests.burst", 14); // default=10
 user_pref("network.dnsCacheExpiration", 3600);
 user_pref("network.ssl_tokens_cache_capacity", 10240);
+
+/************************************************************************************************
+ * SECTION: Speculative connections and prefetching                                             *
+*************************************************************************************************/
+
 user_pref("network.http.speculative-parallel-limit", 0);
 user_pref("network.dns.disablePrefetch", true);
 user_pref("network.dns.disablePrefetchFromHTTPS", true);
