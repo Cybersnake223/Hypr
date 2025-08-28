@@ -13,50 +13,40 @@
 ## Created by Cybersnake                                                                                  ##
 ############################################################################################################
 
-# Env Variables 
-export VISUAL='nvim'
-export EDITOR='nvim'
-export TERMINAL='foot'
-export BROWSER='brave'
-export HISTORY_IGNORE="(ls|cd|pwd|exit|sudo reboot|history|cd -|cd ..)"
-export DMENU='rofi -dmenu'
-export IRQBALANCE_ARGS="--allcpus"
-export GIT_DISCOVERY_ACROSS_FILESYSTEM=false
-export MANPAGER="nvim +Man!"
-
 # Fetch
-nitch
+#nitch
 
 # Custom Prompt 
 PROMPT='%B%F{yellow}   %B%F{cyan}%~ %B%F{red}  %F{white}'
-RPROMPT='%B%F{red}$(parse_git_branch)%F{magenta}$(parse_git_dirty) %B%F{red} %T'
+RPROMPT='$GIT_INFO %F{red}%T'
 precmd() {print""}
 
-# Git Status
-parse_git_dirty() {
-  STATUS="$(git status 2> /dev/null)"
-  if [[ $? -ne 0 ]]; then printf ""; return; else printf " ["; fi
-  if echo ${STATUS} | grep -c "renamed:"         &> /dev/null; then printf " Renamed "; else printf ""; fi
-  if echo ${STATUS} | grep -c "branch is ahead:" &> /dev/null; then printf " Ahead"; else printf ""; fi
-  if echo ${STATUS} | grep -c "new file::"       &> /dev/null; then printf " Added "; else printf ""; fi
-  if echo ${STATUS} | grep -c "Untracked files:" &> /dev/null; then printf " Untracked "; else printf ""; fi
-  if echo ${STATUS} | grep -c "modified:"        &> /dev/null; then printf " Modified "; else printf ""; fi
-  if echo ${STATUS} | grep -c "deleted:"         &> /dev/null; then printf " Deleted "; else printf ""; fi
-  printf "] "
+# Git
+GIT_INFO=""
+
+update_git_info() {
+  local out branch git_out
+  git_out="$(git status --porcelain=2 --branch 2>/dev/null)" || { GIT_INFO=""; return; }
+  branch=$(grep -m1 "^# branch.head" <<<"$git_out" | awk '{print $3}')
+
+  if [[ $branch == "detached" ]]; then
+    branch=$(grep -m1 "^# branch.oid" <<<"$git_out" | awk '{print substr($3,1,7)}')
+  fi
+  out="%F{red}${branch}%f ["
+
+  [[ $git_out == *"ahead "* ]] && out+=" Ahead"
+  [[ $git_out == *"?? "* ]]    && out+=" Untracked"
+  [[ $git_out == *"A "* ]]     && out+=" Added"
+  [[ $git_out == *"M "* ]]     && out+=" Modified"
+  [[ $git_out == *"R "* ]]     && out+=" Renamed"
+  [[ $git_out == *"D "* ]]     && out+=" Deleted"
+
+  GIT_INFO="$out ]"
 }
 
-parse_git_branch() {
-  # Long form
-  git rev-parse --abbrev-ref HEAD 2> /dev/null
-  # Short form
-  # git rev-parse --abbrev-ref HEAD 2> /dev/null | sed -e 's/.*\/\(.*\)/\1/'
+precmd() {
+  update_git_info
 }
-
-# Git Caching
-
-export USE_CCACHE=1
-export CCACHE_COMPRESS=1
-export CCACHE_MAXSIZE=50G # 50 GB
 
 # Tab Completion
 autoload -Uz compinit
