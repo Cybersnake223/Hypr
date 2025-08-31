@@ -15,34 +15,17 @@
 ## Created by Cybersnake                                                                                  ##
 ############################################################################################################
 
-notify-send " 直 Scanning Wi-Fi Networks..."
-wifi_list=$(nmcli --fields "SECURITY,SSID" device wifi list | sed 1d | sed 's/  */ /g' | sed -E "s/WPA*.?\S/ /g" | sed "s/^--/ /g" | sed "s/  //g" | sed "/--/d")
+notify-send "直 Scanning Wi-Fi Networks..."
+iwctl station wlan0 scan
+sleep 2
+wifi_list=$(iwctl station wlan0 get-networks | awk 'NR>5 {ssid=substr($0,1,30); gsub(/^ +| +$/,"",ssid); print ssid}')
 
-connected=$(nmcli -fields WIFI g)
-if [[ "$connected" =~ "enabled" ]]; then
-	toggle="睊  Disable Wi-Fi"
-elif [[ "$connected" =~ "disabled" ]]; then
-	toggle="直  Enable Wi-Fi"
-fi
+chosen_network=$(echo -e "$wifi_list" | rofi -dmenu -i -p "󰀂  Network")
+[ -z "$chosen_network" ] && exit
 
-chosen_network=$(echo -e "$toggle\n$wifi_list" | uniq -u | rofi -dmenu -i -selected-row 1 -p "󰀂  Network")
-chosen_id=$(echo "${chosen_network:3}" | xargs)
-
-if [ "$chosen_network" = "" ]; then
-	exit
-elif [ "$chosen_network" = "直  Enable Wi-Fi" ]; then
-	nmcli radio wifi on
-elif [ "$chosen_network" = "睊  Disable Wi-Fi" ]; then
-	nmcli radio wifi off
+if iwctl known-networks list | grep -q "$chosen_network"; then
+    iwctl station wlan0 connect "$chosen_network" && notify-send "Connected: \"$chosen_network\""
 else
-	success_message="Connected:  \"$chosen_id\""
-	saved_connections=$(nmcli -g NAME connection)
-	if [[ $(echo "$saved_connections" | grep -w "$chosen_id") = "$chosen_id" ]]; then
-		nmcli connection up id "$chosen_id" | grep "successfully" && notify-send "$success_message"
-	else
-		if [[ "$chosen_network" =~ "" ]]; then
-			wifi_password=$(rofi -dmenu -l 0 -p "Password: ")
-		fi
-		nmcli device wifi connect "$chosen_id" password "$wifi_password" | grep "successfully" && notify-send "$success_message"
-	fi
+    wifi_password=$(rofi -dmenu -l 0 -p "Password: ")
+    iwctl --passphrase "$wifi_password" station wlan0 connect "$chosen_network" && notify-send "Connected: \"$chosen_network\""
 fi
