@@ -12,46 +12,57 @@
 /* ## Created by Cybersnake                                                                                  ## */
 /* ############################################################################################################ */
 
-
-/*******************************************************************************
- * SECTION: Painting and Rendering                                             *
-*******************************************************************************/
-
-user_pref("content.notify.interval", 100000); //25000//50000//100000
-user_pref("nglayout.initialpaint.delay", 5); // DEFAULT; formerly 250
-user_pref("nglayout.initialpaint.delay_in_oopif", 5); // DEFAULT
+user_pref("content.notify.interval", 200000); //25000//50000//100000
+user_pref("nglayout.initialpaint.delay", 0); // DEFAULT; formerly 250
+user_pref("nglayout.initialpaint.delay_in_oopif", 0); // DEFAULT
 user_pref("content.notify.ontimer", true); // DEFAULT
-user_pref("gfx.canvas.accelerated.cache-size", 512);
-user_pref("gfx.content.skia-font-cache-size", 20);
+user_pref("gfx.canvas.accelerated.cache-size", 4096);
+user_pref("gfx.content.skia-font-cache-size", 32);
 user_pref("browser.cache.disk.enable", true);
 user_pref("browser.sessionhistory.max_total_viewers", 2);
-
-/****************************************************************************
- * SECTION: Caching and Memory                                              *
-****************************************************************************/
-
-user_pref("media.memory_cache_max_size", 255000);
-user_pref("media.cache_readahead_limit", 72000);
-user_pref("media.cache_resume_threshold", 36000);
-user_pref("image.mem.decode_bytes_at_a_time", 32768);
-
-/****************************************************************************
- * SECTION: Networking                                                      *
-****************************************************************************/
-
-user_pref("network.http.max-connections", 1800); //1800//900//
-user_pref("network.http.max-persistent-connections-per-server", 10);
+user_pref("image.mem.max_decoded_image_kb", 512000);
+user_pref("image.cache.size", 10485760);
+user_pref("image.mem.decode_bytes_at_a_time", 65536);
+user_pref("image.mem.shared.unmap.min_expiration_ms", 90000);
+user_pref("browser.preferences.defaultPerformanceSettings.enabled", false);
+user_pref("content.maxtextrun", 8191);
+user_pref("content.interrupt.parsing", true);
+user_pref("content.max.tokenizing.time", 500000);
+user_pref("content.switch.threshold", 700000);
+user_pref("layout.frame_rate", -1);
+user_pref("gfx.canvas.accelerated.cache-items", 32768);
+user_pref("gfx.canvas.max-size", 16384);
+user_pref("webgl.max-size", 16384);
+user_pref("ui.submenuDelay", 0);
+user_pref("browser.uidensity", 1);
+user_pref("dom.element.animate.enabled", true);
+user_pref("dom.ipc.processCount", 2);
+user_pref("dom.ipc.keepProcessesAlive.web", 1);
+user_pref("accessibility.force_disabled", 1);
+user_pref("dom.media.webcodecs.h265.enabled", true);
+user_pref("media.wmf.hevc.enabled", true);
+user_pref("media.hardware-video-decoding.force-enabled", true);
+user_pref("widget.wayland.opaque-region.enabled", true);
+user_pref("widget.wayland.fractional-scale.enabled", true);
+user_pref("zen.theme.acrylic-elements", false);
+user_pref("media.memory_cache_max_size", -1);
+user_pref("browser.cache.disk.metadata_memory_limit", 16384);
+user_pref("media.cache_readahead_limit", 600);
+user_pref("media.cache_combined_limit_kb", 2097152);
+user_pref("media.cache_resume_threshold", 300);
+user_pref("image.mem.decode_bytes_at_a_time", 65536);
+user_pref("javascript.options.mem.high_water_mark", 128);
+user_pref("browser.cache.max_shutdown_io_lag", 100);
+user_pref("network.http.max-connections", 1200); //1800//900//
+user_pref("network.http.max-persistent-connections-per-server", 8);
 user_pref("network.http.max-urgent-start-excessive-connections-per-host", 5);
+user_pref("network.http.request.max-start-delay", 5);
 user_pref("network.http.pacing.requests.enabled", false);
-user_pref("network.http.pacing.requests.min-parallelism", 12); // default=6
-user_pref("network.http.pacing.requests.burst", 14); // default=10
+user_pref("network.http.pacing.requests.min-parallelism", 0); // default=6
+user_pref("network.http.pacing.requests.burst", 32); // default=10
 user_pref("network.dnsCacheExpiration", 3600);
-user_pref("network.ssl_tokens_cache_capacity", 10240);
-
-/************************************************************************************************
- * SECTION: Speculative connections and prefetching                                             *
-*************************************************************************************************/
-
+user_pref("network.ssl_tokens_cache_capacity", 32768);
+user_pref("network.dnsCacheEntries", 10000);
 user_pref("network.http.speculative-parallel-limit", 0);
 user_pref("network.dns.disablePrefetch", true);
 user_pref("network.dns.disablePrefetchFromHTTPS", true);
@@ -60,11 +71,7 @@ user_pref("browser.places.speculativeConnect.enabled", false);
 user_pref("network.prefetch-next", false);
 user_pref("network.predictor.enabled", false);
 user_pref("network.predictor.enable-prefetch", false);
-
-/****************************************************************************
- * SECTION: TRACKING PROTECTION                                             *
-****************************************************************************/
-
+user_pref("browser.ping-centre.telemetry", false);
 user_pref("browser.contentblocking.category", "strict");
 user_pref("browser.download.start_downloads_in_tmp_dir", true);
 user_pref("browser.helperApps.deleteTempFileOnExit", true);
@@ -150,12 +157,10 @@ user_pref("browser.bookmarks.openInTabClosesMenu", false);
 user_pref("browser.menu.showViewImageInfo", true);
 user_pref("findbar.highlightAll", true);
 user_pref("layout.word_select.eat_space_to_next_word", false);
-
-
-
-user_pref("apz.overscroll.enabled", true); // DEFAULT NON-LINUX
+user_pref("browser.ml.chat.enabled", false);
+user_pref("apz.overscroll.enabled", false); // DEFAULT NON-LINUX
 user_pref("general.smoothScroll", true); // DEFAULT
-user_pref("mousewheel.default.delta_multiplier_y", 400); // 250-400; adjust this number to your liking
+user_pref("mousewheel.default.delta_multiplier_y", 300); // 250-400; adjust this number to your liking
 user_pref("general.smoothScroll.msdPhysics.enabled", false); // [FF122+ Nightly]
 user_pref("gfx.canvas.azure.accelerated", true);
 user_pref("gfx.xrender.enabled", false); 
