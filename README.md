@@ -8,7 +8,7 @@
 <div align="center">
   <p></p>
   <p><b><i> <img src="https://img.shields.io/github/last-commit/Cybersnake223/Hypr?style=for-the-badge"> <img src="https://shields.io/maintenance/yes/2025?style=for-the-badge"> </i></b></p>
-  <img src="https://img.shields.io/github/languages/code-size/Cybersnake223/Hypr?style=for-the-badge">
+  <img src="https://img.shields.io/github/repo-size/Cybersnake223/Hypr?style=for-the-badge">
   <img src="https://img.shields.io/github/stars/Cybersnake223/Hypr?style=for-the-badge">
   <img src="https://img.shields.io/github/license/Cybersnake223/Hypr?style=for-the-badge">
 </div>
