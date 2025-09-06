@@ -14,10 +14,7 @@
 /* Name: Back Fwd Always Hidden */
 /* Description: Back and forward buttons will always be hidden. Useful if your mouse has the relevant buttons */
 
-:root:not([customizing]) #back-button {
-    display: none !important;
-  }
-  :root:not([customizing]) #forward-button {
+:root:not([customizing]) #forward-button {
     display: none !important;
   }
 
@@ -29,13 +26,13 @@
       position: absolute !important;
       top: 0px !important;
       left: 0px !important;
-      height: 5px !important; /* Height of the top background */
+      height: 7px !important; /* Height of the top background */
       max-width: 100% !important;
       width: var(--bar-pcent) !important; /* Ensure full width or customizable width */
       background-color: var(--bar-colour) !important; /* Solid color for the bar */
       border-radius: 0 2px 2px 0; /* Adjust this value to control the roundness of the ends */
       z-index: 1 !important;
-      transition: width 0.5s ease-in-out, background 0.2s ease !important; /* Apply smooth transition on width and background */
+      transition: width 0.3s ease-in-out, background 0.2s ease !important; /* Apply smooth transition on width and background */
     }    /* Current tab loading progress and muted status */
     
     
@@ -109,9 +106,9 @@
 }
 
 :root:has([mod-sameerasw_zen_animations="1"]) {
-  --mod-sameerasw-zen-animation-smoothness: all 0.30s
+  --mod-sameerasw-zen-animation-smoothness: all 0.20s
       cubic-bezier(0.175, 0.885, 0.32, 1.35),
-    filter 0.3s ease-in-out, opacity 0.3s ease-in-out !important;
+    filter 0.2s ease-in-out, opacity 0.2s ease-in-out !important;
 }
 
 :root:has([mod-sameerasw_zen_animations="2"]) {
@@ -167,7 +164,7 @@ hbox.browserSidebarContainer,
   > hbox:not([zen-split="true"]):not(:has(.zen-glance-background)) {
   @media -moz-pref( "mod.sameerasw.zen_tab_switch_anim") {
     transition: var(--mod-sameerasw-zen-animation-smoothness) !important;
-    scale: 1.0 !important;
+    scale: 0.5 !important;
     opacity: 0;
   }
 }
@@ -190,7 +187,7 @@ hbox.browserSidebarContainer,
   @media -moz-pref( "mod.sameerasw.zen_urlbar_zoom_anim") {
     pointer-events: none;
     scale: 1.05 !important;
-    filter: blur(2px) brightness(30%) !important;
+    filter: blur(10px) brightness(10%) !important;
   }
 }
 
@@ -203,7 +200,7 @@ hbox.browserSidebarContainer,
 /* trackpad gestures*/
 tabpanels .browserStack browser {
   @media -moz-pref( "mod.sameerasw.zen_trackpad_anim") {
-    transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.1) 0.1s !important;
+    transition: all 0.1s cubic-bezier(0.175, 0.885, 0.32, 1.1) 0.1s !important;
   }
 }
 
@@ -495,7 +492,7 @@ tabpanels .browserStack browser {
     border: solid 0px color-mix(in hsl, hsl(0 0 0), transparent 0%) !important;
     border-radius: 25px !important;
     background-color: color-mix(in hsl, var(--mod-cleanedurlbar-customcolor), transparent var(--mod-cleanedurlbar-customtransparency)) !important;
-    backdrop-filter: blur(80px) saturate(0) !important;
+    backdrop-filter: blur(110px) saturate(10) !important;
 }
 
 /* Custom URL result selected color */
@@ -800,8 +797,11 @@ body:has(
 
 }
 
-/* Disable Tab close button */ 
-image.tab-close-button {
+/* Tab close on hover  */
+
+#tabbrowser-tabs
+  .tabbrowser-tab:not([pinned]):is([visuallyselected]):not(:hover)
+  .tab-close-button {
   display: none !important;
 }
 
