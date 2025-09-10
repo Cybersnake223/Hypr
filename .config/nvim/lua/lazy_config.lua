@@ -1,0 +1,3 @@
+return {
+  install = { colorscheme = { "nightfox" } },
+}

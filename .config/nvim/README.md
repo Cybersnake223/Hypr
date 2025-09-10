@@ -1,9 +1,61 @@
-**This repo is supposed to used as config by NvChad users!**
+# TinyVim
+- Minimal Neovim config meant to be a starting point for new neovim users.
 
-- The main nvchad repo (NvChad/NvChad) is used as a plugin by this repo.
-- So you just import its modules , like `require "nvchad.options" , require "nvchad.mappings"`
-- So you can delete the .git from this repo ( when you clone it locally ) or fork it :)
+![2023-09-26-133901_2560x1440_scrot](https://github.com/NvChad/tinyvim/assets/59060246/ce143ca2-07f1-4d54-971d-0f8304c50b58)
 
-# Credits
+# Install
+- Linux or MacOS
+```bash
+git clone https://github.com/NvChad/tinyvim ~/.config/nvim && nvim
+```
 
-1) Lazyvim starter https://github.com/LazyVim/starter as nvchad's starter was inspired by Lazyvim's . It made a lot of things easier!
+Run `:MasonInstallAll` command after lazy.nvim finishes downloading plugins
+
+- Windows
+```bash
+git clone https://github.com/NvChad/tinyvim $HOME\AppData\Local\nvim --depth 1 && nvim
+```
+
+Run `:MasonInstallAll` command after lazy.nvim finishes downloading plugins
+
+# Reset
+```bash
+rm -rf ~/.local/share/nvim && rm -rf ~/.config/nvim/lazy-lock.json
+```
+
+# Dir structure
+```bash
+├── init.lua
+├── lua
+    ├── commands.lua
+    ├── mappings.lua
+    ├── options.lua
+    └── plugins
+        ├── init.lua
+        ├── configs
+            ├── blink.lua
+            ├── telescope.lua
+            └── ( more ... )
+```
+
+# About
+- Dont expect this config to be beautiful or blazing fast (no hardcore lazyloading is done)! 
+- I'm just using some plugins with their default configs
+- This config only uses only lesser plugins which I think are important for any config.
+
+# Important Plugins used
+Below is the list of some very important plugins which I think should be must for any neovim config.
+
+| Name             | Description                                  |
+|-------------------------|----------------------------------------------|
+| nvim-tree.lua           | File tree                                    |
+| Nvim-web-devicons       | Icons provider                               |
+| nvim-treesitter         | Configure treesitter                         |
+| bufferline.nvim         | Tab + bufferline plugin                      |
+| blink.cmp               | Autocompletion                               |
+| Luasnip & friendly snippets               | Snippets                                      |
+| mason.nvim              | Download binaries of various lsps, formatters, debuggers, etc. |
+| gitsigns.nvim                | Git-related features                         |
+| comment.nvim            | Commenting                                   |
+| telescope.nvim          | Fuzzy finder                                 |
+| conform.nvim            | Formatter                                    |
