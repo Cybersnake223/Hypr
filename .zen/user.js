@@ -22,7 +22,7 @@ user_pref("browser.sessionstore.interval", 60000);
 user_pref("browser.sessionstore.max_tabs_undo", 0);
 user_pref("browser.sessionhistory.max_entries", 10);
 
-// Process management (adjust if you have more RAM)
+// Process management
 user_pref("dom.ipc.processCount", 2);
 user_pref("dom.ipc.processCount.webIsolated", 1);
 user_pref("dom.ipc.processPriorityManager.enabled", false);
@@ -30,32 +30,25 @@ user_pref("dom.ipc.processPriorityManager.enabled", false);
 // ===================
 //  NETWORKING
 // ===================
-
-// HTTP/2 + HTTP/3
 user_pref("network.http.http2.enabled", true);
 user_pref("network.http.http2.default-concurrent", 100);
 user_pref("network.http.http3.enabled", true);
 
-// Connection pool
 user_pref("network.http.max-connections", 900);
 user_pref("network.http.max-persistent-connections-per-server", 10);
 user_pref("network.http.max-persistent-connections-per-proxy", 50);
 user_pref("network.http.max-urgent-start-excessive-connections-per-host", 5);
 user_pref("network.http.request.max-start-delay", 1);
 
-// Buffer cache
 user_pref("network.buffer.cache.size", 262144);
 user_pref("network.buffer.cache.count", 128);
 
-// DNS cache
 user_pref("network.dnsCacheEntries", 10000);
 user_pref("network.dnsCacheExpiration", 3600);
 user_pref("network.ssl_tokens_cache_capacity", 32768);
 
-// TCP Fast Open (Linux kernel >= 4.11)
 user_pref("network.tcp.tcp_fastopen_enable", true);
 
-// Disable speculative/prefetch
 user_pref("network.prefetch-next", false);
 user_pref("network.predictor.enabled", false);
 user_pref("network.predictor.enable-prefetch", false);
@@ -216,3 +209,27 @@ user_pref("dom.gamepad.enabled", false);
 user_pref("dom.vibrator.enabled", false);
 user_pref("dom.battery.enabled", false);
 user_pref("accessibility.force_disabled", 1);
+
+// ===================
+//  MAX-PERFORMANCE HARDENING CUTS
+// ===================
+// Background APIs
+user_pref("dom.push.enabled", false);
+user_pref("beacon.enabled", false);
+user_pref("dom.serviceWorkers.enabled", false);
+user_pref("dom.indexedDB.enabled", false);
+
+// Legacy / sensors
+user_pref("network.captive-portal-service.enabled", false);
+user_pref("network.connectivity-service.enabled", false);
+user_pref("device.sensors.enabled", false);
+user_pref("geo.enabled", false);
+
+// Media features
+user_pref("media.peerconnection.enabled", false);
+user_pref("media.navigator.enabled", false);
+user_pref("media.gmp-provider.enabled", false);
+
+// Rendering / extras
+user_pref("webgl.disabled", true);
+user_pref("pdfjs.disabled", true);
