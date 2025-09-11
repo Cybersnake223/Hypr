@@ -124,9 +124,9 @@
 }
 /* default */
 :root:not(:has([mod-sameerasw_zen_animations])) {
-  --mod-sameerasw-zen-animation-smoothness: all 0.30s
+  --mod-sameerasw-zen-animation-smoothness: all 0.20s
       cubic-bezier(0.175, 0.885, 0.32, 1.35),
-    filter 0.3s ease-in-out, opacity 0.3s ease-in-out !important;
+    filter 0.2s ease-in-out, opacity 0.2s ease-in-out !important;
 }
 
 /* tab tint */
@@ -164,13 +164,13 @@ hbox.browserSidebarContainer,
   > hbox:not([zen-split="true"]):not(:has(.zen-glance-background)) {
   @media -moz-pref( "mod.sameerasw.zen_tab_switch_anim") {
     transition: var(--mod-sameerasw-zen-animation-smoothness) !important;
-    scale: 0.5 !important;
+    scale: 1.0 !important;
     opacity: 0;
   }
 }
 #tabbrowser-tabpanels > hbox.deck-selected:not([zen-split="true"]) {
   @media -moz-pref( "mod.sameerasw.zen_tab_switch_anim") {
-    scale: 1 !important;
+    scale: 1.0 !important;
     opacity: 1 !important;
   }
 }
@@ -186,8 +186,8 @@ hbox.browserSidebarContainer,
 #browser:has(#urlbar[open][zen-floating-urlbar="true"]) #tabbrowser-tabpanels {
   @media -moz-pref( "mod.sameerasw.zen_urlbar_zoom_anim") {
     pointer-events: none;
-    scale: 1.05 !important;
-    filter: blur(10px) brightness(10%) !important;
+    scale: 1.1 !important;
+    filter: blur(1px) brightness(10%) !important;
   }
 }
 
@@ -492,7 +492,7 @@ tabpanels .browserStack browser {
     border: solid 0px color-mix(in hsl, hsl(0 0 0), transparent 0%) !important;
     border-radius: 25px !important;
     background-color: color-mix(in hsl, var(--mod-cleanedurlbar-customcolor), transparent var(--mod-cleanedurlbar-customtransparency)) !important;
-    backdrop-filter: blur(110px) saturate(10) !important;
+    backdrop-filter: blur(10px) saturate(5) !important;
 }
 
 /* Custom URL result selected color */
