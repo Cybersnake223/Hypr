@@ -27,8 +27,8 @@ window {
     transparency:                   "real";
     background-color:               @on-primary;
     text-color:                     @tertiary-container;
-    border:                  		5px;
-    border-color:                  	@on-primar;
+    border:                  		4px;
+    border-color:                  	@tertiary-container;
     border-radius:                  15px;
     width:                          416px;
     location:                       center;
@@ -93,7 +93,7 @@ case-indicator {
 listview {
     background-color:               @on-primary;
     columns:                        1;
-    lines:							5;
+    lines:			            				5;
     spacing:                        10px;
     cycle:                          true;
     dynamic:                        true;

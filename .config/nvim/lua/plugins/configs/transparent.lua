@@ -1,18 +1,45 @@
- -- Optional, you don't have to run setup.
-require("transparent").setup({
-  -- table: default groups
-  groups = {
-    'Normal', 'NormalNC', 'Comment', 'Constant', 'Special', 'Identifier',
-    'Statement', 'PreProc', 'Type', 'Underlined', 'Todo', 'String', 'Function',
-    'Conditional', 'Repeat', 'Operator', 'Structure', 'LineNr', 'NonText',
-    'SignColumn', 'CursorLine', 'CursorLineNr', 'StatusLine', 'StatusLineNC',
-    'EndOfBuffer',
-  },
-  -- table: additional groups that should be cleared
-  extra_groups = {},
-  -- table: groups you don't want to clear
+local transparent = require("transparent")
+
+transparent.setup({
+  groups = { 'all' },  -- Nukes ALL backgrounds (safest)
+  extra_groups = {}, 
   exclude_groups = {},
-  -- function: code to be executed after highlight groups are cleared
-  -- Also the user event "TransparentClear" will be triggered
-  on_clear = function() end,
+})
+
+-- Global winblend = 0 (CRITICAL for floats)
+vim.o.winblend = 0
+vim.o.pumblend = 0
+
+-- FORCE transparent on EVERY colorscheme change + filetype
+vim.api.nvim_create_autocmd("ColorScheme", {
+  callback = function()
+    vim.cmd("hi clear")
+    transparent.clear()
+    vim.cmd("hi Normal guibg=NONE ctermbg=NONE")
+    vim.cmd("hi NormalFloat guibg=NONE ctermbg=NONE")
+    vim.cmd("hi FloatBorder guibg=NONE ctermbg=NONE")
+    vim.cmd("hi Pmenu guibg=NONE ctermbg=NONE")
+  end,
+})
+
+-- TARGET Mason/Lazy SPECIFICALLY on open
+vim.api.nvim_create_autocmd("FileType", {
+  pattern = { "Mason", "lazy" },
+  callback = function()
+    vim.opt_local.winblend = 0
+    vim.cmd("hi! default MasonNormal guibg=NONE ctermbg=NONE")
+    vim.cmd("hi! default LazyNormal guibg=NONE ctermbg=NONE")
+    vim.cmd("hi! default link MasonNormal NormalFloat")
+    vim.cmd("hi! default link LazyNormal NormalFloat")
+  end,
+})
+
+-- Nightfox conflict fix (runs AFTER theme)
+vim.api.nvim_create_autocmd("VimEnter", {
+  callback = function()
+    vim.defer_fn(function()
+      vim.cmd("hi Normal guibg=NONE ctermbg=NONE")
+      vim.cmd("hi NormalFloat guibg=NONE ctermbg=NONE")
+    end, 100)
+  end,
 })

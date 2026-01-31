@@ -17,13 +17,15 @@
   "layer": "top",
   "position": "top",
   "mode": "dock",
-  "exclusive": true,
+  "exclusive": false,
   "passthrough": false,
   "gtk-layer-shell": true,
   "height": 40,
   "modules-left": [
     "clock",
     "network",
+    // "network#speed",
+    "memory",
   ],
   "fixed-center": true,
   "modules-center": [
@@ -55,7 +57,7 @@
   },
   "clock": {
     "interval": 60,
-    "format": " {:%A, %B %d [%H:%M]}",
+    "format": " {:%a, %b %d [%H:%M]}",
     "tooltip-format": "<tt><small>{calendar}</small></tt>",
     "calendar": {
       "mode": "year",
@@ -147,20 +149,21 @@
     "on-click": "btblock",
   },
   "memory": {
-    "interval": 60,
-    "format": " {used}G",
+    "interval": 30,
+    "format": " {used} G",
     "tooltip-format": "{used} / {total} G",
   },
   "disk": {
     "interval": 6000,
     "path": "/home/cybersnake/",
-    "format": " {percentage_used}%",
-    "tooltip-format": "{used} used out of {total} on {path} ",
+    "format": " {used}",
+    // "unit": "GiB",
+    "tooltip-format": "{used} used out of {total} on {path} "
   },
   "custom/updates": {
     "format": "{}",
     "tooltip": true,
-    "interval": 300,
+    "interval": 600,
     "exec": "$HOME/.config/waybar/bin/updatecheck",
     "return-type": "json",
     "exec-if": "exit 0",
@@ -179,6 +182,12 @@
     "interval": 5,
     "exec": "$HOME/.config/waybar/bin/playerinfo",
     "max-length": 40,
-    "tooltip": true,
+    "tooltip": true
   },
+  "network#speed": {
+  "interval": 2,
+  "format": "{ifname}",
+  "format-wifi": " {bandwidthDownBytes}",
+  "format-disconnected": "󰌙"
+   },
 }

@@ -25,11 +25,10 @@
 
 window#waybar {
     background: rgba(21, 18, 27, 0);
-    color: #cdd6f4;
 }
 
 tooltip {
-    background: @background;
+    background: @shadow;
     border-radius: 10px;
     border-width: 2.5px;
     border-style: solid;
@@ -44,6 +43,8 @@ tooltip {
     color: @surface_variant;
     padding-right: 0px;
     padding-left: 0px;
+    margin-right: 0px;
+    margin-left: 0px;
 }
 
 #workspaces button.active {
@@ -83,6 +84,7 @@ tooltip {
 #memory,
 #disk,
 #backlight,
+#network.speed,
 
 #backlight {
     background: @shadow;
@@ -120,6 +122,12 @@ tooltip {
 }
 
 #network {
+    color: @tertiary_fixed_dim;
+    border-radius: 10px 10px 10px 10px;
+    margin-right: 5px;
+}
+
+#network.speed {
     color: @tertiary_fixed_dim;
     border-radius: 10px 10px 10px 10px;
     margin-right: 5px;
@@ -193,18 +201,18 @@ tooltip {
   background-color:           #F53C3C;
   color:                      #EEEEEE;
   animation-name:             blink;
-  animation-duration:         1.0s;
+  animation-duration:         0.5s;
   animation-timing-function:  linear;
   animation-iteration-count:  infinite;
   animation-direction:        alternate;
 }
 
-/* #battery.charging {                     */ 
-/*   background-color:           #a6e3a1;  */ 
-/*   color:                      #F53C3C;  */ 
-/*   animation-name:             blink;    */ 
-/*   animation-duration:         1.0s;     */ 
-/*   animation-timing-function:  linear;   */ 
-/*   animation-iteration-count:  infinite; */ 
-/*   animation-direction:        alternate;*/ 
-/* }                                       */
+/* #battery.charging {                       */
+/*   background-color:           #a6e3a1;    */
+/*   color:                      #F53C3C;    */
+/*   animation-name:             blink;      */
+/*   animation-duration:         0.1s;       */
+/*   animation-timing-function:  linear;     */
+/*   animation-iteration-count:  infinite;   */
+/*   animation-direction:        alternate;  */
+/* }                                        */

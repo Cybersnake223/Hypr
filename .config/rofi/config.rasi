@@ -24,7 +24,7 @@ configuration {
   font: "JetBrainsMono Nerd Font Propo Bold 12";
   modi: "run,drun";
   hide-scrollbar: true;
-  show-icons: true;
+  show-icons: false;
   icon-theme: "Reversal-purple-dark";
 }
 
@@ -32,12 +32,12 @@ configuration {
 
 window {
    background-color: @on-primary;
-   width: 30%;
+   width: 32%;
    padding: 10px;
    fullscreen: false;
    border:  3px;
    border-radius: 15px;
-   border-color: @on-primary;
+   border-color: @tertiary-container;
 }
 
 mainbox {
@@ -59,8 +59,8 @@ textbox {
 }
 
 listview {
-   fixed-height: true;
-   dynamic: false;
+   fixed-height: false;
+   dynamic: true;
    scrollbar: false;
    spacing: 0px;
    padding: 5px 0px 0px 0px;

@@ -3,7 +3,17 @@ return {
   cmdline = { enabled = true },
   appearance = { nerd_font_variant = "normal" },
   fuzzy = { implementation = "prefer_rust" },
-  sources = { default = { "lsp", "snippets", "buffer", "path" } },
+  sources = {
+    default = { "lsp", "snippets", "buffer", "path" },
+    per_filetype = {
+      sql = { "snippets", "dadbod", "buffer" },  -- dadbod first for SQL tables/columns
+      mysql = { "snippets", "dadbod", "buffer" },
+      plsql = { "snippets", "dadbod", "buffer" },
+    },
+    providers = {
+      dadbod = { name = "Dadbod", module = "vim_dadbod_completion.blink" },
+    },
+  },
 
   keymap = {
     preset = "default",
