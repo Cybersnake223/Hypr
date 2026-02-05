@@ -18,7 +18,7 @@ configuration {
     display-drun: 					"";
     drun-display-format:            "{icon} {name}";
     disable-history:                true;
-	click-to-exit: 					true;
+	  // click-to-exit: 					true;
 }
 
 @import "colors.rasi"
@@ -27,18 +27,18 @@ window {
     transparency:                   "real";
     background-color:               @on-primary;
     text-color:                     @tertiary-container;
-    border:                  		4px;
+    border:                  		    4px;
     border-color:                  	@tertiary-container;
-    border-radius:                  15px;
-    width:                          416px;
-    location:                       center;
-    anchor:                         center;
-    x-offset:                       0;
+    border-radius:                  50px;
+    width:                          100px;
+    location:                       east;
+    anchor:                         east;
+    x-offset:                       -20px;
     y-offset:                       0;
 }
 
 prompt {
-    enabled: 						true;
+    enabled: 						false;
   	margin: 						0px 0px 0px 8px;
     padding:    					6px 6px 6px 6px;
   	background-color: 				@on-primary;
@@ -49,6 +49,7 @@ prompt {
 }
 
 textbox-prompt-colon {
+  enabled:            false;
 	expand: 						false;
 	str: 							"⏻";
     border-radius:                  10px;
@@ -70,12 +71,13 @@ entry {
 }
 
 inputbar {
-	children: 						[ textbox-prompt-colon, prompt ];
+  enabled:                          false;
+	children: 						            [ textbox-prompt-colon, prompt ];
     spacing:                        0;
     background-color:               @on-primary;
     text-color:                     @tertiary-container;
-    border:                  		0px 0px 1px 0px;
-    border-radius:                  10px;
+    border:                  		    0px 0px 1px 0px;
+    border-radius:                  50px;
     border-color:                  	@tertiary-container;
     expand:                         false;
     margin:                         0px 0px 0px 0px;
@@ -84,11 +86,11 @@ inputbar {
 }
 
 case-indicator {
+    enabled:                        false;
     background-color:               @on-primary;
     text-color:                     @tertiary-container;
     spacing:                        0;
 }
-
 
 listview {
     background-color:               @on-primary;
@@ -97,7 +99,7 @@ listview {
     spacing:                        10px;
     cycle:                          true;
     dynamic:                        true;
-    layout:                         horizontal;
+    layout:                         vertical;
 }
 
 mainbox {
@@ -112,7 +114,7 @@ element {
     text-color:                     @tertiary-container;
     orientation:                    horizontal;
     border:                  		2px;
-    border-radius:                  10px;
+    border-radius:                  50px;
     border-color:                  	@tertiary-container;
     padding:                        23px 23px 23px 23px;
 }
@@ -140,7 +142,7 @@ element selected {
     background-color:               @tertiary-container;
     text-color:                     @on-primary;
     border:                  		0px;
-    border-radius:                  10px;
+    border-radius:                  50px;
     border-color:                  	@tertiary-container;
 }
 
