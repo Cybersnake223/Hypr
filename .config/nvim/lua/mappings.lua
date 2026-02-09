@@ -59,13 +59,13 @@ vim.api.nvim_create_autocmd("FileType", {
 
 -- Molten 
 -- map("n", "<leader>mi", ":MoltenInit<CR>", { desc = "molten init", silent = false })
-map("n", "<leader>e", ":MoltenEvaluateOperator<CR>", { desc = "evaluate operator", silent = true })
-map("n", "<leader>os", ":noautocmd MoltenEnterOutput<CR>", { desc = "open output window", silent = true })
-map("n", "<leader>rr", ":MoltenReevaluateCell<CR>", { desc = "re-eval cell", silent = true })
-map("v", "<leader>r", ":<C-u>MoltenEvaluateVisual<CR>gv", { desc = "execute visual selection", silent = true })
-map("n", "<leader>oh", ":MoltenHideOutput<CR>", { desc = "close output window", silent = true })
-map("n", "<leader>md", ":MoltenDelete<CR>", { desc = "delete Molten cell", silent = true })
-map("n", "<leader>mx", ":MoltenOpenInBrowser<CR>", { desc = "open output in browser", silent = true })
+map("n", "<localleader>e", ":MoltenEvaluateOperator<CR>", { desc = "evaluate operator", silent = true })
+map("n", "<localleader>os", ":noautocmd MoltenEnterOutput<CR>", { desc = "open output window", silent = true })
+map("n", "<localleader>rr", ":MoltenReevaluateCell<CR>", { desc = "re-eval cell", silent = true })
+map("v", "<localleader>r", ":<C-u>MoltenEvaluateVisual<CR>gv", { desc = "execute visual selection", silent = true })
+map("n", "<localleader>oh", ":MoltenHideOutput<CR>", { desc = "close output window", silent = true })
+map("n", "<localleader>md", ":MoltenDelete<CR>", { desc = "delete Molten cell", silent = true })
+map("n", "<localleader>mx", ":MoltenOpenInBrowser<CR>", { desc = "open output in browser", silent = true })
 
 vim.keymap.set("n", "<leader>mi", function()
   local venv = os.getenv("VIRTUAL_ENV") or os.getenv("CONDA_PREFIX")
