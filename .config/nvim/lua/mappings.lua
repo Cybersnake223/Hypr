@@ -3,17 +3,11 @@ local map = vim.keymap.set
 -- general mappings
 map("n", "<C-s>", "<cmd> w <CR>")
 map("i", "jk", "<ESC>")
-map("n", "<C-c>", "<cmd> %y+ <CR>") -- copy whole filecontent
+map("n", "<C-c>", "<cmd> %y+ <CR>")
 
 -- nvimtree
 map("n", "<C-n>", "<cmd> NvimTreeToggle <CR>")
 map("n", "<C-h>", "<cmd> NvimTreeFocus <CR>")
-
--- telescope
-map("n", "<leader>ff", "<cmd> Telescope find_files <CR>")
-map("n", "<leader>fo", "<cmd> Telescope oldfiles <CR>")
-map("n", "<leader>fw", "<cmd> Telescope live_grep <CR>")
-map("n", "<leader>gt", "<cmd> Telescope git_status <CR>")
 
 -- bufferline, cycle buffers
 map("n", "<Tab>", "<cmd> BufferLineCycleNext <CR>")
@@ -23,6 +17,16 @@ map("n", "<C-q>", "<cmd> bd <CR>")
 -- comment.nvim
 map("n", "<leader>/", "gcc", { remap = true })
 map("v", "<leader>/", "gc", { remap = true })
+
+-- lazy.nvim
+map("n", "<leader>l", " <cmd> Lazy <CR>", { remap = true })
+map("n", "<leader>ls", " <cmd> Lazy sync <CR>", { remap = true })
+map("n", "<leader>lp", " <cmd> Lazy profile <CR>", { remap = true })
+map("n", "<leader>lx", " <cmd> Lazy clean <CR>", { remap = true })
+
+-- lazy.nvim
+map("n", "<leader>m", " <cmd> Mason <CR>", { remap = true })
+map("n", "<leader>mu", " <cmd> MasonToolsUpdateSync <CR>", { remap = true })
 
 -- format
 map("n", "<leader>fm", function()
@@ -57,15 +61,17 @@ vim.api.nvim_create_autocmd("FileType", {
   end,
 })
 
+
+-- Snacks picker keymaps
+map("n", "<leader>ff", function() require("snacks").picker.files() end, { desc = "Find Files" })
+map("n", "<leader>fb", function() require("snacks").picker.buffers() end, { desc = "Buffers" })
+map("n", "<leader>fg", function() require("snacks").picker.grep() end, { desc = "Live Grep" })
+map("n", "<leader>fc", function() require("snacks").picker.commands() end, { desc = "Commands" })
+map("n", "<leader>fh", function() require("snacks").picker.help() end, { desc = "Help Tags" })
+map("n", "<leader>e", function() require("snacks").explorer.open() end, { desc = "Explorer (cwd)" })
 -- Molten 
--- map("n", "<leader>mi", ":MoltenInit<CR>", { desc = "molten init", silent = false })
-map("n", "<localleader>e", ":MoltenEvaluateOperator<CR>", { desc = "evaluate operator", silent = true })
-map("n", "<localleader>os", ":noautocmd MoltenEnterOutput<CR>", { desc = "open output window", silent = true })
-map("n", "<localleader>rr", ":MoltenReevaluateCell<CR>", { desc = "re-eval cell", silent = true })
-map("v", "<localleader>r", ":<C-u>MoltenEvaluateVisual<CR>gv", { desc = "execute visual selection", silent = true })
 map("n", "<localleader>oh", ":MoltenHideOutput<CR>", { desc = "close output window", silent = true })
 map("n", "<localleader>md", ":MoltenDelete<CR>", { desc = "delete Molten cell", silent = true })
-map("n", "<localleader>mx", ":MoltenOpenInBrowser<CR>", { desc = "open output in browser", silent = true })
 
 vim.keymap.set("n", "<leader>mi", function()
   local venv = os.getenv("VIRTUAL_ENV") or os.getenv("CONDA_PREFIX")
