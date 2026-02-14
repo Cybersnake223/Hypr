@@ -67,7 +67,7 @@ end, { desc = "Molten: Init" })
 
 -- Execution (Unified under <leader>r)
 map("n", "<leader>rr", ":MoltenReevaluateCell<CR>", { desc = "Run: Cell", silent = true })
-map("v", "<leader>r", ":<C-u>MoltenEvaluateVisual<CR>gv", { desc = "Run: Visual Selection", silent = true })
+-- map("v", "<leader>r", ":<C-u>MoltenEvaluateVisual<CR>gv", { desc = "Run: Visual Selection", silent = true })
 map("n", "<leader>rd", ":MoltenDelete<CR>", { desc = "Run: Delete Cell", silent = true })
 map("n", "<leader>rh", ":MoltenHideOutput<CR>", { desc = "Run: Hide Output", silent = true })
 map("n", "<leader>ro", ":noautocmd MoltenEnterOutput<CR>", { desc = "Run: Show Output Window", silent = true })
