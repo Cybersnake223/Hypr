@@ -1,7 +1,21 @@
 return {
-
   -- Colorscheme
-  { "EdenEast/nightfox.nvim" },
+  {
+    "EdenEast/nightfox.nvim",
+    priority = 1000,
+    lazy = false,
+    opts = {
+      options = {
+        transparent = true,
+        compile_path = vim.fn.stdpath "cache" .. "/nightfox",
+        compile_file_suffix = "_compiled",
+      },
+    },
+    config = function(_, opts)
+      require("nightfox").setup(opts)
+      vim.cmd "colorscheme nightfox"
+    end,
+  },
 
   -- Core async Lua library (dependency for many plugins)
   { "nvim-lua/plenary.nvim", lazy = true },
@@ -10,14 +24,29 @@ return {
   {
     "folke/noice.nvim",
     event = "VeryLazy",
-    opts = {},
+    opts = {
+      -- Change this from false to true
+      notify = {
+        enabled = true,
+      },
+      -- Also add these to fix the other 2 warnings in your healthcheck
+      lsp = {
+        override = {
+          ["vim.lsp.util.convert_input_to_markdown_lines"] = true,
+          ["vim.lsp.util.stylize_markdown"] = true,
+          ["cmp.entry.get_documentation"] = true,
+        },
+      },
+    },
     dependencies = {
       "MunifTanjim/nui.nvim",
+      -- Optional: "rcarriga/nvim-notify"
+      -- Add nvim-notify if you want the pretty animated corner bubbles
     },
   },
-
   {
     "lewis6991/gitsigns.nvim",
+    event = "VeryLazy",
     opts = {},
   },
 
@@ -26,27 +55,41 @@ return {
     event = "VeryLazy",
     dependencies = { "nvim-tree/nvim-web-devicons", lazy = true },
     config = function()
+      local exclude = { "markdown", "quarto", "ipynb" }
+      local function is_excluded()
+        return vim.tbl_contains(exclude, vim.bo.filetype)
+      end
+
       require("lualine").setup {
         options = {
           theme = "onedark",
           icons_enabled = true,
           globalstatus = true,
+          themable = true,
         },
         sections = {
           lualine_a = { "mode" },
-          lualine_b = { "branch", "diff", "diagnostics" },
+          lualine_b = { "branch" },
           lualine_c = { "filename" },
+          lualine_x = {
+            function()
+              return is_excluded() and "" or "diagnostics"
+            end,
+          },
+        },
+        extensions = {
+          -- optional: add NvimTree if you’re using it
+          "nvim-tree",
         },
       }
     end,
   },
-
   -- Syntax, indent, selection (disables on large files)
   {
     "nvim-treesitter/nvim-treesitter",
     branch = "main",
-    -- build = ":TSUpdate",
-    event = { "BufReadPre", "BufNewFile" },
+    build = ":TSUpdate",
+    context_commentstring = { enable = false },
     textobjects = {
       select = { enable = true },
     },
@@ -55,13 +98,25 @@ return {
       if ok then
         configs.setup {
           ensure_installed = { "lua", "vim", "bash", "javascript", "python", "sql" },
-          sync_install = true,
+          sync_install = false,
           highlight = { enable = true },
-          indent = { enable = true },
+          indent = { enable = true, disable = { "python", "yaml" } },
           incremental_selection = { enable = true },
           disable = function(lang, buf)
-            local max = 500 * 1024
-            return vim.api.nvim_buf_get_lines(buf, 0, -1, false) > max
+            local max_lines = 1000
+            local max_bytes = 500 * 1024
+            if vim.api.nvim_buf_line_count(buf) > max_lines then
+              return true
+            end
+            local content = vim.api.nvim_buf_get_lines(buf, 0, -1, false)
+            local total = 0
+            for _, line in ipairs(content) do
+              total = total + #line
+              if total > max_bytes then
+                return true
+              end
+            end
+            return false
           end,
         }
       end
@@ -87,89 +142,139 @@ return {
   -- Buffet tabs
   {
     "akinsho/bufferline.nvim",
-    event = { "BufAdd", "BufEnter" },
+    event = { "VeryLazy" },
     opts = require "plugins.configs.bufferline",
   },
 
   -- Completion + snippets/autopairs
   {
+    "windwp/nvim-autopairs",
+    event = "InsertEnter",
+    config = true,
+  },
+  {
     "saghen/blink.cmp",
-    version = "1.*",
-    event = { "InsertEnter" },
+    event = "InsertEnter",
+    -- enabled = true,
+    build = "cargo build --release",
+    -- lazy = false,
     dependencies = {
-      "rafamadriz/friendly-snippets",
+      { "rafamadriz/friendly-snippets", lazy = true },
+      { "Kaiser-Yang/blink-cmp-git", lazy = true },
       {
-        "L3MON4D3/LuaSnip",
-        config = function()
-          require("luasnip.loaders.from_vscode").lazy_load()
-        end,
+        "saghen/blink.compat",
+        lazy = true,
+        opts = { impersonate_nvim_cmp = true, enable_events = true },
       },
-      { "windwp/nvim-autopairs", opts = {} },
     },
-    opts = function()
-      return require "plugins.configs.blink"
-    end,
+    opts = {
+      keymap = {
+        preset = "enter",
+        ["<c-y>"] = { "show", "show_documentation", "hide_documentation" },
+      },
+      sources = {
+        default = { "lazydev", "lsp", "path", "snippets", "buffer" },
+        providers = {
+          lazydev = {
+            name = "LazyDev",
+            module = "lazydev.integrations.blink",
+            score_offset = 100,
+          },
+        },
+      },
+      appearance = {
+        use_nvim_cmp_as_default = true,
+        nerd_font_variant = "mono",
+      },
+      completion = {
+        documentation = { auto_show = true, auto_show_delay_ms = 00 },
+        menu = { auto_show = true },
+      },
+      signature = { enabled = true },
+    },
+  },
+
+  {
+    "folke/lazydev.nvim",
+    ft = "lua", -- only load on lua files
+    opts = {
+      library = {
+        -- See the configuration section for more details
+        -- Load luvit types when the `vim.uv` word is found
+        { path = "${3rd}/luv/library", words = { "vim%.uv" } },
+      },
+    },
   },
 
   -- LSP Manager
-  {
-    "williamboman/mason.nvim",
-    build = ":MasonUpdate",
-    cmd = { "Mason", "MasonInstall" },
-    opts = { ui = { border = "rounded", winblend = 0 } },
-  },
+  -- {
+  --   "williamboman/mason.nvim",
+  --   build = ":MasonUpdate",
+  --   cmd = { "Mason", "MasonInstall" },
+  --   opts = { ui = { border = "rounded", winblend = 0 } },
+  -- },
 
   -- LSP config + Mason integrations
   {
     "neovim/nvim-lspconfig",
-    event = "VeryLazy",
+    -- event = "VeryLazy",
     dependencies = {
-      { "mason-org/mason.nvim", opts = {} },
+      { "williamboman/mason.nvim", config = true, opts = {} },
       {
-        "mason-org/mason-lspconfig.nvim",
+        "williamboman/mason-lspconfig.nvim",
         event = "LspAttach",
-        opts = {
-          automatic_enable = true,
-          ensure_installed = {
-            "lua_ls",
-            "bashls",
-            "pyright",
-            "marksman",
-          },
-        },
       },
+      config = function()
+        local mlsp = require "mason-lspconfig"
+
+        -- Setup mason-lspconfig first
+        mlsp.setup {
+          ensure_installed = { "lua_ls", "pyright", "marksman" },
+        }
+
+        -- Then setup your servers
+        local lspconfig = require "lspconfig"
+        mlsp.setup_handlers {
+          function(server_name)
+            lspconfig[server_name].setup {}
+          end,
+        }
+      end,
     },
   },
-  {
-    "WhoIsSethDaniel/mason-tool-installer.nvim",
-    cmd = { "MasonToolsInstall", "MasonToolsUpdate" },
-    event = "VeryLazy",
-    opts = {
-      ensure_installed = {
-        "tree-sitter-cli",
-        "jupytext",
-      },
-    },
-  },
+
+  -- {
+  --   "WhoIsSethDaniel/mason-tool-installer.nvim",
+  --   cmd = { "MasonToolsInstall", "MasonToolsUpdate" },
+  --   event = "VeryLazy",
+  --   opts = {
+  --     ensure_installed = {
+  --       "tree-sitter-cli",
+  --       "jupytext",
+  --       "black",
+  --       "insort",
+  --     },
+  --   },
+  -- },
 
   -- Formatter
   {
     "stevearc/conform.nvim",
+    event = "BufWritePre",
     opts = require "plugins.configs.conform",
   },
 
   -- Indentation
   {
     "nvimdev/indentmini.nvim",
-    event = { "BufReadPre", "BufNewFile" },
+    event = { "VeryLazy" },
     opts = {},
   },
 
   -- SQL Database Client + Completion
   {
     "kndndrj/nvim-dbee",
-    cmd = "Dbee",
-    event = "VeryLazy",
+    cmd = { "Dbee" },
     dependencies = { "MunifTanjim/nui.nvim" },
     build = function()
       require("dbee").install()
@@ -192,7 +297,7 @@ return {
   {
     "folke/snacks.nvim",
     priority = 1000,
-    lazy = true,
+    lazy = false,
     opts = {
       picker = {
         enabled = true,
@@ -253,9 +358,9 @@ return {
       bigfile = { enabled = true },
       dashboard = { enabled = false },
       explorer = { enabled = true, replace_netrw = yes },
-      indent = { enabled = true },
+      indent = { enabled = false },
       input = { enabled = true },
-      notifier = { enabled = true },
+      notifier = { enabled = false },
       quickfile = { enabled = true },
       scope = { enabled = false },
       scroll = { enabled = false },
@@ -268,10 +373,11 @@ return {
     },
   },
   -- Transparency
-  {
-    "xiyaowong/transparent.nvim",
-    lazy = false,
-  },
+  -- {
+  --   "xiyaowong/transparent.nvim",
+  --   lazy = false,
+  --   event = "VimEnter",
+  -- },
 
   -- Colorizer
   {
@@ -286,68 +392,60 @@ return {
     end,
   },
   -- NOTEBOOK SETUP
-
   {
     "GCBallesteros/jupytext.nvim",
-    lazy = false,
-    ft = { "ipynb", "markdown", "quarto" },
-    opts = {
-      style = "markdown",
-      output_extension = "md",
-      force_ft = "markdown",
-    },
+    lazy = false, -- Keep it false to prevent double-loading buffers
+    config = function()
+      require("jupytext").setup {
+        style = "markdown",
+        output_extension = "md",
+        force_ft = "markdown", -- Explicitly setting this prevents FT detection loops
+      }
+    end,
   },
-
   -- Images in terminal (for Molten outputs)
   {
     "3rd/image.nvim",
-    lazy = true,
-    -- event = "VeryLazy",
-    -- ft = { "markdown", "quarto", "ipynb" },
-    -- opts = {
-    --   backend = "kitty",
-    --   integrations = {
-    --     markdown = { enabled = true },
-    --     molten = { enabled = true },
-    --   },
-    max_width = 20,
-    max_height = 50,
-    max_height_window_percentage = math.huge,
-    max_width_window_percentage = math.huge,
-    window_overlap_clear_enabled = true,
+    -- lazy = true,
+    ft = { "python", "ipynb", "quarto", "markdown" },
+    -- opts = { backend = "kitty", integrations = { markdown = { enabled = true }, molten = { enabled = true } } },
   },
 
   -- Molten (Jupyter kernel runner)
   {
     "benlubas/molten-nvim",
     version = "^1.0.0",
-    lazy = false,
-    build = ":UpdateRemotePlugins",
-    dependencies = {
-      "3rd/image.nvim",
-      ft = { "markdown", "quarto", "ipynb" },
-      opts = { backend = "kitty", integrations = { markdown = { enabled = true }, molten = { enabled = true } } },
-    },
+    -- This ensures it ONLY loads for these files
+    ft = { "python", "ipynb" },
+    dependencies = { "3rd/image.nvim" },
     init = function()
+      -- These variables MUST be in init for Molten to pick them up
       vim.g.molten_auto_open_output = false
       vim.g.molten_image_provider = "image.nvim"
       vim.g.molten_cover_empty_lines = true
       vim.g.molten_wrap_output = false
-      vim.g.molten_virt_text_output = false
+      vim.g.molten_virt_text_output = true
       vim.g.molten_output_show_more = true
       vim.g.molten_output_virt_lines = true
-      vim.g.molten_virt_text_output = true
       vim.g.molten_virt_lines_off_by_1 = false
       vim.g.molten_output_win_border = { "", "━", "", "" }
-      vim.g.molten_limit_output_chars = 1000000
-      vim.g.molten_virt_text_max_lines = 10000
+      vim.g.molten_limit_output_chars = 10000
+      vim.g.molten_virt_text_max_lines = 12
       vim.g.molten_output_win_zindex = 100
       vim.g.molten_use_border_highlights = true
-      -- vim.g.molten_split_direction = "right"
-      vim.g.molten_output_win_max_height = 1000
-      vim.g.molten_output_win_max_width = 1000
-      vim.g.molten_tick_rate = 200
+      vim.g.molten_tick_rate = 50
+
+      -- OPTIONAL: Add an autocmd to only initialize the kernel environment
+      -- when entering a buffer of these types.
+      vim.api.nvim_create_autocmd("FileType", {
+        pattern = { "python", "quarto", "ipynb", "markdown" },
+        callback = function()
+          -- This ensures the remote plugin host is ready
+          vim.fn["remote#host#Require"] "python3"
+        end,
+      })
     end,
+
     config = function()
       -- === default_notebook + NewNotebook ===
       local default_notebook = [[
@@ -390,7 +488,14 @@ return {
           vim.notify("Error: could not write " .. path, vim.log.levels.ERROR)
         end
       end
-
+      vim.api.nvim_create_autocmd("FileType", {
+        pattern = { "markdown", "quarto", "python", "ipynb" }, -- Added python/ipynb for safety
+        callback = function()
+          vim.schedule(function()
+            pcall(vim.cmd, "MoltenImportOutput")
+          end)
+        end,
+      })
       vim.api.nvim_create_user_command("NewNotebook", function(opts)
         new_notebook(opts.args)
       end, { nargs = 1, complete = "file", desc = "Create a new .ipynb" })
@@ -421,30 +526,22 @@ return {
   -- Quarto (LSP-in-markdown + molten runner)
   {
     "quarto-dev/quarto-nvim",
+    -- lazy = true,
+    ft = { "quarto", "markdown", "ipynb" },
     dependencies = {
       "jmbuhr/otter.nvim",
+      opts = { lsp = { hover = { border = "rounded" } } },
       "nvim-treesitter/nvim-treesitter",
       "3rd/image.nvim",
     },
-    lazy = true,
-    ft = { "quarto", "markdown", "ipynb" },
     config = function()
-      vim.g.molten_output_win_max_height = 1000
-      vim.g.molten_output_win_max_width = 1000
-      vim.g.molten_wrap_output = false
-      -- vim.api.nvim_create_autocmd("FileType", {
-      --   pattern = "markdown",
-      --   callback = function()
-      --     require("quarto").activate()
-      --   end,
-      -- })
       require("quarto").setup {
         lspFeatures = {
           enabled = true,
           chunks = "all",
           languages = { "python" },
-          diagnostics = { enabled = true, triggers = { "BufWritePost" } },
-          completion = { enabled = true },
+          diagnostics = { enabled = false, triggers = { "BufWritePost" } },
+          completion = { enabled = false },
         },
         codeRunner = {
           enabled = true,
@@ -485,22 +582,21 @@ return {
   -- Render markdown (keeps code blocks visible for cells)
   {
     "MeanderingProgrammer/render-markdown.nvim",
-    lazy = true,
-    ft = { "markdown", "quarto" }, -- Lazy-load on these filetypes
+    -- lazy = true,
+    ft = { "markdown", "quarto", "ipynb" }, -- Lazy-load on these filetypes
     dependencies = {
       "nvim-treesitter/nvim-treesitter",
       "echasnovski/mini.icons",
     },
     opts = {
+      render_modes = { "n", "c" },
+      latex = { enabled = false },
+      max_file_size = 1.0,
+      anti_conceal = { enabled = false },
       enabled = true,
-      file_types = { "markdown" }, -- Enables for markdown (rmd may need explicit addition)
+      file_types = { "markdown", "ipynb" }, -- Enables for markdown (rmd may need explicit addition)
       win_options = {
         conceallevel = { default = 0, rendered = 0 },
-      },
-      conceal = {
-        links = true,
-        code_blocks = false,
-        inline_code = false,
       },
       heading = {
         enabled = true,
@@ -528,6 +624,7 @@ return {
       },
     },
   },
+
   -- Markdown preview (browser/webview)
   {
     "toppair/peek.nvim",
@@ -536,7 +633,7 @@ return {
     event = { "VeryLazy" },
     config = function()
       require("peek").setup {
-        auto_load = true,
+        auto_load = false,
         syntax = true,
         theme = "dark",
         update_on_change = true,
@@ -545,7 +642,7 @@ return {
       }
     end,
   },
-
+  --
   --   -- Copilot
-    -- { "github/copilot.vim" },
+  -- { "github/copilot.vim" },
 }
