@@ -18,28 +18,51 @@
 rfkill unblock bluetooth
 bluetoothctl power on
 
-get_device_mac() {
-    local devices
-    devices=$(bluetoothctl devices)
-
-    if [ "$(echo "$devices" | wc -l)" -eq 1 ]; then
-        MAC=$(echo "$devices" | awk '{print $2}')
-    else
-        select=$(echo "$devices" | awk '{print $3}' | rofi -dmenu -p "Select Device" -l 3)
-        MAC=$(echo "$devices" | grep "$select" | awk '{print $2}')
+get_device_info() {
+    # Get list, skipping the "Added devices:" header
+    local devices=$(bt-device -l | tail -n +2)
+    
+    if [ -z "$devices" ]; then
+        notify-send "Bluetooth" "No paired devices found."
+        exit 1
     fi
 
-    [ -z "$MAC" ] && MAC=NoDeviceFound
+    # Pick the device using Rofi
+    # This shows the full line (Name + MAC) to the user
+    local chosen=$(echo "$devices" | rofi -dmenu -i -p "Bluetooth Toggle" -l 5)
+    
+    # Exit if user hits Escape
+    [ -z "$chosen" ] && exit 0
+
+    # Extract MAC (inside parentheses) and Name (before parentheses)
+    MAC=$(echo "$chosen" | sed 's/.*(\(.*\))/\1/')
+    DEV_NAME=$(echo "$chosen" | sed 's/ (.*)//')
 }
 
-get_device_mac
+get_device_info
 
-connect=$(bluetoothctl info "$MAC" | grep "Connected:" | awk '{print $2}')
+# Get the specific 'Connected' status
+is_connected=$(bt-device -i "$MAC" | grep "Connected:" | awk '{print $2}')
 
-if [ "$connect" = "no" ]; then
-    notify-send "Attempting to Connect" "$select"
-    bluetoothctl connect "$MAC" || notify-send "Failed to Connect"
-elif [ "$connect" = "yes" ]; then
-    notify-send "Attempting to Disconnect" "$select"
-    bluetoothctl disconnect "$MAC"
+# Toggle Logic
+if [ "$is_connected" = "1" ] || [ "$is_connected" = "yes" ]; then
+    notify-send "Bluetooth" "Disconnecting from $DEV_NAME..."
+    bluetoothctl disconnect "$MAC" > /dev/null 2>&1
+else
+    notify-send "Bluetooth" "Connecting to $DEV_NAME..."
+    
+    # Run the connect command and immediately check if it succeeded (exit code 0)
+    if bluetoothctl connect "$MAC" > /dev/null 2>&1; then
+        notify-send "Bluetooth" "Connected to $DEV_NAME"
+    else
+        # Small delay: sometimes BlueZ is slow to update status
+        sleep 1
+        # Double check status before complaining
+        check=$(bt-device -i "$MAC" | grep "Connected:" | awk '{print $2}')
+        if [ "$check" = "1" ] || [ "$check" = "yes" ]; then
+            notify-send "Bluetooth" "Connected to $DEV_NAME"
+        else
+            notify-send "Bluetooth" "Failed to connect to $DEV_NAME"
+        fi
+    fi
 fi
