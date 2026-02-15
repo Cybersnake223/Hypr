@@ -18,27 +18,27 @@ configuration {
     display-drun: 					"";
     drun-display-format:            "{icon} {name}";
     disable-history:                true;
-	  // click-to-exit: 					true;
+	click-to-exit: 					true;
 }
 
 @import "colors.rasi"
 
 window {
     transparency:                   "real";
-    background-color:               @shadow;
+    background-color:               @on-primary;
     text-color:                     @tertiary-container;
-    border:                  		    4px;
+    border:                  		4px;
     border-color:                  	@tertiary-container;
-    border-radius:                  50px;
-    width:                          100px;
-    location:                       east;
-    anchor:                         east;
-    x-offset:                       -20px;
+    border-radius:                  15px;
+    width:                          416px;
+    location:                       center;
+    anchor:                         center;
+    x-offset:                       0;
     y-offset:                       0;
 }
 
 prompt {
-    enabled: 						false;
+    enabled: 						true;
   	margin: 						0px 0px 0px 8px;
     padding:    					6px 6px 6px 6px;
   	background-color: 				@on-primary;
@@ -49,18 +49,17 @@ prompt {
 }
 
 textbox-prompt-colon {
-  enabled:            false;
 	expand: 						false;
 	str: 							"⏻";
     border-radius:                  10px;
-    background-color:               transparent;
+    background-color:               @on-primary;
     text-color:                     @tertiary-container;
     padding:    					6px 15px 6px 15px;
 	font:							"JetBrainsMono Nerd Font 11";
 }
 
 entry {
-    background-color:               transparent;
+    background-color:               @on-primary;
     text-color:                     @on-primary;
     placeholder-color:              @tertiary-container;
     placeholder:                    "";
@@ -71,13 +70,12 @@ entry {
 }
 
 inputbar {
-  enabled:                          false;
-	children: 						            [ textbox-prompt-colon, prompt ];
+	children: 						[ textbox-prompt-colon, prompt ];
     spacing:                        0;
-    background-color:               transparent;
+    background-color:               @on-primary;
     text-color:                     @tertiary-container;
-    border:                  		    0px 0px 1px 0px;
-    border-radius:                  50px;
+    border:                  		0px 0px 1px 0px;
+    border-radius:                  10px;
     border-color:                  	@tertiary-container;
     expand:                         false;
     margin:                         0px 0px 0px 0px;
@@ -86,41 +84,41 @@ inputbar {
 }
 
 case-indicator {
-    enabled:                        false;
-    background-color:               transparent;
+    background-color:               @on-primary;
     text-color:                     @tertiary-container;
     spacing:                        0;
 }
 
+
 listview {
-    background-color:               @shadow;
+    background-color:               @on-primary;
     columns:                        1;
     lines:			            				5;
     spacing:                        10px;
     cycle:                          true;
     dynamic:                        true;
-    layout:                         vertical;
+    layout:                         horizontal;
 }
 
 mainbox {
-    background-color:               transparent;
+    background-color:               @on-primary;
     children:                       [ inputbar, listview ];
     spacing:                       	10px;
     padding:                        10px;
 }
 
 element {
-    background-color:               transparent;
+    background-color:               @on-primary;
     text-color:                     @tertiary-container;
     orientation:                    horizontal;
     border:                  		2px;
-    border-radius:                  50px;
+    border-radius:                  10px;
     border-color:                  	@tertiary-container;
     padding:                        23px 23px 23px 23px;
 }
 
 element-icon {
-    background-color: 				transparent;
+    background-color: 				@on-primary;
     text-color:       				@tertiary-container;
     horizontal-align:               0.5;
     vertical-align:                 0.5;
@@ -129,9 +127,9 @@ element-icon {
 }
 
 element-text {
-    background-color: 				transparent;
+    background-color: 				inherit;
     text-color:       				inherit;
-  	font:							"feather 14";
+	font:							"feather 14";
     expand:                         true;
     horizontal-align:               0.5;
     vertical-align:                 0.5;
@@ -142,13 +140,13 @@ element selected {
     background-color:               @tertiary-container;
     text-color:                     @on-primary;
     border:                  		0px;
-    border-radius:                  50px;
+    border-radius:                  10px;
     border-color:                  	@tertiary-container;
 }
 
 element.active,
 element.selected.urgent {
-  background-color: transparent;
+  background-color: @on-primary;
   text-color: @background-color;
   border-color: @tertiary-container;
 }
@@ -159,7 +157,7 @@ element.selected.urgent {
 
 element.urgent,
 element.selected.active {
-  background-color: transparent;
+  background-color: @on-primary;
   text-color: @background-color;
   border-color: @tertiary-container;
 }

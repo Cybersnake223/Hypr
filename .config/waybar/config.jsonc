@@ -16,15 +16,15 @@
 {
   "layer": "top",
   "position": "top",
+  "margin": "0 0 0 0",
   "mode": "dock",
-  "exclusive": false,
-  "passthrough": false,
+  "exclusive": true,
+  "passthrough": true,
   "gtk-layer-shell": true,
-  "height": 40,
+  "height": 24,
   "modules-left": [
     "clock",
     "network",
-    // "network#speed",
     "memory",
   ],
   "fixed-center": true,
@@ -44,13 +44,19 @@
     "format": "{}"
   },
   "hyprland/workspaces": {
-    "sort-by-name": true,
-    "format": "{id}",
-    "show-special": true,
-    "persistent-workspaces": {
-      "*": 0,
-    }
-  },
+        "active-only": false,
+        "all-outputs": true,
+        "format": "{icon}",
+        "on-scroll-up": "hyprctl dispatch workspace e+1",
+        "on-scroll-down": "hyprctl dispatch workspace e-1",
+        "show-special": true,
+        "persistent-workspaces": {  },
+        "format-icons": {
+            "active": "",
+            "default": "",
+            "empty": ""
+        }
+   },
   "tray": {
     "icon-size": 12,
     "spacing": 2
@@ -58,6 +64,7 @@
   "clock": {
     "interval": 60,
     "format": " {:%a, %b %d [%H:%M]}",
+    "tooltip": true,
     "tooltip-format": "<tt><small>{calendar}</small></tt>",
     "calendar": {
       "mode": "year",
@@ -150,7 +157,7 @@
   },
   "memory": {
     "interval": 30,
-    "format": " {used} G",
+    "format": "  {used} G",
     "tooltip-format": "{used} / {total} G",
   },
   "disk": {
@@ -163,7 +170,7 @@
   "custom/updates": {
     "format": "{}",
     "tooltip": true,
-    "interval": 600,
+    "interval": 300,
     "exec": "$HOME/.config/waybar/bin/updatecheck",
     "return-type": "json",
     "exec-if": "exit 0",

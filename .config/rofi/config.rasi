@@ -32,11 +32,11 @@ configuration {
 
 window {
    background-color: @on-primary;
-   width: 32%;
-   padding: 10px;
+   width: 30%;
+   padding: 5px;
    fullscreen: false;
-   border:  3px;
-   border-radius: 15px;
+   border:  5px;
+   border-radius: 25px;
    border-color: @tertiary-container;
 }
 

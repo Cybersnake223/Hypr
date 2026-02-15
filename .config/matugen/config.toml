@@ -1,4 +1,6 @@
 [config]
+reload_apps = true
+color_scheme = "dark"
 
 [templates.waybar]
 input_path = '~/.config/matugen/templates/colors.css'
@@ -35,20 +37,16 @@ output_path = '~/.config/zathura/zathurarc'
 input_path = '~/.config/matugen/templates/yazi-theme.toml'
 output_path = '~/.config/yazi/theme.toml'
 
-# [templates.cava]
-# input_path = '~/.config/matugen/templates/cava-colors.ini'
-# output_path = '~/.config/cava/themes/material-you'
-# post_hook = "pkill -USR1 cava"
+[templates.gtk3]
+input_path = '/home/cybersnake/.config/matugen/templates/gtk-colors.css'
+output_path = '~/.config/gtk-3.0/colors.css'
+post_hook = 'gsettings set org.gnome.desktop.interface gtk-theme ""; gsettings set org.gnome.desktop.interface gtk-theme adw-gtk3-{{mode}}'
 
-#[templates.foot]
-#input_path = '/home/cybersnake/.config/matugen/templates/foot-colors.ini'
-#output_path = '~/.config/foot/foot-colors.ini'
+[templates.gtk4]
+input_path = '~/.config/matugen/templates/gtk-colors.css'
+output_path = '~/.config/gtk-4.0/colors.css'
 
-# [templates.gtk3]
-# input_path = '/home/cybersnake/.config/matugen/templates/gtk-colors.css'
-# output_path = '~/.config/gtk-3.0/colors.css'
-# #post_hook = 'gsettings set org.gnome.desktop.interface gtk-theme ""; gsettings set org.gnome.desktop.interface gtk-theme adw-gtk3-{{mode}}'
-
-# [templates.gtk4]
-# input_path = '/home/cybersnake/.config/matugen/templates/gtk-colors.css'
-# output_path = '~/.config/gtk-4.0/colors.css'
+# [templates.kitty]
+# input_path = '~/.config/matugen/templates/kitty-colors.conf'
+# output_path = '~/.config/kitty/themes/Matugen.conf'
+# post_hook = "kitty +kitten themes --reload-in=all Matugen"
