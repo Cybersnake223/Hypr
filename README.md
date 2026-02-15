@@ -72,7 +72,7 @@
 - `Cmus` - Terminal Audio Player
 - `Btop` - Resource Monitor
 - `Nmcli` - Connection Manager
-- `Bluetoothctl` - Bluetooth Manager
+- `Bluez-tools` - Bluetooth Manager
 - `Advcpmv(AUR)` - Alternate to cp and mv commands
 - `Eza` - Alternative to ls command
 - `Fd` - Fast Alternative to Find command
