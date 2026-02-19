@@ -19,8 +19,8 @@ require("image").setup {
   },
 
   -- DIMENSIONS: Constraints to prevent images from taking over the whole screen.
-  max_width = 100,
-  max_height = 12,
+  max_width = 200,
+  max_height = 50,
   max_width_window_percentage = 50, -- Caps image width to half the window width
   max_height_window_percentage = nil,
   scale_factor = 1.5, -- Adjusts resolution/DPI (useful for high-res displays)

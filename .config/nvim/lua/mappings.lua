@@ -71,6 +71,7 @@ map("n", "<leader>rr", ":MoltenReevaluateCell<CR>", { desc = "Run: Cell", silent
 map("n", "<leader>rd", ":MoltenDelete<CR>", { desc = "Run: Delete Cell", silent = true })
 map("n", "<leader>rh", ":MoltenHideOutput<CR>", { desc = "Run: Hide Output", silent = true })
 map("n", "<leader>ro", ":noautocmd MoltenEnterOutput<CR>", { desc = "Run: Show Output Window", silent = true })
+map("n", "<leader>mm", ":noautocmd MoltenOpenInBrowser<CR>", { desc = "Run: Open Output In Browser", silent = true })
 
 -- Quarto
 map("n", "<leader>q", ":QuartoActivate<CR>", { desc = "Quarto: Activate" })

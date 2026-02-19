@@ -73,7 +73,7 @@ require("lazy").setup(require "plugins", {
     cache = {
       enabled = true,
     },
-    reset_packpath = true, -- Resets the package path to improve startup time
+    reset_packpath = true,
     rtp = {
       -- Disable built-in plugins you don't use to save load time
       disabled_plugins = {
@@ -83,11 +83,28 @@ require("lazy").setup(require "plugins", {
         "tutor",
         "zipPlugin",
       },
+      checker = { enabled = false},
+      change_detection = { notify = false },
+      defaults = { lazy = true },
     },
   },
   -- Use a separate file for your plugin specs to keep init.lua clean
   -- change_detection = { notify = false }, -- Stop the "Config Change Detected" notification
 })
+
+-- Defer clipboard
+vim.opt.clipboard = ""
+if vim.fn.executable("wl-copy") == 1 or vim.fn.executable("xclip") == 1 then
+  vim.schedule(function()
+    vim.opt.clipboard = "unnamedplus"
+  end)
+end
+
+-- Shorter timeout for LSP shutdown (default is often 5000ms)
+vim.lsp.set_log_level("off")
+
+-- Limits the size of the ShaDa file (registers, marks, etc.)
+vim.opt.shada = "!,'100,<50,s10,h"
 
 -----------------------------------------------------------
 -- 4. Autocommands (Automated Behavior)
@@ -121,8 +138,11 @@ vim.api.nvim_create_autocmd({ "BufEnter", "FileType" }, {
 -----------------------------------------------------------
 -- Simple shortcuts for the Markdown Previewer
 vim.api.nvim_create_user_command("PeekOpen", function()
+  require("lazy").load({plugins = {"peek.nvim"}})
   require("peek").open()
 end, {})
+
 vim.api.nvim_create_user_command("PeekClose", function()
-  require("peek").close()
+  require("lazy").load({plugins = {"peek.nvim"}})
+  require("peek").open()
 end, {})

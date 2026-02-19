@@ -23,14 +23,20 @@ return {
   },
 
   completion = {
+    list = {
+      selection = { preselect = true, auto_insert = true }, -- Preselect = false speeds up typing
+    },
     menu = {
       auto_show = true,
+      draw = {
+        columns = { { "label", "label_description", gap = 1 }, { "kind_icon", "kind" } },
+      },
     },
-    ghost_text = { enabled = true },
+    ghost_text = { enabled = false },
     documentation = {
       auto_show = true,
-      auto_show_delay_ms = 100,
-      window = { border = "single" },
+      auto_show_delay_ms = 300,
+      window = { border = "rounded" },
     },
   },
 }

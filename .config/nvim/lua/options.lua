@@ -1,5 +1,6 @@
 local o = vim.o
 local g = vim.g
+local opt = vim.opt
 
 -- Leader Keys
 g.mapleader = " "
@@ -26,8 +27,10 @@ o.number = true -- Show line numbers
 o.signcolumn = "yes" -- Always show sign column (prevents "jumping" text)
 o.splitbelow = true -- Split horizontal windows below
 o.splitright = true -- Split vertical windows right
-vim.opt.fillchars = { eob = " " } -- Hide the '~' on empty lines
-
+opt.fillchars = { eob = " " } -- Hide the '~' on empty lines
+opt.updatetime = 250
+opt.lazyredraw = false -- Usually better off, but set to true if you see flickering
+opt.relativenumber = false
 -----------------------------------------------------------
 -- Indentation
 -----------------------------------------------------------
@@ -41,7 +44,7 @@ o.smartindent = true -- Insert indents automatically
 -- Python / Molten / Data Science
 -----------------------------------------------------------
 -- Path to your dedicated neovim python venv
-g.python3_host_prog = "/home/cybersnake/.venv/neovim/bin/python3"
+g.python3_host_prog = "/home/cybersnake/.venv/bin/python3"
 
 -- Molten Settings
 g.molten_auto_open_output = false
