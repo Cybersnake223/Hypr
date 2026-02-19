@@ -110,8 +110,26 @@ vim.opt.shada = "!,'100,<50,s10,h"
 -- 4. Autocommands (Automated Behavior)
 -----------------------------------------------------------
 
+-- CLEANUP ON EXIT: Stops Molten and LSPs immediately to prevent :wq lag
+local cleanup_group = vim.api.nvim_create_augroup("ExitCleanup", { clear = true })
+
+vim.api.nvim_create_autocmd("VimLeavePre", {
+  group = cleanup_group,
+  callback = function()
+    -- 1. Kill Molten/Jupyter kernels
+    if vim.fn.exists(":MoltenDeinit") > 0 then
+      vim.cmd("MoltenDeinit")
+    end
+    
+    -- 2. Force stop all active LSP clients
+    local clients = vim.lsp.get_clients()
+    for _, client in ipairs(clients) do
+      client.stop()
+    end
+  end,
+})
+
 -- Molten: Auto-import output when opening notebooks
--- This makes your saved charts and results appear automatically
 vim.api.nvim_create_autocmd("FileType", {
   group = vim.api.nvim_create_augroup("MoltenSetup", { clear = true }),
   pattern = { "markdown", "quarto", "ipynb" },
@@ -123,7 +141,6 @@ vim.api.nvim_create_autocmd("FileType", {
 })
 
 -- Quarto/Markdown UI Fixes
--- Prevents text from disappearing/hiding while editing
 vim.api.nvim_create_autocmd({ "BufEnter", "FileType" }, {
   group = vim.api.nvim_create_augroup("MarkdownUIFix", { clear = true }),
   pattern = { "quarto", "qmd", "markdown" },
@@ -144,5 +161,5 @@ end, {})
 
 vim.api.nvim_create_user_command("PeekClose", function()
   require("lazy").load({plugins = {"peek.nvim"}})
-  require("peek").open()
+  require("peek").close()
 end, {})
