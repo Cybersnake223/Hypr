@@ -1,13 +1,13 @@
 -----------------------------------------------------------
--- 0. Experimental
+--  Absolute Early Disable (Performance)
 -----------------------------------------------------------
-
-if vim.loader then
-  vim.loader.enable()
-end
-
+-- Disable providers you don't use
+vim.g.loaded_perl_provider = 0
+vim.g.loaded_ruby_provider = 0
+vim.g.loaded_node_provider = 0
+vim.g.loaded_remote_plugins = 1
 -----------------------------------------------------------
--- 1. Performance: Disable Built-in Neovim Plugins
+-- 0. Performance: Disable Built-in Neovim Plugins
 -----------------------------------------------------------
 local disabled_builtins = {
   "netrw",
@@ -31,6 +31,15 @@ for _, plugin in ipairs(disabled_builtins) do
 end
 
 -----------------------------------------------------------
+-- 1. Experimental
+-----------------------------------------------------------
+
+if vim.loader then
+  vim.loader.enable()
+end
+
+
+-----------------------------------------------------------
 -- 2. Configuration & Keymaps
 -----------------------------------------------------------
 require "options" -- Load your settings first
@@ -38,10 +47,8 @@ require "mappings" -- Load your keybindings
 require "commands" -- Load custom user commands
 
 -- Global/Window tweaks for Data Science
-vim.wo.relativenumber = true -- Hybrid line numbers (great for jumping)
 vim.o.conceallevel = 0 -- Ensure code blocks/symbols aren't hidden by default
-vim.g.db_ui_save_location = vim.fn.expand "~/Sql/.queries"
-
+vim.g.db_ui_save_location = vim.fn.getcwd() .. "/.sql_queries"
 -----------------------------------------------------------
 -- 3. Plugin Bootstrapping (Lazy.nvim)
 -----------------------------------------------------------
@@ -66,7 +73,7 @@ vim.opt.rtp:prepend(lazypath)
 -- Setup Lazy.nvim
 -- Performance Tip: Pass a table of options directly or ensure your 'lazy_config'
 -- includes performance-specific flags.
-require("lazy").setup(require "plugins", {
+require("lazy").setup("plugins", {
   -- PERFORMANCE OPTIMIZATION:
   -- Byte-compile and cache Lua modules for nearly instant loading.
   performance = {
@@ -113,6 +120,16 @@ vim.opt.shada = "!,'100,<50,s10,h"
 -- CLEANUP ON EXIT: Stops Molten and LSPs immediately to prevent :wq lag
 local cleanup_group = vim.api.nvim_create_augroup("ExitCleanup", { clear = true })
 
+-- Indentation for py files
+vim.api.nvim_create_autocmd("FileType", {
+  pattern = { "python", "sql" },
+  callback = function()
+    vim.opt_local.shiftwidth = 4
+    vim.opt_local.tabstop = 4
+  end,
+})
+
+
 vim.api.nvim_create_autocmd("VimLeavePre", {
   group = cleanup_group,
   callback = function()
@@ -150,6 +167,15 @@ vim.api.nvim_create_autocmd({ "BufEnter", "FileType" }, {
   end,
 })
 
+-- Disable heavy features for massive data files
+vim.api.nvim_create_autocmd("BufReadPre", {
+  callback = function(ev)
+    local size = vim.fn.getfsize(ev.file)
+    if size > 1024 * 500 then -- 500KB limit
+      vim.b.treesitter_enabled = false
+    end
+  end,
+})
 -----------------------------------------------------------
 -- 5. User Commands
 -----------------------------------------------------------

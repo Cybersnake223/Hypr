@@ -11,13 +11,14 @@ g.maplocalleader = ","
 -----------------------------------------------------------
 o.laststatus = 3 -- Global statusline (one for all windows)
 o.showmode = false -- Don't show mode (e.g. -- INSERT --) as Lualine handles it
-o.clipboard = "unnamedplus" -- Use system clipboard
 o.mouse = "a" -- Enable mouse support
 o.undofile = true -- Persistent undo
-o.timeoutlen = 100 -- Time to wait for a mapped sequence (lower for snappier menus)
+o.timeoutlen = 50 -- Time to wait for a mapped sequence (lower for snappier menus)
 o.scrolloff = 10 -- Keep 10 lines above/below cursor
-o.cursorline = true -- Highlight current line
+o.sidescrolloff = 8 -- Keep 8 columns visible to the left/right of the cursor
+o.cursorline = false -- Highlight current line
 o.termguicolors = true -- True color support
+o.clipboard = "unnamedplus" -- Use system clipboard
 
 -- Search
 o.ignorecase = true -- Case insensitive search...
@@ -30,8 +31,14 @@ o.splitright = true -- Split vertical windows right
 opt.fillchars = { eob = " " } -- Hide the '~' on empty lines
 opt.updatetime = 250
 opt.lazyredraw = false -- Usually better off, but set to true if you see flickering
-opt.relativenumber = false
------------------------------------------------------------
+opt.relativenumber = true
+vim.opt.smartcase = true
+
+-- Save undo history to a file
+vim.opt.undofile = true
+vim.opt.undodir = vim.fn.expand("~/.local/share/nvim/undo")
+
+-------------------------------------------------------
 -- Indentation
 -----------------------------------------------------------
 o.expandtab = true -- Use spaces instead of tabs
@@ -59,8 +66,10 @@ g.molten_virt_lines_off_by_1 = false
 -- Add Mason binaries to system path
 local is_windows = vim.loop.os_uname().sysname == "Windows_NT"
 local separator = is_windows and ";" or ":"
-vim.env.PATH = vim.env.PATH .. separator .. vim.fn.stdpath "data" .. "/mason/bin"
-
+local mason_path = vim.fn.stdpath("data") .. "/mason/bin"
+if not string.find(vim.env.PATH, mason_path, 1, true) then
+  vim.env.PATH = mason_path .. separator .. vim.env.PATH
+end
 -----------------------------------------------------------
 -- Appearance & Highlights
 -----------------------------------------------------------

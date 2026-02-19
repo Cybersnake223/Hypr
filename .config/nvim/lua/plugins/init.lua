@@ -1,37 +1,5 @@
 return {
   -- Colorscheme
-  -- {
-  --   "catppuccin/nvim",
-  --   name = "catppuccin",
-  --   priority = 1000,
-  --   lazy = false,
-  --   opts = {
-  --     flavour = "mocha",
-  --     transparent_background = true,
-  --     show_end_of_buffer = false,
-  --     integrations = {
-  --       cmp = true,
-  --       gitsigns = true,
-  --       nvimtree = true,
-  --       treesitter = true,
-  --       mason = true,
-  --       telescope = true,
-  --       notify = true,
-  --       lsp_trouble = true,
-  --     },
-  --     custom_highlights = function(colors)
-  --       return {
-  --         NormalFloat = { bg = colors.none },
-  --         FloatBorder = { bg = colors.none },
-  --         FloatTitle = { bg = colors.none },
-  --       }
-  --     end,
-  --   },
-  --   config = function(_, opts)
-  --     require("catppuccin").setup(opts)
-  --     vim.cmd.colorscheme "catppuccin"
-  --   end,
-  -- },
   {
     "EdenEast/nightfox.nvim",
     priority = 1000,
@@ -63,42 +31,31 @@ return {
   },
 
   -- UI : statusline , Git signs, Command Prompt
-  {
-    "folke/noice.nvim",
-    event = "VeryLazy",
-    opts = {
-      notify = {
-        enabled = true,
-      },
-      lsp = {
-        override = {
-          ["vim.lsp.util.convert_input_to_markdown_lines"] = true,
-          ["vim.lsp.util.stylize_markdown"] = true,
-          ["cmp.entry.get_documentation"] = true,
-        },
-      },
-    },
-    dependencies = {
-      "MunifTanjim/nui.nvim",
-      {
-        "rcarriga/nvim-notify",
-        opts = {
-          background_colour = "#000000",
-          -- Optional: Add other notify settings
-          stages = "fade",
-          render = "compact",
-          top_down = true,
-          max_width = 80,
-          max_height = 10,
-          fps = 60,
-          timeout = 3000,
-        },
-      },
-    },
-  },
+  -- {
+  --   "folke/noice.nvim",
+  --   event = "VeryLazy",
+  --   dependencies = {
+  --     "MunifTanjim/nui.nvim",
+  --     {
+  --       "rcarriga/nvim-notify",
+  --       opts = {
+  --         background_colour = "#000000",
+  --         -- Optional: Add other notify settings
+  --         stages = "fade",
+  --         render = "compact",
+  --         top_down = true,
+  --         max_width = 80,
+  --         max_height = 10,
+  --         fps = 60,
+  --         timeout = 3000,
+  --       },
+  --     },
+  --   },
+  --       opts =  require("plugins.configs.noice")
+  -- },
   {
     "lewis6991/gitsigns.nvim",
-    event = "BufReadPre",
+    event = { "BufReadPost", "BufNewFile" },
     opts = {},
   },
 
@@ -106,35 +63,7 @@ return {
     "nvim-lualine/lualine.nvim",
     event = "VeryLazy",
     dependencies = { "nvim-tree/nvim-web-devicons", lazy = true },
-    config = function()
-      local exclude = { "markdown", "quarto", "ipynb" }
-      local function is_excluded()
-        return vim.tbl_contains(exclude, vim.bo.filetype)
-      end
-
-      require("lualine").setup {
-        options = {
-          theme = "onedark",
-          icons_enabled = true,
-          globalstatus = true,
-          themable = true,
-          refresh = {
-            statusline = 1000, -- Refresh every 1 second instead of every 50ms
-            tabline = 1000,
-            winbar = 1000,
-          },
-        },
-        sections = {
-          lualine_a = { "mode" },
-          lualine_b = { "branch" },
-          lualine_c = { "filename" },
-        },
-        extensions = {
-          -- optional: add NvimTree if you’re using it
-          "nvim-tree",
-        },
-      }
-    end,
+    opts = require "plugins.configs.lualine",
   },
 
   -- Syntax, indent, selection (disables on large files)
@@ -147,7 +76,8 @@ return {
       local ok, configs = pcall(require, "nvim-treesitter.configs")
       if ok then
         configs.setup {
-          ensure_installed = { "lua", "vim", "bash", "javascript", "python", "sql" },
+          auto_install = false,
+          ensure_installed = { "lua", "bash", "python", "sql" },
           sync_install = false,
           highlight = { enable = true },
           indent = { enable = true },
@@ -176,7 +106,7 @@ return {
   {
     "akinsho/bufferline.nvim",
     event = { "VeryLazy" },
-    opts = require "plugins.configs.bufferline",
+    opts = require "plugins.configs.bufferline_conf",
   },
 
   -- Completion + snippets/autopairs
@@ -186,24 +116,25 @@ return {
     config = true,
   },
   {
+    "L3MON4D3/LuaSnip",
+    lazy = true,
+    dependencies = { "rafamadriz/friendly-snippets" },
+    config = function()
+      -- Load snippets asynchronously
+      vim.schedule(function()
+        require("luasnip.loaders.from_vscode").lazy_load()
+      end)
+    end,
+  },
+  {
     "saghen/blink.cmp",
     build = "cargo build --release",
     -- version = "1.*",
     event = "InsertEnter",
     dependencies = {
       "rafamadriz/friendly-snippets",
-      {
-        "L3MON4D3/LuaSnip",
-        event = "InsertEnter",
-        config = function()
-          require("luasnip.loaders.from_vscode").lazy_load()
-        end,
-      },
-      { "windwp/nvim-autopairs", opts = {} },
     },
-    opts = function()
-      return require "plugins.configs.blink"
-    end,
+    opts = require "plugins.configs.blink_conf",
   },
 
   {
@@ -213,14 +144,14 @@ return {
     opts = {
       ui = {
         border = "rounded",
-        winblend = 0, -- 0 = fully transparent
+        winblend = 0,
       },
     },
   },
 
   {
     "neovim/nvim-lspconfig",
-    event = { "BufReadPost", "BufNewFile" },
+    event = { "BufReadPre", "BufNewFile" },
     config = function()
       require "plugins.configs.lspconfig"
     end,
@@ -228,6 +159,8 @@ return {
 
   {
     "stevearc/conform.nvim",
+    event = { "BufWritePre" },
+    cmd = { "ConformInfo" },
     opts = require "plugins.configs.conform",
   },
 
@@ -257,7 +190,7 @@ return {
     end,
   },
 
-  { "kristijanhusak/vim-dadbod-completion" },
+  { "kristijanhusak/vim-dadbod-completion", ft = { "sql", "mysql", "plsql" } },
 
   -- Snacks.nvim
   {
@@ -370,9 +303,9 @@ return {
   -- Images in terminal (for Molten outputs)
   {
     "3rd/image.nvim",
+    event = "VeryLazy",
     dependencies = { "vhyrro/luarocks.nvim" },
     build = "luarocks install magick",
-    lazy = true,
     opts = {
       backend = "sixel",
       processor = "magick_rock",
