@@ -13,137 +13,114 @@
 ## Created by Cybersnake                                                                                  ##
 ############################################################################################################
 
-# Fetch
-#nitch
+# ── Starship ──────────────────────────────────────────────────────
+eval "$(starship init zsh)"
 
-# Custom Prompt 
-PROMPT='%B%F{yellow}   %B%F{cyan}%~ %B%F{red}  %F{white}'
-RPROMPT='$GIT_INFO %F{red}%T'
-precmd() {print""}
-
-# Git
-GIT_INFO=""
-
-update_git_info() {
-  local out branch git_out
-  git_out="$(git status --porcelain=2 --branch 2>/dev/null)" || { GIT_INFO=""; return; }
-  branch=$(grep -m1 "^# branch.head" <<<"$git_out" | awk '{print $3}')
-
-  if [[ $branch == "detached" ]]; then
-    branch=$(grep -m1 "^# branch.oid" <<<"$git_out" | awk '{print substr($3,1,7)}')
-  fi
-  out="%F{red}${branch}%f ["
-
-  [[ $git_out == *"ahead "* ]] && out+=" Ahead"
-  [[ $git_out == *"?? "* ]]    && out+=" Untracked"
-  [[ $git_out == *"A "* ]]     && out+=" Added"
-  [[ $git_out == *"M "* ]]     && out+=" Modified"
-  [[ $git_out == *"R "* ]]     && out+=" Renamed"
-  [[ $git_out == *"D "* ]]     && out+=" Deleted"
-
-  GIT_INFO="$out ]"
-}
-
-precmd() {
-  update_git_info
-}
-
-# Tab Completion
-autoload -Uz compinit
+# ── Zsh Options ───────────────────────────────────────────────────
+setopt AUTOCD
 setopt PROMPT_SUBST
-compinit
-zstyle ':completion:*' menu select 
+setopt MENU_COMPLETE
+setopt LIST_PACKED
+setopt AUTO_LIST
+setopt COMPLETE_IN_WORD
+setopt NOTIFY
+setopt HIST_IGNORE_DUPS
+setopt HIST_FIND_NO_DUPS
+setopt HIST_IGNORE_SPACE
+setopt HIST_REDUCE_BLANKS
+setopt SHARE_HISTORY
+
+# ── History ───────────────────────────────────────────────────────
+SAVEHIST=100000
+HISTSIZE=100000
+HISTFILE=$HOME/.config/zsh/.zsh_history
+
+# ── Hook Framework ────────────────────────────────────────────────
+autoload -Uz add-zsh-hook
+
+# ── Pacman Rehash (no subprocess forks via zstat) ─────────────────
+zmodload -F zsh/stat b:zstat
+zshcache_time=0
+
+rehash_precmd() {
+  if [[ -a /var/cache/zsh/pacman ]]; then
+    local paccache_time
+    zstat -A paccache_time +mtime /var/cache/zsh/pacman
+    if (( zshcache_time < paccache_time )); then
+      rehash
+      zshcache_time=$paccache_time
+    fi
+  fi
+}
+add-zsh-hook precmd rehash_precmd
+
+# ── Tab Completion (cached, rebuilt once per day) ─────────────────
+autoload -Uz compinit
+mkdir -p "$HOME/.cache/zsh"
+
+if [[ -n "$HOME/.cache/zsh/zcompdump"(#qN.mh+24) ]]; then
+  compinit -d "$HOME/.cache/zsh/zcompdump"
+else
+  compinit -C -d "$HOME/.cache/zsh/zcompdump"
+fi
+
 _comp_options+=(globdots)
 
+zstyle ':completion:*' menu select
 zstyle ':completion:*' verbose true
 zstyle ':completion:*:*:*:*:*' menu select
 zstyle ':completion:*:default' list-colors ${(s.:.)LS_COLORS} 'ma=48;5;197;1'
 zstyle ':completion:*' matcher-list '' 'm:{a-zA-Z}={A-Za-z}' 'r:|[._-]=* r:|=*' 'l:|=* r:|=*'
 zstyle ':completion:*:warnings' format "%B%F{red}No matches for:%f %F{magenta}%d%b"
 zstyle ':completion:*:descriptions' format '%F{yellow}[-- %d --]%f'
-zstyle ':vcs_info:*' formats ' %B%s-[%F{magenta}%f %F{yellow}%b%f]-'
 
-# Tab Completion for pipx
-autoload -U bashcompinit
-bashcompinit
-eval "$(register-python-argcomplete pipx)"
-
-# Source Previous Commands
-SAVEHIST=100000
-HISTFILE=$HOME/.config/zsh/.zsh_history
-HISTSIZE=100000
-HISTCONTROL=ignorespace
-
-## Notify that a backround command has finished
-setopt notify
-
-## Clear the entire backbuffer
+# ── Clear Screen + Scrollback ─────────────────────────────────────
 function clear-screen-and-scrollback() {
-  clear && printf '\e[3J'
+  echoti clear
+  printf '\e[3J'
   zle && zle .reset-prompt && zle -R
 }
 zle -N clear-screen-and-scrollback
 
-# Rehash After Package Modification
-
-zshcache_time="$(date +%s%N)"
-
-autoload -Uz add-zsh-hook
-
-rehash_precmd() {
-  if [[ -a /var/cache/zsh/pacman ]]; then
-    local paccache_time="$(date -r /var/cache/zsh/pacman +%s%N)"
-    if (( zshcache_time < paccache_time )); then
-      rehash
-      zshcache_time="$paccache_time"
-    fi
-  fi
-}
-
-add-zsh-hook -Uz precmd rehash_precmd
-
-# Zsh Options
-setopt AUTOCD       
-setopt PROMPT_SUBST 
-setopt MENU_COMPLETE
-setopt LIST_PACKED	
-setopt AUTO_LIST    
-setopt HIST_IGNORE_DUPS
-setopt HIST_FIND_NO_DUPS
-setopt COMPLETE_IN_WORD    
-
-# Keybindings Fix 
+# ── Keybindings ───────────────────────────────────────────────────
 bindkey -e
 bindkey "^[[1;5C" forward-word
 bindkey "^[[1;5D" backward-word
-bindkey "^[[3~" delete-char 
-bindkey '^L' clear-screen-and-scrollback
-bindkey '^O' clear-screen-and-scrollback
-bindkey "^[[F" end-of-line
-bindkey "^[[H" beginning-of-line
-bindkey '^[[A' history-substring-search-up
-bindkey '^[[B' history-substring-search-down
+bindkey "^[[3~"   delete-char
+bindkey "^[[F"    end-of-line
+bindkey "^[[H"    beginning-of-line
+bindkey '^L'      clear-screen-and-scrollback
+bindkey '^O'      clear-screen-and-scrollback
 
+# ── Aliases ───────────────────────────────────────────────────────
+[[ -f "$HOME/.config/zsh/.zsh_aliases" ]] && source "$HOME/.config/zsh/.zsh_aliases"
 
-# Source Aliases (if exists) 
-if [[ -f "$HOME/.config/zsh/.zsh_aliases" ]]; then
-  source "$HOME/.config/zsh/.zsh_aliases"
-fi
+# ── Secrets (credentials, never commit this file) ────────────────
+[[ -f "$HOME/.config/zsh/.zsh_secrets" ]] && source "$HOME/.config/zsh/.zsh_secrets"
 
-# Source Zsh Syntax Highlighting (if exists) 
-if [[ -f "$HOME/.config/zsh/plugins/fast-syntax-highlighting/F-Sy-H.plugin.zsh" ]]; then
-  source "$HOME/.config/zsh/plugins/fast-syntax-highlighting/F-Sy-H.plugin.zsh" 2>/dev/null
-  fast-theme -q catppuccin-mocha
-fi
+# ── Plugins ───────────────────────────────────────────────────────
 
-# Source Zsh Auto completion (if exists)
+# fast-syntax-highlighting — deferred to after first prompt
+_load_fsh() {
+  if [[ -f "$HOME/.config/zsh/plugins/fast-syntax-highlighting/F-Sy-H.plugin.zsh" ]]; then
+    source "$HOME/.config/zsh/plugins/fast-syntax-highlighting/F-Sy-H.plugin.zsh" 2>/dev/null
+    fast-theme -q catppuccin-mocha
+  fi
+  add-zsh-hook -d precmd _load_fsh
+}
+add-zsh-hook precmd _load_fsh
+
+# zsh-autosuggestions
 if [[ -f "$HOME/.config/zsh/plugins/zsh-autosuggestions/zsh-autosuggestions.zsh" ]]; then
   source "$HOME/.config/zsh/plugins/zsh-autosuggestions/zsh-autosuggestions.zsh" 2>/dev/null
+  ZSH_AUTOSUGGEST_USE_ASYNC=1
   ZSH_AUTOSUGGEST_STRATEGY=(history completion)
   ZSH_AUTOSUGGEST_BUFFER_MAX_SIZE=10
 fi
 
-# Soure Sub-String Search (if exists)
+# zsh-history-substring-search — bindings inside guard
 if [[ -f "$HOME/.config/zsh/plugins/zsh-history-substring-search.zsh" ]]; then
   source "$HOME/.config/zsh/plugins/zsh-history-substring-search.zsh" 2>/dev/null
+  bindkey '^[[A' history-substring-search-up
+  bindkey '^[[B' history-substring-search-down
 fi

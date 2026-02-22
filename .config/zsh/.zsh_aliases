@@ -60,7 +60,8 @@ alias ssum="sudo systemctl unmask"
 alias ssr="sudo systemctl restart"
 alias ssdr="sudo systemctl daemon-reload"
 alias sss="systemctl status"
-
+alias sst="sudo systemctl start"
+alias sstp="sudo systemctl stop"
 
 # Ping 
 alias ping="prettyping"
@@ -82,8 +83,8 @@ alias targ="tar -xvzf"
 alias tar="tar -xvf"
 
 # PIP 
-#alias pip="pipx"
-alias pip3="pipx"
+alias pip="uv pip"
+alias pip3="uv pip"
 
 # Remove
 alias rmr="trash-put -rf"
