@@ -13,13 +13,12 @@ o.laststatus = 3 -- Global statusline (one for all windows)
 o.showmode = false -- Don't show mode (e.g. -- INSERT --) as Lualine handles it
 o.mouse = "a" -- Enable mouse support
 o.undofile = true -- Persistent undo
-o.timeoutlen = 50 -- Time to wait for a mapped sequence (lower for snappier menus)
+o.timeoutlen = 500 -- Time to wait for a mapped sequence (lower for snappier menus)
 o.scrolloff = 10 -- Keep 10 lines above/below cursor
 o.sidescrolloff = 8 -- Keep 8 columns visible to the left/right of the cursor
 o.cursorline = false -- Highlight current line
 o.termguicolors = true -- True color support
 o.clipboard = "unnamedplus" -- Use system clipboard
-
 -- Search
 o.ignorecase = true -- Case insensitive search...
 
@@ -29,7 +28,7 @@ o.signcolumn = "yes" -- Always show sign column (prevents "jumping" text)
 o.splitbelow = true -- Split horizontal windows below
 o.splitright = true -- Split vertical windows right
 opt.fillchars = { eob = " " } -- Hide the '~' on empty lines
-opt.updatetime = 250
+opt.updatetime = 500
 opt.lazyredraw = false -- Usually better off, but set to true if you see flickering
 opt.relativenumber = true
 vim.opt.smartcase = true

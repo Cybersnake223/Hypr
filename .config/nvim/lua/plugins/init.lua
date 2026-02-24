@@ -1,5 +1,7 @@
 return {
+  -- ─────────────────────────────────────────────────────────
   -- Colorscheme
+  -- ─────────────────────────────────────────────────────────
   {
     "EdenEast/nightfox.nvim",
     priority = 1000,
@@ -10,7 +12,6 @@ return {
         compile_path = vim.fn.stdpath "cache" .. "/nightfox",
         compile_file_suffix = "_compiled",
       },
-      -- This is where we tell Nightfox to ignore backgrounds for Snacks
       groups = {
         all = {
           NormalFloat = { bg = "NONE" },
@@ -24,35 +25,18 @@ return {
       vim.cmd "colorscheme nightfox"
     end,
   },
-  -- Core async Lua library (dependency for many plugins)
+
+  -- ─────────────────────────────────────────────────────────
+  -- Core async Lua library
+  -- ─────────────────────────────────────────────────────────
   {
     "nvim-lua/plenary.nvim",
     lazy = true,
   },
 
-  -- UI : statusline , Git signs, Command Prompt
-  -- {
-  --   "folke/noice.nvim",
-  --   event = "VeryLazy",
-  --   dependencies = {
-  --     "MunifTanjim/nui.nvim",
-  --     {
-  --       "rcarriga/nvim-notify",
-  --       opts = {
-  --         background_colour = "#000000",
-  --         -- Optional: Add other notify settings
-  --         stages = "fade",
-  --         render = "compact",
-  --         top_down = true,
-  --         max_width = 80,
-  --         max_height = 10,
-  --         fps = 60,
-  --         timeout = 3000,
-  --       },
-  --     },
-  --   },
-  --       opts =  require("plugins.configs.noice")
-  -- },
+  -- ─────────────────────────────────────────────────────────
+  -- UI: Statusline, Git signs
+  -- ─────────────────────────────────────────────────────────
   {
     "lewis6991/gitsigns.nvim",
     event = { "BufReadPost", "BufNewFile" },
@@ -62,11 +46,13 @@ return {
   {
     "nvim-lualine/lualine.nvim",
     event = "VeryLazy",
-    dependencies = { "nvim-tree/nvim-web-devicons", lazy = true },
+    dependencies = { { "nvim-tree/nvim-web-devicons", lazy = true } },
     opts = require "plugins.configs.lualine",
   },
 
-  -- Syntax, indent, selection (disables on large files)
+  -- ─────────────────────────────────────────────────────────
+  -- Syntax, indent, selection
+  -- ─────────────────────────────────────────────────────────
   {
     "nvim-treesitter/nvim-treesitter",
     branch = "main",
@@ -74,20 +60,23 @@ return {
     event = { "BufReadPre", "BufNewFile" },
     config = function()
       local ok, configs = pcall(require, "nvim-treesitter.configs")
-      if ok then
-        configs.setup {
-          auto_install = false,
-          ensure_installed = { "lua", "bash", "python", "sql" },
-          sync_install = false,
-          highlight = { enable = true },
-          indent = { enable = true },
-          incremental_selection = { enable = true },
-        }
+      if not ok then
+        return
       end
+      configs.setup {
+        auto_install = false,
+        ensure_installed = { "lua", "bash", "python", "sql" },
+        sync_install = false,
+        highlight = { enable = true },
+        indent = { enable = true },
+        incremental_selection = { enable = true },
+      }
     end,
   },
 
+  -- ─────────────────────────────────────────────────────────
   -- Keymaps helper
+  -- ─────────────────────────────────────────────────────────
   {
     "folke/which-key.nvim",
     event = "VeryLazy",
@@ -102,41 +91,50 @@ return {
       },
     },
   },
-  -- Buffet tabs
-  {
-    "akinsho/bufferline.nvim",
-    event = { "VeryLazy" },
-    opts = require "plugins.configs.bufferline_conf",
-  },
 
-  -- Completion + snippets/autopairs
+  -- ─────────────────────────────────────────────────────────
+  -- Buffer tabs
+  -- ─────────────────────────────────────────────────────────
+  -- {
+  --   "akinsho/bufferline.nvim",
+  --   event = "VeryLazy",
+  --   opts = require "plugins.configs.bufferline_conf",
+  -- },
+
+  -- ─────────────────────────────────────────────────────────
+  -- Completion + Snippets + Autopairs
+  -- ─────────────────────────────────────────────────────────
   {
     "windwp/nvim-autopairs",
     event = "InsertEnter",
     config = true,
   },
+
   {
     "L3MON4D3/LuaSnip",
     lazy = true,
     dependencies = { "rafamadriz/friendly-snippets" },
     config = function()
-      -- Load snippets asynchronously
       vim.schedule(function()
         require("luasnip.loaders.from_vscode").lazy_load()
       end)
     end,
   },
+
   {
     "saghen/blink.cmp",
     build = "cargo build --release",
-    -- version = "1.*",
     event = "InsertEnter",
     dependencies = {
+      "L3MON4D3/LuaSnip",
       "rafamadriz/friendly-snippets",
     },
     opts = require "plugins.configs.blink_conf",
   },
 
+  -- ─────────────────────────────────────────────────────────
+  -- LSP
+  -- ─────────────────────────────────────────────────────────
   {
     "williamboman/mason.nvim",
     build = ":MasonUpdate",
@@ -157,20 +155,28 @@ return {
     end,
   },
 
+  -- ─────────────────────────────────────────────────────────
+  -- Formatting
+  -- ─────────────────────────────────────────────────────────
   {
     "stevearc/conform.nvim",
-    event = { "BufWritePre" },
+    event = "BufWritePre",
     cmd = { "ConformInfo" },
     opts = require "plugins.configs.conform",
   },
 
+  -- ─────────────────────────────────────────────────────────
+  -- Indent guides
+  -- ─────────────────────────────────────────────────────────
   {
     "nvimdev/indentmini.nvim",
     event = { "BufReadPre", "BufNewFile" },
     opts = {},
   },
 
+  -- ─────────────────────────────────────────────────────────
   -- SQL Database Client
+  -- ─────────────────────────────────────────────────────────
   {
     "kndndrj/nvim-dbee",
     dependencies = { "MunifTanjim/nui.nvim" },
@@ -179,20 +185,22 @@ return {
       require("dbee").install()
     end,
     config = function()
-      local queries_dir = vim.fn.expand "~/Sql/.queries/"
-      vim.fn.mkdir(queries_dir, "p")
-      require("dbee").setup {
-        sources = {
-          require("dbee.sources").EnvSource:new "DBEE_CONNECTIONS",
-          require("dbee.sources").FileSource:new(queries_dir .. "persistence.json"),
-        },
-      }
+      require("dbee").setup(require "plugins.configs.dbee")
     end,
   },
 
-  { "kristijanhusak/vim-dadbod-completion", ft = { "sql", "mysql", "plsql" } },
+  -- {
+  --   "tpope/vim-dadbod",
+  --   lazy = true,
+  -- },
+  {
+    "kristijanhusak/vim-dadbod-completion",
+    ft = { "sql", "mysql", "plsql" },
+  },
 
+  -- ─────────────────────────────────────────────────────────
   -- Snacks.nvim
+  -- ─────────────────────────────────────────────────────────
   {
     "folke/snacks.nvim",
     priority = 1000,
@@ -211,68 +219,69 @@ return {
           frecency = true,
         },
         sources = {
-          -- Buffers
+          -- Buffers: list all open listed buffers
           buffers = {
             name = "Buffers",
             items = function()
               local bufs = vim.fn.getbufinfo { buflisted = 1 }
               return vim.tbl_map(function(buf)
+                local name = buf.name ~= "" and buf.name or "[No Name]"
                 return {
-                  text = vim.fn.fnamemodify(buf.name, ":t") .. (buf.name == "" and " [No Name]" or ""),
+                  text = vim.fn.fnamemodify(name, ":t"),
                   path = buf.name,
                   bufnr = buf.bufnr,
-                  cwd = vim.fn.getcwd(),
+                  cwd = vim.fn.getcwd(), -- evaluated at picker-open time
                 }
               end, bufs)
             end,
             action = function(item)
-              vim.api.nvim_set_current_buf(item.bufnr)
+              if item.bufnr then
+                vim.api.nvim_set_current_buf(item.bufnr)
+              end
             end,
           },
-          -- Files (frecency style)
+
+          -- Files
           files = {
             name = "Files",
             hidden = true,
-            dirs = { vim.loop.cwd() },
             items = function()
-              local opts = {
-                cwd = vim.loop.cwd(),
-                hidden = true,
-                no_ignore = false,
-              }
-              local results = vim.fs.find(function(name, path)
-                return vim.endswith(path, ".git") == false
-              end, opts)
+              local cwd = vim.fn.getcwd() -- evaluated at picker-open time
+              local output =
+                vim.fn.systemlist "rg --files --hidden --no-ignore-vcs --glob '!.git' --glob '!node_modules' ."
               return vim.tbl_map(function(path)
-                return { text = vim.fn.fnamemodify(path, ":t"), path = path }
-              end, results)
+                local abs = cwd .. "/" .. path
+                return {
+                  text = vim.fn.fnamemodify(path, ":t"),
+                  path = abs,
+                }
+              end, output)
             end,
             action = function(item)
-              vim.cmd.edit(item.path)
+              if item.path and item.path ~= "" then
+                vim.cmd.edit(item.path)
+              end
             end,
           },
         },
       },
-      -- Keep your other snacks features
       bigfile = { enabled = true },
       dashboard = { enabled = false },
-      explorer = { enabled = true, replace_netrw = yes },
+      explorer = { enabled = true, replace_netrw = true },
       indent = { enabled = false },
       input = { enabled = true },
       notifier = { enabled = false },
       quickfile = { enabled = true },
       scope = { enabled = false },
       scroll = { enabled = false },
-      statuscolumn = {
-        enabled = false,
-        left = { "signs", "git" },
-        right = { "fold" },
-      },
+      statuscolumn = { enabled = false },
       words = { enabled = true },
     },
   },
 
+  -- ─────────────────────────────────────────────────────────
   -- Colorizer
+  -- ─────────────────────────────────────────────────────────
   {
     "echasnovski/mini.hipatterns",
     event = "BufReadPre",
@@ -286,13 +295,12 @@ return {
     end,
   },
 
-  -- Jupiter notebook
+  -- ─────────────────────────────────────────────────────────
+  -- Jupyter / Notebook workflow
+  -- ─────────────────────────────────────────────────────────
 
-  -- Convert .ipynb <-> markdown automatically (lazy=false prevents raw JSON)
   {
     "GCBallesteros/jupytext.nvim",
-    ft = { "ipynb", "julia", "quarto", "markdown" },
-    lazy = false,
     opts = {
       style = "markdown",
       output_extension = "md",
@@ -300,15 +308,21 @@ return {
     },
   },
 
-  -- Images in terminal (for Molten outputs)
+  {
+    "vhyrro/luarocks.nvim",
+    priority = 1000,
+    config = true,
+    opts = {
+      luarocks_build_args = { "--with-lua-interpreter=lua5.1", "--with-lua-include=/usr/include/luajit-2.1" },
+    },
+  },
   {
     "3rd/image.nvim",
     event = "VeryLazy",
-    dependencies = { "vhyrro/luarocks.nvim" },
-    build = "luarocks install magick",
+    -- build = "luarocks install magick",
     opts = {
       backend = "sixel",
-      processor = "magick_rock",
+      processor = "magick_cli",
       integrations = {
         markdown = {
           enabled = true,
@@ -325,12 +339,11 @@ return {
       hi_res_rendering = false,
     },
   },
-  -- Molten (Jupyter kernel runner)
+
   {
     "benlubas/molten-nvim",
     version = "^1.0.0",
     ft = { "python", "markdown", "quarto" },
-    -- build = ":UpdateRemotePlugins",
     dependencies = { "3rd/image.nvim" },
     init = function()
       vim.g.molten_auto_open_output = false
@@ -338,7 +351,7 @@ return {
       vim.g.molten_wrap_output = false
       vim.g.molten_virt_text_output = true
       vim.g.molten_virt_lines_off_by_1 = false
-      vim.g.molten_tick_rate = 200
+      vim.g.molten_tick_rate = 100
       vim.g.molten_output_show_more = true
       vim.g.molten_limit_output_chars = 5000
       vim.g.molten_virt_text_max_lines = 100
@@ -347,9 +360,6 @@ return {
       vim.g.molten_enter_output_behavior = "open_and_enter"
     end,
     config = function()
-      -- Cell evaluation keybinds (Molten docs recommended)
-      -- NO MoltenImportOutput autocmd (avoids known crashes)
-      -- NewNotebook command with valid metadata for jupytext
       local default_notebook = [[
 {
   "cells": [
@@ -378,7 +388,6 @@ return {
   "nbformat_minor": 5
 }
 ]]
-
       local function new_notebook(filename)
         local path = filename .. ".ipynb"
         local file = io.open(path, "w")
@@ -397,18 +406,12 @@ return {
     end,
   },
 
-  -- Quarto (LSP-in-markdown + molten runner)
+  -- ─────────────────────────────────────────────────────────
+  -- Quarto
+  -- ─────────────────────────────────────────────────────────
   {
     "quarto-dev/quarto-nvim",
-    dependencies = {
-      {
-        "jmbuhr/otter.nvim",
-        dependencies = {
-          { "saghen/blink.cmp", event = "InsertEnter" },
-        },
-      },
-      "nvim-treesitter/nvim-treesitter",
-    },
+    dependencies = { "jmbuhr/otter.nvim" },
     ft = { "quarto", "markdown" },
     config = function()
       require("quarto").setup {
@@ -425,16 +428,10 @@ return {
         },
       }
 
-      -- New python chunk below cursor
       local function quarto_new_chunk_below(lang)
         lang = lang or "python"
         local row = vim.api.nvim_win_get_cursor(0)[1]
-        local lines = {
-          ("```{%s}"):format(lang),
-          "",
-          "```",
-          "",
-        }
+        local lines = { ("```{%s}"):format(lang), "", "```", "" }
         vim.api.nvim_buf_set_lines(0, row, row, false, lines)
         vim.api.nvim_win_set_cursor(0, { row + 2, 0 })
         vim.cmd "startinsert"
@@ -445,19 +442,19 @@ return {
       end, { desc = "New python chunk below", buffer = true, silent = true })
 
       local runner = require "quarto.runner"
-      vim.keymap.set("n", "<leader>r", runner.run_cell, { desc = "run cell", silent = true })
-      vim.keymap.set("n", "<leader>rA", runner.run_above, { desc = "run cell and above", silent = true })
-      vim.keymap.set("n", "<leader>ra", runner.run_all, { desc = "run all cells", silent = true })
-      vim.keymap.set("n", "<leader>rl", runner.run_line, { desc = "run line", silent = true })
-      vim.keymap.set("v", "<leader>r", runner.run_range, { desc = "run visual range", silent = true })
+      vim.keymap.set("n", "<leader>r", runner.run_cell, { desc = "Run cell", silent = true })
+      vim.keymap.set("n", "<leader>ra", runner.run_all, { desc = "Run all cells", silent = true })
+      vim.keymap.set("n", "<leader>rl", runner.run_line, { desc = "Run line", silent = true })
     end,
   },
 
-  -- Render markdown (keeps code blocks visible for cells)
+  -- ─────────────────────────────────────────────────────────
+  -- Markdown rendering + preview
+  -- ─────────────────────────────────────────────────────────
   {
     "MeanderingProgrammer/render-markdown.nvim",
     ft = { "markdown", "rmd" },
-    keys = { -- Add manual trigger
+    keys = {
       { "<leader>mr", "<cmd>RenderMarkdown toggle<cr>", desc = "Toggle Markdown Rendering" },
     },
     cmd = "RenderMarkdown",
@@ -466,10 +463,10 @@ return {
       "echasnovski/mini.icons",
     },
     opts = {
-      render_modes = { "n", "c" }, -- Only render in Normal and Command mode
-      anti_conceal = { enabled = false }, -- Significant speed boost in large files
+      render_modes = { "n", "c" },
+      anti_conceal = { enabled = false },
       enabled = true,
-      file_types = { "markdown" }, -- Enables for markdown (rmd may need explicit addition)
+      file_types = { "markdown" },
       win_options = {
         conceallevel = { default = 0, rendered = 0 },
       },
@@ -478,7 +475,6 @@ return {
         code_blocks = false,
         inline_code = true,
       },
-      -- Consolidated heading options (no top-level 'sign'; use per-component if needed)
       heading = {
         enabled = true,
         width = "block",
@@ -486,15 +482,14 @@ return {
         right_pad = 4,
         icons = { "󰼏 ", "󰎨 " },
       },
-      -- Consolidated code options
       code = {
         enabled = true,
         width = "block",
         left_pad = 2,
         right_pad = 4,
         language_border = " ",
-        language_left = "",
-        language_right = "",
+        language_left = "",
+        language_right = "",
       },
       bullet = { enabled = true },
       pipe_table = { preset = "round" },
@@ -505,10 +500,26 @@ return {
       },
     },
   },
-  -- Markdown preview (browser/webview)
+
   {
     "toppair/peek.nvim",
-    event = { "VeryLazy" },
+    ft = { "markdown" },
+    keys = {
+      {
+        "<leader>mp",
+        function()
+          require("peek").open()
+        end,
+        desc = "Peek: Open preview",
+      },
+      {
+        "<leader>mc",
+        function()
+          require("peek").close()
+        end,
+        desc = "Peek: Close preview",
+      },
+    },
     config = function()
       require("peek").setup {
         auto_load = true,

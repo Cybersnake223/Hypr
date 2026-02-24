@@ -5,7 +5,7 @@
 vim.g.loaded_perl_provider = 0
 vim.g.loaded_ruby_provider = 0
 vim.g.loaded_node_provider = 0
-vim.g.loaded_remote_plugins = 1
+-- vim.g.loaded_remote_plugins = 1
 -----------------------------------------------------------
 -- 0. Performance: Disable Built-in Neovim Plugins
 -----------------------------------------------------------
@@ -130,22 +130,7 @@ vim.api.nvim_create_autocmd("FileType", {
 })
 
 
-vim.api.nvim_create_autocmd("VimLeavePre", {
-  group = cleanup_group,
-  callback = function()
-    -- 1. Kill Molten/Jupyter kernels
-    if vim.fn.exists(":MoltenDeinit") > 0 then
-      vim.cmd("MoltenDeinit")
-    end
-    
-    -- 2. Force stop all active LSP clients
-    local clients = vim.lsp.get_clients()
-    for _, client in ipairs(clients) do
-      client.stop()
-    end
-  end,
-})
-
+--
 -- Molten: Auto-import output when opening notebooks
 vim.api.nvim_create_autocmd("FileType", {
   group = vim.api.nvim_create_augroup("MoltenSetup", { clear = true }),

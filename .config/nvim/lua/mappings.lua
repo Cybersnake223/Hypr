@@ -11,13 +11,12 @@ map("n", "<leader>fm", function()
 end, { desc = "Code: Format" })
 map("n", "<leader>/", "gcc", { remap = true, desc = "Comment: Line" })
 map("v", "<leader>/", "gc", { remap = true, desc = "Comment: Selection" })
-
 -----------------------------------------------------------
 -- 2. Navigation (Buffers & Windows)
 -----------------------------------------------------------
 -- Switch Buffers
-map("n", "<Tab>", "<cmd>BufferLineCycleNext<CR>", { desc = "Buffer: Next" })
-map("n", "<S-Tab>", "<cmd>BufferLineCyclePrev<CR>", { desc = "Buffer: Prev" })
+map("n", "<Tab>", "<cmd>bnext<CR>", { desc = "Buffer: Next" })
+map("n", "<S-Tab>", "<cmd>bprevious<CR>", { desc = "Buffer: Prev" })
 map("n", "<C-q>", "<cmd>bd<CR>", { desc = "Buffer: Close" })
 
 -- Window movement (Alt + hjkl for speed)
@@ -66,12 +65,12 @@ map("n", "<leader>mi", function()
 end, { desc = "Molten: Init" })
 
 -- Execution (Unified under <leader>r)
-map("n", "<leader>rr", ":MoltenReevaluateCell<CR>", { desc = "Run: Cell", silent = true })
+-- map("n", "<leader>rr", ":MoltenReevaluateCell<CR>", { desc = "Run: Cell", silent = true })
 -- map("v", "<leader>r", ":<C-u>MoltenEvaluateVisual<CR>gv", { desc = "Run: Visual Selection", silent = true })
-map("n", "<leader>rd", ":MoltenDelete<CR>", { desc = "Run: Delete Cell", silent = true })
-map("n", "<leader>rh", ":MoltenHideOutput<CR>", { desc = "Run: Hide Output", silent = true })
-map("n", "<leader>ro", ":noautocmd MoltenEnterOutput<CR>", { desc = "Run: Show Output Window", silent = true })
-map("n", "<leader>mm", ":noautocmd MoltenOpenInBrowser<CR>", { desc = "Run: Open Output In Browser", silent = true })
+-- map("n", "<leader>rd", ":MoltenDelete<CR>", { desc = "Run: Delete Cell", silent = true })
+-- map("n", "<leader>rh", ":MoltenHideOutput<CR>", { desc = "Run: Hide Output", silent = true })
+-- map("n", "<leader>ro", ":noautocmd MoltenEnterOutput<CR>", { desc = "Run: Show Output Window", silent = true })
+-- map("n", "<leader>mm", ":noautocmd MoltenOpenInBrowser<CR>", { desc = "Run: Open Output In Browser", silent = true })
 
 -- Quarto
 map("n", "<leader>q", ":QuartoActivate<CR>", { desc = "Quarto: Activate" })
@@ -93,6 +92,8 @@ vim.api.nvim_create_autocmd("FileType", {
     end, { buffer = true, desc = "DB: Export CSV" })
   end,
 })
+
+-- map("v", "<leader>b", ":lua require('dbee').execute()<CR>", { desc = "Execute SQL" })
 
 -----------------------------------------------------------
 -- 6. Plugin Management

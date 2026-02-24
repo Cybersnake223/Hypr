@@ -49,7 +49,7 @@ config.default = {
   -- loads connections from files and environment variables
   sources = {
     require("dbee.sources").EnvSource:new("DBEE_CONNECTIONS"),
-    require("dbee.sources").FileSource:new(vim.fn.expand("~/Sql/.queries/connections.json"),
+    require("dbee.sources").FileSource:new(vim.fn.expand("~/Sql/.queries/persistence.json")),
   },
   -- extra table helpers per connection type
   -- every helper value is a go-template with values set for
@@ -74,7 +74,7 @@ config.default = {
     buffer_options = {},
 
     -- show help or not
-    disable_help = false,
+    disable_help = true,
     -- mappings for the buffer
     mappings = {
       -- manually refresh drawer
@@ -224,7 +224,7 @@ config.default = {
     page_size = 1000,
 
     -- whether to focus the result window after a query
-    focus_result = true,
+    focus_result = false,
 
     -- progress (loading) screen options
     progress = {

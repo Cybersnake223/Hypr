@@ -24,7 +24,7 @@ return {
 
   completion = {
     list = {
-      selection = { preselect = true, auto_insert = true }, -- Preselect = false speeds up typing
+      selection = { preselect = true, auto_insert = true },
     },
     menu = {
       auto_show = true,
