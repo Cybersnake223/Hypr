@@ -1,127 +1,81 @@
------------------------------------------------------------
---  Absolute Early Disable (Performance)
------------------------------------------------------------
--- Disable providers you don't use
+-- ─────────────────────────────────────────────────────────
+-- 0. Provider Disables
+-- ─────────────────────────────────────────────────────────
 vim.g.loaded_perl_provider = 0
 vim.g.loaded_ruby_provider = 0
 vim.g.loaded_node_provider = 0
--- vim.g.loaded_remote_plugins = 1
------------------------------------------------------------
--- 0. Performance: Disable Built-in Neovim Plugins
------------------------------------------------------------
-local disabled_builtins = {
-  "netrw",
-  "netrwPlugin",
-  "netrwSettings",
-  "netrwFileHandlers",
-  "zip",
-  "getscript",
-  "getscriptPlugin",
-  "vimball",
-  "vimballPlugin",
-  "2html_plugin",
-  "logipat",
-  "rrhelper",
-  "spellfile_plugin",
-  "matchit",
-}
 
-for _, plugin in ipairs(disabled_builtins) do
-  vim.g["loaded_" .. plugin] = 1
-end
+-- ─────────────────────────────────────────────────────────
+-- 1. Core Options
+-- ─────────────────────────────────────────────────────────
+require "options"
+require "mappings"
+require "commands"
 
------------------------------------------------------------
--- 1. Experimental
------------------------------------------------------------
-
-if vim.loader then
-  vim.loader.enable()
-end
-
-
------------------------------------------------------------
--- 2. Configuration & Keymaps
------------------------------------------------------------
-require "options" -- Load your settings first
-require "mappings" -- Load your keybindings
-require "commands" -- Load custom user commands
-
--- Global/Window tweaks for Data Science
-vim.o.conceallevel = 0 -- Ensure code blocks/symbols aren't hidden by default
+vim.o.conceallevel = 0
+vim.opt.shada = "!,'100,<50,s10,h"
+vim.lsp.set_log_level "off"
 vim.g.db_ui_save_location = vim.fn.getcwd() .. "/.sql_queries"
------------------------------------------------------------
--- 3. Plugin Bootstrapping (Lazy.nvim)
------------------------------------------------------------
--- Define where Lazy.nvim will be installed on your system
-local lazypath = vim.fn.stdpath "data" .. "/lazy/lazy.nvim"
 
--- Check if Lazy.nvim is already installed; if not, clone it from GitHub
+-- ─────────────────────────────────────────────────────────
+-- 2. Clipboard detection
+-- ─────────────────────────────────────────────────────────
+vim.opt.clipboard = ""
+vim.schedule(function()
+  if vim.fn.executable "wl-copy" == 1 then
+    vim.opt.clipboard = "unnamedplus"
+  end
+end)
+
+-- ─────────────────────────────────────────────────────────
+-- 3. Lazy.nvim Bootstrap
+-- ─────────────────────────────────────────────────────────
+local lazypath = vim.fn.stdpath "data" .. "/lazy/lazy.nvim"
 if not (vim.uv or vim.loop).fs_stat(lazypath) then
   vim.fn.system {
     "git",
     "clone",
-    "--filter=blob:none", -- Efficient cloning (doesn't download every single file's history)
+    "--filter=blob:none",
     "https://github.com/folke/lazy.nvim.git",
     "--branch=stable",
     lazypath,
   }
 end
-
--- Add the Lazy.nvim path to the Neovim runtime path (RTP)
 vim.opt.rtp:prepend(lazypath)
 
--- Setup Lazy.nvim
--- Performance Tip: Pass a table of options directly or ensure your 'lazy_config'
--- includes performance-specific flags.
+-- ─────────────────────────────────────────────────────────
+-- 4. Lazy.nvim Setup
+-- ─────────────────────────────────────────────────────────
 require("lazy").setup("plugins", {
-  -- PERFORMANCE OPTIMIZATION:
-  -- Byte-compile and cache Lua modules for nearly instant loading.
+  checker = { enabled = false },
+  change_detection = { notify = false },
+  defaults = { lazy = true },
+
   performance = {
-    cache = {
-      enabled = true,
-    },
+    cache = { enabled = true }, 
     reset_packpath = true,
     rtp = {
-      -- Disable built-in plugins you don't use to save load time
       disabled_plugins = {
+        -- "rplugin",         
+        "netrwPlugin",
+        "matchit",
         "gzip",
         "tarPlugin",
+        "zipPlugin",
         "tohtml",
         "tutor",
-        "zipPlugin",
       },
-      checker = { enabled = false},
-      change_detection = { notify = false },
-      defaults = { lazy = true },
     },
   },
-  -- Use a separate file for your plugin specs to keep init.lua clean
-  -- change_detection = { notify = false }, -- Stop the "Config Change Detected" notification
 })
 
--- Defer clipboard
-vim.opt.clipboard = ""
-if vim.fn.executable("wl-copy") == 1 or vim.fn.executable("xclip") == 1 then
-  vim.schedule(function()
-    vim.opt.clipboard = "unnamedplus"
-  end)
-end
+-- ─────────────────────────────────────────────────────────
+-- 5. Autocommands
+-- ─────────────────────────────────────────────────────────
 
--- Shorter timeout for LSP shutdown (default is often 5000ms)
-vim.lsp.set_log_level("off")
-
--- Limits the size of the ShaDa file (registers, marks, etc.)
-vim.opt.shada = "!,'100,<50,s10,h"
-
------------------------------------------------------------
--- 4. Autocommands (Automated Behavior)
------------------------------------------------------------
-
--- CLEANUP ON EXIT: Stops Molten and LSPs immediately to prevent :wq lag
-local cleanup_group = vim.api.nvim_create_augroup("ExitCleanup", { clear = true })
-
--- Indentation for py files
+-- Indentation overrides for Python and SQL
 vim.api.nvim_create_autocmd("FileType", {
+  group = vim.api.nvim_create_augroup("IndentOverrides", { clear = true }),
   pattern = { "python", "sql" },
   callback = function()
     vim.opt_local.shiftwidth = 4
@@ -129,20 +83,20 @@ vim.api.nvim_create_autocmd("FileType", {
   end,
 })
 
-
---
--- Molten: Auto-import output when opening notebooks
+-- Molten: Auto-import output only if molten has actually loaded
 vim.api.nvim_create_autocmd("FileType", {
   group = vim.api.nvim_create_augroup("MoltenSetup", { clear = true }),
   pattern = { "markdown", "quarto", "ipynb" },
   callback = function()
-    vim.schedule(function()
-      pcall(vim.cmd, "MoltenImportOutput")
-    end)
+    if package.loaded["molten"] then
+      vim.schedule(function()
+        pcall(vim.cmd, "MoltenImportOutput")
+      end)
+    end
   end,
 })
 
--- Quarto/Markdown UI Fixes
+-- Quarto/Markdown: force conceal off (render-markdown handles visuals)
 vim.api.nvim_create_autocmd({ "BufEnter", "FileType" }, {
   group = vim.api.nvim_create_augroup("MarkdownUIFix", { clear = true }),
   pattern = { "quarto", "qmd", "markdown" },
@@ -152,25 +106,34 @@ vim.api.nvim_create_autocmd({ "BufEnter", "FileType" }, {
   end,
 })
 
--- Disable heavy features for massive data files
+-- Big file guard: disable treesitter for files over 500KB
 vim.api.nvim_create_autocmd("BufReadPre", {
+  group = vim.api.nvim_create_augroup("BigFileGuard", { clear = true }),
   callback = function(ev)
-    local size = vim.fn.getfsize(ev.file)
-    if size > 1024 * 500 then -- 500KB limit
+    if vim.fn.getfsize(ev.file) > 1024 * 500 then
       vim.b.treesitter_enabled = false
     end
   end,
 })
------------------------------------------------------------
--- 5. User Commands
------------------------------------------------------------
--- Simple shortcuts for the Markdown Previewer
+
+-- ─────────────────────────────────────────────────────────
+-- 6. User Commands
+-- ─────────────────────────────────────────────────────────
+
 vim.api.nvim_create_user_command("PeekOpen", function()
-  require("lazy").load({plugins = {"peek.nvim"}})
-  require("peek").open()
-end, {})
+  local ok, peek = pcall(require, "peek")
+  if ok then
+    peek.open()
+  else
+    vim.notify("peek.nvim is not loaded. Uncomment it in plugins/.", vim.log.levels.WARN)
+  end
+end, { desc = "Open Peek markdown preview" })
 
 vim.api.nvim_create_user_command("PeekClose", function()
-  require("lazy").load({plugins = {"peek.nvim"}})
-  require("peek").close()
-end, {})
+  local ok, peek = pcall(require, "peek")
+  if ok then
+    peek.close()
+  else
+    vim.notify("peek.nvim is not loaded. Uncomment it in plugins/.", vim.log.levels.WARN)
+  end
+end, { desc = "Close Peek markdown preview" })

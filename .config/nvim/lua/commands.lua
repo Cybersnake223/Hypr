@@ -2,72 +2,61 @@ local create_cmd = vim.api.nvim_create_user_command
 local create_au = vim.api.nvim_create_autocmd
 local augroup = vim.api.nvim_create_augroup
 
------------------------------------------------------------
--- 1. Mason Automation
------------------------------------------------------------
--- One command to rule them all. Added Ruff and Pyright for your Python work.
+-- ── 1. Mason ─────────────────
 create_cmd("MasonInstallAll", function()
   local tools = {
     "lua-language-server",
     "pyright",
     "ruff",
+    "sqls",
+    "sqlfluff",
     "marksman",
     "bash-language-server",
     "prettier",
+    "stylua",
   }
   vim.cmd("MasonInstall " .. table.concat(tools, " "))
-end, { desc = "Install all required LSP/Formatters" })
+end, { desc = "Install all required LSP/formatters/linters" })
 
------------------------------------------------------------
--- 2. Jupyter Notebook (.ipynb) Workflow
------------------------------------------------------------
--- This ensures that when you open an .ipynb file, Neovim
--- immediately treats it as a Markdown file for Molten/Quarto.
-create_au("FileType", {
-  group = augroup("IpynbWorkflow", { clear = true }),
-  pattern = "json",
-  callback = function()
-    local buf_name = vim.api.nvim_buf_get_name(0)
-    if buf_name:match "%.ipynb$" then
-      -- Convert view to markdown to enable LSP + Molten
-      vim.bo.filetype = "markdown"
-
-      -- Schedule the Quarto activation to ensure the buffer is ready
-      vim.schedule(function()
-        vim.cmd "QuartoActivate"
-        -- Optional: Notify that we've switched modes
-        vim.notify("Notebook detected: Markdown mode activated", vim.log.levels.INFO)
-      end)
-    end
-  end,
-})
-
--- Auto-sync Jupytext
--- When you save a markdown file associated with a notebook,
--- this keeps the actual .ipynb file updated in the background.
-create_au("BufWritePost", {
-  group = augroup("JupytextSync", { clear = true }),
-  pattern = "*.ipynb.md",
-  callback = function()
-    if vim.fn.exists ":JupytextSync" > 0 then
-      vim.cmd "JupytextSync"
-    end
-  end,
-})
-
------------------------------------------------------------
--- 3. General Quality of Life
------------------------------------------------------------
--- Highlight on yank (Very helpful to see what you just copied)
+-- ── 2. Highlight on yank ─────────────────────────────────
 create_au("TextYankPost", {
   group = augroup("HighlightYank", { clear = true }),
   callback = function()
-    vim.highlight.on_yank { higroup = "IncSearch", timeout = 150 }
+    vim.highlight.on_yank { higroup = "Visual", timeout = 200 }
   end,
 })
 
--- Auto-resize splits when the terminal window is resized
+-- ── 3. Auto-resize splits on terminal resize ─────────────
 create_au("VimResized", {
   group = augroup("WindowResize", { clear = true }),
-  command = "tabdo wincmd =",
+  callback = function()
+    local tab = vim.fn.tabpagenr()
+    vim.cmd "tabdo wincmd ="
+    vim.cmd("tabnext " .. tab)
+  end,
 })
+
+-- ── 4. Remove trailing whitespace on save ────────────────
+-- Skips binary files and diffs
+create_au("BufWritePre", {
+  group = augroup("TrimWhitespace", { clear = true }),
+  callback = function()
+    if not vim.bo.binary and vim.bo.filetype ~= "diff" then
+      local view = vim.fn.winsaveview()
+      vim.cmd [[%s/\s\+$//e]]
+      vim.fn.winrestview(view)
+    end
+  end,
+})
+
+-- ── 5. Return to last cursor position on file open ───────
+-- create_au("BufReadPost", {
+--   group = augroup("RestoreCursor", { clear = true }),
+--   callback = function()
+--     local mark = vim.api.nvim_buf_get_mark(0, '"')
+--     local line_count = vim.api.nvim_buf_line_count(0)
+--     if mark[1] > 0 and mark[1] <= line_count then
+--       pcall(vim.api.nvim_win_set_cursor, 0, mark)
+--     end
+--   end,
+-- })

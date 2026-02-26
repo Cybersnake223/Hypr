@@ -6,36 +6,25 @@ return {
     "EdenEast/nightfox.nvim",
     priority = 1000,
     lazy = false,
-    opts = {
-      options = {
-        transparent = true,
-        compile_path = vim.fn.stdpath "cache" .. "/nightfox",
-        compile_file_suffix = "_compiled",
-      },
-      groups = {
-        all = {
-          NormalFloat = { bg = "NONE" },
-          FloatBorder = { bg = "NONE" },
-          FloatTitle = { bg = "NONE" },
-        },
-      },
-    },
+    opts = require "plugins.configs.nightfox",
     config = function(_, opts)
       require("nightfox").setup(opts)
       vim.cmd "colorscheme nightfox"
     end,
   },
-
   -- ─────────────────────────────────────────────────────────
   -- Core async Lua library
   -- ─────────────────────────────────────────────────────────
-  {
-    "nvim-lua/plenary.nvim",
-    lazy = true,
-  },
+  { "nvim-lua/plenary.nvim", lazy = true },
 
   -- ─────────────────────────────────────────────────────────
-  -- UI: Statusline, Git signs
+  -- Icons
+  -- ─────────────────────────────────────────────────────────
+  { "nvim-tree/nvim-web-devicons", lazy = true },
+  { "echasnovski/mini.icons", lazy = true },
+
+  -- ─────────────────────────────────────────────────────────
+  -- UI: Statusline + Git signs
   -- ─────────────────────────────────────────────────────────
   {
     "lewis6991/gitsigns.nvim",
@@ -46,31 +35,21 @@ return {
   {
     "nvim-lualine/lualine.nvim",
     event = "VeryLazy",
-    dependencies = { { "nvim-tree/nvim-web-devicons", lazy = true } },
+    dependencies = { "nvim-tree/nvim-web-devicons" },
     opts = require "plugins.configs.lualine",
   },
 
   -- ─────────────────────────────────────────────────────────
-  -- Syntax, indent, selection
+  -- Syntax + Treesitter
   -- ─────────────────────────────────────────────────────────
+
   {
     "nvim-treesitter/nvim-treesitter",
     branch = "main",
     build = ":TSUpdate",
-    event = { "BufReadPre", "BufNewFile" },
+    lazy = false,
     config = function()
-      local ok, configs = pcall(require, "nvim-treesitter.configs")
-      if not ok then
-        return
-      end
-      configs.setup {
-        auto_install = false,
-        ensure_installed = { "lua", "bash", "python", "sql" },
-        sync_install = false,
-        highlight = { enable = true },
-        indent = { enable = true },
-        incremental_selection = { enable = true },
-      }
+      require("plugins.configs.treesitter").setup()
     end,
   },
 
@@ -87,19 +66,10 @@ return {
         function()
           require("which-key").show { global = false }
         end,
-        desc = "Buffer Local Keymaps (which-key)",
+        desc = "Buffer Local Keymaps",
       },
     },
   },
-
-  -- ─────────────────────────────────────────────────────────
-  -- Buffer tabs
-  -- ─────────────────────────────────────────────────────────
-  -- {
-  --   "akinsho/bufferline.nvim",
-  --   event = "VeryLazy",
-  --   opts = require "plugins.configs.bufferline_conf",
-  -- },
 
   -- ─────────────────────────────────────────────────────────
   -- Completion + Snippets + Autopairs
@@ -113,7 +83,6 @@ return {
   {
     "L3MON4D3/LuaSnip",
     lazy = true,
-    dependencies = { "rafamadriz/friendly-snippets" },
     config = function()
       vim.schedule(function()
         require("luasnip.loaders.from_vscode").lazy_load()
@@ -125,11 +94,20 @@ return {
     "saghen/blink.cmp",
     build = "cargo build --release",
     event = "InsertEnter",
-    dependencies = {
-      "L3MON4D3/LuaSnip",
-      "rafamadriz/friendly-snippets",
-    },
-    opts = require "plugins.configs.blink_conf",
+    dependencies = { "L3MON4D3/LuaSnip", "rafamadriz/friendly-snippets" },
+    opts = function()
+      local conf = require "plugins.configs.blink_conf"
+      conf.sources = conf.sources or {}
+      conf.sources.per_filetype = {
+        sql = { "snippets", "dadbod", "buffer" },
+        mysql = { "snippets", "dadbod", "buffer" },
+        plsql = { "snippets", "dadbod", "buffer" },
+      }
+      conf.sources.providers = vim.tbl_extend("keep", conf.sources.providers or {}, {
+        dadbod = { name = "Dadbod", module = "vim_dadbod_completion.blink" },
+      })
+      return conf
+    end,
   },
 
   -- ─────────────────────────────────────────────────────────
@@ -139,30 +117,106 @@ return {
     "williamboman/mason.nvim",
     build = ":MasonUpdate",
     cmd = { "Mason", "MasonInstall" },
+    event = "BufReadPost",
+    opts = { ui = { border = "rounded", winblend = 0 } },
+  },
+
+  {
+    "williamboman/mason-lspconfig.nvim",
+    event = "BufReadPost",
+    dependencies = { "williamboman/mason.nvim", "neovim/nvim-lspconfig" },
     opts = {
-      ui = {
-        border = "rounded",
-        winblend = 0,
-      },
+      ensure_installed = { "lua_ls", "pyright", "sqls", "bashls" },
+      automatic_enable = true,
     },
   },
 
   {
     "neovim/nvim-lspconfig",
-    event = { "BufReadPre", "BufNewFile" },
+    event = { "BufReadPost", "BufNewFile" },
     config = function()
       require "plugins.configs.lspconfig"
     end,
   },
 
+  -- Better Lua API completion
+  {
+    "folke/lazydev.nvim",
+    ft = "lua",
+    opts = {
+      library = {
+        { path = "snacks.nvim", words = { "Snacks" } },
+        { path = "lazy.nvim", words = { "LazyPlugin" } },
+      },
+    },
+  },
+
   -- ─────────────────────────────────────────────────────────
-  -- Formatting
+  -- Formatting + Linting
   -- ─────────────────────────────────────────────────────────
   {
     "stevearc/conform.nvim",
     event = "BufWritePre",
     cmd = { "ConformInfo" },
     opts = require "plugins.configs.conform",
+  },
+
+  {
+    "mfussenegger/nvim-lint",
+    event = { "BufReadPost", "BufWritePost" },
+    config = function()
+      local lint = require "lint"
+      lint.linters_by_ft = {
+        python = { "ruff" },
+        sh = { "shellcheck" },
+        sql = { "sqlfluff" },
+      }
+      vim.api.nvim_create_autocmd({ "BufWritePost", "InsertLeave" }, {
+        group = vim.api.nvim_create_augroup("NvimLint", { clear = true }),
+        callback = function()
+          lint.try_lint()
+        end,
+      })
+    end,
+  },
+
+  -- ─────────────────────────────────────────────────────────
+  -- Diagnostics + TODOs
+  -- ─────────────────────────────────────────────────────────
+  {
+    "folke/trouble.nvim",
+    cmd = "Trouble",
+    opts = { focus = true },
+    keys = {
+      { "<leader>xx", "<cmd>Trouble diagnostics toggle<cr>", desc = "Diagnostics (project)" },
+      { "<leader>xb", "<cmd>Trouble diagnostics toggle filter.buf=0<cr>", desc = "Diagnostics (buffer)" },
+      { "<leader>xs", "<cmd>Trouble symbols toggle<cr>", desc = "Symbols" },
+      { "<leader>xq", "<cmd>Trouble qflist toggle<cr>", desc = "Quickfix" },
+      { "<leader>xt", "<cmd>Trouble todo toggle<cr>", desc = "TODOs" },
+    },
+  },
+
+  {
+    "folke/todo-comments.nvim",
+    event = "BufReadPost",
+    dependencies = { "nvim-lua/plenary.nvim" },
+    opts = { signs = false },
+    keys = {
+      {
+        "]t",
+        function()
+          require("todo-comments").jump_next()
+        end,
+        desc = "Next TODO",
+      },
+      {
+        "[t",
+        function()
+          require("todo-comments").jump_prev()
+        end,
+        desc = "Prev TODO",
+      },
+    },
   },
 
   -- ─────────────────────────────────────────────────────────
@@ -172,6 +226,34 @@ return {
     "nvimdev/indentmini.nvim",
     event = { "BufReadPre", "BufNewFile" },
     opts = {},
+  },
+
+  -- ─────────────────────────────────────────────────────────
+  -- Surround
+  -- ─────────────────────────────────────────────────────────
+  {
+    "echasnovski/mini.surround",
+    event = "VeryLazy",
+    opts = {
+      mappings = {
+        add = "gsa",
+        delete = "gsd",
+        replace = "gsr",
+        find = "gsf",
+        find_prev = "gsF",
+        highlight = "gsh",
+        update_n_lines = "gsn",
+      },
+    },
+  },
+
+  -- ─────────────────────────────────────────────────────────
+  -- File Explorer
+  -- ─────────────────────────────────────────────────────────
+  {
+    "stevearc/oil.nvim",
+    lazy = false,
+    opts = { view_options = { show_hidden = true } },
   },
 
   -- ─────────────────────────────────────────────────────────
@@ -189,96 +271,24 @@ return {
     end,
   },
 
-  -- {
-  --   "tpope/vim-dadbod",
-  --   lazy = true,
-  -- },
+  { "tpope/vim-dadbod", lazy = true },
+
   {
     "kristijanhusak/vim-dadbod-completion",
     ft = { "sql", "mysql", "plsql" },
+    dependencies = { "tpope/vim-dadbod" },
   },
 
   -- ─────────────────────────────────────────────────────────
   -- Snacks.nvim
   -- ─────────────────────────────────────────────────────────
+
   {
     "folke/snacks.nvim",
     priority = 1000,
     lazy = false,
-    opts = {
-      picker = {
-        enabled = true,
-        hidden = true,
-        layout = {
-          ivy = {
-            max_height = 0.8,
-            width = 0.8,
-          },
-        },
-        matcher = {
-          frecency = true,
-        },
-        sources = {
-          -- Buffers: list all open listed buffers
-          buffers = {
-            name = "Buffers",
-            items = function()
-              local bufs = vim.fn.getbufinfo { buflisted = 1 }
-              return vim.tbl_map(function(buf)
-                local name = buf.name ~= "" and buf.name or "[No Name]"
-                return {
-                  text = vim.fn.fnamemodify(name, ":t"),
-                  path = buf.name,
-                  bufnr = buf.bufnr,
-                  cwd = vim.fn.getcwd(), -- evaluated at picker-open time
-                }
-              end, bufs)
-            end,
-            action = function(item)
-              if item.bufnr then
-                vim.api.nvim_set_current_buf(item.bufnr)
-              end
-            end,
-          },
-
-          -- Files
-          files = {
-            name = "Files",
-            hidden = true,
-            items = function()
-              local cwd = vim.fn.getcwd() -- evaluated at picker-open time
-              local output =
-                vim.fn.systemlist "rg --files --hidden --no-ignore-vcs --glob '!.git' --glob '!node_modules' ."
-              return vim.tbl_map(function(path)
-                local abs = cwd .. "/" .. path
-                return {
-                  text = vim.fn.fnamemodify(path, ":t"),
-                  path = abs,
-                }
-              end, output)
-            end,
-            action = function(item)
-              if item.path and item.path ~= "" then
-                vim.cmd.edit(item.path)
-              end
-            end,
-          },
-        },
-      },
-      bigfile = { enabled = true },
-      dashboard = { enabled = false },
-      explorer = { enabled = true, replace_netrw = true },
-      indent = { enabled = false },
-      input = { enabled = true },
-      notifier = { enabled = false },
-      quickfile = { enabled = true },
-      scope = { enabled = false },
-      scroll = { enabled = false },
-      statuscolumn = { enabled = false },
-      words = { enabled = true },
-    },
+    opts = require "plugins.configs.snacks",
   },
-
   -- ─────────────────────────────────────────────────────────
   -- Colorizer
   -- ─────────────────────────────────────────────────────────
@@ -286,21 +296,17 @@ return {
     "echasnovski/mini.hipatterns",
     event = "BufReadPre",
     config = function()
-      local hipatterns = require "mini.hipatterns"
-      hipatterns.setup {
-        highlighters = {
-          hex_color = hipatterns.gen_highlighter.hex_color(),
-        },
-      }
+      local hp = require "mini.hipatterns"
+      hp.setup { highlighters = { hex_color = hp.gen_highlighter.hex_color() } }
     end,
   },
 
   -- ─────────────────────────────────────────────────────────
   -- Jupyter / Notebook workflow
   -- ─────────────────────────────────────────────────────────
-
   {
     "GCBallesteros/jupytext.nvim",
+    lazy = false,
     opts = {
       style = "markdown",
       output_extension = "md",
@@ -311,23 +317,24 @@ return {
   {
     "vhyrro/luarocks.nvim",
     priority = 1000,
+    lazy = true,
     config = true,
     opts = {
-      luarocks_build_args = { "--with-lua-interpreter=lua5.1", "--with-lua-include=/usr/include/luajit-2.1" },
+      luarocks_build_args = {
+        "--with-lua-interpreter=lua5.1",
+        "--with-lua-include=/usr/include/luajit-2.1",
+      },
     },
   },
+
   {
     "3rd/image.nvim",
-    event = "VeryLazy",
-    -- build = "luarocks install magick",
+    lazy = true,
     opts = {
       backend = "sixel",
       processor = "magick_cli",
       integrations = {
-        markdown = {
-          enabled = true,
-          only_render_image_at_cursor = true,
-        },
+        markdown = { enabled = true, only_render_image_at_cursor = true },
         molten = { enabled = true },
       },
       max_width = 100,
@@ -351,7 +358,7 @@ return {
       vim.g.molten_wrap_output = false
       vim.g.molten_virt_text_output = true
       vim.g.molten_virt_lines_off_by_1 = false
-      vim.g.molten_tick_rate = 100
+      vim.g.molten_tick_rate = 142 -- ~7fps, less CPU than 100
       vim.g.molten_output_show_more = true
       vim.g.molten_limit_output_chars = 5000
       vim.g.molten_virt_text_max_lines = 100
@@ -362,46 +369,28 @@ return {
     config = function()
       local default_notebook = [[
 {
-  "cells": [
-    {
-      "cell_type": "markdown",
-      "metadata": {},
-      "source": [""]
-    }
-  ],
+  "cells": [{"cell_type":"markdown","metadata":{},"source":[""]}],
   "metadata": {
-    "kernelspec": {
-      "display_name": "Python 3",
-      "language": "python",
-      "name": "python3"
-    },
+    "kernelspec": {"display_name":"Python 3","language":"python","name":"python3"},
     "language_info": {
-      "codemirror_mode": { "name": "ipython" },
-      "file_extension": ".py",
-      "mimetype": "text/x-python",
-      "name": "python",
-      "nbconvert_exporter": "python",
-      "pygments_lexer": "ipython3"
+      "codemirror_mode":{"name":"ipython"},"file_extension":".py",
+      "mimetype":"text/x-python","name":"python",
+      "nbconvert_exporter":"python","pygments_lexer":"ipython3"
     }
   },
-  "nbformat": 4,
-  "nbformat_minor": 5
+  "nbformat": 4, "nbformat_minor": 5
 }
 ]]
-      local function new_notebook(filename)
-        local path = filename .. ".ipynb"
-        local file = io.open(path, "w")
-        if not file then
+      vim.api.nvim_create_user_command("NewNotebook", function(opts)
+        local path = opts.args .. ".ipynb"
+        local f = io.open(path, "w")
+        if not f then
           vim.notify("Error: could not write " .. path, vim.log.levels.ERROR)
           return
         end
-        file:write(default_notebook)
-        file:close()
+        f:write(default_notebook)
+        f:close()
         vim.cmd("edit " .. path)
-      end
-
-      vim.api.nvim_create_user_command("NewNotebook", function(opts)
-        new_notebook(opts.args)
       end, { nargs = 1, complete = "file", desc = "Create a new .ipynb" })
     end,
   },
@@ -411,7 +400,11 @@ return {
   -- ─────────────────────────────────────────────────────────
   {
     "quarto-dev/quarto-nvim",
-    dependencies = { "jmbuhr/otter.nvim" },
+    dependencies = {
+      "jmbuhr/otter.nvim",
+      "benlubas/molten-nvim", -- ensures load order for codeRunner
+      "nvim-treesitter/nvim-treesitter",
+    },
     ft = { "quarto", "markdown" },
     config = function()
       require("quarto").setup {
@@ -425,22 +418,26 @@ return {
         codeRunner = {
           enabled = true,
           default_method = "molten",
+          ft_runners = { python = "molten" },
         },
       }
 
-      local function quarto_new_chunk_below(lang)
-        lang = lang or "python"
-        local row = vim.api.nvim_win_get_cursor(0)[1]
-        local lines = { ("```{%s}"):format(lang), "", "```", "" }
-        vim.api.nvim_buf_set_lines(0, row, row, false, lines)
-        vim.api.nvim_win_set_cursor(0, { row + 2, 0 })
-        vim.cmd "startinsert"
-      end
+      -- <leader>n: buffer-local (uses cursor position)
+      vim.api.nvim_create_autocmd("FileType", {
+        pattern = { "quarto", "markdown" },
+        group = vim.api.nvim_create_augroup("QuartoKeymaps", { clear = true }),
+        callback = function(ev)
+          vim.keymap.set("n", "<leader>n", function()
+            local row = vim.api.nvim_win_get_cursor(0)[1]
+            local lines = { "```{python}", "", "```", "" }
+            vim.api.nvim_buf_set_lines(0, row, row, false, lines)
+            vim.api.nvim_win_set_cursor(0, { row + 2, 0 })
+            vim.cmd "startinsert"
+          end, { buffer = ev.buf, desc = "New python chunk below", silent = true })
+        end,
+      })
 
-      vim.keymap.set("n", "<leader>n", function()
-        quarto_new_chunk_below "python"
-      end, { desc = "New python chunk below", buffer = true, silent = true })
-
+      -- runner keymaps: global (quarto.runner handles buffer context internally)
       local runner = require "quarto.runner"
       vim.keymap.set("n", "<leader>r", runner.run_cell, { desc = "Run cell", silent = true })
       vim.keymap.set("n", "<leader>ra", runner.run_all, { desc = "Run all cells", silent = true })
@@ -449,32 +446,25 @@ return {
   },
 
   -- ─────────────────────────────────────────────────────────
-  -- Markdown rendering + preview
+  -- Markdown rendering
   -- ─────────────────────────────────────────────────────────
   {
     "MeanderingProgrammer/render-markdown.nvim",
-    ft = { "markdown", "rmd" },
+    ft = { "markdown", "rmd", "quarto" },
+    cmd = "RenderMarkdown",
+    dependencies = { "nvim-treesitter/nvim-treesitter", "echasnovski/mini.icons" },
     keys = {
       { "<leader>mr", "<cmd>RenderMarkdown toggle<cr>", desc = "Toggle Markdown Rendering" },
     },
-    cmd = "RenderMarkdown",
-    dependencies = {
-      "nvim-treesitter/nvim-treesitter",
-      "echasnovski/mini.icons",
-    },
     opts = {
+      enabled = false,
       render_modes = { "n", "c" },
       anti_conceal = { enabled = false },
-      enabled = true,
-      file_types = { "markdown" },
+      file_types = { "markdown", "quarto" },
       win_options = {
         conceallevel = { default = 0, rendered = 0 },
       },
-      conceal = {
-        links = true,
-        code_blocks = false,
-        inline_code = true,
-      },
+      conceal = { links = true, code_blocks = false, inline_code = true },
       heading = {
         enabled = true,
         width = "block",
@@ -499,36 +489,5 @@ return {
         custom = { todo = { rendered = "◯ " } },
       },
     },
-  },
-
-  {
-    "toppair/peek.nvim",
-    ft = { "markdown" },
-    keys = {
-      {
-        "<leader>mp",
-        function()
-          require("peek").open()
-        end,
-        desc = "Peek: Open preview",
-      },
-      {
-        "<leader>mc",
-        function()
-          require("peek").close()
-        end,
-        desc = "Peek: Close preview",
-      },
-    },
-    config = function()
-      require("peek").setup {
-        auto_load = true,
-        syntax = true,
-        theme = "dark",
-        update_on_change = true,
-        app = "webview",
-        filetype = { "markdown" },
-      }
-    end,
   },
 }

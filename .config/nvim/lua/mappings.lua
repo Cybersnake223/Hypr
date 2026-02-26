@@ -6,9 +6,6 @@ local map = vim.keymap.set
 map("n", "<C-s>", "<cmd>w<CR>", { desc = "File: Save" })
 map("i", "jk", "<ESC>", { desc = "Exit insert mode" })
 map("n", "<C-c>", "<cmd>%y+<CR>", { desc = "File: Copy all" })
-map("n", "<leader>fm", function()
-  require("conform").format()
-end, { desc = "Code: Format" })
 map("n", "<leader>/", "gcc", { remap = true, desc = "Comment: Line" })
 map("v", "<leader>/", "gc", { remap = true, desc = "Comment: Selection" })
 -----------------------------------------------------------
@@ -63,14 +60,6 @@ map("n", "<leader>mi", function()
     vim.cmd "MoltenInit python3"
   end
 end, { desc = "Molten: Init" })
-
--- Execution (Unified under <leader>r)
--- map("n", "<leader>rr", ":MoltenReevaluateCell<CR>", { desc = "Run: Cell", silent = true })
--- map("v", "<leader>r", ":<C-u>MoltenEvaluateVisual<CR>gv", { desc = "Run: Visual Selection", silent = true })
--- map("n", "<leader>rd", ":MoltenDelete<CR>", { desc = "Run: Delete Cell", silent = true })
--- map("n", "<leader>rh", ":MoltenHideOutput<CR>", { desc = "Run: Hide Output", silent = true })
--- map("n", "<leader>ro", ":noautocmd MoltenEnterOutput<CR>", { desc = "Run: Show Output Window", silent = true })
--- map("n", "<leader>mm", ":noautocmd MoltenOpenInBrowser<CR>", { desc = "Run: Open Output In Browser", silent = true })
 
 -- Quarto
 map("n", "<leader>q", ":QuartoActivate<CR>", { desc = "Quarto: Activate" })
