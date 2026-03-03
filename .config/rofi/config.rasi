@@ -31,12 +31,12 @@ configuration {
 @import "colors.rasi"
 
 window {
-   background-color: @on-primary;
+   background-color: @on-primary; /*rgba(0, 0, 0, 0.3);*/
    width: 30%;
    padding: 5px;
    fullscreen: false;
    border:  5px;
-   border-radius: 25px;
+   border-radius: 10px;
    border-color: @tertiary-container;
 }
 

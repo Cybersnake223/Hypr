@@ -1,0 +1,118 @@
+@import "colors.rasi"
+
+configuration {
+    show-icons:       true;
+    icon-theme:       "Papirus";
+    display-drun:     "";
+    scroll-method:    0;
+    disable-history:  true;
+}
+
+* {
+    font:             "JetBrainsMono Nerd Font 11";
+    background-color: transparent;
+    text-color:       @on-surface;
+}
+
+window {
+    background-color: @surface;
+    border:           2px solid;
+    border-color:     @tertiary;
+    border-radius:    15px;
+    width:            80%;
+    height:           620px;
+    padding:          16px;
+    location:         center;
+    x-offset:         0;
+    y-offset:         0;
+}
+
+mainbox {
+    background-color: transparent;
+    children:         [ inputbar, message, listview ];
+    spacing:          12px;
+}
+
+inputbar {
+    background-color: @surface-container-low;
+    border-radius:    15px;
+    padding:          10px 14px;
+    spacing:          8px;
+    children:         [ prompt, entry ];
+}
+
+prompt {
+    background-color: transparent;
+    text-color:       @tertiary;
+    font:             "JetBrainsMono Nerd Font 13";
+}
+
+entry {
+    background-color:  transparent;
+    text-color:        @on-surface;
+    placeholder:       "Search wallpapers...";
+    placeholder-color: @outline-variant;
+}
+
+listview {
+    background-color: transparent;
+    columns:          5;
+    lines:            2;
+    spacing:          10px;
+    padding:          0px 0px;
+    scrollbar:        false;
+    fixed-height:     false;
+    fixed-columns:    false;
+}
+
+element {
+    background-color: transparent;
+    border-radius:    8px;
+    orientation:      vertical;
+    padding:          8px;
+    spacing:          6px;
+    cursor:           pointer;
+}
+
+element normal.normal {
+    background-color: @surface-container;
+    text-color:       @on-surface;
+}
+
+element selected.normal {
+    background-color: @tertiary-container;
+    text-color:       @on-primary-container;
+}
+
+element alternate.normal {
+    background-color: @surface-container-high;
+    text-color:       @on-surface;
+}
+
+element-icon {
+    background-color: transparent;
+    size:             220px;
+    border-radius:    6px;
+    horizontal-align: 0.5;
+    vertical-align:   0.5;
+}
+
+element-text {
+    background-color: transparent;
+    text-color:       inherit;
+    horizontal-align: 0.5;
+    vertical-align:   0.5;
+    font:             "JetBrainsMono Nerd Font 9";
+}
+
+message {
+    background-color: @surface-container-low;
+    border-radius:    8px;
+    padding:          6px 12px;
+}
+
+textbox {
+    background-color: transparent;
+    text-color:       @outline-variant;
+    horizontal-align: 0.5;
+}
