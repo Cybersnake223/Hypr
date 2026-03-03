@@ -14,8 +14,6 @@
 </div>
 <p></p>
 
-
-
 ![1](assets/asset1.png)
 ![10](assets/asset10.png)
 
@@ -25,110 +23,160 @@
 | ![6](assets/asset6.png) | ![7](assets/asset7.png) |
 | ![8](assets/asset8.png) | ![9](assets/asset9.png) |
 
-
 <div align="center"><img src="https://raw.githubusercontent.com/catppuccin/catppuccin/main/assets/footers/gray0_ctp_on_line.png"></div>
 
+---
 
-## _Basic Info_ 
+## _Basic Info_
 
 <div align="center">
-  <p> </p>
 
-  
-  - 🍀 ** Base ** - [Arch](https://archlinux.org/) 
-  - 🌼 ** Wayland compositor ** - [Hyprland](https://hyprland.org/) 
-  - ✨ ** Bar ** - [Waybar](https://github.com/Alexays/Waybar) 
-  - 💦 ** GUI File Manager ** - [Thunar](https://gitlab.xfce.org/xfce/thunar) 
-  - 🗄️ ** CLI File Manager ** - [Yazi](https://yazi-rs.github.io/docs/installation/) 
-  - 🌷 ** Terminal ** - [Foot](https://github.com/DanteAlighierin/foot) 
-  - 🍄 ** Shell ** - [Zsh](https://zsh.sourceforge.io/) 
-  - 🪵 ** Notifications ** - [Mako](https://github.com/emersion/mako) 
-  - 🌻 ** Launcher ** - [Rofi (Lbonn Fork)](https://github.com/lbonn/rofi) 
-  - 🚀 ** Dmenu Program ** - [Rofi (Lbonn Fork)](https://github.com/lbonn/rofi)
-  - 🍁 ** Wallpaper ** - [Swww](https://github.com/LGFae/swww.git)
-  - 🌐 ** Browser ** - [Zen Browser](https://zen-browser.app/) 
-  - ❄️  ** Screen locker ** - [Hyprlock](https://github.com/hyprwm/hyprlock) 
-  - ⏬ ** Download Manager ** - [Aria2](https://github.com/aria2/aria2)
-  - 🤖 ** System Fetch ** - [Nitch](https://github.com/ssleert/nitch)
+- 🍀 **Base** — [Arch](https://archlinux.org/)
+- 🌼 **Wayland Compositor** — [Hyprland](https://hyprland.org/)
+- ✨ **Bar** — [Waybar](https://github.com/Alexays/Waybar)
+- 💦 **GUI File Manager** — [Thunar](https://gitlab.xfce.org/xfce/thunar)
+- 🗄️ **CLI File Manager** — [Yazi](https://yazi-rs.github.io/docs/installation/)
+- 🌷 **Terminal** — [Foot](https://github.com/DanteAlighierin/foot)
+- 🍄 **Shell** — [Zsh](https://zsh.sourceforge.io/)
+- 🪵 **Notifications** — [Mako](https://github.com/emersion/mako)
+- 🌻 **Launcher** — [Rofi (Lbonn Fork)](https://github.com/lbonn/rofi)
+- 🚀 **Dmenu Program** — [Rofi (Lbonn Fork)](https://github.com/lbonn/rofi)
+- 🍁 **Wallpaper** — [Swww](https://github.com/LGFae/swww.git)
+- 🌐 **Browser** — [Zen Browser](https://zen-browser.app/)
+- ❄️ **Screen Locker** — [Hyprlock](https://github.com/hyprwm/hyprlock)
+- ⏬ **Download Manager** — [Aria2](https://github.com/aria2/aria2)
+- 🤖 **System Fetch** — [Nitch](https://github.com/ssleert/nitch)
 
-</div>  
+</div>
 
-### _Needed packages:_
+---
 
-- (all of the above components) plus
-- `Matugen` - For Color Palete Generation
-- `xdg-desktop-portal-hyprland` - For Better Functionality and Compatibility 
-- `Cava` - Audio Visualizer 
-- `Polkit-Gnome` - Authentication Agent
-- `Grimblast-git` `wl-clipboard` - Screenshot Utility
-- `Brightnessctl`  - Monitor and Keyboard Brightness Control 
-- `Mpv` - Media Player
-- `Pavucontrol` - Volume Control Panel. 
-- `Xorg-Xwayland` - For Non-Wayland Apps and Games.
-- `Fonts` - JetBrains Mono Nerd Fonts, Awesome Fonts, Icomoon Feather and Nerd Font Symbols
-- `Pipewire` - Audio Playback (pipewire, pipewire-pulse, pipewire-alsa)
-- `Wireplumber` - Session Manager for Pipewire
-- `Bleachbit` - Needed for the cleaner script
-- `Cmus` - Terminal Audio Player
-- `Btop` - Resource Monitor
-- `Nmcli` - Connection Manager
-- `Bluez-tools` - Bluetooth Manager
-- `Advcpmv(AUR)` - Alternate to cp and mv commands
-- `Eza` - Alternative to ls command
-- `Fd` - Fast Alternative to Find command
+## _Required Packages_
 
+Install all components listed above, then the following:
+
+| Package | Purpose |
+|---|---|
+| `matugen` | Wallpaper-based color palette generation |
+| `xdg-desktop-portal-hyprland` | Better Wayland compatibility |
+| `cava` | Audio visualizer |
+| `polkit-gnome` | Authentication agent |
+| `grimblast-git` + `wl-clipboard` | Screenshot utility |
+| `brightnessctl` | Monitor and keyboard brightness control |
+| `mpv` | Media player |
+| `pavucontrol` | Volume control panel |
+| `xorg-xwayland` | Support for non-Wayland apps and games |
+| `pipewire` + `pipewire-pulse` + `pipewire-alsa` | Audio playback |
+| `wireplumber` | Session manager for Pipewire |
+| `bleachbit` | Required for the cleaner script |
+| `cmus` | Terminal audio player |
+| `btop` | Resource monitor |
+| `nmcli` | Network connection manager |
+| `bluez-tools` | Bluetooth manager |
+| `advcpmv` _(AUR)_ | Improved `cp` and `mv` with progress |
+| `eza` | Modern replacement for `ls` |
+| `fd` | Fast alternative to `find` |
+
+**Fonts:** JetBrains Mono Nerd Font, Awesome Fonts, Icomoon Feather, Nerd Font Symbols
 
 > [!NOTE]
-> ### **_Colorscheme will change depending on your wallpaper._** 😉😉
+> **Colorscheme changes dynamically based on your wallpaper** via Matugen. 😉
 
+---
 
-# **Install Instructions**
+# Install Instructions
 
-> [!CAUTION] 
-> DO BACKUP YOUR CURRENT CONFIGS BEFORE PROCEEDING FURTHER . I WILL NOT BE HELD RESPONSIBLE IF YOU LOSE YOUR OLD CONFIGS .
+> [!CAUTION]
+> The installer backs up existing files before overwriting, but **only for paths
+> present in this repo**. No unrelated configs are touched. I am not responsible
+> for any lost configs — back up your own stuff first if you're unsure.
 
+## Quick Install (Recommended)
 
-
-```
+```bash
 git clone https://github.com/Cybersnake223/Hypr
-```
-
-```
 cd Hypr
+chmod +x install.sh
+./install.sh
 ```
 
-```
-cp -r .config/* $HOME/.config
+The installer will:
+
+- ✅ Check for required dependencies (`cp`, `mkdir`, `find`, `date`)
+- 🗂️ Back up any existing files it will overwrite into a timestamped folder
+- 📁 Copy configs, scripts, icons, themes, fonts and root dotfiles into `$HOME`
+- 🔒 Mark all scripts in `~/.local/bin/scripts` as executable
+- 🔤 Rebuild the font cache via `fc-cache -f`
+- 🛤️ Optionally add `~/.local/bin` to your PATH in `~/.zshrc`
+
+> [!NOTE]
+> Backups are saved to:
+> `~/.local/share/hypr-dotfiles-backups/<timestamp>/`
+> (or `$XDG_DATA_HOME/hypr-dotfiles-backups/<timestamp>/` if `$XDG_DATA_HOME` is set)
+
+---
+
+### Options
+
+| Flag | Description |
+|---|---|
+| `--dry-run` | Preview all actions without making any changes |
+| `--yes` | Non-interactive, skip all prompts |
+| `--no-backup` | Skip backup entirely (**dangerous**) |
+| `--uninstall` | Remove installed files and restore originals from the latest backup |
+
+**Examples:**
+
+```bash
+# Preview without changing anything
+./install.sh --dry-run
+
+# Non-interactive install
+./install.sh --yes
+
+# Install without backup
+./install.sh --yes --no-backup
+
+# Uninstall and restore previous configs
+./install.sh --uninstall
 ```
 
-```
-cp -r .local/bin/scripts $HOME/.local/bin
-```
+---
 
-```
-cp -r .icons $HOME/.icons
-```
+## Manual Install
 
-```
-cp -r .themes $HOME/.themes
-```
+If you prefer not to use the installer:
 
-```
-cp -r .fonts $HOME/.fonts
-```
-Then Rebuild Font Cache with
-
-```
+```bash
+cp -r .config/* "$HOME/.config"
+cp -r .local/bin/scripts "$HOME/.local/bin"
+cp -r .icons "$HOME/.icons"
+cp -r .themes "$HOME/.themes"
+cp -r .fonts "$HOME/.fonts"
+cp .Xresources "$HOME/.Xresources"
+cp .gtkrc-2.0 "$HOME/.gtkrc-2.0"
 fc-cache -f
 ```
 
-> [!NOTE]
-> This setup is more focused on laptops rather than desktops soo i'm keeping it super simple but yeahh you can also use it with desktops.    
-
 > [!IMPORTANT]
-> _This Repo also contains my custom scripts that i use with this setup for Misc things like downloading videos and audios from different platforms, switching wallpaper in hyprland with keyboard shortcuts._  
-> _Make sure to copy the scripts folder in `$HOME/.local/bin` and also add it to your PATH variable otherwise the setup won't work as intended._
+> Make sure `~/.local/bin` is in your **PATH**, otherwise the custom scripts
+> (wallpaper switching, media downloads, etc.) won't work as intended.
+> Add this to your `~/.zshrc`:
+>
+> ```bash
+> export PATH="$HOME/.local/bin:$PATH"
+> ```
 
+> [!NOTE]
+> `.gtkrc-2.0` may be silently overwritten by `nwg-look`. Re-copy it from the
+> repo if your GTK 2 theming breaks after running it.
 
-# LICENSE  
-This Project is licensed under MIT License - see LICENSE for more details.   
+> [!NOTE]
+> This setup is primarily tuned for **laptops**. Desktop users may want to
+> review and adjust `auto-cpufreq` settings in `.config/`.
+
+---
+
+# LICENSE
+
+This project is licensed under the **MIT License** — see [LICENSE](LICENSE) for details.
