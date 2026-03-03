@@ -5,14 +5,14 @@
 </div>
 <p></p>
 
+
 <div align="center">
-  <p></p>
-  <p><b><i> <img src="https://img.shields.io/github/last-commit/Cybersnake223/Hypr?style=for-the-badge"></i></b></p>
-  <img src="https://img.shields.io/github/repo-size/Cybersnake223/Hypr?style=for-the-badge">
-  <img src="https://img.shields.io/github/stars/Cybersnake223/Hypr?style=for-the-badge">
-  <img src="https://img.shields.io/github/license/Cybersnake223/Hypr?style=for-the-badge">
+  <img src="https://img.shields.io/github/last-commit/Cybersnake223/Hypr/main?style=for-the-badge&label=last%20commit&color=A024F7">
+  <img src="https://img.shields.io/github/repo-size/Cybersnake223/Hypr?style=for-the-badge&label=size&color=A024F7">
+  <img src="https://img.shields.io/github/stars/Cybersnake223/Hypr?style=for-the-badge&color=A024F7">
+  <img src="https://img.shields.io/github/license/Cybersnake223/Hypr?style=for-the-badge&color=A024F7">
+  <img src="https://img.shields.io/github/forks/Cybersnake223/Hypr?style=for-the-badge&color=A024F7">
 </div>
-<p></p>
 
 ![1](assets/asset1.png)
 ![10](assets/asset10.png)
