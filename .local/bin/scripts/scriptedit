@@ -15,13 +15,13 @@
 ## Created by Cybersnake                                                                                  ##
 ############################################################################################################
 
-dir="/home/cybersnake/.local/bin/scripts"
-files=$(fd . "$dir" -t f)
+term="${TERMINAL:-foot}"
+dir="${SCRIPTS_DIR:-$HOME/.local/bin/scripts}"
 
-selected_file=$(echo "$files" | rofi -dmenu -I -p "Edit Scripts:")
+[[ ! -d "$dir" ]] && { notify-send "Script Editor" "Directory not found: $dir"; exit 1; }
 
-if [ -n "$selected_file" ]; then
-	foot -e nvim "$selected_file"
-else
-	notify-send "No file selected."
-fi
+selected_file=$(fd . "$dir" -t f | rofi -dmenu -i -p "Edit Script:")
+
+[[ -z "$selected_file" ]] && exit 0
+
+exec $term -e nvim "$selected_file"

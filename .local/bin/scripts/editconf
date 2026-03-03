@@ -15,81 +15,43 @@
 ## Created by Cybersnake                                                                                  ##
 ############################################################################################################
 
-options=("aliases
-anyrun
-cava
-foot
-hyprland
-hyprlock
-mako
-mpv
-mpv-input
-nvim
-rofi
-waybar
-waybar-Style
-yay
-yt-dlp
-yazi
-zsh")
+term="${TERMINAL:-foot}"
 
-choice=$(echo -e "${options[@]}" | rofi -dmenu -I -p 'Edit config file: ')
+declare -A configs=(
+    [aliases]="$HOME/.config/zsh/.zsh_aliases"
+    [anyrun]="$HOME/.config/anyrun/config.ron"
+    [cava]="$HOME/.config/cava/config"
+    [foot]="$HOME/.config/foot/foot.ini"
+    [hyprland]="$HOME/.config/hypr/hyprland.conf"
+    [hyprlock]="$HOME/.config/hypr/hyprlock.conf"
+    [kitty]="$HOME/.config/kitty/kitty.conf"
+    [mako]="$HOME/.config/mako/config"
+    [mpv]="$HOME/.config/mpv/mpv.conf"
+    [mpv-input]="$HOME/.config/mpv/input.conf"
+    [nvim]="$HOME/.config/nvim/init.lua"
+    [rofi]="$HOME/.config/rofi/config.rasi"
+    [waybar]="$HOME/.config/waybar/config.jsonc"
+    [waybar-Style]="$HOME/.config/waybar/style.css"
+    [yay]="$HOME/.config/yay/config.json"
+    [yt-dlp]="$HOME/.config/yt-dlp/config"
+    [yazi]="$HOME/.config/yazi/yazi.toml"
+    [zsh]="$HOME/.config/zsh/.zshrc"
+)
 
-case "$choice" in
-aliases)
-	choice="$HOME/.config/zsh/.zsh_aliases"
-	;;
-anyrun)
-    choice="$HOME/.config/anyrun/config.ron"
-    ;;
-cava)
-	choice="$HOME/.config/cava/config"
-	;;
-foot)
-    choice="$HOME/.config/foot/foot.ini"
-    ;;
-hyprland)
-	choice="$HOME/.config/hypr/hyprland.conf"
-	;;
-hyprlock)
-    choice="$HOME/.config/hypr/hyprlock.conf"
-    ;;
-mako)
-    choice="$HOME/.config/mako/config"
-    ;;
-mpv)
-	choice="$HOME/.config/mpv/mpv.conf"
-	;;
-mpv-input)
-	choice="$HOME/.config/mpv/input.conf"
-	;;
-nvim)
-    choice="$HOME/.config/nvim"
-    ;;
-rofi)
-	choice="$HOME/.config/rofi/config.rasi"
-	;;
-waybar)
-	choice="$HOME/.config/waybar/config.jsonc"
-	;;
-waybar-Style)
-	choice="$HOME/.config/waybar/style.css"
-	;;
-yay)
-	choice="$HOME/.config/yay/config.json"
-	;;
-yt-dlp)
-	choice="$HOME/.config/yt-dlp/config"
-	;;
-yazi)
-    choice="$HOME/.config/yazi/yazi.toml"
-    ;;
-zsh)
-	choice="$HOME/.config/zsh/.zshrc"
-	;;
-*)
-	exit 1
-	;;
-esac
+choice=$(printf '%s\n' "${!configs[@]}" | sort | rofi -dmenu -i -p 'Edit config file: ')
 
-foot -e nvim "$choice"
+[[ -z "$choice" ]] && exit 0
+
+config_path="${configs[$choice]}"
+
+if [[ -z "$config_path" ]]; then
+    notify-send "Config Editor" "Unknown config: $choice"
+    exit 1
+fi
+
+if [[ ! -f "$config_path" ]]; then
+    notify-send "Config Editor" "File not found: $config_path"
+    exit 1
+fi
+
+exec $term -e nvim "$config_path"

@@ -14,7 +14,26 @@
 ## Created by Cybersnake                                                                                  ##
 ############################################################################################################
 
+
+set -euo pipefail
+
+step() { echo -e "\n\033[1;34m=>\033[0m $1"; }
+
+step "Cleaning yay cache (unneeded packages)..."
 yay -Sc --noconfirm
-sudo pacman -Runs --noconfirm $(pacman -Qttdq)
+
+step "Removing orphaned packages..."
+mapfile -t orphans < <(pacman -Qttdq 2>/dev/null)
+if (( ${#orphans[@]} > 0 )); then
+    sudo pacman -Runs --noconfirm "${orphans[@]}"
+else
+    echo "No orphans found."
+fi
+
+step "Removing all cached pacman package versions..."
 paccache -rvk0
+
+step "Removing all cached yay package versions..."
 paccache -rvk0 ~/.cache/yay
+
+echo -e "\n\033[1;32m✓ System cleaned successfully.\033[0m"

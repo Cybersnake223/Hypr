@@ -1,0 +1,21 @@
+#!/bin/bash
+
+# Compute boot time correctly (truncate decimal from uptime)
+boot_time=$(($(date +%s) - $(cut -d. -f1 /proc/uptime)))
+
+# Fetch Mako history (human-readable in recent versions; parse lines)
+choice=$(makoctl history 2>/dev/null | tail -n +2 | tac | head -9 | nl -nrz | sed -E 's/^ *[0-9]+ +//; s/\[([0-9]+)\] /[\1] /' | while IFS= read -r line; do
+  # Extract timestamp, app, summary, body heuristically
+  ts=$(echo "$line" | sed -E 's/.*\[(....)-(..)-(..) (..:..:..)\].*/\1\2\2 \4/')
+  app=$(echo "$line" | sed -E 's/.*\] (notify-send|.*?):.*/\1/')
+  [ "$app" = "notify-send" ] && app="System"
+  summary=$(echo "$line" | sed -E 's/.*\] [^:]*: (.*)/\1/')
+  echo "* + $ts [$app]\\n$summary\\ueeee"
+done | rofi -dmenu \
+  -p "Alerts" \
+  -sep "@" \
+  -eh 5)
+
+if [ -n "$choice" ]; then
+  echo "$choice" | wl-copy
+fi

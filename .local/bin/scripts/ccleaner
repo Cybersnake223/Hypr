@@ -15,23 +15,39 @@
 ## Created by Cybersnake                                                                                  ##
 ############################################################################################################
 
-if [[ $(command -v bleachbit) ]]; then
+set -euo pipefail
 
-  rm -rf ~/.cache/rofi3.druncache
-  rm -rf ~/.cache/nsxiv
-  rm -rf ~/.local/state/nvim/
-  rm -rf ~/.cache/nvim/
-  rm -rf ~/.cache/lvim/
-  cache=$(du -hs ~/.cache | awk '{print $1}')
-  notify-send "Application Cache Found: $cache"
-  sys=$(bleachbit -c system.cache brave.cache firefox.cache | rg "Disk space*")
-  notify-send "System Cache Cleaned" "$(echo $sys)"
-  #trash=$(du -hs ~/.local/share/Trash | awk '{print $1}')
-  #notify-send "Trash Found: $trash"
-  #rm -rf ~/.local/share/Trash/*
-  #notify-send "Trash Cleared: $trash"
-else 
+notify() { notify-send "Cache Cleaner" "$1" ${2:+-i "$2"}; }
 
-  notify-send "Bleachbit not installed. Please install bleachbit"
+die() { notify "$1" dialog-error; exit 1; }
 
-fi
+command -v bleachbit &>/dev/null || die "bleachbit is not installed."
+
+# ── App Cache ─────────────────────────────────────────────────────────────────
+
+declare -a targets=(
+    "$HOME/.cache/rofi3.druncache"
+    "$HOME/.cache/nsxiv"
+    "$HOME/.local/state/nvim/undo"
+    "$HOME/.local/state/nvim/swap"
+    "$HOME/.cache/nvim"
+)
+
+cache_before=$(du -hs "$HOME/.cache" 2>/dev/null | awk '{print $1}')
+notify "Cache before cleaning: $cache_before"
+
+for target in "${targets[@]}"; do
+    if [[ -e "$target" ]]; then
+        rm -rf "$target"
+    fi
+done
+
+cache_after=$(du -hs "$HOME/.cache" 2>/dev/null | awk '{print $1}')
+notify "App cache cleaned: $cache_before → $cache_after"
+
+# ── System Cache ──────────────────────────────────────────────────────────────
+
+sys=$(bleachbit -c system.cache chromium.cache firefox.cache 2>/dev/null \
+    | awk '/Disk space/ {print}')
+
+[[ -n "$sys" ]] && notify "System cache cleaned" || notify "No system cache freed."

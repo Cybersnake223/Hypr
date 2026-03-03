@@ -2,6 +2,7 @@
 
 version="0.0.1"
 
+
 ####################
 ## User variables ##
 ####################
@@ -15,13 +16,13 @@ cachedir="$HOME/.cache/wallhaven"
 nsxiv_otps=" -tfpo -z 100" # o is needed for selection
 # number of pages to show in search results
 # each page contains 24 results
-max_pages=48
+max_pages=24
 # sorting : date_added, relevance, random, views, favorites, toplist
 sorting=relevance
 # quality : large original small
 quality=original
 # atleast : least res
-atleast=1920x1080
+atleast=3840x2160
 
 # allow the user to customize the defaults
 [ -e "$HOME/.config/waldlrc" ] && . "$HOME/.config/waldlrc"

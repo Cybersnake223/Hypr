@@ -15,24 +15,80 @@
 ## Created by Cybersnake                                                                                  ##
 ############################################################################################################
 
-# Check if swaybg is installed 
-if type swww >/dev/null 2>&1; then
+set -euo pipefail
 
-  DIR="$HOME/Pictures/Wallpapers"
-  
-  # Store a list of files for efficiency
-  FILES=("$DIR"/*.png)
-  RANDOMPIC=${FILES[RANDOM % ${#FILES[@]}]}
-  # Applying Random Wallpaper 
-  #hyprctl hyprpaper preload "$RANDOMPIC" 2>/dev/null &
-  #swaybg -m fit -i "$RANDOMPIC" 2>/dev/null &
-  swww clear-cache
-  sleep 1.9 &
-  swww img "$RANDOMPIC" --transition-type grow --transition-fps 60 --transition-duration 2.5 --transition-step 255 --transition-pos bottom-left  #2>/dev/null &
-  matugen image "$RANDOMPIC" -t scheme-rainbow --contrast 1.0 
-  notify-send "Wallpapers Applied" "Reloading Theme"
-  else
-  notify-send  "Swww not installed. Please install Swww."
-  
-fi
-exit 1
+# ── Configuration ─────────────────────────────────────────────────────────────
+
+DIR="${WALLPAPER_DIR:-$HOME/Pictures/Wallpapers}"
+CACHE_DIR="${XDG_CACHE_HOME:-$HOME/.cache}/wallpaper-thumbs"
+ROFI_THEME="${XDG_CONFIG_HOME:-$HOME/.config}/rofi/wall.rasi"
+TRANSITION_FPS="${TRANSITION_FPS:-60}"
+TRANSITION_DURATION="${TRANSITION_DURATION:-2}"
+TRANSITION_TYPE="${TRANSITION_TYPE:-wipe}"
+TRANSITION_POS="${TRANSITION_POS:-center}"
+
+# ── Helpers ───────────────────────────────────────────────────────────────────
+
+die() { notify "$1" dialog-error; exit 1; }
+
+# ── Preflight Checks ──────────────────────────────────────────────────────────
+
+command -v swww   &>/dev/null || die "swww is not installed."
+command -v magick &>/dev/null || die "imagemagick is not installed."
+swww query        &>/dev/null || die "swww daemon is not running."
+[[ -d "$DIR" ]]               || die "Wallpaper directory not found: $DIR"
+[[ -f "$ROFI_THEME" ]]        || die "Rofi theme not found: $ROFI_THEME"
+
+# ── Thumbnail Cache ───────────────────────────────────────────────────────────
+
+mkdir -p "$CACHE_DIR"
+
+generate_thumbnail() {
+    local src="$1"
+    local thumb="$CACHE_DIR/$(md5sum <<< "$src" | cut -d' ' -f1).png"
+    if [[ ! -f "$thumb" ]]; then
+        magick "$src" -thumbnail 256x144^ -gravity center -extent 256x144 "$thumb" 2>/dev/null
+    fi
+    echo "$thumb"
+}
+
+# ── Apply ─────────────────────────────────────────────────────────────────────
+
+apply() {
+    local wallpaper="$1"
+
+    swww img "$wallpaper" \
+        --transition-type     "$TRANSITION_TYPE" \
+        --transition-fps      "$TRANSITION_FPS" \
+        --transition-duration "$TRANSITION_DURATION" \
+        --transition-step     120 \
+        --transition-pos      "$TRANSITION_POS"
+
+    matugen image "$wallpaper" -m dark -t scheme-expressive --contrast 1.0
+
+    notify "Applied: $(basename "$wallpaper")"
+}
+
+# ── Main ──────────────────────────────────────────────────────────────────────
+
+declare -A label_to_path
+rofi_input=""
+
+while IFS= read -r file; do
+    thumb=$(generate_thumbnail "$file")
+    label=$(basename "$file")
+    label_to_path["$label"]="$file"
+    rofi_input+="${label}\0icon\x1f${thumb}\n"
+done < <(fd -a -i -e png -e jpg -e jpeg -e webp . "$DIR" | sort)
+
+[[ -z "$rofi_input" ]] && die "No wallpapers found in: $DIR"
+
+chosen_label=$(printf "%b" "$rofi_input" \
+    | rofi -dmenu -i -p "󰸉  Wallpaper: " -theme "$ROFI_THEME")
+
+[[ -z "$chosen_label" ]] && exit 0
+
+wallpaper="${label_to_path[$chosen_label]:-}"
+[[ -z "$wallpaper" ]] && die "Could not resolve: $chosen_label"
+
+apply "$wallpaper"

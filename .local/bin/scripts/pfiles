@@ -1,4 +1,5 @@
 #!/bin/bash
+
 ############################################################################################################
 ##   ______  __      __  _______   ________  _______    ______   __    __   ______   __    __  ________   ##
 ##  /      \|  \    /  \|       \ |        \|       \  /      \ |  \  |  \ /      \ |  \  /  \|        \  ##
@@ -10,16 +11,17 @@
 ##  \$$    $$   | $$    | $$    $$| $$     \| $$  | $$ \$$    $$| $$  \$$$| $$  | $$| $$  \$$\| $$     \  ##
 ##   \$$$$$$     \$$     \$$$$$$$  \$$$$$$$$ \$$   \$$  \$$$$$$  \$$   \$$ \$$   \$$ \$$   \$$ \$$$$$$$$  ##
 ##                                                                                                        ##
-## MPV VIDEO SCRIPT                                                                                       ##
+## Script Editor                                                                                          ##
 ## Created by Cybersnake                                                                                  ##
 ############################################################################################################
+term=foot
+dir="/home/cybersnake/Python/"
+files=$(fd . "$dir" -t f)
 
-files=$(fd . ~/Videos ~/Downloads -e .mkv -e .mp4)
-selected_file=$(echo "$files" | rofi -dmenu -i -p "Select a file:")
+selected_file=$(echo "$files" | rofi -dmenu -I -p "Select File:")
 
 if [ -n "$selected_file" ]; then
-	mpv "$selected_file"
+	$term -e nvim "$selected_file"
 else
 	notify-send "No file selected."
 fi
-pkill watchvid
