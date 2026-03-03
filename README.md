@@ -57,7 +57,7 @@
 
 - (all of the above components) plus
 - `Matugen` - For Color Palete Generation
-- `xdg-desktop-portal-hyprland` - For Better Functionality and Compatiblity 
+- `xdg-desktop-portal-hyprland` - For Better Functionality and Compatibility 
 - `Cava` - Audio Visualizer 
 - `Polkit-Gnome` - Authentication Agent
 - `Grimblast-git` `wl-clipboard` - Screenshot Utility
