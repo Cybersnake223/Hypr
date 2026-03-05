@@ -1,0 +1,167 @@
+# ~/.config/starship.toml
+"$schema" = 'https://starship.rs/config-schema.json'
+
+# ── Global Performance ────────────────────────────────────────────
+add_newline    = true
+command_timeout = 500   # Kill slow commands after 500ms (default is 500; DON'T raise this)
+scan_timeout    = 30    # Limit filesystem scans to 30ms
+
+# ── Format: only load what you actually use ───────────────────────
+format = """
+   $directory$git_branch$git_status$character"""
+
+right_format = "$cmd_duration$time"
+
+# ── Directory ─────────────────────────────────────────────────────
+[directory]
+style             = "bold cyan"
+truncation_length = 3          # Fewer path segments = faster rendering
+truncate_to_repo  = true       # Trim to repo root inside git dirs
+truncation_symbol = "…/"
+
+# ── Git Branch ────────────────────────────────────────────────────
+[git_branch]
+symbol        = "  "
+style         = "bold red"
+format        = "[$symbol$branch]($style) "
+only_attached = true            # Skip detached HEAD state noise
+
+# ── Git Status (biggest perf offender) ───────────────────────────
+[git_status]
+format    = '([$all_status$ahead_behind]($style) )'
+style     = "bold white"
+ahead     = "⇡${count}"
+behind    = "⇣${count}"
+modified  = "!${count}"
+untracked = "?${count}"
+staged    = "+${count}"
+# Disable expensive checks that require full tree walks
+ignore_submodules = true
+
+# ── Command Duration (right prompt) ──────────────────────────────
+[cmd_duration]
+min_time          = 2_000       # Only show if command took >2s
+format            = "[ $duration]($style) "
+style             = "bold yellow"
+show_milliseconds = false
+
+# ── Time (right prompt) ───────────────────────────────────────────
+[time]
+disabled = false
+format   = "[$time]($style)"
+style    = "bold red"
+use_12hr = false
+
+# ── Character ─────────────────────────────────────────────────────
+[character]
+success_symbol = "[❯](bold green)"
+error_symbol   = "[❯](bold red)"
+
+# ── Disable ALL language/tool scanner modules ─────────────────────
+# These scan the filesystem on every prompt — expensive if unused
+[aws]
+disabled = true
+[buf]
+disabled = true
+[c]
+disabled = true
+[cmake]
+disabled = true
+[cobol]
+disabled = true
+[conda]
+disabled = true
+[crystal]
+disabled = true
+[daml]
+disabled = true
+[dart]
+disabled = true
+[deno]
+disabled = true
+[docker_context]
+disabled = true
+[dotnet]
+disabled = true
+[elixir]
+disabled = true
+[elm]
+disabled = true
+[erlang]
+disabled = true
+[fennel]
+disabled = true
+[golang]
+disabled = true
+[gradle]
+disabled = true
+[haskell]
+disabled = true
+[haxe]
+disabled = true
+[helm]
+disabled = true
+[java]
+disabled = true
+[julia]
+disabled = true
+[kotlin]
+disabled = true
+[kubernetes]
+disabled = true
+[lua]
+disabled = true
+[meson]
+disabled = true
+[nim]
+disabled = true
+[nix_shell]
+disabled = true
+[nodejs]
+disabled = true
+[ocaml]
+disabled = true
+[opa]
+disabled = true
+[package]
+disabled = true
+[perl]
+disabled = true
+[php]
+disabled = true
+[pulumi]
+disabled = true
+[purescript]
+disabled = true
+[python]
+disabled = true
+[raku]
+disabled = true
+[red]
+disabled = true
+[rlang]
+disabled = true
+[ruby]
+disabled = true
+[rust]
+disabled = true
+[scala]
+disabled = true
+[singularity]
+disabled = true
+[solidity]
+disabled = true
+[spack]
+disabled = true
+[swift]
+disabled = true
+[terraform]
+disabled = true
+[typst]
+disabled = true
+[vagrant]
+disabled = true
+[vlang]
+disabled = true
+[zig]
+disabled = true
