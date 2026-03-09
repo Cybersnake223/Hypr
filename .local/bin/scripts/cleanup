@@ -14,26 +14,27 @@
 ## Created by Cybersnake                                                                                  ##
 ############################################################################################################
 
-
 set -euo pipefail
 
 step() { echo -e "\n\033[1;34m=>\033[0m $1"; }
+ok()   { echo -e "\033[1;32m  ✓ $1\033[0m"; }
 
 step "Cleaning yay cache (unneeded packages)..."
-yay -Sc --noconfirm
+yay -Sc --noconfirm && ok "Done"
 
 step "Removing orphaned packages..."
-mapfile -t orphans < <(pacman -Qttdq 2>/dev/null)
+mapfile -t orphans < <(pacman -Qttdq 2>/dev/null || true)
 if (( ${#orphans[@]} > 0 )); then
-    sudo pacman -Runs --noconfirm "${orphans[@]}"
+    sudo pacman -Runs --noconfirm "${orphans[@]}" && ok "Removed ${#orphans[@]} orphan(s)"
 else
-    echo "No orphans found."
+    ok "No orphans found."
 fi
 
-step "Removing all cached pacman package versions..."
-paccache -rvk0
+step "Removing cached pacman packages (keep 1 version)..."
+paccache -rvk1 && ok "Done"
 
-step "Removing all cached yay package versions..."
-paccache -rvk0 ~/.cache/yay
+step "Removing yay build cache..."
+# paccache doesn't work on yay's cache dir — use find instead
+find "$HOME/.cache/yay" -name "*.pkg.tar.zst" -delete 2>/dev/null && ok "Done"
 
 echo -e "\n\033[1;32m✓ System cleaned successfully.\033[0m"

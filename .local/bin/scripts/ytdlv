@@ -15,15 +15,29 @@
 ## Created by Cybersnake                                                                                  ##
 ############################################################################################################
 
-dir='$HOME/Videos/Youtube/%(title)s.%(ext)s'
-selected_option=$(echo -e "Paste" | rofi -dmenu -p "Select action:")
-if [ "$selected_option" == "Paste" ]; then
-	pasted_content=$(wl-paste)
-	rofi -dmenu -p "Pasted content: $pasted_content"
-	resolution=$(yt-dlp -q --list-formats "$pasted_content" | awk '{print $1 "\t" $2 "\t" $3 "\t" $4  "\t"  $6 "\t" $7 }' | rg "1920x" | rg "mp4" | rofi -dmenu -p "Select Resolution:" | awk '{print $1}')
-	audio=$(yt-dlp -q --list-formats "$pasted_content" | awk '{print $1 "\t" $2 "\t" $3 "\t" $4  "\t"  $6 "\t" $7 }' | rg "m4a" | rofi -dmenu -p "Select Audio Quality:" | awk '{print $1}')
-	yt-dlp -q --format $resolution+$audio -o $dir $pasted_content
-	notify-send "Download Complete" "Video has been downloaded"
-else
-	notify-send "Download Aborted "
-fi
+set -euo pipefail
+
+dir="$HOME/Videos/Youtube/%(title)s.%(ext)s"
+
+url=$(wl-paste 2>/dev/null | tr -d '[:space:]') || true
+[[ -z "$url" ]] && { notify-send -u critical "ytdlv" "Clipboard is empty"; exit 1; }
+
+notify-send "ytdlv" "Fetching formats..."
+
+format_list=$(yt-dlp --list-formats "$url" 2>/dev/null \
+    | awk 'NR>4 {print $1"\t"$2"\t"$3"\t"$4"\t"$6"\t"$7}')
+
+resolution=$(echo "$format_list" | grep "mp4" | grep "1920x" \
+    | rofi -dmenu -p "Select Video Format:") || true
+[[ -z "$resolution" ]] && { notify-send "ytdlv" "Aborted"; exit 0; }
+res_id=$(echo "$resolution" | awk '{print $1}')
+
+audio=$(echo "$format_list" | grep "m4a" \
+    | rofi -dmenu -p "Select Audio Quality:") || true
+[[ -z "$audio" ]] && { notify-send "ytdlv" "Aborted"; exit 0; }
+audio_id=$(echo "$audio" | awk '{print $1}')
+
+notify-send "ytdlv" "Downloading..."
+yt-dlp -q --format "${res_id}+${audio_id}" -o "$dir" "$url" \
+    && notify-send "ytdlv" "✅ Download complete" \
+    || notify-send -u critical "ytdlv" "❌ Download failed"

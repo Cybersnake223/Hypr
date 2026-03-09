@@ -1,21 +1,28 @@
 #!/bin/bash
+############################################################################################################
+##   ______  __      __  _______   ________  _______    ______   __    __   ______   __    __  ________   ##
+##  /      \|  \    /  \|       \ |        \|       \  /      \ |  \  |  \ /      \ |  \  /  \|        \  ##
+## |  $$$$$$\\$$\  /  $$| $$$$$$$\| $$$$$$$$| $$$$$$$\|  $$$$$$\| $$\ | $$|  $$$$$$\| $$ /  $$| $$$$$$$$  ##
+## | $$   \$$ \$$\/  $$ | $$__/ $$| $$__    | $$__| $$| $$___\$$| $$$\| $$| $$__| $$| $$/  $$ | $$__      ##
+## | $$        \$$  $$  | $$    $$| $$  \   | $$    $$ \$$    \ | $$$$\ $$| $$    $$| $$  $$  | $$  \     ##
+## | $$   __    \$$$$   | $$$$$$$\| $$$$$   | $$$$$$$\ _\$$$$$$\| $$\$$ $$| $$$$$$$$| $$$$$\  | $$$$$     ##
+## | $$__/  \   | $$    | $$__/ $$| $$_____ | $$  | $$|  \__| $$| $$ \$$$$| $$  | $$| $$ \$$\ | $$_____   ##
+##  \$$    $$   | $$    | $$    $$| $$     \| $$  | $$ \$$    $$| $$  \$$$| $$  | $$| $$  \$$\| $$     \  ##
+##   \$$$$$$     \$$     \$$$$$$$  \$$$$$$$$ \$$   \$$  \$$$$$$  \$$   \$$ \$$   \$$ \$$   \$$ \$$$$$$$$  ##
+##                                                                                                        ##
+## Created by Cybersnake                                                                                  ##
+############################################################################################################
+set -euo pipefail
 
-# Compute boot time correctly (truncate decimal from uptime)
-boot_time=$(($(date +%s) - $(cut -d. -f1 /proc/uptime)))
+raw=$(makoctl history 2>/dev/null) || { notify-send "Notification History" "No history available"; exit 0; }
+[[ -z "$raw" ]] && { notify-send "Notification History" "History is empty"; exit 0; }
 
-# Fetch Mako history (human-readable in recent versions; parse lines)
-choice=$(makoctl history 2>/dev/null | tail -n +2 | tac | head -9 | nl -nrz | sed -E 's/^ *[0-9]+ +//; s/\[([0-9]+)\] /[\1] /' | while IFS= read -r line; do
-  # Extract timestamp, app, summary, body heuristically
-  ts=$(echo "$line" | sed -E 's/.*\[(....)-(..)-(..) (..:..:..)\].*/\1\2\2 \4/')
-  app=$(echo "$line" | sed -E 's/.*\] (notify-send|.*?):.*/\1/')
-  [ "$app" = "notify-send" ] && app="System"
-  summary=$(echo "$line" | sed -E 's/.*\] [^:]*: (.*)/\1/')
-  echo "* + $ts [$app]\\n$summary\\ueeee"
-done | rofi -dmenu \
-  -p "Alerts" \
-  -sep "@" \
-  -eh 5)
+# Parse summary lines cleanly
+entries=$(echo "$raw" | grep -oP '"summary":\s*"\K[^"]+' | head -20)
+[[ -z "$entries" ]] && { notify-send "Notification History" "Could not parse history"; exit 0; }
 
-if [ -n "$choice" ]; then
-  echo "$choice" | wl-copy
-fi
+chosen=$(echo "$entries" | rofi -dmenu -i -p "󰂚 Notifications")
+[[ -z "$chosen" ]] && exit 0
+
+echo -n "$chosen" | wl-copy
+notify-send "Copied" "$chosen" -t 1500

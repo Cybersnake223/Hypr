@@ -14,12 +14,8 @@
 ## Created by Cybersnake                                                                                  ##
 ############################################################################################################
 
-cpu_cores=($(ls -d /sys/devices/system/cpu/cpu[0-9]*))
+set -euo pipefail
 
-governors=()
-for core in "${cpu_cores[@]}"; do
-	governor=$(cat "$core/cpufreq/scaling_governor")
-	governors+=("$governor")
-done
-
-echo "${governors[0]}"
+gov_file="/sys/devices/system/cpu/cpu0/cpufreq/scaling_governor"
+[[ -r "$gov_file" ]] || { echo "cpufreq not available" >&2; exit 1; }
+cat "$gov_file"

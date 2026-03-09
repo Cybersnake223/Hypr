@@ -15,14 +15,17 @@
 ## Created by Cybersnake                                                                                  ##
 ############################################################################################################
 
-dir='$HOME/Music/%(title)s.%(ext)s'
-selected_option=$(echo -e "Paste" | rofi -dmenu -p "Audio Link:")
+set -euo pipefail
 
-if [ "$selected_option" == "Paste" ]; then
-    pasted_content=$(wl-paste)
-    rofi -dmenu -p "Pasted content:$pasted_content"
-    yt-dlp -q -x --audio-quality 0 --audio-format flac -o $dir $pasted_content
-    notify-send "Download Complete" "Audio has been downloaded"
-else
-    notify-send "Download Aborted "
-fi
+dir="$HOME/Music/%(title)s.%(ext)s"
+
+url=$(wl-paste 2>/dev/null | tr -d '[:space:]') || true
+[[ -z "$url" ]] && { notify-send -u critical "ytdla" "Clipboard is empty"; exit 1; }
+
+confirmed=$(printf "Download\nCancel" | rofi -dmenu -p "Audio: $url")
+[[ "$confirmed" != "Download" ]] && { notify-send "ytdla" "Aborted"; exit 0; }
+
+notify-send "ytdla" "Downloading audio..."
+yt-dlp -q -x --audio-quality 0 --audio-format flac -o "$dir" "$url" \
+    && notify-send "ytdla" "✅ Download complete" \
+    || notify-send -u critical "ytdla" "❌ Download failed"

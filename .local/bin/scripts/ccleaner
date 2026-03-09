@@ -18,36 +18,32 @@
 set -euo pipefail
 
 notify() { notify-send "Cache Cleaner" "$1" ${2:+-i "$2"}; }
-
-die() { notify "$1" dialog-error; exit 1; }
+die()    { notify "$1" dialog-error; exit 1; }
 
 command -v bleachbit &>/dev/null || die "bleachbit is not installed."
-
-# ── App Cache ─────────────────────────────────────────────────────────────────
 
 declare -a targets=(
     "$HOME/.cache/rofi3.druncache"
     "$HOME/.cache/nsxiv"
-    "$HOME/.local/state/nvim/undo"
-    "$HOME/.local/state/nvim/swap"
     "$HOME/.cache/nvim"
+    "$HOME/.local/state/nvim/swap"
 )
 
-cache_before=$(du -hs "$HOME/.cache" 2>/dev/null | awk '{print $1}')
-notify "Cache before cleaning: $cache_before"
+before=$(du -sb "$HOME/.cache" 2>/dev/null | awk '{print $1}')
+notify "Starting cache clean ($(du -hs "$HOME/.cache" | awk '{print $1}') used)"
 
 for target in "${targets[@]}"; do
-    if [[ -e "$target" ]]; then
-        rm -rf "$target"
-    fi
+    [[ -e "$target" ]] && rm -rf "$target"
 done
 
-cache_after=$(du -hs "$HOME/.cache" 2>/dev/null | awk '{print $1}')
-notify "App cache cleaned: $cache_before → $cache_after"
+# Only delete nvim undo files older than 30 days (preserve recent undo history)
+[[ -d "$HOME/.local/state/nvim/undo" ]] && \
+    find "$HOME/.local/state/nvim/undo" -mtime +30 -delete
 
-# ── System Cache ──────────────────────────────────────────────────────────────
+after=$(du -sb "$HOME/.cache" 2>/dev/null | awk '{print $1}')
+freed=$(( (before - after) / 1024 / 1024 ))
+notify "App cache cleaned: freed ~${freed}MB"
 
-sys=$(bleachbit -c system.cache chromium.cache firefox.cache 2>/dev/null \
-    | awk '/Disk space/ {print}')
-
-[[ -n "$sys" ]] && notify "System cache cleaned" || notify "No system cache freed."
+# Run bleachbit only for cleaners that exist
+sys=$(bleachbit -c system.cache 2>/dev/null | awk '/Disk space/ {print}' || true)
+[[ -n "$sys" ]] && notify "System cache: $sys" || notify "No system cache freed."

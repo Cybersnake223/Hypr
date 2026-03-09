@@ -14,12 +14,12 @@
 ## Created by Cybersnake                                                                                  ##
 ############################################################################################################
 
-files=$(fd . ~/Videos ~/Downloads -e .mkv -e .mp4)
-selected_file=$(echo "$files" | rofi -dmenu -i -p "Select a file:")
+set -euo pipefail
 
-if [ -n "$selected_file" ]; then
-	mpv "$selected_file"
-else
-	notify-send "No file selected."
-fi
-pkill watchvid
+mapfile -t files < <(fd . ~/Videos ~/Downloads -e mkv -e mp4 -e webm | sort)
+[[ ${#files[@]} -eq 0 ]] && { notify-send "watchvid" "No video files found."; exit 0; }
+
+selected=$(printf '%s\n' "${files[@]}" | rofi -dmenu -i -p "Select a file:") || true
+[[ -z "$selected" ]] && { notify-send "watchvid" "No file selected."; exit 0; }
+
+exec mpv "$selected"

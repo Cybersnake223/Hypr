@@ -15,6 +15,8 @@
 ## Created by Cybersnake                                                                                  ##
 ############################################################################################################
 
+set -euo pipefail
+
 term="${TERMINAL:-foot}"
 
 declare -A configs=(
@@ -24,34 +26,28 @@ declare -A configs=(
     [foot]="$HOME/.config/foot/foot.ini"
     [hyprland]="$HOME/.config/hypr/hyprland.conf"
     [hyprlock]="$HOME/.config/hypr/hyprlock.conf"
+    [hyprpaper]="$HOME/.config/hypr/hyprpaper.conf"
     [kitty]="$HOME/.config/kitty/kitty.conf"
     [mako]="$HOME/.config/mako/config"
+    [matugen]="$HOME/.config/matugen/config.toml"
     [mpv]="$HOME/.config/mpv/mpv.conf"
     [mpv-input]="$HOME/.config/mpv/input.conf"
     [nvim]="$HOME/.config/nvim/init.lua"
     [rofi]="$HOME/.config/rofi/config.rasi"
+    [swww]="$HOME/.config/swww/config"
     [waybar]="$HOME/.config/waybar/config.jsonc"
-    [waybar-Style]="$HOME/.config/waybar/style.css"
+    [waybar-style]="$HOME/.config/waybar/style.css"
     [yay]="$HOME/.config/yay/config.json"
-    [yt-dlp]="$HOME/.config/yt-dlp/config"
     [yazi]="$HOME/.config/yazi/yazi.toml"
+    [yt-dlp]="$HOME/.config/yt-dlp/config"
     [zsh]="$HOME/.config/zsh/.zshrc"
 )
 
 choice=$(printf '%s\n' "${!configs[@]}" | sort | rofi -dmenu -i -p 'Edit config file: ')
-
 [[ -z "$choice" ]] && exit 0
 
-config_path="${configs[$choice]}"
+config_path="${configs[$choice]:-}"
+[[ -z "$config_path" ]] && { notify-send "Config Editor" "Unknown: $choice"; exit 1; }
+[[ -f "$config_path" ]] || { notify-send "Config Editor" "Not found: $config_path"; exit 1; }
 
-if [[ -z "$config_path" ]]; then
-    notify-send "Config Editor" "Unknown config: $choice"
-    exit 1
-fi
-
-if [[ ! -f "$config_path" ]]; then
-    notify-send "Config Editor" "File not found: $config_path"
-    exit 1
-fi
-
-exec $term -e nvim "$config_path"
+exec "$term" -e nvim "$config_path"

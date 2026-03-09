@@ -14,7 +14,8 @@
 ## Created by Cybersnake                                                                                  ##
 ############################################################################################################
 
-# Terminate already running bar instances
-pkill waybar
-
-hyprctl dispatch exec "waybar -l off "
+pkill waybar 2>/dev/null || true
+sleep 0.3
+setsid waybar -l off &>/dev/null &
+disown
+notify-send "Waybar" "Reloaded" -t 1000

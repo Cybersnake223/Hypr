@@ -12,10 +12,14 @@
 ##                                                                                                        ##
 ## Created by Cybersnake                                                                                  ##
 ############################################################################################################
+set -euo pipefail
 
-killall /usr/lib/xdg-desktop-portal
-killall /usr/lib/xdg-desktop-portal-hyprland
-sleep 2
+pkill -f xdg-desktop-portal-hyprland 2>/dev/null || true
+pkill -f xdg-desktop-portal           2>/dev/null || true
+sleep 1
+
 /usr/lib/xdg-desktop-portal-hyprland &
-sleep 2
+sleep 1
 /usr/lib/xdg-desktop-portal &
+
+notify-send "XDG Portals" "Restarted" -t 1500
