@@ -13,157 +13,82 @@
 /* ## Created by Cybersnake                                                                                  ## */
 /* ############################################################################################################ */
 
-configuration {
-    show-icons:                     false;
-    display-drun: 					"";
-    drun-display-format:            "{icon} {name}";
-    disable-history:                true;
-	  // click-to-exit: 					true;
-}
-
 @import "colors.rasi"
 
+configuration {
+  show-icons:      false;
+  disable-history: true;
+}
+
 window {
-    transparency:                   "real";
-    background-color:               @shadow;
-    text-color:                     @tertiary-container;
-    border:                  		    4px;
-    border-color:                  	@tertiary-container;
-    border-radius:                  50px;
-    width:                          100px;
-    location:                       east;
-    anchor:                         east;
-    x-offset:                       -20px;
-    y-offset:                       0;
-}
-
-prompt {
-    enabled: 						false;
-  	margin: 						0px 0px 0px 8px;
-    padding:    					6px 6px 6px 6px;
-  	background-color: 				@on-primary;
-  	text-color: 					@tertiary-container;
-    border:                  		0px 0px 0px 0px;
-    border-color:                  	@tertiary-container;
-    border-radius:                  10px;
-}
-
-textbox-prompt-colon {
-  enabled:            false;
-	expand: 						false;
-	str: 							"⏻";
-    border-radius:                  10px;
-    background-color:               transparent;
-    text-color:                     @tertiary-container;
-    padding:    					6px 15px 6px 15px;
-	font:							"JetBrainsMono Nerd Font 11";
-}
-
-entry {
-    background-color:               transparent;
-    text-color:                     @on-primary;
-    placeholder-color:              @tertiary-container;
-    placeholder:                    "";
-    expand:                         true;
-    horizontal-align:               0;
-    blink:                          true;
-    padding:                        10px;
-}
-
-inputbar {
-  enabled:                          false;
-	children: 						            [ textbox-prompt-colon, prompt ];
-    spacing:                        0;
-    background-color:               transparent;
-    text-color:                     @tertiary-container;
-    border:                  		    0px 0px 1px 0px;
-    border-radius:                  50px;
-    border-color:                  	@tertiary-container;
-    expand:                         false;
-    margin:                         0px 0px 0px 0px;
-    padding:                        0px;
-    position:                       center;
-}
-
-case-indicator {
-    enabled:                        false;
-    background-color:               transparent;
-    text-color:                     @tertiary-container;
-    spacing:                        0;
-}
-
-listview {
-    background-color:               @shadow;
-    columns:                        1;
-    lines:			            				5;
-    spacing:                        10px;
-    cycle:                          true;
-    dynamic:                        true;
-    layout:                         vertical;
+  transparency:     "real";
+  background-color: @shadow;
+  text-color:       @tertiary-container;
+  border:           4px solid;
+  border-color:     @tertiary-container;
+  border-radius:    50px;
+  width:            100px;
+  location:         east;
+  anchor:           east;
+  x-offset:         -20px;
+  y-offset:         0;
 }
 
 mainbox {
-    background-color:               transparent;
-    children:                       [ inputbar, listview ];
-    spacing:                       	10px;
-    padding:                        10px;
+  background-color: transparent;
+  children:         [ listview ];
+  spacing:          10px;
+  padding:          10px;
 }
 
+listview {
+  background-color: @shadow;
+  columns:          1;
+  lines:            5;
+  spacing:          10px;
+  cycle:            true;
+  dynamic:          true;
+  layout:           vertical;
+}
+
+/* ── Elements ───────────────────────────────────────────── */
 element {
-    background-color:               transparent;
-    text-color:                     @tertiary-container;
-    orientation:                    horizontal;
-    border:                  		2px;
-    border-radius:                  50px;
-    border-color:                  	@tertiary-container;
-    padding:                        23px 23px 23px 23px;
+  background-color: transparent;
+  text-color:       @tertiary-container;
+  orientation:      horizontal;
+  border:           2px solid;
+  border-radius:    50px;
+  border-color:     @tertiary-container;
+  padding:          23px;
 }
 
 element-icon {
-    background-color: 				transparent;
-    text-color:       				@tertiary-container;
-    horizontal-align:               0.5;
-    vertical-align:                 0.5;
-    size:                           0px;
-    border:                         0px;
+  background-color: transparent;
+  size:             0px;
+  border:           0;
 }
 
 element-text {
-    background-color: 				transparent;
-    text-color:       				inherit;
-  	font:							"feather 14";
-    expand:                         true;
-    horizontal-align:               0.5;
-    vertical-align:                 0.5;
-    margin:                         0px 0px 0px 0px;
+  background-color: transparent;
+  text-color:       inherit;
+  font:             "JetBrainsMono Nerd Font Mono Bold 15";
+  expand:           true;
+  horizontal-align: 0.5;
+  vertical-align:   0.5;
 }
 
-element selected {
-    background-color:               @tertiary-container;
-    text-color:                     @on-primary;
-    border:                  		0px;
-    border-radius:                  50px;
-    border-color:                  	@tertiary-container;
+element selected.normal {
+  background-color: @tertiary-container;
+  text-color:       @on-primary;
+  border:           0;
+  border-radius:    50px;
 }
 
 element.active,
-element.selected.urgent {
-  background-color: transparent;
-  text-color: @background-color;
-  border-color: @tertiary-container;
-}
-
-element.selected.urgent {
-  border-color: @tertiary-container;
-}
-
 element.urgent,
+element.selected.urgent,
 element.selected.active {
   background-color: transparent;
-  text-color: @background-color;
-  border-color: @tertiary-container;
-}
-
-element.selected.active {
-  border-color: @tertiary-container;
+  text-color:       @on-primary;
+  border-color:     @tertiary-container;
 }

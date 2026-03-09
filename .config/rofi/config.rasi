@@ -13,178 +13,161 @@
 /* ## Created by Cybersnake                                                                                  ## */
 /* ############################################################################################################ */
 
-configuration {
-  matching: "normal";
-  display-drun: "   Apps ";
-  display-run: "   Run ";
-  display-Network: " 󰀂  Network";
-  terminal : "foot";
-  display-window: "Windows:";
-  drun-display-format: "{name}";
-  font: "JetBrainsMono Nerd Font Propo Bold 12";
-  modi: "run,drun";
-  hide-scrollbar: true;
-  show-icons: false;
-  icon-theme: "Reversal-purple-dark";
-}
-
 @import "colors.rasi"
 
+configuration {
+  matching:            "normal";
+  display-drun:        "   Apps ";
+  display-run:         "   Run ";
+  terminal:            "foot";
+  drun-display-format: "{name}";
+  font:                "JetBrainsMono Nerd Font Propo Bold 13";
+  modi:                "run,drun";
+  hide-scrollbar:      true;
+  show-icons:          false;
+}
+
 window {
-   background-color: @on-primary; /*rgba(0, 0, 0, 0.3);*/
-   width: 30%;
-   padding: 5px;
-   fullscreen: false;
-   border:  5px;
-   border-radius: 10px;
-   border-color: @tertiary-container;
+  background-color: @on-primary;
+  width:            35%;
+  padding:          15px;
+  fullscreen:       false;
+  border:           5px solid;
+  border-radius:    10px;
+  border-color:     @tertiary-container;
 }
 
 mainbox {
-   background-color: @on-primary;
-   spacing:5px;
-   border-radius: 20px;
+  background-color: @on-primary;
+  spacing:          10px;
+  border-radius:    20px;
 }
 
 message {
-   padding: 10px 10px;
-   background-color: @on-primary;
-   border-radius: 20px;
+  padding:          10px;
+  background-color: @on-primary;
+  border-radius:    20px;
 }
 
 textbox {
-   text-color: @tertiary-container;
-   background-color: @on-primary;
-   border-radius: 20px;
-}
-
-listview {
-   fixed-height: false;
-   dynamic: true;
-   scrollbar: false;
-   spacing: 0px;
-   padding: 5px 0px 0px 0px;
-   margin: 1px 1px 1px 1px;
-   background-color: @on-primary;
-   border-radius: 20px;
-}
-
-element {
-   padding: 4px 10px;
-   border-radius: 20px;
-}
-
-element normal.normal {
-   padding: 0px 15px;
-   background-color: @on-primary;
-   text-color: @tertiary-container;
-   border-radius: 20px;
-}
-
-element normal.urgent {
-   background-color: @on-primary;
-   text-color: @tertiary-container;
-}
-
-element normal.active {
-   background-color: @on-primary;
-   text-color: @tertiary-container;
-   border-radius: 20px;
-}
-
-element selected.normal {
-    background-color: @tertiary-container;
-    text-color:       @shadow;
-    border-radius: 20px;
-}
-
-element selected.urgent {
-    background-color: @on-primary;
-    text-color:       @error-container;
-    border-radius: 20px;
-}
-
-element selected.active {
-    background-color: @on-primary;
-    text-color:       @shadow;
-    border-radius: 20px;
-}
-
-element alternate.normal {
-    background-color: @on-primary;
-    text-color:       @tertiary-container;
-    border-radius: 20px;
-}
-
-element alternate.urgent {
-    background-color: @on-primary;
-    text-color:       @error-container;
-    border-radius: 20px;
-}
-
-element alternate.active {
-    background-color: @on-primary;
-    text-color:       @shadow;
-    border-radius: 20px;
-}
-
-scrollbar {
-   background-color: @on-primary;
-   handle-color: #1e1e2e;
-   handle-width: 0px;
-   border-radius: 20px;
-}
-
-mode-switcher {
-   background-color: @on-primary;
-   border-radius: 20px;
-}
-
-button {
-   background-color: @on-primary;
-   text-color:       @error-container;
-   border-radius: 20px;
-}
-
-button selected {
-    text-color: @on-primary;
-    border-radius: 20px;
+  background-color: @on-primary;
+  text-color:       @tertiary-container;
+  border-radius:    20px;
 }
 
 inputbar {
-   background-color: @on-primary;
-   spacing: 0px;
-   children:   [ prompt,textbox-prompt-colon,entry,case-indicator ];
-   border-radius: 20px;
+  background-color: @on-primary;
+  spacing:          0;
+  padding:          8px 10px;
+  border-radius:    20px;
+  children:         [ prompt, entry, case-indicator ];
 }
 
 prompt {
-   padding:0px 10px;
-   background-color: @on-primary;
-   text-color: @tertiary-container;
-   border-radius: 20px;
+  background-color: @on-primary;
+  text-color:       @tertiary-container;
+  padding:          0 10px;
+  border-radius:    20px;
 }
 
 entry {
-   padding:0px 6px;
-   background-color: @on-primary;
-   text-color: @tertiary-container;
-   border-radius: 20px;
+  background-color: @on-primary;
+  text-color:       @tertiary-container;
+  padding:          0 6px;
+  border-radius:    20px;
 }
 
 case-indicator {
-   padding:6px 10px;
-   text-color: #1e1e2e;
-   background-color: @on-primary;
-   border-radius: 20px;
+  background-color: @on-primary;
+  text-color:       #1e1e2e;
+  padding:          6px 10px;
+  border-radius:    20px;
 }
 
-textbox-prompt-colon {
-	padding:0px 0px;
-    expand:     false;
-    str:        "";
-    margin:     0px 0.3em 0em 0em ;
-    text-color: @tertiary-container;
-    background-color: @on-primary;
-    border-radius: 20px;
+listview {
+  background-color: @on-primary;
+  border-radius:    20px;
+  fixed-height:     false;
+  dynamic:          true;
+  scrollbar:        false;
+  spacing:          2px;
+  padding:          5px 0 0 0;
+  margin:           4px 4px 4px 4px;
+}
+
+/* ── Element base ───────────────────────────────────────── */
+element {
+  border-radius: 20px;
+}
+
+element normal.normal {
+  background-color: @on-primary;
+  text-color:       @tertiary-container;
+  padding:          15px 15px;
+}
+
+element normal.urgent {
+  background-color: @on-primary;
+  text-color:       @tertiary-container;
+  padding:          0 15px;
+}
+
+element normal.active {
+  background-color: @on-primary;
+  text-color:       @tertiary-container;
+  padding:          0 15px;
+}
+
+element selected.normal {
+  background-color: @tertiary-container;
+  text-color:       @shadow;
+  padding:          0 15px;
+}
+
+element selected.urgent {
+  background-color: @on-primary;
+  text-color:       @error-container;
+  padding:          0 15px;
+}
+
+element selected.active {
+  background-color: @on-primary;
+  text-color:       @shadow;
+  padding:          0 15px;
+}
+
+element alternate.normal {
+  background-color: @on-primary;
+  text-color:       @tertiary-container;
+  padding:          0 15px;
+}
+
+element alternate.urgent {
+  background-color: @on-primary;
+  text-color:       @error-container;
+  padding:          0 15px;
+}
+
+element alternate.active {
+  background-color: @on-primary;
+  text-color:       @shadow;
+  padding:          0 15px;
+}
+
+/* ── Mode switcher ──────────────────────────────────────── */
+mode-switcher {
+  background-color: @on-primary;
+  border-radius:    20px;
+}
+
+button {
+  background-color: @on-primary;
+  text-color:       @error-container;
+  border-radius:    20px;
+}
+
+button selected {
+  background-color: @tertiary-container;
+  text-color:       @on-primary;
+  border-radius:    20px;
 }
