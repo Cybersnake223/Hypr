@@ -1,5 +1,4 @@
-#!/bin/sh
-
+#!/bin/bash
 ############################################################################################################
 ##   ______  __      __  _______   ________  _______    ______   __    __   ______   __    __  ________   ##
 ##  /      \|  \    /  \|       \ |        \|       \  /      \ |  \  |  \ /      \ |  \  /  \|        \  ##
@@ -16,45 +15,46 @@
 ############################################################################################################
 
 
-notify() {
-	check notify-send && {
-		notify-send "$@"
-		return
-	}
-	echo "$@"
-}
+# --- Dependency check ---
+if ! command -v checkupdates-with-aur &>/dev/null; then
+    printf '{"text":"󰮯 !","tooltip":"checkupdates-with-aur not found","class":"error"}\n'
+    exit 1
+fi
 
+# --- Kill stale instances ---
+pkill -x checkupdates-with-aur 2>/dev/null
+
+# --- Pad/truncate string to fixed width ---
 stringToLen() {
-	STRING="$1"
-	LEN="$2"
-	if [ ${#STRING} -gt "$LEN" ]; then
-		echo "${STRING:0:$((LEN - 2))}.."
-	else
-		printf "%-20s" "$STRING"
-	fi
+    local str="$1" len="$2"
+    if (( ${#str} > len )); then
+        printf '%s' "${str:0:$((len - 2))}.."
+    else
+        printf "%-${len}s" "$str"
+    fi
 }
 
-IFS=$'\n'$'\r'
+# --- Fetch updates ---
+IFS=$'\n' read -r -d '' -a updates < <(checkupdates-with-aur 2>/dev/null; printf '\0')
+count="${#updates[@]}"
 
-killall -q checkupdates-with-aur
-mapfile -t updates < <(checkupdates-with-aur)
+# --- Build output ---
+if (( count == 0 )); then
+    printf '{"text":"󰮯 0","tooltip":"<b>󰮯  System is up to date</b>","class":"updated"}\n'
+    exit 0
+fi
 
-text=${#updates[@]}
-tooltip="<b>$text  updates (arch+aur) </b>\n"
-tooltip+=" <b>$(stringToLen "PkgName" 20) $(stringToLen "PrevVersion" 20) $(stringToLen "NextVersion" 20)</b>\n"
-[ "$text" -eq 0 ] && text="0"
+tooltip="<b>󰮯  ${count} update(s) available (Arch + AUR)</b>\n"
+tooltip+="<b>$(stringToLen "Package" 25) $(stringToLen "From" 22) $(stringToLen "To" 22)</b>"
 
-for i in "${updates[@]}"; do
-  # shellcheck disable=2046
-	update="$(stringToLen $(echo "$i" | awk '{print $1}') 20)"
-  # shellcheck disable=2046
-	prev="$(stringToLen $(echo "$i" | awk '{print $2}') 20)"
-  # shellcheck disable=2046
-	next="$(stringToLen $(echo "$i" | awk '{print $4}') 20)" # skipping '->' string
-	tooltip+="<b> $update </b>$prev $next\n"
+for entry in "${updates[@]}"; do
+    [[ -z "$entry" ]] && continue
+    pkg="$(stringToLen "$(awk '{print $1}' <<< "$entry")" 25)"
+    prev="$(stringToLen "$(awk '{print $2}' <<< "$entry")" 22)"
+    next="$(stringToLen "$(awk '{print $4}' <<< "$entry")" 22)"
+    tooltip+="<b>${pkg}</b> <span foreground='#ff6b6b'>${prev}</span><span foreground='#6bff8e'>${next}</span>\n"
 done
-tooltip=${tooltip::-2}
 
-cat <<EOF
-{ "text":"󰮯 $text", "tooltip":"$tooltip"}  
-EOF
+tooltip="${tooltip%\\n}"
+
+printf '{"text":"󰮯 %s","tooltip":"%s","class":"pending-updates"}\n' "$count" "$tooltip"

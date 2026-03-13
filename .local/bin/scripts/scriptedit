@@ -15,7 +15,7 @@
 ## Created by Cybersnake                                                                                  ##
 ############################################################################################################
 
-term="${TERMINAL:-foot}"
+term="${TERMINAL:-kitty}"
 dir="${SCRIPTS_DIR:-$HOME/.local/bin/scripts}"
 
 [[ ! -d "$dir" ]] && { notify-send "Script Editor" "Directory not found: $dir"; exit 1; }

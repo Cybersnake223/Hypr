@@ -17,7 +17,7 @@
 
 set -euo pipefail
 
-term="${TERMINAL:-foot}"
+term="${TERMINAL:-kitty}"
 
 declare -A configs=(
     [aliases]="$HOME/.config/zsh/.zsh_aliases"
