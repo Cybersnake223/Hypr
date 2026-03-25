@@ -43,6 +43,7 @@ countdown() {
 
 # Take shots
 shotnow() {
+    sleep 0.5
     $grimblast copysave screen
 }
 
