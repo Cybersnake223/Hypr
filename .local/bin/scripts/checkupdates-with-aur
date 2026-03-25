@@ -13,6 +13,6 @@ total=$(( pacman_count + aur_count ))
 
 echo "$pacman_out"
 echo "$aur_out"
-
-[[ $total -gt 0 ]] && notify-send "Updates Available" \
-    "$pacman_count pacman · $aur_count AUR · $total total"
+#
+# [[ $total -gt 0 ]] && notify-send "Updates Available" \
+#     "$pacman_count pacman · $aur_count AUR · $total total"

@@ -1,5 +1,4 @@
 #!/bin/bash
-
 ############################################################################################################
 ##   ______  __      __  _______   ________  _______    ______   __    __   ______   __    __  ________   ##
 ##  /      \|  \    /  \|       \ |        \|       \  /      \ |  \  |  \ /      \ |  \  /  \|        \  ##
@@ -11,25 +10,9 @@
 ##  \$$    $$   | $$    | $$    $$| $$     \| $$  | $$ \$$    $$| $$  \$$$| $$  | $$| $$  \$$\| $$     \  ##
 ##   \$$$$$$     \$$     \$$$$$$$  \$$$$$$$$ \$$   \$$  \$$$$$$  \$$   \$$ \$$   \$$ \$$   \$$ \$$$$$$$$  ##
 ##                                                                                                        ##
+## Restore Wallpaper                                                                                      ##
 ## Created by Cybersnake                                                                                  ##
 ############################################################################################################
 
-_kill() {
-  local name="$1" label="$2"
-  if pkill -x "$name"; then
-    [[ -n "$label" ]] && notify-send "$label" "Killed"
-  fi
-}
-
-_kill gvfsd    "Gvfs"
-_kill aria2c   "Aria2 Server"
-_kill tumblerd "Thumbnail Daemon"
-_kill xfconfd  "XFConf Daemon"
-
-if pkill -x wl-clip-persist; then
-  notify-send "Clipboard" "Restarted"
-  wl-clip-persist -c both &
-fi
-
-trash-empty -f
-yazi --clear-cache
+LAST="$HOME/.cache/last-wallpaper"
+[ -s "$LAST" ] && exec awww img "$(cat "$LAST")" || exec changewall

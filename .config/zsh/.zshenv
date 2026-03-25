@@ -7,3 +7,8 @@ export PATH="$HOME/.cargo/bin:$PATH"
 
 # pnpm (Npm)
 export PATH="$HOME/.npm-global/bin:$PATH"
+
+# Manpager
+export MANPAGER='nvim +Man!'
+# export PAGER='nvimpager'
+# export MANPAGER='nvimpager'

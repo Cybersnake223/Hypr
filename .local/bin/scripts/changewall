@@ -22,8 +22,9 @@ set -euo pipefail
 DIR="${WALLPAPER_DIR:-$HOME/Pictures/Wallpapers}"
 CACHE_DIR="${XDG_CACHE_HOME:-$HOME/.cache}/wallpaper-thumbs"
 LAST_WALL="${XDG_CACHE_HOME:-$HOME/.cache}/last-wallpaper"
-SYMLINK="$HOME/.config/hypr/wallpaper/current"
 ROFI_THEME="${XDG_CONFIG_HOME:-$HOME/.config}/rofi/wall.rasi"
+HYPR_WALL_DIR="${XDG_CONFIG_HOME:-$HOME/.config}/hypr/wallpaper"
+HYPRPAPER_CONF="${XDG_CONFIG_HOME:-$HOME/.config}/hypr/hyprpaper.conf"
 TRANSITION_FPS="${TRANSITION_FPS:-60}"
 TRANSITION_DURATION="${TRANSITION_DURATION:-2}"
 TRANSITION_TYPE="${TRANSITION_TYPE:-wipe}"
@@ -31,102 +32,99 @@ TRANSITION_POS="${TRANSITION_POS:-center}"
 
 # ── Helpers ───────────────────────────────────────────────────────────────────
 
-notify() { notify-send "Wallpaper" "$1"; }
-die()    { notify-send -u critical "Wallpaper" "$1"; exit 1; }
+die()     { notify-send -u critical -i dialog-error "changewall" "$1"; exit 1; }
+success() { notify-send -i image "changewall" "$1"; }
+
+thumb_path() {
+    local hash
+    hash=$(md5sum "$1" | cut -d' ' -f1)
+    echo "$CACHE_DIR/${hash}.png"
+}
 
 # ── Preflight Checks ──────────────────────────────────────────────────────────
 
-command -v swww   &>/dev/null || die "swww is not installed."
-command -v magick &>/dev/null || die "imagemagick is not installed."
-command -v fd     &>/dev/null || die "fd is not installed."
-command -v rofi   &>/dev/null || die "rofi is not installed."
-swww query        &>/dev/null || die "swww daemon is not running. Run: swww-daemon --format xrgb"
-[[ -d "$DIR" ]]               || die "Wallpaper directory not found: $DIR"
-[[ -f "$ROFI_THEME" ]]        || die "Rofi theme not found: $ROFI_THEME"
+command -v awww        &>/dev/null || die "awww is not installed."
+command -v magick      &>/dev/null || die "imagemagick is not installed."
+command -v fd          &>/dev/null || die "fd is not installed."
+command -v notify-send &>/dev/null || die "libnotify is not installed."
+awww query             &>/dev/null || die "awww daemon is not running."
+[[ -d "$DIR" ]]                    || die "Wallpaper directory not found: $DIR"
+[[ -f "$ROFI_THEME" ]]             || die "Rofi theme not found: $ROFI_THEME"
 
-# ── Thumbnail Cache ───────────────────────────────────────────────────────────
+# ── Collect Wallpapers ────────────────────────────────────────────────────────
 
-mkdir -p "$CACHE_DIR"
-mkdir -p "$(dirname "$SYMLINK")"
+mkdir -p "$CACHE_DIR" "$HYPR_WALL_DIR"
 
-find "$CACHE_DIR" -name "*.png" -mtime +60 -delete &
+mapfile -t all_walls < <(fd -a -i -e png -e jpg -e jpeg -e webp . "$DIR" | sort)
 
-generate_thumbnail() {
-    local src="$1"
-    local thumb="$CACHE_DIR/$(printf '%s' "$src" | md5sum | cut -d' ' -f1).png"
-    if [[ ! -f "$thumb" ]]; then
-        magick "$src" \
-            -thumbnail 256x144^ \
-            -gravity center \
-            -extent 256x144 \
-            "$thumb" 2>/dev/null || return 1
-    fi
-    echo "$thumb"
-}
+[[ ${#all_walls[@]} -eq 0 ]] && die "No wallpapers found in: $DIR"
 
-# ── Apply ─────────────────────────────────────────────────────────────────────
+# ── Generate Thumbnails (parallel) ────────────────────────────────────────────
 
-apply() {
-    local wallpaper="$1"
+printf '%s\n' "${all_walls[@]}" | xargs -P4 -I{} bash -c '
+    src="{}"
+    hash=$(md5sum "$src" | cut -d" " -f1)
+    thumb="'"$CACHE_DIR"'/${hash}.png"
+    [[ -f "$thumb" ]] || magick "$src" -thumbnail 256x144^ -gravity center -extent 256x144 "$thumb" 2>/dev/null
+'
 
-    swww img "$wallpaper" \
-        --transition-type     "$TRANSITION_TYPE" \
-        --transition-fps      "$TRANSITION_FPS" \
-        --transition-duration "$TRANSITION_DURATION" \
-        --transition-step     120 \
-        --transition-pos      "$TRANSITION_POS"
-
-    echo "$wallpaper" > "$LAST_WALL"
-
-    ln -sf "$wallpaper" "$SYMLINK"
-
-    matugen image "$wallpaper" \
-        -m dark \
-        -t scheme-tonal-spot \
-        --contrast 1.0 &
-
-    notify "Applied: $(basename "$wallpaper")"
-}
-
-# ── Random Mode ───────────────────────────────────────────────────────────────
-# Usage: changewall --random
-
-if [[ "${1:-}" == "--random" ]]; then
-    wallpaper=$(fd -a -i -e png -e jpg -e jpeg -e webp . "$DIR" | shuf -n 1)
-    [[ -z "$wallpaper" ]] && die "No wallpapers found in: $DIR"
-    apply "$wallpaper"
-    exit 0
-fi
-
-# ── Build Rofi Menu ───────────────────────────────────────────────────────────
+# ── Build Rofi Input ──────────────────────────────────────────────────────────
 
 declare -A label_to_path
-rofi_input=""
-current=$(readlink -f "$SYMLINK" 2>/dev/null || true)
+ROFI_INPUT=$(mktemp)
+trap 'rm -f "$ROFI_INPUT"' EXIT
 
-while IFS= read -r file; do
-    thumb=$(generate_thumbnail "$file") || continue
+for file in "${all_walls[@]}"; do
+    thumb=$(thumb_path "$file")
     label=$(basename "$file")
-
-    # Mark currently active wallpaper
-    [[ "$file" == "$current" ]] && label="● $label"
-
     label_to_path["$label"]="$file"
-    rofi_input+="${label}\0icon\x1f${thumb}\n"
-done < <(fd -a -i -e png -e jpg -e jpeg -e webp . "$DIR" | sort)
+    printf "%s\0icon\x1f%s\n" "$label" "$thumb" >> "$ROFI_INPUT"
+done
 
-[[ -z "$rofi_input" ]] && die "No wallpapers found in: $DIR"
+# ── Launch Rofi ───────────────────────────────────────────────────────────────
 
-# ── Show Picker ───────────────────────────────────────────────────────────────
-
-chosen_label=$(printf "%b" "$rofi_input" \
-    | rofi -dmenu -i \
-           -p "󰸉  Wallpaper: " \
-           -theme "$ROFI_THEME") || exit 0
+chosen_label=$(rofi -dmenu -i -p "󰸉  Wallpaper: " -theme "$ROFI_THEME" < "$ROFI_INPUT")
 
 [[ -z "$chosen_label" ]] && exit 0
+
+# ── Resolve Selection ─────────────────────────────────────────────────────────
 
 wallpaper="${label_to_path[$chosen_label]:-}"
 [[ -z "$wallpaper" ]] && die "Could not resolve: $chosen_label"
 
-apply "$wallpaper"
+# ── Copy to Hyprpaper Directory ───────────────────────────────────────────────
+
+ext="${wallpaper##*.}"
+HYPR_WALL="$HYPR_WALL_DIR/current.$ext"
+
+# Remove any previous current.* to avoid stale files with different extensions
+rm -f "$HYPR_WALL_DIR"/current.*
+ln -sf "$wallpaper" "$HYPR_WALL"
+
+cat > "$HYPRPAPER_CONF" <<EOF
+preload = $HYPR_WALL
+wallpaper = ,$HYPR_WALL
+EOF
+
+# Reload hyprpaper live if running
+if pgrep -x hyprpaper &>/dev/null; then
+    hyprctl hyprpaper preload "$HYPR_WALL"
+    hyprctl hyprpaper wallpaper ",$HYPR_WALL"
+fi
+
+# ── Apply via awww ────────────────────────────────────────────────────────────
+
+awww img "$wallpaper" \
+    --transition-type     "$TRANSITION_TYPE" \
+    --transition-fps      "$TRANSITION_FPS" \
+    --transition-duration "$TRANSITION_DURATION" \
+    --transition-step     120 \
+    --transition-pos      "$TRANSITION_POS"
+
+echo "$wallpaper" > "$LAST_WALL"
+
+{
+    matugen image "$wallpaper" -m dark -t scheme-expressive \
+        --contrast 1.0 --source-color-index 0 \
+    && success "Applied: $(basename "$wallpaper")"
+} &

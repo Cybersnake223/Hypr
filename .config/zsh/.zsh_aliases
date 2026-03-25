@@ -110,7 +110,7 @@ alias egrub="sudoedit /etc/default/grub"
 alias ugrub="sudo grub-mkconfig -o /boot/grub/grub.cfg"
 
 # Cat
-alias cat="bat --theme=catppuccin-mocha"  
+# alias cat="bat --theme=catppuccin-mocha"  
 
 # Nvim
 alias nv="nvim"

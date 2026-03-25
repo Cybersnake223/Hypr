@@ -14,16 +14,8 @@
 ## Created by Cybersnake                                                                                  ##
 ############################################################################################################
 
-set -euo pipefail
 
-chosen=$(sed '1,/^### DATA ###$/d' "$0" \
-    | rofi -dmenu -i -p "Emoji" \
-    | cut -d' ' -f1 \
-    | tr -d '\n') || exit 0
-
-[[ -z "$chosen" ]] && exit 0
-echo -n "$chosen" | wl-copy
-notify-send "Emoji" "Copied $chosen" -t 1000
+sed '1,/^### DATA ###$/d' $0 | rofi -dmenu -i -p "Emoji" | cut -d ' ' -f 1 | tr -d '\n' | wl-copy
 
 exit
 

@@ -13,6 +13,13 @@
 ## Created by Cybersnake                                                                                  ##
 ############################################################################################################
 
-if [ -z "${DISPLAY}" ] && [ "${XDG_VTNR}" -eq 1 ]; then
-       Hyprland 
+# Autostart Hyprland on tty1
+# if uwsm check may-start; then
+#        exec uwsm start hyprland.desktop
+# fi
+#
+# Gnome Keyring
+if [ -z "$GNOME_KEYRING_CONTROL" ]; then
+    eval $(gnome-keyring-daemon --start --components=pkcs11,secrets,ssh)
+    export SSH_AUTH_SOCK
 fi

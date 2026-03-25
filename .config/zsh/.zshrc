@@ -10,6 +10,7 @@
 ##  \$$    $$   | $$    | $$    $$| $$     \| $$  | $$ \$$    $$| $$  \$$$| $$  | $$| $$  \$$\| $$     \  ##
 ##   \$$$$$$     \$$     \$$$$$$$  \$$$$$$$$ \$$   \$$  \$$$$$$  \$$   \$$ \$$   \$$ \$$   \$$ \$$$$$$$$  ##
 ##                                                                                                        ##
+## Zsh Config                                                                                             ##
 ## Created by Cybersnake                                                                                  ##
 ############################################################################################################
 
@@ -28,18 +29,22 @@ setopt HIST_IGNORE_DUPS
 setopt HIST_FIND_NO_DUPS
 setopt HIST_IGNORE_SPACE
 setopt HIST_REDUCE_BLANKS
-setopt SHARE_HISTORY
+setopt INC_APPEND_HISTORY_TIME
 
 # ── History ───────────────────────────────────────────────────────
 SAVEHIST=100000
 HISTSIZE=100000
 HISTFILE=$HOME/.config/zsh/.zsh_history
+mkdir -p "${HISTFILE:h}"
+
+# ── Modules ───────────────────────────────────────────────────────
+zmodload -F zsh/stat b:zstat     
+zmodload    zsh/zutil            
 
 # ── Hook Framework ────────────────────────────────────────────────
 autoload -Uz add-zsh-hook
 
-# ── Pacman Rehash (no subprocess forks via zstat) ─────────────────
-zmodload -F zsh/stat b:zstat
+# ── Pacman Rehash (fork-free via zstat) ───────────────────────────
 zshcache_time=0
 
 rehash_precmd() {
@@ -59,9 +64,9 @@ autoload -Uz compinit
 mkdir -p "$HOME/.cache/zsh"
 
 if [[ -n "$HOME/.cache/zsh/zcompdump"(#qN.mh+24) ]]; then
-  compinit -d "$HOME/.cache/zsh/zcompdump"
+  compinit -u -d "$HOME/.cache/zsh/zcompdump"
 else
-  compinit -C -d "$HOME/.cache/zsh/zcompdump"
+  compinit -u -C -d "$HOME/.cache/zsh/zcompdump"
 fi
 
 _comp_options+=(globdots)
@@ -78,7 +83,7 @@ zstyle ':completion:*:descriptions' format '%F{yellow}[-- %d --]%f'
 function clear-screen-and-scrollback() {
   echoti clear
   printf '\e[3J'
-  zle && zle .reset-prompt && zle -R
+  [[ $ZLE_STATE == *insert* || $ZLE_STATE == *overwrite* ]] && zle .reset-prompt && zle -R
 }
 zle -N clear-screen-and-scrollback
 
@@ -95,22 +100,19 @@ bindkey '^O'      clear-screen-and-scrollback
 # ── Aliases ───────────────────────────────────────────────────────
 [[ -f "$HOME/.config/zsh/.zsh_aliases" ]] && source "$HOME/.config/zsh/.zsh_aliases"
 
-# ── Secrets (credentials, never commit this file) ────────────────
+# ── Secrets (credentials — chmod 600, never commit) ───────────────
 [[ -f "$HOME/.config/zsh/.zsh_secrets" ]] && source "$HOME/.config/zsh/.zsh_secrets"
 
 # ── Plugins ───────────────────────────────────────────────────────
 
-# fast-syntax-highlighting — deferred to after first prompt
-_load_fsh() {
-  if [[ -f "$HOME/.config/zsh/plugins/fast-syntax-highlighting/F-Sy-H.plugin.zsh" ]]; then
-    source "$HOME/.config/zsh/plugins/fast-syntax-highlighting/F-Sy-H.plugin.zsh" 2>/dev/null
-    fast-theme -q catppuccin-mocha
-  fi
-  add-zsh-hook -d precmd _load_fsh
-}
-add-zsh-hook precmd _load_fsh
+# 1. history-substring-search 
+if [[ -f "$HOME/.config/zsh/plugins/zsh-history-substring-search.zsh" ]]; then
+  source "$HOME/.config/zsh/plugins/zsh-history-substring-search.zsh" 2>/dev/null
+  bindkey '^[[A' history-substring-search-up
+  bindkey '^[[B' history-substring-search-down
+fi
 
-# zsh-autosuggestions
+# 2. zsh-autosuggestions 
 if [[ -f "$HOME/.config/zsh/plugins/zsh-autosuggestions/zsh-autosuggestions.zsh" ]]; then
   source "$HOME/.config/zsh/plugins/zsh-autosuggestions/zsh-autosuggestions.zsh" 2>/dev/null
   ZSH_AUTOSUGGEST_USE_ASYNC=1
@@ -118,9 +120,15 @@ if [[ -f "$HOME/.config/zsh/plugins/zsh-autosuggestions/zsh-autosuggestions.zsh"
   ZSH_AUTOSUGGEST_BUFFER_MAX_SIZE=10
 fi
 
-# zsh-history-substring-search — bindings inside guard
-if [[ -f "$HOME/.config/zsh/plugins/zsh-history-substring-search.zsh" ]]; then
-  source "$HOME/.config/zsh/plugins/zsh-history-substring-search.zsh" 2>/dev/null
-  bindkey '^[[A' history-substring-search-up
-  bindkey '^[[B' history-substring-search-down
-fi
+# 3. fast-syntax-highlighting 
+_load_fsh() {
+  if [[ -f "$HOME/.config/zsh/plugins/fast-syntax-highlighting/F-Sy-H.plugin.zsh" ]]; then
+    source "$HOME/.config/zsh/plugins/fast-syntax-highlighting/F-Sy-H.plugin.zsh" 2>/dev/null
+    [[ ! -f "$HOME/.cache/zsh/.fsh_theme_set" ]] && {
+      fast-theme -q catppuccin-mocha
+      touch "$HOME/.cache/zsh/.fsh_theme_set"
+    }
+  fi
+  add-zsh-hook -d precmd _load_fsh
+}
+add-zsh-hook precmd _load_fsh

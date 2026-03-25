@@ -222,22 +222,10 @@ tooltip {
 }
 
 #custom-updates {
-    color: @tertiary;
-    margin: 0px 0px 0px 5px;
+  color: @tertiary;
+  margin: 0 0 0 5px;
 }
 
-#custom-updates.updated {
-    color: @tertiary;
-    opacity: 0.5;
-}
-
-#custom-updates.pending-updates {
-    color: @tertiary;
-}
-
-#custom-updates.error {
-    color: #f38ba8;
-}
 #custom-player {
   color: #cba6f7;
   padding-left: 4px;
