@@ -1,0 +1,44 @@
+/*
+* GTK Colors
+* Generated with Matugen
+*/
+* {
+  font-weight: 500;
+  font-family: "JetBrainsMono Nerd", sans-serif;
+}
+
+
+
+@define-color accent_color #b1c5ff;
+@define-color accent_fg_color #000000;
+@define-color accent_bg_color #b1c5ff;
+@define-color window_bg_color #1c110c;
+@define-color window_fg_color #ffffff;
+@define-color headerbar_bg_color #1c110c;
+@define-color headerbar_fg_color #ffffff;
+@define-color popover_bg_color #1c110c;
+@define-color popover_fg_color #ffffff;
+@define-color view_bg_color #1c110c;
+@define-color view_fg_color #ffffff;
+@define-color card_bg_color #1c110c;
+@define-color card_fg_color #ffffff;
+@define-color sidebar_bg_color @window_bg_color;
+@define-color sidebar_fg_color @window_fg_color;
+@define-color sidebar_border_color @window_bg_color;
+@define-color sidebar_backdrop_color @window_bg_color;
+
+
+VteTerminal, vte-terminal {
+    padding: 6px;
+}
+
+.window-frame, .window-frame:backdrop {
+  box-shadow: 0 0 0 black;
+  border-style: none;
+  margin: 0;
+  border-radius: 0;
+}
+
+.titlebar {
+  border-radius: 0;
+}
