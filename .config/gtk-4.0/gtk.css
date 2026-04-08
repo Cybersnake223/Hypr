@@ -2,25 +2,24 @@
 * GTK Colors
 * Generated with Matugen
 */
-* {
-  font-weight: 500;
-  font-family: "JetBrainsMono Nerd", sans-serif;
-}
+/* * { */
+/*   font-weight: 500; */
+/*   font-family: "JetBrainsMono Nerd Font Mono", monospace; */
+/* } */
 
 
-
-@define-color accent_color #c1c1ff;
+@define-color accent_color #becf76;
 @define-color accent_fg_color #000000;
-@define-color accent_bg_color #c1c1ff;
-@define-color window_bg_color #1b110a;
+@define-color accent_bg_color #becf76;
+@define-color window_bg_color #0f141a;
 @define-color window_fg_color #ffffff;
-@define-color headerbar_bg_color #1b110a;
+@define-color headerbar_bg_color #0f141a;
 @define-color headerbar_fg_color #ffffff;
-@define-color popover_bg_color #1b110a;
+@define-color popover_bg_color #0f141a;
 @define-color popover_fg_color #ffffff;
-@define-color view_bg_color #1b110a;
+@define-color view_bg_color #0f141a;
 @define-color view_fg_color #ffffff;
-@define-color card_bg_color #1b110a;
+@define-color card_bg_color #0f141a;
 @define-color card_fg_color #ffffff;
 @define-color sidebar_bg_color @window_bg_color;
 @define-color sidebar_fg_color @window_fg_color;
