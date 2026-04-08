@@ -2,7 +2,7 @@
 # Any customization should be done in ~/.gtkrc-2.0.mine instead.
 
 include "/home/cybersnake/.gtkrc-2.0.mine"
-gtk-theme-name="Catppuccin-Mocha-Standard-Lavender-Dark"
+gtk-theme-name="adw-gtk3-dark"
 gtk-icon-theme-name="Reversal-purple-dark"
 gtk-font-name="JetBrainsMono Nerd Font Bold 9.5"
 gtk-cursor-theme-name="oreo_purple_cursors"

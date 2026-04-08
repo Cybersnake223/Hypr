@@ -194,8 +194,8 @@ backup_if_exists() {
   local repo_source="$2"
 
   [[ "$DO_BACKUP" -eq 0 ]] && return 0
-  [[ -e "$repo_source" ]]  || return 0   
-  [[ -e "$home_target" ]]  || return 0   
+  [[ -e "$repo_source" ]]  || return 0
+  [[ -e "$home_target" ]]  || return 0
 
   local rel="${home_target#"$HOME/"}"
   local dest="$BACKUP_DIR/$rel"
