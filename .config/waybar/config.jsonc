@@ -52,8 +52,8 @@
         "show-special": true,
         "persistent-workspaces": {},
         "format-icons": {
-            "active": "",
-            "default": "",
+            "active": " ",
+            "default": " ",
             "empty": ""
         }
    },
