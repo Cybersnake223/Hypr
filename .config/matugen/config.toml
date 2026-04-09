@@ -5,7 +5,7 @@ color_scheme = "dark"
 [templates.waybar]
 input_path = '~/.config/matugen/templates/colors.css'
 output_path = '~/.config/waybar/colors.css'
-post_hook = 'sleep 2 & reloadway'
+post_hook = 'sh ~/.local/bin/scripts/reloadway'
 
 [templates.rofi]
 input_path = '~/.config/matugen/templates/rofi-color.rasi'
@@ -38,15 +38,23 @@ input_path = '~/.config/matugen/templates/yazi-theme.toml'
 output_path = '~/.config/yazi/theme.toml'
 
 [templates.gtk3]
-input_path = '/home/cybersnake/.config/matugen/templates/gtk-colors.css'
-output_path = '~/.config/gtk-3.0/colors.css'
-post_hook = 'gsettings set org.gnome.desktop.interface gtk-theme ""; gsettings set org.gnome.desktop.interface gtk-theme adw-gtk3-{{mode}}'
+input_path = '~/.config/matugen/templates/gtk-colors.css'
+output_path = '~/.config/gtk-3.0/gtk.css'
+post_hook = 'gsettings set org.gnome.desktop.interface gtk-theme "adw-gtk3-dark"; gsettings set org.gnome.desktop.interface color-scheme "prefer-dark"'
 
 [templates.gtk4]
 input_path = '~/.config/matugen/templates/gtk-colors.css'
-output_path = '~/.config/gtk-4.0/colors.css'
+output_path = '~/.config/gtk-4.0/gtk.css'
+post_hook = 'gsettings set org.gnome.desktop.interface gtk-theme "adw-gtk3-dark"; gsettings set org.gnome.desktop.interface color-scheme "prefer-dark"'
 
-# [templates.kitty]
-# input_path = '~/.config/matugen/templates/kitty-colors.conf'
-# output_path = '~/.config/kitty/themes/Matugen.conf'
-# post_hook = "kitty +kitten themes --reload-in=all Matugen"
+[templates.kvantum_kvconfig]
+input_path = './templates/kvantum-colors.kvconfig'
+output_path = '~/.config/Kvantum/matugen/matugen.kvconfig'
+
+[templates.kvantum_svg]
+input_path = '~/.config/matugen/templates/kvantum-colors.svg'
+output_path = '~/.config/Kvantum/matugen/matugen.svg'
+
+[templates.hyprwat]
+input_path = '~/.config/matugen/templates/hyprwat.toml'
+output_path = '~/.config/hyprwat/hyprwat.conf'

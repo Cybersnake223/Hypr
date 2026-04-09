@@ -45,9 +45,6 @@ awww query             &>/dev/null || die "awww daemon is not running."
 
 # ── Launch Hyprwat ────────────────────────────────────────────────────────────
 
-# Launch hyprwat to capture the selected wallpaper path.
-# Depending on your specific hyprwat build/version, you might need to add
-# the `--stdout` flag if it still attempts to invoke hyprctl in the background.
 wallpaper=$(hyprwat --wallpaper "$DIR" || true)
 
 [[ -z "$wallpaper" ]] && exit 0
