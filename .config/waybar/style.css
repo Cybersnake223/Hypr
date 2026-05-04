@@ -11,150 +11,107 @@
 /* ##                                                                                                        ## */
 /* ## Created by Cybersnake                                                                                  ## */
 /* ############################################################################################################ */
-
 @import "colors.css";
 
-/* ── Reset ─────────────────────────────────────────────── */
+/* ── Universal Reset ───────────────────────────────────────────────────────── */
 * {
-  border: none;
+  border:        none;
   border-radius: 0;
+  min-height:    0;
+  box-shadow:    none;
   font-family: "JetBrainsMono Nerd Font";
-  font-weight: bold;
-  font-size: 15px;
-  min-height: 0;
+  font-weight:   800;
+  font-size:     15px;
+  /* text-shadow:   4px 4px 4px rgba(0, 0, 0, 0.6); */
+  /* transition:    background-color 0.15s ease, color 0.15s ease, opacity 0.15s ease; */
 }
 
-/* ── Bar ────────────────────────────────────────────────── */
+/* ── Bar Window — fully transparent ────────────────────────────────────────── */
 window#waybar {
+  background: rgba(0, 0, 0, 0.6);
+}
+
+window#waybar > box {
   background: transparent;
+  margin:     0;
+  padding:    0;
 }
 
-/* ── Tooltips ───────────────────────────────────────────── */
-tooltip {
-  background: @shadow;
-  border-radius: 8px;
-  border: 2.5px solid @primary;
-  padding: 5px;
-}
-
-/* ── Base module style ──────────────────────────────────── */
-#window,
-#clock,
-#battery,
-#pulseaudio,
-#pulseaudio.microphone,
-#network,
-#bluetooth,
-#custom-notifications,
-#custom-updates,
-#custom-player,
-#workspaces,
-#tray,
-#memory,
-#disk,
-#backlight {
+/* ── Section groups ────────────────────────────────────────────────────────── */
+.modules-left,
+.modules-center,
+.modules-right {
   background: transparent;
-  opacity: 1;
-  padding: 2px 7px;
-  margin: 0 4px;
-  border-radius: 20px;
+  padding:    0 5px;
 }
 
-/* ── Transitions — scoped, not global ───────────────────── */
-#workspaces button,
-#bluetooth,
-#pulseaudio,
-#pulseaudio.microphone,
-#battery,
-#network {
-  transition: color 0.15s ease, opacity 0.15s ease, background 0.15s ease;
+/* ── Base module defaults ──────────────────────────────────────────────────── */
+#custom-launcher, #workspaces, #clock, #mpris, #custom-updates,
+#custom-temps, #cpu, #bluetooth, #network,
+#pulseaudio, #battery, #custom-notification,#pulseaudio.microphone,
+#custom-peripheral-batteries, #custom-power {
+  background: transparent;
+  color:      @on_surface_variant;
+  padding:    0 5px;
+  margin:     0;
+  font-size:  15px;
 }
 
-/* ── Workspaces ─────────────────────────────────────────── */
-#workspaces {
-  border-radius: 20px;
-  margin-left: 5px;
-  padding: 0;
+
+/* ── Clock ─────────────────────────────────────────────────────────────────── */
+#clock {
+  font-weight: 800;
+  font-size:   15px;
+  color:       @error_container;
+  padding:     0 12px;
 }
+
+/* ── Workspaces ────────────────────────────────────────────────────────────── */
+#workspaces { padding: 0 4px; }
 
 #workspaces button {
-  color: @surface_variant;
-  padding: 0;
-  margin: 0;
-  border-radius: 20px;
+  background:    transparent;
+  color:         alpha(@on_surface_variant, 0.35);
+  padding:       0 6px;
+  margin:        0 1px;
+  min-width:     15px;
+  min-height:    32px;
+  border-radius: 5px;
+  font-size:     15px;
+  font-weight:   700;
 }
 
 #workspaces button.active {
-  color: @primary;
-  background: transparent;
-  border-radius: 20px;
+  background-color: alpha(@primary, 0.2);
+  color:            @primary;
+  font-weight:      800;
+  border-radius:    6px;
+  min-width:        24px;
 }
-
-#workspaces button.urgent {
-  color: #11111b;
-  background: @shadow;
-  border-radius: 20px;
-}
-
 #workspaces button:hover {
-  background: #11111b;
-  color: #cdd6f4;
-  border-radius: 20px;
+  background-color: alpha(@on_surface, 0.08);
+  color:            @on_surface;
+}
+#workspaces button.urgent {
+  color:     @error;
+  animation: blink 1s infinite;
 }
 
-/* ── Clock ──────────────────────────────────────────────── */
-#clock {
-  color: @error_container;
-  min-width: 190px;
-  margin: 0 3px;
-}
+/* ── Mpris ─────────────────────────────────────────────────────────────────── */
+#mpris        { color: alpha(@tertiary_fixed, 0.8); font-size: 15px; padding: 0 8px; }
+#mpris.paused { color: alpha(@on_surface_variant, 0.3); font-style: italic; }
 
-/* ── Network ────────────────────────────────────────────── */
-#network {
-  color: @tertiary_fixed;
-  min-width: 120px;
-  margin-right: 5px;
-}
 
-#network.speed {
-  color: @tertiary_fixed_dim;
-  margin-right: 5px;
-}
+/* ── Bluetooth ─────────────────────────────────────────────────────────────── */
+#bluetooth           { color: alpha(@on_surface_variant, 0.45); font-size: 15px; }
+#bluetooth.connected { color: @primary; }
+#bluetooth.disabled  { color: alpha(@on_surface_variant, 0.2); }
 
-#network.disconnected {
-  color: @error_container;
-  opacity: 0.7;
-}
-
-/* ── Memory ─────────────────────────────────────────────── */
-#memory {
-  color: @tertiary_container;
-  min-width: 75px;
-  margin-left: 5px;
-}
-
-/* ── Disk ───────────────────────────────────────────────── */
-#disk {
-  color: #f9e2af;
-  margin-left: 5px;
-}
-
-/* ── Tray ───────────────────────────────────────────────── */
-#tray {
-  padding: 2px 10px;
-  border-radius: 20px;
-  margin-right: 20px;
-}
-
-/* ── Bluetooth ──────────────────────────────────────────── */
-#bluetooth {
-  color: @error_container;
-  margin: 0 5px;
-}
-
-#bluetooth.disabled {
-  opacity: 0.4;
-}
+/* ── Network ───────────────────────────────────────────────────────────────── */
+#network              { color: alpha(@tertiary_fixed, 0.6); }
+#network.wifi         { color: @tertiary_fixed; }
+#network.ethernet     { color: @tertiary_fixed; }
+#network.disconnected { color: alpha(@tertiary_fixed, 0.25); }
 
 /* ── Audio — pill pair ──────────────────────────────────── */
 #pulseaudio {
@@ -182,57 +139,68 @@ tooltip {
   opacity: 0.6;
 }
 
-/* ── Backlight ──────────────────────────────────────────── */
-#backlight {
-  color: @tertiary_fixed_dim;
+/* ── Battery ───────────────────────────────────────────────────────────────── */
+#battery          { color: @error_container; }
+#battery.good     { color: @error_container; }
+#battery.charging { color: @error_container; }
+#battery.warning  { color: @secondary; }
+#battery.critical { color: @error; animation: blink 0.9s infinite; }
+
+/* ── Notification ──────────────────────────────────────────────────────────── */
+#custom-notification       { color: alpha(@on_surface_variant, 0.5); font-size: 15px; padding: 0 6px; }
+#custom-notification:hover { color: @on_surface; }
+
+
+/* ── Power ─────────────────────────────────────────────────────────────────── */
+#custom-power {
+  color:       alpha(@error, 0.55);
+  font-size:   15px;
+  padding:     0 10px 0 8px;
+  border-left: 1px solid alpha(@outline_variant, 0.2);
+  margin-left: 2px;
+}
+#custom-power:hover {
+  color:            @error;
+  background-color: alpha(@error, 0.1);
+  border-radius:    4px;
 }
 
-/* ── Battery ────────────────────────────────────────────── */
-#battery {
-  color: @surface_tint;
-  min-width: 40px;
-  margin: 0 0px;
+/* ── Generic hover ─────────────────────────────────────────────────────────── */
+#cpu:hover, #bluetooth:hover, #network:hover,
+#pulseaudio.output:hover, #battery:hover, #custom-temps:hover {
+  background-color: alpha(@on_surface, 0.06);
+  border-radius:    5px;
 }
 
-#battery.warning {
-  color: @tertiary;
+/* ── Tooltips ──────────────────────────────────────────────────────────────── */
+tooltip {
+  background-color: alpha(@surface_container_high, 0.75);
+  border-radius:    10px;
+  border:           1px solid alpha(@outline_variant, 0.15);
+}
+tooltip label {
+  color:       @on_surface;
+  padding:     6px 12px;
+  font-size:   15px;
+  text-shadow: none;
 }
 
-#battery.critical {
-  color: @error_container;
-  animation: pulse 1.2s ease infinite;
+/* ── Animation ─────────────────────────────────────────────────────────────── */
+@keyframes blink {
+  0%   { opacity: 1;   }
+  50%  { opacity: 0.3; }
+  100% { opacity: 1;   }
 }
 
-#battery.charging,
-#battery.plugged {
-  color: @primary;
-}
-
-@keyframes pulse {
-  0%   { opacity: 1;    }
-  50%  { opacity: 0.35; }
-  100% { opacity: 1;    }
-}
-
-/* ── Custom modules ─────────────────────────────────────── */
-#custom-notifications {
-  color: #f9e2af;
-  padding: 2px 12px 2px 9px;
-  margin: 0 2px;
-}
-
+/* ── Updates ─────────────────────────────────────────────────────────────── */
 #custom-updates {
   color: @tertiary;
-  margin: 0 0 0 5px;
+  font-size:   15px;
+  margin: 0 0 0 0px;
 }
-
-#custom-player {
-  color: #cba6f7;
-  padding-left: 4px;
-  margin: 0 5px;
-}
-
-/* ── Window title ───────────────────────────────────────── */
-#window {
-  margin: 0 60px;
+/* ── Memory ─────────────────────────────────────────────── */
+#memory {
+  color: @tertiary_container;
+  min-width: 75px;
+  margin-left: 5px;
 }

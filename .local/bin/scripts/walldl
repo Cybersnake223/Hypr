@@ -17,7 +17,7 @@
 # Rofi menus
 stype=$(echo -e "standard\nsearch" | rofi -l 2 -dmenu -p "Search Type:")
 
-if [ "$stype" = "standard" ]; then 
+if [ "$stype" = "standard" ]; then
     smode=$(echo -e "toplist\nrandom" | rofi -l 2 -dmenu -p "Search Mode")
     notify-send "Downloading wallpaper for" "$smode"
 else
@@ -28,27 +28,28 @@ pageno=$(rofi -l 0 -dmenu -p "Enter Page Number")
 wpnum=$(echo -e "24\n48\n72\n96\n120" | rofi -l 5 -dmenu -p "No. of Wallpapers:")
 STARTPAGE=$pageno
 APIKEY="your_api_here"
+DIR=$HOME/Pictures/Wallpapers
 
 #####################################
 ###     Configuration Options     ###
 #####################################
-LOCATION=/home/cybersnake/Pictures/Wallpapers
-WPNUMBER=$wpnum 
+LOCATION=$DIR
+WPNUMBER=$wpnum
 TYPE=$stype             # Download Type (standard,search)
 CATEGORIES=100          # General Anime People
 FILTER=100              # SFW SKETCHY NSFW
 RESOLUTION=1920x1080    # Preferred Resolution (3840x2160, 2560x1440, 1920x1080)
 ATLEAST=1920x1080       # Minimum Resolution
 ASPECTRATIO=16x9        # Monitor Aspect Ratio
-MODE=$smode             # relevance, random, date_added, views, favorites, toplist, toplist-beta 
+MODE=$smode             # relevance, random, date_added, views, favorites, toplist, toplist-beta
 TOPRANGE=1y             # possible values: 1d (last day), 3d (last 3 days), 1w (last week),1M (last month), 3M (last 3 months), 6M (last 6 months), 1y (last year)
-ORDER=desc              # Download Order 
-COLLECTION="Default"    
-QUERY="$query"          
-COLOR=""                
-PARALLEL=1              
+ORDER=desc              # Download Order
+COLLECTION="Default"
+QUERY="$query"
+COLOR=""
+PARALLEL=1
 THUMBS=24               # valid values: 24, 32, 64 (if set to 32 or 64 you need to provide an api key)
- 
+
 #####################################
 ###   End Configuration Options   ###
 #####################################
