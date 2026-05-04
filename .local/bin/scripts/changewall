@@ -1,0 +1,92 @@
+#!/bin/bash
+
+############################################################################################################
+##   ______  __      __  _______   ________  _______    ______   __    __   ______   __    __  ________   ##
+##  /      \|  \    /  \|       \ |        \|       \  /      \ |  \  |  \ /      \ |  \  /  \|        \  ##
+## |  $$$$$$\\$$\  /  $$| $$$$$$$\| $$$$$$$$| $$$$$$$\|  $$$$$$\| $$\ | $$|  $$$$$$\| $$ /  $$| $$$$$$$$  ##
+## | $$   \$$ \$$\/  $$ | $$__/ $$| $$__    | $$__| $$| $$___\$$| $$$\| $$| $$__| $$| $$/  $$ | $$__      ##
+## | $$        \$$  $$  | $$    $$| $$  \   | $$    $$ \$$    \ | $$$$\ $$| $$    $$| $$  $$  | $$  \     ##
+## | $$   __    \$$$$   | $$$$$$$\| $$$$$   | $$$$$$$\ _\$$$$$$\| $$\$$ $$| $$$$$$$$| $$$$$\  | $$$$$     ##
+## | $$__/  \   | $$    | $$__/ $$| $$_____ | $$  | $$|  \__| $$| $$ \$$$$| $$  | $$| $$ \$$\ | $$_____   ##
+##  \$$    $$   | $$    | $$    $$| $$     \| $$  | $$ \$$    $$| $$  \$$$| $$  | $$| $$  \$$\| $$     \  ##
+##   \$$$$$$     \$$     \$$$$$$$  \$$$$$$$$ \$$   \$$  \$$$$$$  \$$   \$$ \$$   \$$ \$$   \$$ \$$$$$$$$  ##
+##                                                                                                        ##
+## Wallpaper Script                                                                                      ##
+## Created by Cybersnake                                                                                  ##
+############################################################################################################
+
+
+set -euo pipefail
+
+# ── Configuration ─────────────────────────────────────────────────────────────
+
+DIR="${WALLPAPER_DIR:-$HOME/Pictures/Wallpapers}"
+LAST_WALL="${XDG_CACHE_HOME:-$HOME/.cache}/last-wallpaper"
+HYPR_WALL_DIR="${XDG_CONFIG_HOME:-$HOME/.config}/hypr/wallpaper"
+TRANSITION_FPS="${TRANSITION_FPS:-60}"
+TRANSITION_DURATION="${TRANSITION_DURATION:-2}"
+TRANSITION_TYPE="${TRANSITION_TYPE:-grow}"
+TRANSITION_POS="${TRANSITION_POS:-center}"
+HYPRPAPER_CONF="${XDG_CONFIG_HOME:-$HOME/.config}/hypr/hyprpaper.conf"
+
+# ── Helpers ───────────────────────────────────────────────────────────────────
+
+die()     { notify-send -u critical -i dialog-error "changewall" "$1"; exit 1; }
+success() { notify-send -i image "changewall" "$1"; }
+
+# ── Preflight Checks ──────────────────────────────────────────────────────────
+
+command -v hyprwat     &>/dev/null || die "hyprwat is not installed."
+command -v awww        &>/dev/null || die "awww is not installed."
+command -v matugen     &>/dev/null || die "matugen is not installed."
+command -v notify-send &>/dev/null || die "libnotify is not installed."
+
+awww query             &>/dev/null || die "awww daemon is not running."
+[[ -d "$DIR" ]]                    || die "Wallpaper directory not found: $DIR"
+
+# ── Launch Hyprwat ────────────────────────────────────────────────────────────
+
+wallpaper=$(hyprwat --wallpaper "$DIR" || true)
+
+[[ -z "$wallpaper" ]] && exit 0
+[[ ! -f "$wallpaper" ]] && die "Could not resolve: $wallpaper"
+
+# ── Copy to Hyprpaper Directory ───────────────────────────────────────────────
+
+ext="${wallpaper##*.}"
+HYPR_WALL="$HYPR_WALL_DIR/current.$ext"
+
+rm -f "$HYPR_WALL_DIR"/current.*
+ln -sf "$wallpaper" "$HYPR_WALL"
+
+cat > "$HYPRPAPER_CONF" <<EOF
+preload = $HYPR_WALL
+wallpaper = ,$HYPR_WALL
+EOF
+
+# Reload hyprpaper live if running
+if pgrep -x hyprpaper &>/dev/null; then
+    hyprctl hyprpaper preload "$HYPR_WALL"
+    hyprctl hyprpaper wallpaper ",$HYPR_WALL"
+fi
+
+
+# ── Apply via awww ────────────────────────────────────────────────────────────
+
+awww img "$wallpaper" \
+    --transition-type     "$TRANSITION_TYPE" \
+    --transition-fps      "$TRANSITION_FPS" \
+    --transition-duration "$TRANSITION_DURATION" \
+    --transition-step     120 \
+    --transition-pos      "$TRANSITION_POS"
+
+mkdir -p "$(dirname "$LAST_WALL")"
+echo "$wallpaper" > "$LAST_WALL"
+
+# ── Generate colors with Matugen ──────────────────────────────────────────────
+
+{
+    matugen image "$wallpaper" -m dark -t scheme-vibrant \
+        --contrast 1.0 --source-color-index 0 \
+    && success "Applied: $(basename "$wallpaper")"
+} &

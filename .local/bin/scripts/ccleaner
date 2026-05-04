@@ -45,5 +45,5 @@ freed=$(( (before - after) / 1024 / 1024 ))
 notify "App cache cleaned: freed ~${freed}MB"
 
 # Run bleachbit only for cleaners that exist
-sys=$(bleachbit -c system.cache 2>/dev/null | awk '/Disk space/ {print}' || true)
+sys=$(bleachbit -c system.cache zen.cache 2>/dev/null | awk '/Disk space/ {print}' || true)
 [[ -n "$sys" ]] && notify "System cache: $sys" || notify "No system cache freed."

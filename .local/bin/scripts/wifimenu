@@ -14,115 +14,156 @@
 ## Wifi Menu Script                                                                                       ##
 ## Created by Cybersnake                                                                                  ##
 ############################################################################################################
-
 set -euo pipefail
 
-notify() { notify-send "Wi-Fi" "$1" -i "${2:-network-wireless}"; }
+CONNECT_TIMEOUT="${CONNECT_TIMEOUT:-10}"
+ROFI_CMD=(rofi -dmenu -i)
+
+notify() {
+    notify-send "Wi-Fi" "$1" -i "${2:-network-wireless}"
+}
+
+die() {
+    notify "$1" network-error
+    exit 1
+}
+
+require() {
+    for cmd in "$@"; do
+        command -v "$cmd" &>/dev/null || {
+            echo "Missing dependency: $cmd" >&2
+            exit 1
+        }
+    done
+}
+
+menu() {
+    local prompt="$1"
+    shift
+    printf '%s\n' "$@" | "${ROFI_CMD[@]}" -p "$prompt"
+}
+
+confirm() {
+    [[ "$(menu "$1" Yes No)" == "Yes" ]]
+}
 
 # ── Connection Management ─────────────────────────────────────────────────────
 
 manage_connections() {
-    local saved
-    saved=$(nmcli -g NAME connection show | grep -v '^\s*$' | sort)
+    mapfile -t connections < <(
+        nmcli -t -f NAME connection show | sed '/^$/d' | sort -u
+    )
 
-    [[ -z "$saved" ]] && { notify "No saved connections found."; return; }
+    (( ${#connections[@]} == 0 )) && {
+        notify "No saved connections found."
+        return
+    }
 
     local chosen
-    chosen=$(echo "$saved" | rofi -dmenu -i -p "󰌷  Manage Connection: ")
+    chosen=$(menu "󰌷  Manage Connection:" "${connections[@]}") || return
     [[ -z "$chosen" ]] && return
 
     local action
-    action=$(printf 'Connect\nDisconnect\nForget\nShow Details' \
-        | rofi -dmenu -i -p "󰒓  Action [$chosen]: ")
-    [[ -z "$action" ]] && return
+    action=$(menu "󰒓  Action [$chosen]:" \
+        "Connect" "Disconnect" "Forget" "Show Details") || return
 
     case "$action" in
         Connect)
-            if nmcli connection up "$chosen"; then
-                notify "Connected to: $chosen"
-            else
-                notify "Failed to connect to: $chosen" network-error
-            fi
+            nmcli connection up "$chosen" \
+                && notify "Connected: $chosen" \
+                || notify "Failed: $chosen" network-error
             ;;
         Disconnect)
-            if nmcli connection down "$chosen"; then
-                notify "Disconnected from: $chosen"
-            else
-                notify "Failed to disconnect: $chosen" network-error
-            fi
+            nmcli connection down "$chosen" \
+                && notify "Disconnected: $chosen" \
+                || notify "Failed: $chosen" network-error
             ;;
         Forget)
-            local confirm
-            confirm=$(printf 'Yes\nNo' | rofi -dmenu -i -p "󰀨  Forget '$chosen'?")
-            [[ "$confirm" == "Yes" ]] || return
-            if nmcli connection delete "$chosen"; then
-                notify "Forgotten: $chosen"
-            else
-                notify "Failed to forget: $chosen" network-error
-            fi
+            confirm "󰀨  Forget '$chosen'?" || return
+            nmcli connection delete "$chosen" \
+                && notify "Deleted: $chosen" \
+                || notify "Delete failed: $chosen" network-error
             ;;
         "Show Details")
-            local details
-            details=$(nmcli connection show "$chosen" 2>&1)
-            echo "$details" | rofi -dmenu -i -p "󰋽  $chosen" > /dev/null || true
+            nmcli connection show "$chosen" \
+                | "${ROFI_CMD[@]}" -p "󰋽  $chosen" >/dev/null || true
             ;;
     esac
 }
 
-# ── Connect to Network ────────────────────────────────────────────────────────
+# ── Network Scan + Connect ────────────────────────────────────────────────────
+
+scan_networks() {
+    nmcli -t -f IN-USE,SSID,SIGNAL,SECURITY device wifi list \
+        | awk -F: '
+            !seen[$2]++ && $2 != "" {
+                printf "%s|%s|%s|%s\n", $1, $2, $3, $4
+            }
+        ' | sort -t'|' -k3 -nr
+}
 
 connect_network() {
-    notify "Scanning networks..." 
+    notify "Scanning networks..."
+    nmcli device wifi rescan &>/dev/null || true
+    sleep 1
 
-    nmcli device wifi rescan 2>/dev/null || true
-    sleep 2
+    mapfile -t networks < <(scan_networks)
 
-    local wifi_list
-    wifi_list=$(nmcli -f SSID,SIGNAL,SECURITY device wifi list \
-        | tail -n +2 \
-        | awk 'NF && !seen[$0]++' \
-        | sort -k2 -rn)
+    (( ${#networks[@]} == 0 )) && die "No networks found."
 
-    [[ -z "$wifi_list" ]] && { notify "No networks found." network-error; exit 1; }
+    local display_list=()
+    local ssid_map=()
 
-    local chosen_network
-    chosen_network=$(echo "$wifi_list" | rofi -dmenu -i -p "󰀂  Network: ")
-    [[ -z "$chosen_network" ]] && return
+    for entry in "${networks[@]}"; do
+        IFS='|' read -r inuse ssid signal sec <<< "$entry"
+        display_list+=("$(printf "%-3s %-30s %3s%% %s" "$inuse" "$ssid" "$signal" "$sec")")
+        ssid_map+=("$ssid")
+    done
 
-    local ssid
-    ssid=$(awk '{print $1}' <<< "$chosen_network")
+    local choice
+    choice=$(printf '%s\n' "${display_list[@]}" \
+        | "${ROFI_CMD[@]}" -p "󰀂  Network:") || return
+
+    [[ -z "$choice" ]] && return
+
+    # map selection → ssid
+    local index
+    for i in "${!display_list[@]}"; do
+        [[ "${display_list[$i]}" == "$choice" ]] && index=$i && break
+    done
+
+    local ssid="${ssid_map[$index]}"
 
     connect() {
-        if nmcli device wifi connect "$ssid" "$@"; then
-            notify "Connected to: $ssid"
-        else
-            notify "Failed to connect to: $ssid" network-error
-            exit 1
-        fi
+        nmcli device wifi connect "$ssid" "$@" \
+            && notify "Connected: $ssid" \
+            || die "Connection failed: $ssid"
     }
 
-    if nmcli -g NAME connection show | grep -Fxq "$ssid"; then
+    if nmcli -t -f NAME connection show | grep -Fxq "$ssid"; then
         connect
     else
-        local wifi_password
-        wifi_password=$(rofi -dmenu -password -l 0 -p "󰌋  Password: ")
-        [[ -z "$wifi_password" ]] && return
-        connect password "$wifi_password"
+        local password
+        password=$("${ROFI_CMD[@]}" -password -p "󰌋  Password:") || return
+        [[ -z "$password" ]] && return
+        connect password "$password"
     fi
 }
 
-# ── Main Menu ─────────────────────────────────────────────────────────────────
+# ── Main ─────────────────────────────────────────────────────────────────────
 
 main() {
-    local mode
-    mode=$(printf '󰀂  Connect to Network\n󰌷  Manage Saved Connections' \
-        | rofi -dmenu -i -p "󰖩  Wi-Fi: ")
-    [[ -z "$mode" ]] && exit 0
+    require nmcli rofi notify-send
 
-    case "$mode" in
-        *"Connect to Network")    connect_network ;;
-        *"Manage Saved"*)         manage_connections ;;
+    local choice
+    choice=$(menu "󰖩  Wi-Fi:" \
+        "󰀂  Connect to Network" \
+        "󰌷  Manage Saved Connections") || exit 0
+
+    case "$choice" in
+        *Connect*) connect_network ;;
+        *Manage*)  manage_connections ;;
     esac
 }
 
-main
+main "$@"
