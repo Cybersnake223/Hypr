@@ -12,6 +12,7 @@
 //## Waybar Config                                                                                          ##
 //## Created by Cybersnake                                                                                  ##
 //############################################################################################################
+
 {
   "layer": "top",
   "position": "top",
@@ -41,11 +42,15 @@
   // ─────────────────────────────
   // WORKSPACES
   // ─────────────────────────────
-  "hyprland/workspaces": {
-    "format": "{name}",
-    "on-scroll-up": "hyprctl dispatch workspace e+1",
-    "on-scroll-down": "hyprctl dispatch workspace e-1"
-  },
+    "hyprland/workspaces": {
+      "active-only": false,
+      "all-outputs": true,
+      "format": "{name}",
+      "persistent-workspaces": {},
+      "show-special": true,
+      "on-scroll-up": "hyprctl dispatch workspace e-1",
+      "on-scroll-down": "hyprctl dispatch workspace e+1"
+    },
 
   // ─────────────────────────────
   // CLOCK (CENTER ANCHOR)
