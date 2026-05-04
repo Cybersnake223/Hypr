@@ -28,7 +28,7 @@
 
 /* ── Bar Window — fully transparent ────────────────────────────────────────── */
 window#waybar {
-  background: rgba(0, 0, 0, 0.6);
+  background: rgba(0,17, 16, 0.6);
 }
 
 window#waybar > box {
@@ -174,7 +174,7 @@ window#waybar > box {
 
 /* ── Tooltips ──────────────────────────────────────────────────────────────── */
 tooltip {
-  background-color: alpha(@surface_container_high, 0.75);
+  background-color: rgba(0,17, 16, 0.6);
   border-radius:    10px;
   border:           1px solid alpha(@outline_variant, 0.15);
 }
