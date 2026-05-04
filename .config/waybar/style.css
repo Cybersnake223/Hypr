@@ -21,25 +21,25 @@
   border: none;
   font-family: "JetBrainsMono Nerd Font";
   font-weight: 700;
-  font-size: 15px;
-  text-shadow: none;
-  /* transition: background 0.2s ease, color 0.2s ease; */
+  font-size: 14.5px;
+  transition: all 0.2s ease;
+  outline: none;
+  box-shadow: none;
 }
 
 /* ─────────────────────────────
-   BAR (GLASS BASE)
+   BAR
    ───────────────────────────── */
 window#waybar {
   background: transparent;
 }
 
-/* critical: allow blur through */
 window#waybar > box {
   background: transparent;
 }
 
 /* ─────────────────────────────
-   MODULE BASE (GLASS PANELS)
+   GLASS MODULE BASE
    ───────────────────────────── */
 #workspaces,
 #clock,
@@ -51,24 +51,18 @@ window#waybar > box {
 #pulseaudio.microphone,
 #battery,
 #custom-updates {
-  background: rgba(0, 17, 16, 0.30);
-  border-radius: 10px;
-  margin: 3px 5px;
-  padding: 3px 12px;
-
-  /* glass edge */
-  border: 1px solid rgba(255, 255, 255, 0.06);
-
-  /* subtle highlight */
+  background: rgba(0, 17, 16, 0.20);
+  border-radius: 12px;
+  margin: 4px 6px;
+  padding: 4px 12px;
+  border: 1px solid rgba(255,255,255,0.08);
   box-shadow:
-    inset 0 1px 0 rgba(255,255,255,0.05),
-    0 4px 12px rgba(0,0,0,0.25);
-
+    inset 0 1px 0 rgba(255,255,255,0.06),
+    inset 0 -4px 10px rgba(0,0,0,0.05);
   color: @on_surface_variant;
 }
-
 /* ─────────────────────────────
-   HOVER = DEPTH CHANGE
+   HOVER
    ───────────────────────────── */
 #workspaces button:hover,
 #cpu:hover,
@@ -80,27 +74,40 @@ window#waybar > box {
 #battery:hover,
 #custom-updates:hover,
 #clock:hover {
-  background: rgba(0, 17, 16, 0.45);
-  border-color: rgba(255,255,255,0.12);
+
+  background: rgba(0, 17, 16, 0.40);
+
+  border: 1px solid rgba(255,255,255,0.12);
+
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,0.08),
+    inset 0 -6px 14px rgba(0,0,0,0.35),
+    0 10px 24px rgba(0,0,0,0.45);
+
 }
 
 /* ─────────────────────────────
    WORKSPACES
    ───────────────────────────── */
 #workspaces {
-  padding: 2px 6px;
+  padding: 3px 8px;
 }
 
 #workspaces button {
   background: transparent;
   color: alpha(@on_surface_variant, 0.4);
-  margin: 0 2px;
-  padding: 2px 6px;
-  border-radius: 6px;
+  margin: 0 3px;
+  padding: 2px 7px;
+  border-radius: 8px;
 }
 
 #workspaces button.active {
-  background: rgba(255,255,255,0.08);
+  background: rgba(255,255,255,0.10);
+
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,0.12),
+    0 3px 8px rgba(0,0,0,0.3);
+
   color: @primary;
 }
 
@@ -111,52 +118,64 @@ window#waybar > box {
 /* ─────────────────────────────
    EMPHASIS
    ───────────────────────────── */
-#clock {
-  font-weight: 800;
-  color:       @error_container;
-}
-
-#cpu    { color: @primary; }
+#clock { color: @error_container; }
+#cpu   { color: @primary; }
 #memory { color: @tertiary_container; }
 
 /* ─────────────────────────────
    AUDIO
    ───────────────────────────── */
+#pulseaudio { color: @tertiary_container; }
 
-#pulseaudio {
-  color: @tertiary_container;
-}
-
-#pulseaudio.muted {
+#pulseaudio.muted,
+#pulseaudio.microphone.muted {
   color: @surface_variant;
-  opacity: 0.6;
+  opacity: 0.5;
 }
 
 #pulseaudio.microphone {
   color: @tertiary_fixed;
 }
 
-#pulseaudio.microphone.muted {
-  color: @surface_variant;
-  opacity: 0.6;
-}
-
 /* ─────────────────────────────
    BATTERY
    ───────────────────────────── */
-#battery          { color: @error_container; }
-#battery.good     { color: @error_container; }
-#battery.charging { color: @error_container; }
-#battery.warning  { color: @secondary; }
-#battery.critical { color: @error; animation: blink 0.9s infinite; }
+#battery {
+  color: @surface_tint;
+}
+
+#battery.warning {
+  color: @tertiary;
+}
+
+#battery.critical {
+  color: @error_container;
+  animation: pulse 1.2s ease infinite;
+}
+
+#battery.charging,
+#battery.plugged {
+  color: @primary;
+}
+
+@keyframes pulse {
+  0%   { opacity: 1;    }
+  50%  { opacity: 0.35; }
+  100% { opacity: 1;    }
+}
 
 /* ─────────────────────────────
-   TOOLTIP (FLOATING GLASS)
+   TOOLTIP
    ───────────────────────────── */
 tooltip {
-  background: rgba(0, 17, 16, 0.6);
+  background: rgba(0, 17, 16, 0.55);
   border-radius: 10px;
-  border: 1px solid rgba(255,255,255,0.08);
+
+  border: 1px solid rgba(255,255,255,0.10);
+
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,0.05),
+    0 8px 20px rgba(0,0,0,0.5);
 }
 
 tooltip label {
@@ -164,13 +183,16 @@ tooltip label {
   color: @on_surface;
 }
 
-/* ── Network ───────────────────────────────────────────────────────────────── */
+/* ─────────────────────────────
+   NETWORK
+   ───────────────────────────── */
 #network              { color: alpha(@tertiary_fixed, 0.6); }
 #network.wifi         { color: @tertiary_fixed; }
-#network.ethernet     { color: @tertiary_fixed; }
 #network.disconnected { color: alpha(@tertiary_fixed, 0.25); }
 
-/* ── Bluetooth ─────────────────────────────────────────────────────────────── */
+/* ─────────────────────────────
+   BLUETOOTH
+   ───────────────────────────── */
 #bluetooth           { color: alpha(@on_surface_variant, 0.45); }
 #bluetooth.connected { color: @primary; }
 #bluetooth.disabled  { color: alpha(@on_surface_variant, 0.2); }
