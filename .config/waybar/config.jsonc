@@ -13,32 +13,43 @@
 //## Created by Cybersnake                                                                                  ##
 //############################################################################################################
 {
-    "layer": "top",
-    "exclusive": true,
-    "reload_style_on_change": true,
-    "position": "top",
-    "spacing": 0,
-    "height": 28,
-    "margin-top": 0,
-    "margin-left": 0,
-    "margin-right": 0,
-    "margin-bottom": 0,
-    "modules-left": [
-      "clock",
-      "network",
-      "memory",
-    ],
-    "fixed-center": true,
-    "modules-center": [
-      "hyprland/workspaces",
-      "custom/updates",
-    ],
-    "modules-right": [
-        "bluetooth",
-        "pulseaudio",
-        "pulseaudio#microphone",
-        "battery",
-    ],
+  "layer": "top",
+  "position": "top",
+  "height": 30,
+  "spacing": 0,
+  "ipc": true,
+  "reload_style_on_change": true,
+
+  "modules-left": [
+    "hyprland/workspaces",
+    "network",
+    "custom/updates",
+  ],
+
+  "modules-center": [
+    "clock"
+  ],
+
+  "modules-right": [
+    "memory",
+    "bluetooth",
+    "pulseaudio",
+    "pulseaudio#microphone",
+    "battery"
+  ],
+
+  // ─────────────────────────────
+  // WORKSPACES
+  // ─────────────────────────────
+  "hyprland/workspaces": {
+    "format": "{name}",
+    "on-scroll-up": "hyprctl dispatch workspace e+1",
+    "on-scroll-down": "hyprctl dispatch workspace e-1"
+  },
+
+  // ─────────────────────────────
+  // CLOCK (CENTER ANCHOR)
+  // ─────────────────────────────
   "clock": {
     "interval": 60,
     "format": " {:%a, %b %d [%H:%M]}",
@@ -52,45 +63,41 @@
         "days": "<span color='#cad3f5'><b>{}</b></span>",
         "weekdays": "<span color='#ff3333'><b>{}</b></span>",
         "today": "<span color='#f5a97f'><b><u>{}</u></b></span>"
-      },
-    },
+      }
+    }
   },
-    "hyprland/workspaces": {
-        "active-only": false,
-        "all-outputs": true,
-        "format": "{name}",
-        "persistent-workspaces": {},
-        "show-special": true,
-        "on-scroll-up": "hyprctl dispatch workspace e-1",
-        "on-scroll-down": "hyprctl dispatch workspace e+1"
-    },
+
+  // ─────────────────────────────
+  // NETWORK (STATE + METRICS)
+  // ─────────────────────────────
+  "network": {
+    "interval": 5,
+    "format-wifi": "󰤥 {essid} ({signalStrength}%)",
+    "format-ethernet": "󰈀 Wired",
+    "format-disconnected": "󰤮 Offline",
+    "tooltip-format": "{ipaddr}\n {bandwidthUpBits}\n {bandwidthDownBits}",
+    "on-click": "wifimenu"
+  },
+
+  // ─────────────────────────────
+  // CPU
+  // ─────────────────────────────
+  "cpu": {
+    "interval": 5,
+    "format": " {usage}%"
+  },
+
+  // ─────────────────────────────
+  // MEMORY
+  // ─────────────────────────────
   "memory": {
-    "interval": 30,
-    "format": "  {used:0.1f}G",
-    "tooltip-format": "{used} / {total} G",
+    "interval": 5,
+    "format": " {used:0.1f}G"
   },
-    "mpris": {
-        "format": "{player_icon} {title}",
-        "format-paused": "\udb80\udfe4 <i>{title}</i>",
-        "format-stopped": "",
-        "max-length": 32,
-        "status-icons": {
-            "paused": "\udb80\udfe4"
-        },
-        "tooltip-format": "{player} \u2014 {artist}\n{title}\n{album}",
-        "on-click": "playerctl play-pause",
-        "on-scroll-up": "playerctl next",
-        "on-scroll-down": "playerctl previous"
-    },
-    "cpu": {
-        "interval": 2,
-        "format": "\udb80\udf5b {usage}%",
-        "on-click": "kitty -e btop",
-        "states": {
-            "warning": 70,
-            "critical": 90
-        }
-    },
+
+  // ─────────────────────────────
+  // BLUETOOTH
+  // ─────────────────────────────
   "bluetooth": {
     "format": " {status}",
     "format-disabled": " {status}",
@@ -99,19 +106,18 @@
     "tooltip-format-enumerate-connected": "{device_alias}",
     "on-click": "btblock",
   },
-  "network": {
-    "format-disconnected": "Disconnected",
-    "format-wifi": "󰤥 {essid}",
-    "tooltip-format": " {signalStrength}",
-    "on-click": "wifimenu",
-  },
+
+  // ─────────────────────────────
+  // AUDIO OUTPUT
+  // ─────────────────────────────
   "pulseaudio": {
     "format": "{icon} {volume}%",
-    "tooltip": false,
     "format-muted": " Muted",
+    "tooltip": false,
+    "scroll-step": 5,
     "on-click": "wpctl set-mute @DEFAULT_SINK@ toggle",
-    "on-scroll-up": "wpctl set-volume @DEFAULT_SINK@ 10%+",
-    "on-scroll-down": "wpctl set-volume @DEFAULT_SINK@ 10%-",
+    "on-scroll-up": "wpctl set-volume @DEFAULT_SINK@ 5%+",
+    "on-scroll-down": "wpctl set-volume @DEFAULT_SINK@ 5%-",
     "format-icons": {
       "headphone": " ",
       "hands-free": " ",
@@ -119,25 +125,29 @@
       "phone": " ",
       "portable": " ",
       "car": " ",
-      "default": [
-        " ",
-        " ",
-        " ",
-      ]
+      "default": [" ", " ", " "]
     }
   },
+
+  // ─────────────────────────────
+  // MICROPHONE
+  // ─────────────────────────────
   "pulseaudio#microphone": {
     "format": "{format_source}",
     "format-source": " {volume}%",
     "format-source-muted": " Muted",
+    "scroll-step": 5,
     "on-click": "wpctl set-mute @DEFAULT_SOURCE@ toggle",
     "on-scroll-up": "wpctl set-volume @DEFAULT_SOURCE@ 5%+",
-    "on-scroll-down": "wpctl set-volume @DEFAULT_SOURCE@ 5%-",
+    "on-scroll-down": "wpctl set-volume @DEFAULT_SOURCE@ 5%-"
   },
+
+  // ─────────────────────────────
+  // BATTERY
+  // ─────────────────────────────
   "battery": {
-    "interval": 30,
+    "interval": 60,
     "states": {
-      "good": 100,
       "warning": 30,
       "critical": 20
     },
@@ -145,41 +155,19 @@
     "format-charging": " {capacity}%",
     "format-plugged": " {capacity}%",
     "format-icons": [
-      "󰂎",
-      "󰁺",
-      "󰁻",
-      "󰁼",
-      "󰁽",
-      "󰁾",
-      "󰁿",
-      "󰂀",
-      "󰂁",
-      "󰂂",
-      "󰁹"
+      "󰂎","󰁺","󰁻","󰁼","󰁽",
+      "󰁾","󰁿","󰂀","󰂁","󰂂","󰁹"
     ]
   },
-    "custom/notification": {
-        "exec": "swaync-client -swb",
-        "return-type": "json",
-        "format": "{icon}",
-        "format-icons": {
-            "notification": "\udb80\udd5e",
-            "none": "\udb80\udd5d",
-            "dnd-notification": "\udb80\udd5e",
-            "dnd-none": "\udb80\udd5d"
-        },
-        "on-click": "swaync-client -t -sw",
-        "on-click-right": "swaync-client -d -sw",
-        "tooltip": false,
-        "escape": true
-    },
-    "custom/updates": {
+
+  // ─────────────────────────────
+  // UPDATES (SIGNAL-DRIVEN)
+  // ─────────────────────────────
+  "custom/updates": {
     "format": "{}",
     "tooltip": true,
-    "interval": 1800,
-    "exec": "$HOME/.config/waybar/bin/updatecheck",
     "return-type": "json",
-    "exec-if": "exit 0",
+    "exec": "$HOME/.config/waybar/bin/updatecheck",
     "signal": 8
-  },
+  }
 }

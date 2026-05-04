@@ -11,115 +11,120 @@
 /* ##                                                                                                        ## */
 /* ## Created by Cybersnake                                                                                  ## */
 /* ############################################################################################################ */
+
 @import "colors.css";
 
-/* ── Universal Reset ───────────────────────────────────────────────────────── */
+/* ─────────────────────────────
+   GLOBAL
+   ───────────────────────────── */
 * {
-  border:        none;
-  border-radius: 0;
-  min-height:    0;
-  box-shadow:    none;
+  border: none;
   font-family: "JetBrainsMono Nerd Font";
-  font-weight:   800;
-  font-size:     15px;
-  /* text-shadow:   4px 4px 4px rgba(0, 0, 0, 0.6); */
-  /* transition:    background-color 0.15s ease, color 0.15s ease, opacity 0.15s ease; */
+  font-weight: 700;
+  font-size: 15px;
+  text-shadow: none;
+  /* transition: background 0.2s ease, color 0.2s ease; */
 }
 
-/* ── Bar Window — fully transparent ────────────────────────────────────────── */
+/* ─────────────────────────────
+   BAR (GLASS BASE)
+   ───────────────────────────── */
 window#waybar {
-  background: rgba(0,17, 16, 0.6);
+  background: transparent;
 }
 
+/* critical: allow blur through */
 window#waybar > box {
   background: transparent;
-  margin:     0;
-  padding:    0;
 }
 
-/* ── Section groups ────────────────────────────────────────────────────────── */
-.modules-left,
-.modules-center,
-.modules-right {
-  background: transparent;
-  padding:    0 5px;
+/* ─────────────────────────────
+   MODULE BASE (GLASS PANELS)
+   ───────────────────────────── */
+#workspaces,
+#clock,
+#cpu,
+#memory,
+#network,
+#bluetooth,
+#pulseaudio,
+#pulseaudio.microphone,
+#battery,
+#custom-updates {
+  background: rgba(0, 17, 16, 0.30);
+  border-radius: 10px;
+  margin: 3px 5px;
+  padding: 3px 12px;
+
+  /* glass edge */
+  border: 1px solid rgba(255, 255, 255, 0.06);
+
+  /* subtle highlight */
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,0.05),
+    0 4px 12px rgba(0,0,0,0.25);
+
+  color: @on_surface_variant;
 }
 
-/* ── Base module defaults ──────────────────────────────────────────────────── */
-#custom-launcher, #workspaces, #clock, #mpris, #custom-updates,
-#custom-temps, #cpu, #bluetooth, #network,
-#pulseaudio, #battery, #custom-notification,#pulseaudio.microphone,
-#custom-peripheral-batteries, #custom-power {
-  background: transparent;
-  color:      @on_surface_variant;
-  padding:    0 5px;
-  margin:     0;
-  font-size:  15px;
+/* ─────────────────────────────
+   HOVER = DEPTH CHANGE
+   ───────────────────────────── */
+#workspaces button:hover,
+#cpu:hover,
+#memory:hover,
+#network:hover,
+#bluetooth:hover,
+#pulseaudio:hover,
+#pulseaudio.microphone:hover,
+#battery:hover,
+#custom-updates:hover,
+#clock:hover {
+  background: rgba(0, 17, 16, 0.45);
+  border-color: rgba(255,255,255,0.12);
 }
 
-
-/* ── Clock ─────────────────────────────────────────────────────────────────── */
-#clock {
-  font-weight: 800;
-  font-size:   15px;
-  color:       @error_container;
-  padding:     0 12px;
+/* ─────────────────────────────
+   WORKSPACES
+   ───────────────────────────── */
+#workspaces {
+  padding: 2px 6px;
 }
-
-/* ── Workspaces ────────────────────────────────────────────────────────────── */
-#workspaces { padding: 0 4px; }
 
 #workspaces button {
-  background:    transparent;
-  color:         alpha(@on_surface_variant, 0.35);
-  padding:       0 6px;
-  margin:        0 1px;
-  min-width:     15px;
-  min-height:    32px;
-  border-radius: 5px;
-  font-size:     15px;
-  font-weight:   700;
+  background: transparent;
+  color: alpha(@on_surface_variant, 0.4);
+  margin: 0 2px;
+  padding: 2px 6px;
+  border-radius: 6px;
 }
 
 #workspaces button.active {
-  background-color: alpha(@primary, 0.2);
-  color:            @primary;
-  font-weight:      800;
-  border-radius:    6px;
-  min-width:        24px;
+  background: rgba(255,255,255,0.08);
+  color: @primary;
 }
-#workspaces button:hover {
-  background-color: alpha(@on_surface, 0.08);
-  color:            @on_surface;
-}
+
 #workspaces button.urgent {
-  color:     @error;
-  animation: blink 1s infinite;
+  color: @error;
 }
 
-/* ── Mpris ─────────────────────────────────────────────────────────────────── */
-#mpris        { color: alpha(@tertiary_fixed, 0.8); font-size: 15px; padding: 0 8px; }
-#mpris.paused { color: alpha(@on_surface_variant, 0.3); font-style: italic; }
+/* ─────────────────────────────
+   EMPHASIS
+   ───────────────────────────── */
+#clock {
+  font-weight: 800;
+  color:       @error_container;
+}
 
+#cpu    { color: @primary; }
+#memory { color: @tertiary_container; }
 
-/* ── Bluetooth ─────────────────────────────────────────────────────────────── */
-#bluetooth           { color: alpha(@on_surface_variant, 0.45); font-size: 15px; }
-#bluetooth.connected { color: @primary; }
-#bluetooth.disabled  { color: alpha(@on_surface_variant, 0.2); }
+/* ─────────────────────────────
+   AUDIO
+   ───────────────────────────── */
 
-/* ── Network ───────────────────────────────────────────────────────────────── */
-#network              { color: alpha(@tertiary_fixed, 0.6); }
-#network.wifi         { color: @tertiary_fixed; }
-#network.ethernet     { color: @tertiary_fixed; }
-#network.disconnected { color: alpha(@tertiary_fixed, 0.25); }
-
-/* ── Audio — pill pair ──────────────────────────────────── */
 #pulseaudio {
   color: @tertiary_container;
-  border-radius: 20px 0 0 20px;
-  padding: 2px 0 2px 10px;
-  margin-right: 0;
-  min-width: 70px;
 }
 
 #pulseaudio.muted {
@@ -129,9 +134,6 @@ window#waybar > box {
 
 #pulseaudio.microphone {
   color: @tertiary_fixed;
-  border-radius: 0 20px 20px 0;
-  padding: 2px 10px 2px 5px;
-  margin-left: 0;
 }
 
 #pulseaudio.microphone.muted {
@@ -139,68 +141,36 @@ window#waybar > box {
   opacity: 0.6;
 }
 
-/* ── Battery ───────────────────────────────────────────────────────────────── */
+/* ─────────────────────────────
+   BATTERY
+   ───────────────────────────── */
 #battery          { color: @error_container; }
 #battery.good     { color: @error_container; }
 #battery.charging { color: @error_container; }
 #battery.warning  { color: @secondary; }
 #battery.critical { color: @error; animation: blink 0.9s infinite; }
 
-/* ── Notification ──────────────────────────────────────────────────────────── */
-#custom-notification       { color: alpha(@on_surface_variant, 0.5); font-size: 15px; padding: 0 6px; }
-#custom-notification:hover { color: @on_surface; }
-
-
-/* ── Power ─────────────────────────────────────────────────────────────────── */
-#custom-power {
-  color:       alpha(@error, 0.55);
-  font-size:   15px;
-  padding:     0 10px 0 8px;
-  border-left: 1px solid alpha(@outline_variant, 0.2);
-  margin-left: 2px;
-}
-#custom-power:hover {
-  color:            @error;
-  background-color: alpha(@error, 0.1);
-  border-radius:    4px;
-}
-
-/* ── Generic hover ─────────────────────────────────────────────────────────── */
-#cpu:hover, #bluetooth:hover, #network:hover,
-#pulseaudio.output:hover, #battery:hover, #custom-temps:hover {
-  background-color: alpha(@on_surface, 0.06);
-  border-radius:    5px;
-}
-
-/* ── Tooltips ──────────────────────────────────────────────────────────────── */
+/* ─────────────────────────────
+   TOOLTIP (FLOATING GLASS)
+   ───────────────────────────── */
 tooltip {
-  background-color: rgba(0,17, 16, 0.6);
-  border-radius:    10px;
-  border:           1px solid alpha(@outline_variant, 0.15);
+  background: rgba(0, 17, 16, 0.6);
+  border-radius: 10px;
+  border: 1px solid rgba(255,255,255,0.08);
 }
+
 tooltip label {
-  color:       @on_surface;
-  padding:     6px 12px;
-  font-size:   15px;
-  text-shadow: none;
+  padding: 6px 12px;
+  color: @on_surface;
 }
 
-/* ── Animation ─────────────────────────────────────────────────────────────── */
-@keyframes blink {
-  0%   { opacity: 1;   }
-  50%  { opacity: 0.3; }
-  100% { opacity: 1;   }
-}
+/* ── Network ───────────────────────────────────────────────────────────────── */
+#network              { color: alpha(@tertiary_fixed, 0.6); }
+#network.wifi         { color: @tertiary_fixed; }
+#network.ethernet     { color: @tertiary_fixed; }
+#network.disconnected { color: alpha(@tertiary_fixed, 0.25); }
 
-/* ── Updates ─────────────────────────────────────────────────────────────── */
-#custom-updates {
-  color: @tertiary;
-  font-size:   15px;
-  margin: 0 0 0 0px;
-}
-/* ── Memory ─────────────────────────────────────────────── */
-#memory {
-  color: @tertiary_container;
-  min-width: 75px;
-  margin-left: 5px;
-}
+/* ── Bluetooth ─────────────────────────────────────────────────────────────── */
+#bluetooth           { color: alpha(@on_surface_variant, 0.45); }
+#bluetooth.connected { color: @primary; }
+#bluetooth.disabled  { color: alpha(@on_surface_variant, 0.2); }
