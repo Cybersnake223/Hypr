@@ -13,77 +13,112 @@
 ## Created by Cybersnake                                                                                  ##
 ############################################################################################################
 
-# Commands
-rofi_command="rofi -l 5"
-grimblast="grimblast --notify --freeze"
+set -euo pipefail
 
-# Buttons
-screen="󰍹 Capture screen"
-area="󰩬 Capture area"
-window=" Capture active window"
-infive="󱑀 Take in 5s"
-inten="󱑇 Take in 10s"
+# CONFIG
+ROFI_CMD=(rofi -dmenu -l 5 -p "Take A Shot")
+SAVE_DIR="${HOME}/Pictures/Screenshots"
+mkdir -p "$SAVE_DIR"
+DELAY=0.2
 
-# Countdown Function
+# options
+declare -A OPTIONS=(
+  ["󰍹 Capture screen"]="screen"
+  ["󰩬 Capture area"]="area"
+  ["󰍷 Capture window"]="window"
+  ["󱑀 Capture in 5s"]="5"
+  ["󱑇 Capture in 10s"]="10"
+)
+
+# DEPENDENCY CHECK
+for cmd in grim slurp rofi wl-copy notify-send hyprctl; do
+  command -v "$cmd" >/dev/null || {
+    echo "Missing dependency: $cmd" >&2
+    exit 1
+  }
+done
+
+# UTILITIES
+gen_file() {
+  printf "%s/%s.png" "$SAVE_DIR" "$(date +'%Y-%m-%d_%H-%M-%S')"
+}
+
 countdown() {
-  local seconds=$1
+  local sec=$1
+  while (( sec > 0 )); do
+    notify-send -t 900 "Screenshot in" "$sec s remaining"
+    sleep 1
+    ((sec--))
+  done
+}
 
-  if ! command -v notify-send &> /dev/null; then
-    echo "Error: 'notify-send' command not found."
-    return 1
+notify_done() {
+  notify-send "Screenshot saved" "$1"
+}
+
+# CAPTURE
+capture() {
+  local geo="${1:-}" file
+  file="$(gen_file)"
+
+  if [[ -n "$geo" ]]; then
+    grim -g "$geo" - | tee "$file" | wl-copy
+  else
+    grim - | tee "$file" | wl-copy
   fi
 
-  for sec in $(seq $seconds -1 1); do
-    notify-send -t 900 -u normal "Screenshot in:" "$sec seconds remaining"
-    sleep 1
-  done
-
-  sleep 0.1
+  notify_done "$file"
 }
 
-# Take shots
-shotnow() {
-    sleep 0.5
-    $grimblast copysave screen
+# MODES
+capture_screen() {
+  sleep $DELAY
+  capture
 }
 
-shot5() {
-    countdown 5
-    $grimblast copysave screen
+capture_area() {
+  local geo
+  geo="$(slurp)" || exit 0
+  capture "$geo"
 }
 
-shot10() {
-    countdown 10
-    $grimblast copysave screen
+capture_window() {
+  local x y w h geo
+
+  # parse hyprctl (no jq)
+  while IFS=': ' read -r key rest; do
+    case "$key" in
+      at)   set -- $rest; x=$1; y=$2 ;;
+      size) set -- $rest; w=$1; h=$2 ;;
+    esac
+  done < <(hyprctl activewindow)
+
+  geo="${x},${y} ${w}x${h}"
+  capture "$geo"
 }
 
-shotwin() {
-    $grimblast copysave active
+# DISPATCH
+run() {
+  local mode=$1
+
+  case "$mode" in
+    screen) capture_screen ;;
+    area)   capture_area ;;
+    window) capture_window ;;
+    5|10)
+      countdown "$mode"
+      capture_screen
+      ;;
+    *) exit 1 ;;
+  esac
 }
 
-shotarea() {
-    $grimblast copysave area
+# MENU
+main() {
+  local choice
+
+  choice=$(printf "%s\n" "${!OPTIONS[@]}" | sort | "${ROFI_CMD[@]}") || exit 0
+  run "${OPTIONS[$choice]}"
 }
 
-# Variable passed to rofi
-options="$screen\n$area\n$window\n$infive\n$inten"
-
-chosen="$(echo -e "$options" | $rofi_command -p 'Take A Shot' -dmenu -selected-row 0)"
-
-case $chosen in
-    "$screen")
-        shotnow
-        ;;
-    "$area")
-        shotarea
-        ;;
-    "$window")
-        shotwin
-        ;;
-    "$infive")
-        shot5
-        ;;
-    "$inten")
-        shot10
-        ;;
-esac
+main
