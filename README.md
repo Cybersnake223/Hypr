@@ -1,7 +1,7 @@
 <div align="center">
   <p></p>
-  <p><b><i> <img src="assets/cslogo.png" </i></b></p> 
-  <img src="https://readme-typing-svg.herokuapp.com?font=Righteous&weight=600&size=75&duration=1200&pause=1000&color=A024F7&center=true&vCenter=true&random=false&width=600&height=80&lines=Vicious+Viper"> 
+  <p><b><i> <img src="assets/cslogo.png" </i></b></p>
+  <img src="https://readme-typing-svg.herokuapp.com?font=Righteous&weight=600&size=75&duration=1200&pause=1000&color=A024F7&center=true&vCenter=true&random=false&width=600&height=80&lines=Vicious+Viper">
 </div>
 <p></p>
 
@@ -62,7 +62,7 @@ Install all components listed above, then the following:
 | `xdg-desktop-portal-hyprland` | Better Wayland compatibility |
 | `cava` | Audio visualizer |
 | `polkit-gnome` | Authentication agent |
-| `grimblast-git` + `wl-clipboard` | Screenshot utility |
+| `grim & slurp` + `wl-clipboard` | Screenshot utility |
 | `brightnessctl` | Monitor and keyboard brightness control |
 | `mpv` | Media player |
 | `pavucontrol` | Volume control panel |
