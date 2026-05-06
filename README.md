@@ -18,6 +18,7 @@
     <a href="#-stack">Stack</a> •
     <a href="#-prerequisites">Prerequisites</a> •
     <a href="#-installation">Installation</a> •
+    <a href="#-installer-flags">Flags</a> •
     <a href="#-theming">Theming</a> •
     <a href="#-troubleshooting">Troubleshooting</a>
   </p>
@@ -73,7 +74,7 @@
 ## 📦 Prerequisites
 
 > [!IMPORTANT]
-> The installer **does not** check for Hyprland ecosystem packages. Install all dependencies below **before** running `install.sh`.
+> The installer checks for ecosystem packages and warns you about anything missing, but it won't stop the install. Make sure the packages below are present **before** running `install.sh` if you want a fully working desktop on first boot.
 
 ### Core Packages
 
@@ -106,13 +107,13 @@ yay -S hyprland waybar foot zsh rofi-lbonn-wayland-git mako swww \
 
 ### Fonts
 
-The `.fonts/` directory is included in this repo and installed automatically. To install manually via the AUR:
+The `.fonts/` directory is included in this repo and installed automatically by `install.sh`. To install manually:
 
 ```bash
 yay -S ttf-jetbrains-mono-nerd ttf-font-awesome nerd-fonts-symbols-only
 ```
 
-Required fonts:
+**Required fonts:**
 - **JetBrains Mono Nerd Font** — primary monospace
 - **Awesome Fonts** — icon font for Waybar / Rofi
 - **Icomoon Feather** — supplementary icon set
@@ -123,9 +124,9 @@ Required fonts:
 ## ⚡ Installation
 
 > [!CAUTION]
-> The installer backs up existing files before overwriting them, but **only for paths present in this repo**. No unrelated configs are touched. Back up your own files first if you're unsure.
+> The installer backs up existing files before overwriting them, but **only for paths present in this repo**. No unrelated configs are touched. Always review with `--dry-run` first if you're unsure.
 
-### Quick Install (Recommended)
+### Quick Install
 
 ```bash
 git clone https://github.com/Cybersnake223/Hypr
@@ -136,39 +137,93 @@ chmod +x install.sh
 
 The installer will:
 
-- ✅ Check for required system utilities
-- 🗂 Back up any existing files it will overwrite into a **timestamped directory**
-- 📁 Copy configs, scripts, icons, themes, and fonts into `$HOME`
-- 🔑 Mark all scripts in `~/.local/bin/scripts` as executable
-- 🔤 Rebuild the font cache via `fc-cache -f`
-- 🛤 Optionally add `~/.local/bin` to your `PATH` in `~/.zshrc`
+1. ✅ Verify core system utilities are available
+2. 🔍 Check all Hyprland ecosystem packages and warn about anything missing
+3. 🗂 Back up every existing file it will overwrite into a **timestamped directory**
+4. 📁 Copy configs, scripts, icons, themes, and fonts into `$HOME`
+5. 🔑 Mark all scripts in `~/.local/bin/scripts` as executable
+6. 🔤 Rebuild the font cache via `fc-cache -f`
+7. 🛤 Detect your shell and optionally patch `PATH` in the correct rc file
+8. 📋 Print a full install summary with counts and log path
 
 **Backups are saved to:**
 ```
 ~/.local/share/hypr-dotfiles-backups/<YYYYMMDD-HHMMSS>/
-# or $XDG_DATA_HOME/hypr-dotfiles-backups/<timestamp>/ if $XDG_DATA_HOME is set
 ```
+Or `$XDG_DATA_HOME/hypr-dotfiles-backups/<timestamp>/` if `$XDG_DATA_HOME` is set.
 
-### Installer Flags
+A `.manifest` file inside each backup records every installed path — used by `--uninstall` to restore originals precisely.
+
+---
+
+## 🚩 Installer Flags
 
 | Flag | Description |
 |---|---|
-| `--dry-run` | Preview all actions — no changes made |
-| `--yes` | Non-interactive, skip all prompts |
-| `--no-backup` | Skip backup (**dangerous** — disables uninstall) |
+| `--dry-run` | Preview every action — **zero changes made** |
+| `--yes` | Non-interactive, auto-confirm all prompts |
+| `--select` | Interactively toggle which modules to install |
+| `--no-backup` | Skip backup step (**dangerous** — disables `--uninstall`) |
 | `--uninstall` | Restore originals from the most recent backup |
-| `-h`, `--help` | Show usage information |
+| `--list-backups` | Show all backups with timestamps, file counts, and sizes |
+| `--skip-deps` | Skip the ecosystem dependency check |
+| `-h`, `--help` | Show usage |
+
+### Usage Examples
 
 ```bash
-# Preview without changing anything
+# Preview everything before committing — recommended for first-timers
 ./install.sh --dry-run
 
-# Fully non-interactive install
+# Non-interactive install (great for scripted setups)
 ./install.sh --yes
 
-# Restore backed-up configs
+# Choose only specific modules (configs, scripts, fonts, etc.)
+./install.sh --select
+
+# Install only what you select, non-interactively preview first
+./install.sh --select --dry-run
+
+# Fast re-install — skip dep check, auto-confirm
+./install.sh --yes --skip-deps
+
+# See all available backups before restoring
+./install.sh --list-backups
+
+# Undo the last install and restore your original configs
 ./install.sh --uninstall
 ```
+
+### Modular Install — `--select`
+
+The `--select` flag opens an interactive TUI that lets you toggle individual install modules on or off before committing:
+
+```
+  [✓]  1  .config       Application configs (hypr, waybar, rofi, nvim, zsh…)
+  [✓]  2  scripts       Custom scripts → ~/.local/bin/scripts
+  [ ]  3  .icons        Icon theme
+  [✓]  4  .themes       GTK/Qt themes
+  [✓]  5  .fonts        Custom fonts (triggers fc-cache rebuild)
+  [✓]  6  dotfiles      Root dotfiles (.Xresources, .gtkrc-2.0)
+```
+
+Type a number to toggle, then press Enter to confirm. Useful when you only want to push a config update without touching fonts or themes.
+
+### Shell-Aware PATH Patching
+
+The installer detects `$SHELL` and appends to the correct rc file automatically:
+
+| Shell | File patched |
+|---|---|
+| `zsh` | `~/.zshrc` |
+| `bash` | `~/.bashrc` |
+| `fish` | `~/.config/fish/conf.d/hypr_path.fish` |
+| `ksh` / `mksh` | `~/.kshrc` |
+| Other | `~/.profile` (POSIX fallback) |
+
+It also guards against duplicates — re-running the installer won't stack up multiple `export PATH=` lines.
+
+---
 
 ### Manual Install
 
@@ -186,74 +241,92 @@ find "$HOME/.local/bin/scripts" -type f -exec chmod +x {} +
 fc-cache -f
 ```
 
-Then ensure `~/.local/bin` is in your `PATH`. Add to `~/.zshrc`:
+Add `~/.local/bin` to your PATH (adjust for your shell):
 
 ```bash
-export PATH="$HOME/.local/bin:$PATH"
+# zsh / bash
+echo 'export PATH="$HOME/.local/bin:$PATH"' >> ~/.zshrc
+
+# fish
+fish_add_path $HOME/.local/bin
 ```
 
 > [!NOTE]
-> `nwg-look` may silently overwrite `.gtkrc-2.0`. If GTK 2 theming breaks after running it, re-copy the file from the repo.
+> `nwg-look` may silently overwrite `.gtkrc-2.0`. If GTK 2 theming breaks after running it, re-copy from the repo:
+> ```bash
+> cp /path/to/Hypr/.gtkrc-2.0 ~/.gtkrc-2.0
+> ```
 
 ---
 
 ## 🎨 Theming
 
-Color theming is powered by **[Matugen](https://github.com/InioX/matugen)** — a Material You color extraction tool that generates a full palette from your current wallpaper. Every time you change wallpaper, the entire desktop recolors: Waybar, Rofi, Mako, Hyprlock, GTK apps, and terminal colors all update automatically.
+Color theming is powered by **[Matugen](https://github.com/InioX/matugen)** — a Material You color extraction tool that derives a full palette from your active wallpaper. Every component that supports it (Waybar, Rofi, Mako, Hyprlock, GTK apps, terminal) recolors automatically whenever you change wallpaper.
 
-To change your wallpaper and regenerate the theme:
+### Changing Wallpaper
 
 ```bash
 swww img /path/to/wallpaper.jpg --transition-type grow --transition-pos center
 matugen image /path/to/wallpaper.jpg
 ```
 
-If colors get out of sync after an app config update, regenerate manually:
+### Force Regenerate Colors
+
+If colors get out of sync after an app config update:
 
 ```bash
 matugen image ~/.config/hyprwat/current_wallpaper
 ```
 
-Matugen templates live in `.config/matugen/` and define how Material You color variables map to each app's config format.
+Matugen templates live in `.config/matugen/` and map Material You color tokens to each app's config format. Edit these templates to customize how colors are applied per app.
 
 ---
 
 ## 🔧 Troubleshooting
 
-**Waybar / Rofi not launching**
-The installer doesn't check for Hyprland ecosystem tools. Verify they're installed:
+**Waybar / Rofi / Mako not launching**
+Run the installer's built-in ecosystem check to see exactly what's missing:
 ```bash
-which waybar rofi mako swww hyprlock matugen
+./install.sh --dry-run
+```
+Or verify manually:
+```bash
+which hyprland waybar rofi mako swww hyprlock matugen foot zsh
 ```
 
 **Scripts not working (`command not found`)**
-`~/.local/bin` is not in your `$PATH`. Add to `~/.zshrc`:
+`~/.local/bin` is not in your `$PATH`. The installer will offer to patch this automatically, or add it manually:
 ```bash
-export PATH="$HOME/.local/bin:$PATH"
-source ~/.zshrc
+echo 'export PATH="$HOME/.local/bin:$PATH"' >> ~/.zshrc && source ~/.zshrc
 ```
 
 **GTK 2 theming broken after `nwg-look`**
-Re-apply the config from the repo:
+`nwg-look` silently overwrites `.gtkrc-2.0`. Re-apply from the repo:
 ```bash
 cp /path/to/Hypr/.gtkrc-2.0 ~/.gtkrc-2.0
 ```
 
 **Colors didn't update after wallpaper change**
-Manually regenerate the Matugen palette:
+Regenerate the Matugen palette manually:
 ```bash
 matugen image /path/to/your/wallpaper
 ```
 
 **Font icons showing as boxes**
-Fonts aren't cached. Reinstall and rebuild:
+Fonts aren't installed or the cache needs rebuilding:
 ```bash
 yay -S ttf-font-awesome nerd-fonts-symbols-only
 fc-cache -f
 ```
 
-**Uninstall says "No install manifest found"**
-The backup directory was deleted or the install was run outside this repo. Manually remove installed files — refer to the [Wiki](https://github.com/Cybersnake223/Hypr/wiki/Uninstalling) for the full file list.
+**`--uninstall` says "No install manifest found"**
+Either the installer was never run from this repo, or the backup directory was deleted. In that case, manually remove installed files — see the [Wiki → Uninstalling](https://github.com/Cybersnake223/Hypr/wiki/Uninstalling) for the full file list.
+
+**Something went wrong mid-install**
+Every run writes a plain-text log to `/tmp/hypr-install-<timestamp>.log`. Check it for the exact error:
+```bash
+cat /tmp/hypr-install-*.log | tail -50
+```
 
 ---
 
