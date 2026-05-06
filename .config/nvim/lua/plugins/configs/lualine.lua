@@ -1,9 +1,9 @@
 local exclude = { "markdown", "quarto", "ipynb" }
 return {
   options = {
-    theme = "onedark",
+    theme = "nightfox",
     globalstatus = true,
-    refresh = { statusline = 1000, tabline = 1000, winbar = 1000 },
+    refresh = { statusline = 3000, tabline = 3000, winbar = 1000 },
   },
   sections = {
     lualine_a = { "mode" },
@@ -19,7 +19,7 @@ return {
         end,
         show_filename_only = true,
         show_modified_status = true,
-        mode = 0, -- 0: active buffer only, 1: indexed, 2: indexed + unique
+        mode = 0,
         max_length = vim.o.columns * 2 / 3,
       },
     },
@@ -29,5 +29,5 @@ return {
     lualine_y = {},
     lualine_z = {},
   },
-  extensions = { "nvim-tree" },
+  extensions = { "oil" },
 }

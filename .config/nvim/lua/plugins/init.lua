@@ -12,6 +12,7 @@ return {
       vim.cmd "colorscheme nightfox"
     end,
   },
+
   -- ─────────────────────────────────────────────────────────
   -- Core async Lua library
   -- ─────────────────────────────────────────────────────────
@@ -20,7 +21,7 @@ return {
   -- ─────────────────────────────────────────────────────────
   -- Icons
   -- ─────────────────────────────────────────────────────────
-  { "nvim-tree/nvim-web-devicons", lazy = true },
+  -- { "nvim-tree/nvim-web-devicons", lazy = true },
   { "echasnovski/mini.icons", lazy = true },
 
   -- ─────────────────────────────────────────────────────────
@@ -92,7 +93,8 @@ return {
 
   {
     "saghen/blink.cmp",
-    build = "cargo build --release",
+    -- build = "cargo build --release",
+    version = "*",
     event = "InsertEnter",
     dependencies = { "L3MON4D3/LuaSnip", "rafamadriz/friendly-snippets" },
     opts = function()
@@ -183,41 +185,41 @@ return {
   -- ─────────────────────────────────────────────────────────
   -- Diagnostics + TODOs
   -- ─────────────────────────────────────────────────────────
-  {
-    "folke/trouble.nvim",
-    cmd = "Trouble",
-    opts = { focus = true },
-    keys = {
-      { "<leader>xx", "<cmd>Trouble diagnostics toggle<cr>", desc = "Diagnostics (project)" },
-      { "<leader>xb", "<cmd>Trouble diagnostics toggle filter.buf=0<cr>", desc = "Diagnostics (buffer)" },
-      { "<leader>xs", "<cmd>Trouble symbols toggle<cr>", desc = "Symbols" },
-      { "<leader>xq", "<cmd>Trouble qflist toggle<cr>", desc = "Quickfix" },
-      { "<leader>xt", "<cmd>Trouble todo toggle<cr>", desc = "TODOs" },
-    },
-  },
-
-  {
-    "folke/todo-comments.nvim",
-    event = "BufReadPost",
-    dependencies = { "nvim-lua/plenary.nvim" },
-    opts = { signs = false },
-    keys = {
-      {
-        "]t",
-        function()
-          require("todo-comments").jump_next()
-        end,
-        desc = "Next TODO",
-      },
-      {
-        "[t",
-        function()
-          require("todo-comments").jump_prev()
-        end,
-        desc = "Prev TODO",
-      },
-    },
-  },
+  -- {
+  --   "folke/trouble.nvim",
+  --   cmd = "Trouble",
+  --   opts = { focus = true },
+  --   keys = {
+  --     { "<leader>xx", "<cmd>Trouble diagnostics toggle<cr>", desc = "Diagnostics (project)" },
+  --     { "<leader>xb", "<cmd>Trouble diagnostics toggle filter.buf=0<cr>", desc = "Diagnostics (buffer)" },
+  --     { "<leader>xs", "<cmd>Trouble symbols toggle<cr>", desc = "Symbols" },
+  --     { "<leader>xq", "<cmd>Trouble qflist toggle<cr>", desc = "Quickfix" },
+  --     { "<leader>xt", "<cmd>Trouble todo toggle<cr>", desc = "TODOs" },
+  --   },
+  -- },
+  --
+  -- {
+  --   "folke/todo-comments.nvim",
+  --   event = "BufReadPost",
+  --   dependencies = { "nvim-lua/plenary.nvim" },
+  --   opts = { signs = false },
+  --   keys = {
+  --     {
+  --       "]t",
+  --       function()
+  --         require("todo-comments").jump_next()
+  --       end,
+  --       desc = "Next TODO",
+  --     },
+  --     {
+  --       "[t",
+  --       function()
+  --         require("todo-comments").jump_prev()
+  --       end,
+  --       desc = "Prev TODO",
+  --     },
+  --   },
+  -- },
 
   -- ─────────────────────────────────────────────────────────
   -- Indent guides
@@ -250,11 +252,11 @@ return {
   -- ─────────────────────────────────────────────────────────
   -- File Explorer
   -- ─────────────────────────────────────────────────────────
-  {
-    "stevearc/oil.nvim",
-    lazy = false,
-    opts = { view_options = { show_hidden = true } },
-  },
+  -- {
+  --   "stevearc/oil.nvim",
+  --   lazy = false,
+  --   opts = { view_options = { show_hidden = true } },
+  -- },
 
   -- ─────────────────────────────────────────────────────────
   -- SQL Database Client
@@ -271,12 +273,11 @@ return {
     end,
   },
 
-  { "tpope/vim-dadbod", lazy = true },
+  -- { "tpope/vim-dadbod", lazy = true },
 
   {
     "kristijanhusak/vim-dadbod-completion",
     ft = { "sql", "mysql", "plsql" },
-    dependencies = { "tpope/vim-dadbod" },
   },
 
   -- ─────────────────────────────────────────────────────────
@@ -331,7 +332,7 @@ return {
     "3rd/image.nvim",
     lazy = true,
     opts = {
-      backend = "sixel",
+      backend = "kitty",
       processor = "magick_cli",
       integrations = {
         markdown = { enabled = true, only_render_image_at_cursor = true },
@@ -429,7 +430,7 @@ return {
         callback = function(ev)
           vim.keymap.set("n", "<leader>n", function()
             local row = vim.api.nvim_win_get_cursor(0)[1]
-            local lines = { "```{python}", "", "```", "" }
+            local lines = { "```python", "", "```", "" }
             vim.api.nvim_buf_set_lines(0, row, row, false, lines)
             vim.api.nvim_win_set_cursor(0, { row + 2, 0 })
             vim.cmd "startinsert"

@@ -11,7 +11,7 @@ return {
         background = false,
       },
       native_lsp = {
-        enable = true,
+        enable = false,
         background = false,
       },
       treesitter = true,
@@ -19,13 +19,13 @@ return {
       whichkey = true,
       lualine = true,
       mini = true,
-      render_markdown = true,
+      render_markdown = false,
     },
   },
 
   palettes = {
     nightfox = {
-      comment = "#6e7f9f",
+      -- comment = "#6e7f9f",
     },
   },
 

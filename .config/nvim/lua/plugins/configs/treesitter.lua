@@ -7,8 +7,6 @@ M.parsers = {
   "sql",
   "bash",
   "markdown", "markdown_inline",
-  "toml", "yaml", "json", "jsonc",
-  "diff", "gitcommit", "gitignore",
   "regex",
 }
 

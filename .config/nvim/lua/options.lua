@@ -14,7 +14,7 @@ opt.number = true
 opt.relativenumber = true
 opt.signcolumn = "yes"
 opt.fillchars = { eob = " " }
-opt.wrap = false
+opt.wrap = true
 opt.linebreak = true
 opt.list = true
 opt.listchars = { tab = "» ", trail = "·", nbsp = "␣" }
@@ -23,7 +23,7 @@ opt.listchars = { tab = "» ", trail = "·", nbsp = "␣" }
 opt.mouse = "a"
 opt.splitbelow = true
 opt.splitright = true
-opt.scrolloff = 10
+-- opt.scrolloff = 10
 opt.sidescrolloff = 8
 opt.timeoutlen = 500
 opt.updatetime = 250
@@ -46,7 +46,9 @@ opt.softtabstop = 2
 opt.smartindent = true
 
 -- ── Python / Neovim provider ─────────────────────────────
-g.python3_host_prog = "/home/cybersnake/.venv/bin/python3"
+local venv = os.getenv "VIRTUAL_ENV"
+g.python3_host_prog = venv and (venv .. "/bin/python3")
+  or (vim.fn.expand "~/.venv/bin/python3")
 
 -- ── Appearance ───────────────────────────────────────────
 g.have_nerd_font = true

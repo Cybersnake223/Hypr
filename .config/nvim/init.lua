@@ -5,6 +5,7 @@ vim.g.loaded_perl_provider = 0
 vim.g.loaded_ruby_provider = 0
 vim.g.loaded_node_provider = 0
 
+
 -- ─────────────────────────────────────────────────────────
 -- 1. Core Options
 -- ─────────────────────────────────────────────────────────
@@ -14,7 +15,7 @@ require "commands"
 
 vim.o.conceallevel = 0
 vim.opt.shada = "!,'100,<50,s10,h"
-vim.lsp.set_log_level "off"
+vim.lsp.set_log_level = "off"
 vim.g.db_ui_save_location = vim.fn.getcwd() .. "/.sql_queries"
 
 -- ─────────────────────────────────────────────────────────
@@ -50,15 +51,17 @@ require("lazy").setup("plugins", {
   checker = { enabled = false },
   change_detection = { notify = false },
   defaults = { lazy = true },
+  concurrency = 8,
 
   performance = {
-    cache = { enabled = true }, 
+    cache = { enabled = true },
     reset_packpath = true,
     rtp = {
       disabled_plugins = {
-        -- "rplugin",         
+        -- "rplugin",
         "netrwPlugin",
         "matchit",
+        "matchparen",
         "gzip",
         "tarPlugin",
         "zipPlugin",

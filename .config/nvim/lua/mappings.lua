@@ -87,7 +87,7 @@ vim.api.nvim_create_autocmd("FileType", {
 -----------------------------------------------------------
 -- 6. Plugin Management
 -----------------------------------------------------------
-map("n", "<leader>L", "<cmd>Lazy<CR>", { desc = "Lazy Menu" })
+map("n", "<leader>P", "<cmd>Lazy<CR>", { desc = "Lazy Menu" })
 map("n", "<leader>M", "<cmd>Mason<CR>", { desc = "Mason Menu" })
 
 -----------------------------------------------------------
