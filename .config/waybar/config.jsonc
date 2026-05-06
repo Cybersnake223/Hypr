@@ -16,23 +16,25 @@
 {
   "layer": "top",
   "position": "top",
-  "height": 28 ,
+  "height": 28,
   "spacing": 0,
   "ipc": true,
   "reload_style_on_change": true,
+  "gtk-layer-shell": true,
 
   "modules-left": [
-    "hyprland/workspaces",
     "network",
+    "memory",
     "custom/updates",
   ],
 
   "modules-center": [
-    "clock"
+    "hyprland/workspaces",
+    "clock",
   ],
 
   "modules-right": [
-    "memory",
+    "tray",
     "bluetooth",
     "pulseaudio",
     "pulseaudio#microphone",
@@ -46,7 +48,7 @@
       "active-only": false,
       "all-outputs": true,
       "format": "{name}",
-      "persistent-workspaces": {},
+      // "persistent-workspaces": {},
       "show-special": true,
       "on-scroll-up": "hyprctl dispatch workspace e-1",
       "on-scroll-down": "hyprctl dispatch workspace e+1"
@@ -166,13 +168,23 @@
   },
 
   // ─────────────────────────────
-  // UPDATES (SIGNAL-DRIVEN)
+  // UPDATES
   // ─────────────────────────────
   "custom/updates": {
     "format": "{}",
     "tooltip": true,
+    "interval": 600,
     "return-type": "json",
     "exec": "$HOME/.config/waybar/bin/updatecheck",
-    "signal": 8
-  }
+  },
+
+  // ─────────────────────────────
+  // TRAY
+  // ─────────────────────────────
+
+  "tray": {
+    "icon-size": 16,
+    "spacing": 6,
+    "show-passive-items": true,
+  },
 }
