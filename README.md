@@ -1,98 +1,131 @@
 <div align="center">
-  <p></p>
-  <p><b><i> <img src="assets/cslogo.png" </i></b></p>
+  <img src="assets/cslogo.png" alt="Cybersnake Logo" width="120"/>
+
   <img src="https://readme-typing-svg.herokuapp.com?font=Righteous&weight=600&size=75&duration=1200&pause=1000&color=A024F7&center=true&vCenter=true&random=false&width=600&height=80&lines=Vicious+Viper">
+
+  <p><em>A Hyprland dotfiles setup for Arch Linux — dynamic theming, clean workflows, curated tools.</em></p>
+
+  <p>
+    <img src="https://img.shields.io/github/last-commit/Cybersnake223/Hypr/main?style=for-the-badge&label=last%20commit&color=A024F7">
+    <img src="https://img.shields.io/github/repo-size/Cybersnake223/Hypr?style=for-the-badge&label=size&color=A024F7">
+    <img src="https://img.shields.io/github/stars/Cybersnake223/Hypr?style=for-the-badge&color=A024F7">
+    <img src="https://img.shields.io/github/license/Cybersnake223/Hypr?style=for-the-badge&color=A024F7">
+    <img src="https://img.shields.io/github/forks/Cybersnake223/Hypr?style=for-the-badge&color=A024F7">
+  </p>
+
+  <p>
+    <a href="#-preview">Preview</a> •
+    <a href="#-stack">Stack</a> •
+    <a href="#-prerequisites">Prerequisites</a> •
+    <a href="#-installation">Installation</a> •
+    <a href="#-theming">Theming</a> •
+    <a href="#-troubleshooting">Troubleshooting</a>
+  </p>
 </div>
-<p></p>
 
+---
 
-<div align="center">
-  <img src="https://img.shields.io/github/last-commit/Cybersnake223/Hypr/main?style=for-the-badge&label=last%20commit&color=A024F7">
-  <img src="https://img.shields.io/github/repo-size/Cybersnake223/Hypr?style=for-the-badge&label=size&color=A024F7">
-  <img src="https://img.shields.io/github/stars/Cybersnake223/Hypr?style=for-the-badge&color=A024F7">
-  <img src="https://img.shields.io/github/license/Cybersnake223/Hypr?style=for-the-badge&color=A024F7">
-  <img src="https://img.shields.io/github/forks/Cybersnake223/Hypr?style=for-the-badge&color=A024F7">
-</div>
+## 🖼 Preview
 
-![1](assets/asset1.png)
-![10](assets/asset10.png)
+![Desktop 1](assets/asset1.png)
+![Desktop 2](assets/asset10.png)
 
-| ![11](assets/asset11.png) | ![12](assets/asset12.png)
+| ![](assets/asset11.png) | ![](assets/asset12.png) |
 |---|---|
-| ![2](assets/asset2.png) | ![3](assets/asset3.png) |
-| ![4](assets/asset4.png) | ![5](assets/asset5.png) |
-| ![6](assets/asset6.png) | ![7](assets/asset7.png) |
-| ![8](assets/asset8.png) | ![9](assets/asset9.png) |
-
-<div align="center"><img src="https://raw.githubusercontent.com/catppuccin/catppuccin/main/assets/footers/gray0_ctp_on_line.png"></div>
-
----
-
-## _Basic Info_
+| ![](assets/asset2.png) | ![](assets/asset3.png) |
+| ![](assets/asset4.png) | ![](assets/asset5.png) |
+| ![](assets/asset6.png) | ![](assets/asset7.png) |
+| ![](assets/asset8.png) | ![](assets/asset9.png) |
 
 <div align="center">
-
-- 🍀 **Base** — [Arch](https://archlinux.org/)
-- 🌼 **Wayland Compositor** — [Hyprland](https://hyprland.org/)
-- ✨ **Bar** — [Waybar](https://github.com/Alexays/Waybar)
-- 💦 **GUI File Manager** — [Thunar](https://gitlab.xfce.org/xfce/thunar)
-- 🗄️ **CLI File Manager** — [Yazi](https://yazi-rs.github.io/docs/installation/)
-- 🌷 **Terminal** — [Foot](https://github.com/DanteAlighierin/foot)
-- 🍄 **Shell** — [Zsh](https://zsh.sourceforge.io/)
-- 🪵 **Notifications** — [Mako](https://github.com/emersion/mako)
-- 🌻 **Launcher** — [Rofi (Lbonn Fork)](https://github.com/lbonn/rofi)
-- 🚀 **Dmenu Program** — [Rofi (Lbonn Fork)](https://github.com/lbonn/rofi)
-- 🍁 **Wallpaper** — [Swww](https://github.com/LGFae/swww.git)
-- 🌐 **Browser** — [Zen Browser](https://zen-browser.app/)
-- ❄️ **Screen Locker** — [Hyprlock](https://github.com/hyprwm/hyprlock)
-- ⏬ **Download Manager** — [Aria2](https://github.com/aria2/aria2)
-- 🤖 **System Fetch** — [Nitch](https://github.com/ssleert/nitch)
-
+  <img src="https://raw.githubusercontent.com/catppuccin/catppuccin/main/assets/footers/gray0_ctp_on_line.png"/>
 </div>
 
 ---
 
-## _Required Packages_
+## 🧩 Stack
 
-Install all components listed above, then the following:
+| Role | Tool |
+|---|---|
+| 🏗 Base | [Arch Linux](https://archlinux.org/) |
+| 🪟 Compositor | [Hyprland](https://hyprland.org/) |
+| 📊 Bar | [Waybar](https://github.com/Alexays/Waybar) |
+| 🖥 Terminal | [Foot](https://github.com/DanteAlighierin/foot) |
+| 🐚 Shell | [Zsh](https://zsh.sourceforge.io/) + [Starship](https://starship.rs/) |
+| 🔔 Notifications | [Mako](https://github.com/emersion/mako) |
+| 🚀 Launcher | [Rofi (lbonn/wayland fork)](https://github.com/lbonn/rofi) |
+| 🖼 Wallpaper | [Swww](https://github.com/LGFae/swww) |
+| 🌐 Browser | [Zen Browser](https://zen-browser.app/) |
+| 🔒 Locker | [Hyprlock](https://github.com/hyprwm/hyprlock) |
+| 📁 File Manager | [Thunar](https://gitlab.xfce.org/xfce/thunar) (GUI) / [Yazi](https://yazi-rs.github.io/) (TUI) |
+| 📝 Editor | [Neovim](https://neovim.io/) |
+| 🎨 Theming | [Matugen](https://github.com/InioX/matugen) (Material You — wallpaper-based) |
+| 📡 System Info | [Fastfetch](https://github.com/fastfetch-cli/fastfetch) |
+| 🎵 Audio | [cmus](https://cmus.github.io/) + [Cava](https://github.com/karlstav/cava) + [mpv](https://mpv.io/) |
+| 📈 Monitor | [btop](https://github.com/aristocratos/btop) |
+| ⬇ Downloads | [aria2](https://aria2.github.io/) |
+
+> [!NOTE]
+> This setup is **primarily tuned for laptops**. Desktop users should review `auto-cpufreq` settings and Waybar's battery module.
+
+---
+
+## 📦 Prerequisites
+
+> [!IMPORTANT]
+> The installer **does not** check for Hyprland ecosystem packages. Install all dependencies below **before** running `install.sh`.
+
+### Core Packages
+
+```bash
+yay -S hyprland waybar foot zsh rofi-lbonn-wayland-git mako swww \
+        hyprlock thunar yazi zen-browser-bin fastfetch matugen-bin \
+        btop cava cmus mpv aria2 starship neovim
+```
+
+### Required Supporting Packages
 
 | Package | Purpose |
 |---|---|
-| `matugen` | Wallpaper-based color palette generation |
-| `xdg-desktop-portal-hyprland` | Better Wayland compatibility |
-| `cava` | Audio visualizer |
-| `polkit-gnome` | Authentication agent |
-| `grim & slurp` + `wl-clipboard` | Screenshot utility |
+| `matugen` | Wallpaper-based dynamic color palette (Material You) |
+| `xdg-desktop-portal-hyprland` | Wayland portal — screenshare, file picker |
+| `polkit-gnome` | Authentication agent for GUI prompts |
+| `grim` + `slurp` + `wl-clipboard` | Screenshot toolchain |
 | `brightnessctl` | Monitor and keyboard brightness control |
-| `mpv` | Media player |
-| `pavucontrol` | Volume control panel |
-| `xorg-xwayland` | Support for non-Wayland apps and games |
-| `pipewire` + `pipewire-pulse` + `pipewire-alsa` | Audio playback |
-| `wireplumber` | Session manager for Pipewire |
-| `bleachbit` | Required for the cleaner script |
-| `cmus` | Terminal audio player |
-| `btop` | Resource monitor |
-| `nmcli` | Network connection manager |
-| `bluez-tools` | Bluetooth manager |
-| `advcpmv` _(AUR)_ | Improved `cp` and `mv` with progress |
-| `eza` | Modern replacement for `ls` |
-| `fd` | Fast alternative to `find` |
+| `pavucontrol` | PulseAudio / PipeWire volume GUI |
+| `xorg-xwayland` | Legacy X11 app compatibility |
+| `pipewire` + `pipewire-pulse` + `pipewire-alsa` | Audio stack |
+| `wireplumber` | PipeWire session manager |
+| `bleachbit` | Required by the system cleaner script |
+| `networkmanager` + `nmcli` | Network management |
+| `bluez` + `bluez-tools` | Bluetooth support |
+| `advcpmv` *(AUR)* | `cp`/`mv` with progress bars |
+| `eza` | Modern `ls` replacement |
+| `fd` | Fast `find` replacement |
+| `bat` | `cat` with syntax highlighting |
 
-**Fonts:** JetBrains Mono Nerd Font, Awesome Fonts, Icomoon Feather, Nerd Font Symbols
+### Fonts
 
-> [!NOTE]
-> **Colorscheme changes dynamically based on your wallpaper** via Matugen. 😉
+The `.fonts/` directory is included in this repo and installed automatically. To install manually via the AUR:
+
+```bash
+yay -S ttf-jetbrains-mono-nerd ttf-font-awesome nerd-fonts-symbols-only
+```
+
+Required fonts:
+- **JetBrains Mono Nerd Font** — primary monospace
+- **Awesome Fonts** — icon font for Waybar / Rofi
+- **Icomoon Feather** — supplementary icon set
+- **Nerd Font Symbols** — fallback glyph coverage
 
 ---
 
-# Install Instructions
+## ⚡ Installation
 
 > [!CAUTION]
-> The installer backs up existing files before overwriting, but **only for paths
-> present in this repo**. No unrelated configs are touched. I am not responsible
-> for any lost configs — back up your own stuff first if you're unsure.
+> The installer backs up existing files before overwriting them, but **only for paths present in this repo**. No unrelated configs are touched. Back up your own files first if you're unsure.
 
-## Quick Install (Recommended)
+### Quick Install (Recommended)
 
 ```bash
 git clone https://github.com/Cybersnake223/Hypr
@@ -103,50 +136,43 @@ chmod +x install.sh
 
 The installer will:
 
-- ✅ Check for required dependencies (`cp`, `mkdir`, `find`, `date`)
-- 🗂️ Back up any existing files it will overwrite into a timestamped folder
-- 📁 Copy configs, scripts, icons, themes, fonts and root dotfiles into `$HOME`
-- 🔒 Mark all scripts in `~/.local/bin/scripts` as executable
+- ✅ Check for required system utilities
+- 🗂 Back up any existing files it will overwrite into a **timestamped directory**
+- 📁 Copy configs, scripts, icons, themes, and fonts into `$HOME`
+- 🔑 Mark all scripts in `~/.local/bin/scripts` as executable
 - 🔤 Rebuild the font cache via `fc-cache -f`
-- 🛤️ Optionally add `~/.local/bin` to your PATH in `~/.zshrc`
+- 🛤 Optionally add `~/.local/bin` to your `PATH` in `~/.zshrc`
 
-> [!NOTE]
-> Backups are saved to:
-> `~/.local/share/hypr-dotfiles-backups/<timestamp>/`
-> (or `$XDG_DATA_HOME/hypr-dotfiles-backups/<timestamp>/` if `$XDG_DATA_HOME` is set)
+**Backups are saved to:**
+```
+~/.local/share/hypr-dotfiles-backups/<YYYYMMDD-HHMMSS>/
+# or $XDG_DATA_HOME/hypr-dotfiles-backups/<timestamp>/ if $XDG_DATA_HOME is set
+```
 
----
-
-### Options
+### Installer Flags
 
 | Flag | Description |
 |---|---|
-| `--dry-run` | Preview all actions without making any changes |
+| `--dry-run` | Preview all actions — no changes made |
 | `--yes` | Non-interactive, skip all prompts |
-| `--no-backup` | Skip backup entirely (**dangerous**) |
-| `--uninstall` | Remove installed files and restore originals from the latest backup |
-
-**Examples:**
+| `--no-backup` | Skip backup (**dangerous** — disables uninstall) |
+| `--uninstall` | Restore originals from the most recent backup |
+| `-h`, `--help` | Show usage information |
 
 ```bash
 # Preview without changing anything
 ./install.sh --dry-run
 
-# Non-interactive install
+# Fully non-interactive install
 ./install.sh --yes
 
-# Install without backup
-./install.sh --yes --no-backup
-
-# Uninstall and restore previous configs
+# Restore backed-up configs
 ./install.sh --uninstall
 ```
 
----
+### Manual Install
 
-## Manual Install
-
-If you prefer not to use the installer:
+If you prefer not to use the script:
 
 ```bash
 cp -r .config/* "$HOME/.config"
@@ -156,28 +182,87 @@ cp -r .themes "$HOME/.themes"
 cp -r .fonts "$HOME/.fonts"
 cp .Xresources "$HOME/.Xresources"
 cp .gtkrc-2.0 "$HOME/.gtkrc-2.0"
+find "$HOME/.local/bin/scripts" -type f -exec chmod +x {} +
 fc-cache -f
 ```
 
-> [!IMPORTANT]
-> Make sure `~/.local/bin` is in your **PATH**, otherwise the custom scripts
-> (wallpaper switching, media downloads, etc.) won't work as intended.
-> Add this to your `~/.zshrc`:
->
-> ```bash
-> export PATH="$HOME/.local/bin:$PATH"
-> ```
+Then ensure `~/.local/bin` is in your `PATH`. Add to `~/.zshrc`:
+
+```bash
+export PATH="$HOME/.local/bin:$PATH"
+```
 
 > [!NOTE]
-> `.gtkrc-2.0` may be silently overwritten by `nwg-look`. Re-copy it from the
-> repo if your GTK 2 theming breaks after running it.
-
-> [!NOTE]
-> This setup is primarily tuned for **laptops**. Desktop users may want to
-> review and adjust `auto-cpufreq` settings in `.config/`.
+> `nwg-look` may silently overwrite `.gtkrc-2.0`. If GTK 2 theming breaks after running it, re-copy the file from the repo.
 
 ---
 
-# LICENSE
+## 🎨 Theming
+
+Color theming is powered by **[Matugen](https://github.com/InioX/matugen)** — a Material You color extraction tool that generates a full palette from your current wallpaper. Every time you change wallpaper, the entire desktop recolors: Waybar, Rofi, Mako, Hyprlock, GTK apps, and terminal colors all update automatically.
+
+To change your wallpaper and regenerate the theme:
+
+```bash
+swww img /path/to/wallpaper.jpg --transition-type grow --transition-pos center
+matugen image /path/to/wallpaper.jpg
+```
+
+If colors get out of sync after an app config update, regenerate manually:
+
+```bash
+matugen image ~/.config/hyprwat/current_wallpaper
+```
+
+Matugen templates live in `.config/matugen/` and define how Material You color variables map to each app's config format.
+
+---
+
+## 🔧 Troubleshooting
+
+**Waybar / Rofi not launching**
+The installer doesn't check for Hyprland ecosystem tools. Verify they're installed:
+```bash
+which waybar rofi mako swww hyprlock matugen
+```
+
+**Scripts not working (`command not found`)**
+`~/.local/bin` is not in your `$PATH`. Add to `~/.zshrc`:
+```bash
+export PATH="$HOME/.local/bin:$PATH"
+source ~/.zshrc
+```
+
+**GTK 2 theming broken after `nwg-look`**
+Re-apply the config from the repo:
+```bash
+cp /path/to/Hypr/.gtkrc-2.0 ~/.gtkrc-2.0
+```
+
+**Colors didn't update after wallpaper change**
+Manually regenerate the Matugen palette:
+```bash
+matugen image /path/to/your/wallpaper
+```
+
+**Font icons showing as boxes**
+Fonts aren't cached. Reinstall and rebuild:
+```bash
+yay -S ttf-font-awesome nerd-fonts-symbols-only
+fc-cache -f
+```
+
+**Uninstall says "No install manifest found"**
+The backup directory was deleted or the install was run outside this repo. Manually remove installed files — refer to the [Wiki](https://github.com/Cybersnake223/Hypr/wiki/Uninstalling) for the full file list.
+
+---
+
+## 📄 License
 
 This project is licensed under the **MIT License** — see [LICENSE](LICENSE) for details.
+
+<div align="center">
+  <img src="https://raw.githubusercontent.com/catppuccin/catppuccin/main/assets/footers/gray0_ctp_on_line.png"/>
+  <br/>
+  <sub>Made with 💜 by <a href="https://github.com/Cybersnake223">Cybersnake</a></sub>
+</div>
