@@ -57,15 +57,15 @@ window#waybar.hidden {
 #pulseaudio.microphone,
 #battery,
 #custom-updates {
-  background: rgba(0, 20, 18, 0.52);
+  background: rgba(0, 20, 18, 0.30);
   border-radius: 12px;
   margin: 4px 6px;
   padding: 4px 12px;
 
-  border-top:    1px solid rgba(255, 255, 255, 0.28);
-  border-left:   1px solid rgba(255, 255, 255, 0.16);
-  border-right:  1px solid rgba(255, 255, 255, 0.08);
-  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+  border-top:    1px solid rgba(255, 255, 255, 0.38);
+  border-left:   1px solid rgba(255, 255, 255, 0.26);
+  border-right:  1px solid rgba(255, 255, 255, 0.16);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.10);
 
   box-shadow:
     inset 0  1px 0   rgba(255, 255, 255, 0.13),
@@ -185,7 +185,16 @@ window#waybar.hidden {
   text-shadow: 0 0 8px alpha(@tertiary_fixed, 0.40);
 }
 
-#pulseaudio.muted,
+#pulseaudio.muted{
+  padding:    0;
+  margin:     0;
+  min-width:  0;
+  border:     none;
+  box-shadow: none;
+  background: transparent;
+  opacity:    0;
+}
+
 #pulseaudio.microphone.muted {
   padding:    0;
   margin:     0;
