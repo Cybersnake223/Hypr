@@ -12,25 +12,27 @@
 //## Waybar Config                                                                                          ##
 //## Created by Cybersnake                                                                                  ##
 //############################################################################################################
-
 {
   "layer": "top",
   "position": "top",
-  "height": 28,
-  "spacing": 0,
+  "height": 38,
   "ipc": true,
   "reload_style_on_change": true,
   "gtk-layer-shell": true,
+  "margin-top": 6,
+  "margin-left": 8,
+  "margin-right": 8,
+  "margin-bottom": 0,
 
   "modules-left": [
     "network",
     "memory",
-    "custom/updates",
+    "custom/updates"
   ],
 
   "modules-center": [
     "hyprland/workspaces",
-    "clock",
+    "clock"
   ],
 
   "modules-right": [
@@ -44,45 +46,45 @@
   // ─────────────────────────────
   // WORKSPACES
   // ─────────────────────────────
-    "hyprland/workspaces": {
-      "active-only": false,
-      "all-outputs": true,
-      "format": "{name}",
-      // "persistent-workspaces": {},
-      "show-special": true,
-      "on-scroll-up": "hyprctl dispatch workspace e-1",
-      "on-scroll-down": "hyprctl dispatch workspace e+1"
-    },
+  "hyprland/workspaces": {
+    "active-only": false,
+    "all-outputs": true,
+    "format": "{name}",
+    "show-special": true,
+    // "persistent-workspaces": { "*": [1, 2, 3, 4, 5] },
+    "on-scroll-up": "hyprctl dispatch workspace e-1",
+    "on-scroll-down": "hyprctl dispatch workspace e+1"
+  },
 
   // ─────────────────────────────
-  // CLOCK (CENTER ANCHOR)
+  // CLOCK
   // ─────────────────────────────
   "clock": {
     "interval": 60,
-    "format": " {:%a, %b %d [%H:%M]}",
+    "format": " {:%a, %b %d [%H:%M]}",
     "tooltip": true,
     "tooltip-format": "<tt><small>{calendar}</small></tt>",
     "calendar": {
       "mode": "month",
       "mode-mon-col": 3,
       "format": {
-        "months": "<span color='#e6e1cf'><b>{}</b></span>",
-        "days": "<span color='#cad3f5'><b>{}</b></span>",
+        "months":   "<span color='#e6e1cf'><b>{}</b></span>",
+        "days":     "<span color='#cad3f5'><b>{}</b></span>",
         "weekdays": "<span color='#ff3333'><b>{}</b></span>",
-        "today": "<span color='#f5a97f'><b><u>{}</u></b></span>"
+        "today":    "<span color='#f5a97f'><b><u>{}</u></b></span>"
       }
     }
   },
 
   // ─────────────────────────────
-  // NETWORK (STATE + METRICS)
+  // NETWORK
   // ─────────────────────────────
   "network": {
     "interval": 5,
-    "format-wifi": "󰤥 {essid} ({signalStrength}%)",
-    "format-ethernet": "󰈀 Wired",
+    "format-wifi":       "󰤥 {essid} ({signalStrength}%)",
+    "format-ethernet":   "󰈀 Wired",
     "format-disconnected": "󰤮 Offline",
-    "tooltip-format": "{ipaddr}\n {bandwidthUpBits}\n {bandwidthDownBits}",
+    "tooltip-format": "{ipaddr}\n {bandwidthUpBits}\n {bandwidthDownBits}",
     "on-click": "wifimenu"
   },
 
@@ -91,7 +93,7 @@
   // ─────────────────────────────
   "cpu": {
     "interval": 5,
-    "format": " {usage}%"
+    "format": " {usage}%"
   },
 
   // ─────────────────────────────
@@ -99,40 +101,40 @@
   // ─────────────────────────────
   "memory": {
     "interval": 5,
-    "format": " {used:0.1f}G"
+    "format": " {used:0.1f}G"
   },
 
   // ─────────────────────────────
   // BLUETOOTH
   // ─────────────────────────────
   "bluetooth": {
-    "format": " {status}",
-    "format-disabled": " {status}",
-    "format-connected": " {device_alias}",
+    "format":           " {status}",
+    "format-disabled":  " {status}",
+    "format-connected": " {device_alias}",
     "tooltip-format": "{device_alias}",
     "tooltip-format-enumerate-connected": "{device_alias}",
-    "on-click": "btblock",
+    "on-click": "btblock"
   },
 
   // ─────────────────────────────
   // AUDIO OUTPUT
   // ─────────────────────────────
   "pulseaudio": {
-    "format": "{icon} {volume}%",
-    "format-muted": " Muted",
+    "format":       "{icon} {volume}%",
+    "format-muted": " Muted",
     "tooltip": false,
     "scroll-step": 5,
-    "on-click": "wpctl set-mute @DEFAULT_SINK@ toggle",
-    "on-scroll-up": "wpctl set-volume @DEFAULT_SINK@ 5%+",
-    "on-scroll-down": "wpctl set-volume @DEFAULT_SINK@ 5%-",
+    "on-click":      "wpctl set-mute @DEFAULT_SINK@ toggle",
+    "on-scroll-up":  "wpctl set-volume @DEFAULT_SINK@ 5%+",
+    "on-scroll-down":"wpctl set-volume @DEFAULT_SINK@ 5%-",
     "format-icons": {
-      "headphone": " ",
-      "hands-free": " ",
-      "headset": " ",
-      "phone": " ",
-      "portable": " ",
-      "car": " ",
-      "default": [" ", " ", " "]
+      "headphone":  " ",
+      "hands-free": " ",
+      "headset":    " ",
+      "phone":      " ",
+      "portable":   " ",
+      "car":        " ",
+      "default":    [" ", " ", " "]
     }
   },
 
@@ -140,13 +142,13 @@
   // MICROPHONE
   // ─────────────────────────────
   "pulseaudio#microphone": {
-    "format": "{format_source}",
-    "format-source": " {volume}%",
-    "format-source-muted": " Muted",
+    "format":              "{format_source}",
+    "format-source":       " {volume}%",
+    "format-source-muted": " Muted",
     "scroll-step": 5,
-    "on-click": "wpctl set-mute @DEFAULT_SOURCE@ toggle",
-    "on-scroll-up": "wpctl set-volume @DEFAULT_SOURCE@ 5%+",
-    "on-scroll-down": "wpctl set-volume @DEFAULT_SOURCE@ 5%-"
+    "on-click":      "wpctl set-mute @DEFAULT_SOURCE@ toggle",
+    "on-scroll-up":  "wpctl set-volume @DEFAULT_SOURCE@ 5%+",
+    "on-scroll-down":"wpctl set-volume @DEFAULT_SOURCE@ 5%-"
   },
 
   // ─────────────────────────────
@@ -155,12 +157,12 @@
   "battery": {
     "interval": 60,
     "states": {
-      "warning": 30,
+      "warning":  30,
       "critical": 20
     },
-    "format": "{icon} {capacity}%",
-    "format-charging": " {capacity}%",
-    "format-plugged": " {capacity}%",
+    "format":          "{icon} {capacity}%",
+    "format-charging": " {capacity}%",
+    "format-plugged":  " {capacity}%",
     "format-icons": [
       "󰂎","󰁺","󰁻","󰁼","󰁽",
       "󰁾","󰁿","󰂀","󰂁","󰂂","󰁹"
@@ -175,16 +177,15 @@
     "tooltip": true,
     "interval": 600,
     "return-type": "json",
-    "exec": "$HOME/.config/waybar/bin/updatecheck",
+    "exec": "$HOME/.config/waybar/bin/updatecheck"
   },
 
   // ─────────────────────────────
   // TRAY
   // ─────────────────────────────
-
   "tray": {
     "icon-size": 16,
     "spacing": 6,
-    "show-passive-items": true,
-  },
+    "show-passive-items": true
+  }
 }

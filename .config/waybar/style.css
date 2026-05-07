@@ -12,6 +12,7 @@
 /* ## Waybar Style                                                                                           ## */
 /* ## Created by Cybersnake                                                                                  ## */
 /* ############################################################################################################ */
+
 @import "colors.css";
 
 /* ─────────────────────────────
@@ -56,14 +57,20 @@ window#waybar.hidden {
 #pulseaudio.microphone,
 #battery,
 #custom-updates {
-  background: rgba(0, 17, 16, 0.55);
+  background: rgba(0, 20, 18, 0.52);
   border-radius: 12px;
   margin: 4px 6px;
   padding: 4px 12px;
-  border: 1px solid rgba(255, 255, 255, 0.22);
+
+  border-top:    1px solid rgba(255, 255, 255, 0.28);
+  border-left:   1px solid rgba(255, 255, 255, 0.16);
+  border-right:  1px solid rgba(255, 255, 255, 0.08);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+
   box-shadow:
-    inset 0 1px 0 rgba(255, 255, 255, 0.10),
-    inset 0 -4px 10px rgba(0, 0, 0, 0.10);
+    inset 0  1px 0   rgba(255, 255, 255, 0.13),
+    inset 0 -1px 0   rgba(0,   0,   0,   0.20);
+
   color: @surface_tint;
   transition: background 0.2s ease, border-color 0.2s ease, color 0.2s ease, box-shadow 0.2s ease;
 }
@@ -80,11 +87,17 @@ window#waybar.hidden {
 #pulseaudio.microphone:hover,
 #battery:hover,
 #custom-updates:hover {
-  background: rgba(0, 17, 16, 0.58);
-  border-color: rgba(255, 255, 255, 0.35);
+  background: rgba(0, 28, 26, 0.62);
+
+  border-top:    1px solid rgba(255, 255, 255, 0.42);
+  border-left:   1px solid rgba(255, 255, 255, 0.24);
+  border-right:  1px solid rgba(255, 255, 255, 0.10);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+
   box-shadow:
-    inset 0 1px 0 rgba(255, 255, 255, 0.14),
-    inset 0 -4px 10px rgba(0, 0, 0, 0.14);
+    inset 0  1px 0   rgba(255, 255, 255, 0.18),
+    inset 0 -1px 0   rgba(0,   0,   0,   0.25);
+
   color: @on_surface;
 }
 
@@ -99,24 +112,36 @@ window#waybar.hidden {
   background: transparent;
   color: alpha(@on_surface_variant, 0.4);
   margin: 0 3px;
-  padding: 2px 2px;
+  padding: 2px 6px;
   border-radius: 8px;
+  border: 1px solid transparent;
   transition: background 0.2s ease, border-color 0.2s ease, color 0.2s ease, box-shadow 0.2s ease;
 }
 
 #workspaces button:hover {
-  background: rgba(255, 255, 255, 0.07);
-  border-color: rgba(255, 255, 255, 0.35);
+  background: rgba(255, 255, 255, 0.09);
+  border-top:    1px solid rgba(255, 255, 255, 0.30);
+  border-left:   1px solid rgba(255, 255, 255, 0.16);
+  border-right:  1px solid rgba(255, 255, 255, 0.06);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.04);
+  box-shadow:
+    0 2px 6px rgba(0, 0, 0, 0.40),
+    inset 0 1px 0 rgba(255, 255, 255, 0.12);
   color: @on_surface;
 }
 
 #workspaces button.active {
-  background: rgba(255, 255, 255, 0.10);
+  background: rgba(255, 255, 255, 0.12);
+  border-top:    1px solid rgba(255, 255, 255, 0.38);
+  border-left:   1px solid rgba(255, 255, 255, 0.20);
+  border-right:  1px solid rgba(255, 255, 255, 0.08);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+
   box-shadow:
-    inset 0 1px 0 rgba(255, 255, 255, 0.10),
-    0 0 10px alpha(@primary, 0.30),
-    0 2px 8px rgba(0, 0, 0, 0.50);
+    inset 0 1px 0 rgba(255, 255, 255, 0.15);
+
   color: @primary;
+  text-shadow: 0 0 8px alpha(@primary, 0.55);
 }
 
 #workspaces button.empty {
@@ -125,38 +150,71 @@ window#waybar.hidden {
 
 #workspaces button.urgent {
   color: @error;
+  border-top: 1px solid rgba(255, 100, 80, 0.40);
   animation: pulse 1s ease infinite;
 }
 
 /* ─────────────────────────────
-   MODULE COLORS
+   MODULE COLORS + TEXT GLOW
    ───────────────────────────── */
-#clock  { color: @error_container; }
-#cpu    { color: @primary; }
-#memory { color: @tertiary_container; }
+#clock {
+  color: @error_container;
+  text-shadow: 0 0 10px alpha(@error_container, 0.45);
+}
+
+#cpu {
+  color: @primary;
+  text-shadow: 0 0 10px alpha(@primary, 0.45);
+}
+
+#memory {
+  color: @tertiary_container;
+  text-shadow: 0 0 10px alpha(@tertiary_container, 0.40);
+}
 
 /* ─────────────────────────────
    AUDIO
    ───────────────────────────── */
-#pulseaudio            { color: @tertiary_container; }
-#pulseaudio.microphone { color: @tertiary_fixed; }
+#pulseaudio {
+  color: @tertiary_container;
+  text-shadow: 0 0 8px alpha(@tertiary_container, 0.40);
+}
+
+#pulseaudio.microphone {
+  color: @tertiary_fixed;
+  text-shadow: 0 0 8px alpha(@tertiary_fixed, 0.40);
+}
 
 #pulseaudio.muted,
 #pulseaudio.microphone.muted {
-  color: @surface_variant;
-  opacity: 0.45;
+  padding:    0;
+  margin:     0;
+  min-width:  0;
+  border:     none;
+  box-shadow: none;
+  background: transparent;
+  opacity:    0;
 }
 
 /* ─────────────────────────────
    BATTERY
    ───────────────────────────── */
-#battery           { color: @surface_tint; }
-#battery.warning   { color: @tertiary; }
+#battery { color: @surface_tint; }
+
+#battery.warning {
+  color: @tertiary;
+  text-shadow: 0 0 8px alpha(@tertiary, 0.40);
+}
+
 #battery.charging,
-#battery.plugged   { color: @primary; }
+#battery.plugged {
+  color: @primary;
+  text-shadow: 0 0 10px alpha(@primary, 0.50);
+}
 
 #battery.critical {
   color: @error_container;
+  text-shadow: 0 0 10px alpha(@error_container, 0.55);
   animation: pulse 1s ease infinite;
 }
 
@@ -165,6 +223,7 @@ window#waybar.hidden {
   50%  { color: @error;           opacity: 0.6; }
   100% { color: @error_container; opacity: 1.0; }
 }
+
 /* ─────────────────────────────
    NETWORK
    ───────────────────────────── */
@@ -176,16 +235,18 @@ window#waybar.hidden {
    BLUETOOTH
    ───────────────────────────── */
 #bluetooth           { color: alpha(@error_container, 0.55); }
-#bluetooth.connected { color: @error_container; }
+#bluetooth.connected {
+  color: @error_container;
+  text-shadow: 0 0 8px alpha(@error_container, 0.45);
+}
 #bluetooth.disabled  { color: alpha(@on_surface_variant, 0.2); }
 
 /* ─────────────────────────────
    UPDATES
    ───────────────────────────── */
-#custom-updates          { color: @primary; }
-#custom-updates.updating {
-  color: alpha(@primary, 0.5);
-  animation: pulse 0.8s ease infinite;
+#custom-updates {
+  color: @primary;
+  text-shadow: 0 0 8px alpha(@primary, 0.40);
 }
 
 /* ─────────────────────────────
@@ -205,19 +266,20 @@ window#waybar.hidden {
 }
 
 /* ─────────────────────────────
-   TOOLTIP
+   TOOLTIP — floating glass card
    ───────────────────────────── */
 tooltip {
-  background: rgba(0, 17, 16, 0.72);
+  background: rgba(0, 20, 18, 0.78);
   border-radius: 10px;
-  border: 1px solid rgba(255, 255, 255, 0.10);
+
+  border: 1px solid rgba(255, 255, 255, 0.18);
+
   box-shadow:
-    inset 0 1px 0 rgba(255, 255, 255, 0.06),
-    0 8px 20px rgba(0, 0, 0, 0.55);
+    inset 0  1px 0 rgba(255, 255, 255, 0.12),
+    inset 0 -1px 0 rgba(0,   0,   0,   0.20);
 }
 
 tooltip label {
   padding: 6px 12px;
   color: @on_surface;
-  /* line-height: 1.5; */
 }
