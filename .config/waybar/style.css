@@ -12,32 +12,35 @@
 /* ## Waybar Style                                                                                           ## */
 /* ## Created by Cybersnake                                                                                  ## */
 /* ############################################################################################################ */
-
 @import "colors.css";
 
 /* ─────────────────────────────
-   GLOBAL
+   GLOBAL RESET
    ───────────────────────────── */
 * {
   border: none;
-  font-family: "JetBrainsMono Nerd Font";
+  font-family: "JetBrainsMono Nerd Font", "JetBrains Mono", monospace;
   font-weight: 800;
   font-size: 14.5px;
-  /* transition: all 0.2s ease; */
   outline: none;
   box-shadow: none;
+  min-height: 0;
 }
 
 /* ─────────────────────────────
    BAR
    ───────────────────────────── */
 window#waybar {
-  background: transparent;
-  margin: 6px 0
+  background: rgba(0, 0, 0, 0.01);
+  margin: 4px 0;
 }
 
 window#waybar > box {
   background: transparent;
+}
+
+window#waybar.hidden {
+  opacity: 0.2;
 }
 
 /* ─────────────────────────────
@@ -53,35 +56,35 @@ window#waybar > box {
 #pulseaudio.microphone,
 #battery,
 #custom-updates {
-  background: rgba(0, 17, 16, 0.45);
+  background: rgba(0, 17, 16, 0.55);
   border-radius: 12px;
   margin: 4px 6px;
   padding: 4px 12px;
-  border: 1px solid rgba(255,255,255,0.25);
+  border: 1px solid rgba(255, 255, 255, 0.22);
   box-shadow:
-    inset 0 1px 0 rgba(255,255,255,0.10),
-    inset 0 -4px 10px rgba(0,0,0,0.10);
+    inset 0 1px 0 rgba(255, 255, 255, 0.10),
+    inset 0 -4px 10px rgba(0, 0, 0, 0.10);
   color: @surface_tint;
+  transition: background 0.2s ease, border-color 0.2s ease, color 0.2s ease, box-shadow 0.2s ease;
 }
 
 /* ─────────────────────────────
    HOVER
    ───────────────────────────── */
-
-#workspaces button:hover,
+#clock:hover,
+#cpu:hover,
 #memory:hover,
 #network:hover,
 #bluetooth:hover,
 #pulseaudio:hover,
 #pulseaudio.microphone:hover,
 #battery:hover,
-#custom-updates:hover,
-#clock:hover {
-  background: rgba(0, 17, 16, 0.42);
-  border: 1px solid rgba(255, 255, 255, 0.30);
+#custom-updates:hover {
+  background: rgba(0, 17, 16, 0.58);
+  border-color: rgba(255, 255, 255, 0.35);
   box-shadow:
     inset 0 1px 0 rgba(255, 255, 255, 0.14),
-    inset 0 -4px 10px rgba(0, 0, 0, 0.12);
+    inset 0 -4px 10px rgba(0, 0, 0, 0.14);
   color: @on_surface;
 }
 
@@ -89,7 +92,7 @@ window#waybar > box {
    WORKSPACES
    ───────────────────────────── */
 #workspaces {
-  padding: 2px 0;
+  padding: 4px 0;
 }
 
 #workspaces button {
@@ -98,7 +101,13 @@ window#waybar > box {
   margin: 0 3px;
   padding: 2px 2px;
   border-radius: 8px;
-  transition: color 0.2s ease, background 0.2s ease, box-shadow 0.2s ease;
+  transition: background 0.2s ease, border-color 0.2s ease, color 0.2s ease, box-shadow 0.2s ease;
+}
+
+#workspaces button:hover {
+  background: rgba(255, 255, 255, 0.07);
+  border-color: rgba(255, 255, 255, 0.35);
+  color: @on_surface;
 }
 
 #workspaces button.active {
@@ -116,88 +125,68 @@ window#waybar > box {
 
 #workspaces button.urgent {
   color: @error;
+  animation: pulse 1s ease infinite;
 }
 
 /* ─────────────────────────────
-   MODULES
+   MODULE COLORS
    ───────────────────────────── */
-#clock { color: @error_container; }
-#cpu   { color: @primary; }
+#clock  { color: @error_container; }
+#cpu    { color: @primary; }
 #memory { color: @tertiary_container; }
 
 /* ─────────────────────────────
    AUDIO
    ───────────────────────────── */
-#pulseaudio { color: @tertiary_container; }
+#pulseaudio            { color: @tertiary_container; }
+#pulseaudio.microphone { color: @tertiary_fixed; }
 
 #pulseaudio.muted,
 #pulseaudio.microphone.muted {
   color: @surface_variant;
-  opacity: 0.5;
-}
-
-#pulseaudio.microphone {
-  color: @tertiary_fixed;
+  opacity: 0.45;
 }
 
 /* ─────────────────────────────
    BATTERY
    ───────────────────────────── */
-#battery {
-  color: @surface_tint;
-}
-
-#battery.warning {
-  color: @tertiary;
-}
+#battery           { color: @surface_tint; }
+#battery.warning   { color: @tertiary; }
+#battery.charging,
+#battery.plugged   { color: @primary; }
 
 #battery.critical {
   color: @error_container;
   animation: pulse 1s ease infinite;
 }
 
-#battery.charging,
-#battery.plugged {
-  color: @primary;
-}
-
 @keyframes pulse {
-  0%   { color: @error_container; }
-  50%  { color: @error; }
-  100% { color: @error_container; }
+  0%   { color: @error_container; opacity: 1.0; }
+  50%  { color: @error;           opacity: 0.6; }
+  100% { color: @error_container; opacity: 1.0; }
 }
-
-/* ─────────────────────────────
-   TOOLTIP
-   ───────────────────────────── */
-tooltip {
-  background: rgba(0, 17, 16, 0.55);
-  border-radius: 10px;
-  border: 1px solid rgba(255,255,255,0.10);
-  box-shadow:
-    inset 0 1px 0 rgba(255,255,255,0.05),
-    0 8px 20px rgba(0,0,0,0.5);
-}
-
-tooltip label {
-  padding: 6px 12px;
-  color: @on_surface;
-}
-
 /* ─────────────────────────────
    NETWORK
    ───────────────────────────── */
-#network              { color: alpha(@surface_tint, 0.6); }
+#network              { color: alpha(@surface_tint, 0.5); }
 #network.wifi         { color: @surface_tint; }
 #network.disconnected { color: alpha(@tertiary_fixed, 0.25); }
 
 /* ─────────────────────────────
    BLUETOOTH
    ───────────────────────────── */
-#bluetooth           { color: alpha(@error_container, 1.0); }
+#bluetooth           { color: alpha(@error_container, 0.55); }
 #bluetooth.connected { color: @error_container; }
 #bluetooth.disabled  { color: alpha(@on_surface_variant, 0.2); }
 
+/* ─────────────────────────────
+   UPDATES
+   ───────────────────────────── */
+#custom-updates          { color: @primary; }
+#custom-updates.updating {
+  color: alpha(@primary, 0.5);
+  animation: pulse 0.8s ease infinite;
+}
 
 /* ─────────────────────────────
    TRAY
@@ -215,3 +204,20 @@ tooltip label {
   color: @error_container;
 }
 
+/* ─────────────────────────────
+   TOOLTIP
+   ───────────────────────────── */
+tooltip {
+  background: rgba(0, 17, 16, 0.72);
+  border-radius: 10px;
+  border: 1px solid rgba(255, 255, 255, 0.10);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.06),
+    0 8px 20px rgba(0, 0, 0, 0.55);
+}
+
+tooltip label {
+  padding: 6px 12px;
+  color: @on_surface;
+  /* line-height: 1.5; */
+}
