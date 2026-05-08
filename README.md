@@ -12,7 +12,7 @@
 [![License](https://img.shields.io/github/license/Cybersnake223/Hypr?style=for-the-badge&color=A024F7)](LICENSE)
 [![Forks](https://img.shields.io/github/forks/Cybersnake223/Hypr?style=for-the-badge&color=A024F7)](https://github.com/Cybersnake223/Hypr/network/members)
 
-[Preview](#-preview) • [Stack](#-stack) • [Prerequisites](#-prerequisites) • [Installation](#-installation) • [Flags](#-installer-flags) • [Theming](#-theming) • [Troubleshooting](#-troubleshooting) • [Security](#-security) • [License](#-license)
+[Preview](#-preview) • [Stack](#-stack) • [Prerequisites](#-prerequisites) • [Installation](#-installation) • [Flags](#-installer-flags) • [Keybinds](#-keybinds) • [Theming](#-theming) • [Troubleshooting](#-troubleshooting) • [Security](#-security) • [License](#-license)
 
 </div>
 
@@ -43,7 +43,7 @@
 | 🏗 Base | [Arch Linux](https://archlinux.org/) |
 | 🪟 Compositor | [Hyprland](https://hyprland.org/) |
 | 📊 Bar | [Waybar](https://github.com/Alexays/Waybar) |
-| 🖥 Terminal | [Foot](https://github.com/DanteAlighierin/foot) |
+| 🖥 Terminal | [Kitty](https://sw.kovidgoyal.net/kitty/) |
 | 🐚 Shell | [Zsh](https://zsh.sourceforge.io/) + [Starship](https://starship.rs/) |
 | 🔔 Notifications | [Mako](https://github.com/emersion/mako) |
 | 🚀 Launcher | [Rofi (lbonn/wayland fork)](https://github.com/lbonn/rofi) |
@@ -68,8 +68,8 @@
 ### Core Packages
 
 ```bash
-yay -S hyprland waybar foot zsh rofi-lbonn-wayland-git mako swww advcpmv \
-        hyprlock thunar yazi zen-browser-bin fastfetch matugen-bin \
+yay -S hyprland waybar kitty zsh rofi-lbonn-wayland-git mako advcpmv \
+        hyprlock nautilus yazi zen-browser-bin fastfetch matugen-bin \
         btop cava cmus mpv aria2 starship neovim
 ```
 
@@ -243,6 +243,96 @@ Re-running the installer won't stack duplicate `export PATH=` lines — it guard
 
 ---
 
+## ⌨️ Keybinds
+
+> [!NOTE]
+> All binds use `ALT` as the primary modifier.
+
+### 🔧 System
+
+| Keybind | Action |
+|---|---|
+| `F1` | Toggle mute (speakers) |
+| `F2` | Volume down 10% |
+| `F3` | Volume up 10% |
+| `F4` | Toggle mute (microphone) |
+| `F7` | Toggle Wi-Fi |
+| `F9` | Lock screen (Hyprlock) |
+| `F11` | Brightness down 10% |
+| `F12` | Brightness up 10% |
+| `Print` | Screenshot |
+
+### 🚀 Apps & Launchers
+
+| Keybind | Action |
+|---|---|
+| `ALT + Enter` | Terminal (Kitty) |
+| `ALT + D` | App launcher (Rofi) |
+| `ALT + R` | File manager TUI (Yazi) in Kitty |
+| `ALT + N` | Text editor (Neovim) in Kitty |
+| `ALT + M` | Music player (cmus) in Kitty |
+| `ALT + H` | System monitor (btop) in Kitty |
+| `ALT + T` | Email client (aerc) in Kitty |
+| `ALT + S` | LocalSend |
+| `ALT + E` | Emoji picker (rofiemoji) |
+| `ALT + X` | Power menu |
+| `ALT + B` | Bluetooth menu |
+| `ALT + L` | AirPods TUI |
+| `ALT + Y` | YouTube downloader (ytdla) |
+| `ALT + V` | Clipboard history (cliphist) |
+| `ALT + W` | Change wallpaper |
+| `ALT + K` | Kill a window (wkill) |
+| `ALT + C` | Dismiss all notifications |
+| `ALT SHIFT + T` | File manager GUI (Nautilus) |
+| `ALT SHIFT + P` | Audio mixer (wiremix) in Kitty |
+| `ALT SHIFT + V` | Watch video (watchvid) |
+| `ALT SHIFT + S` | Universal snip (QuickShell) |
+| `ALT SHIFT + K` | System cleaner |
+| `ALT SHIFT + D` | aria2 download manager |
+| `ALT SHIFT + C` | Script editor |
+| `ALT SHIFT + E` | Config editor |
+| `ALT SHIFT + N` | Wi-Fi menu |
+
+### 🌐 Web
+
+| Keybind | Action |
+|---|---|
+| `ALT SHIFT + B` | Browser (Zen) |
+| `ALT SHIFT + I` | Incognito (Zen private window) |
+| `ALT + G` | GitHub profile |
+| `ALT SHIFT + Y` | YouTube |
+| `ALT SHIFT + G` | Gemini |
+| `ALT SHIFT + W` | Wallhaven |
+| `ALT SHIFT + O` | ChatGPT |
+| `ALT SHIFT + R` | Reddit |
+
+### 🪟 Window Management
+
+| Keybind | Action |
+|---|---|
+| `ALT + Q` | Close active window |
+| `ALT + F` | Toggle fullscreen |
+| `ALT + P` | Toggle floating |
+| `ALT + J` | Toggle split |
+| `ALT + ↑ ↓ ← →` | Move focus |
+| `ALT SHIFT + ↑ ↓ ← →` | Swap window |
+| `ALT CTRL + ↑ ↓ ← →` | Resize window |
+| `ALT + Mouse drag (LMB)` | Move window |
+| `ALT + Mouse drag (RMB)` | Resize window |
+
+### 🗂 Workspaces
+
+| Keybind | Action |
+|---|---|
+| `ALT + 1–0` | Switch to workspace 1–10 |
+| `ALT SHIFT + 1–0` | Move window to workspace 1–10 (silent) |
+| `ALT + Scroll up` | Next workspace |
+| `ALT + Scroll down` | Previous workspace |
+| `ALT + `` ` `` ` | Toggle scratchpad |
+| `ALT SHIFT + `` ` `` ` | Move window to scratchpad |
+
+---
+
 ## 🎨 Theming
 
 Color theming is powered by **[Matugen](https://github.com/InioX/matugen)** — a Material You color extraction tool that derives a full palette from your active wallpaper. Every component that supports it (Waybar, Rofi, Mako, Hyprlock, GTK apps, terminal) recolors automatically whenever you change wallpaper.
@@ -250,7 +340,7 @@ Color theming is powered by **[Matugen](https://github.com/InioX/matugen)** — 
 ### Changing Wallpaper
 
 ```bash
-swww img /path/to/wallpaper.jpg --transition-type grow --transition-pos center
+aww set /path/to/wallpaper.jpg
 matugen image /path/to/wallpaper.jpg
 ```
 
@@ -279,7 +369,7 @@ Run the installer's built-in ecosystem check:
 Or verify manually:
 
 ```bash
-which hyprland waybar rofi mako swww hyprlock matugen foot zsh
+which hyprland waybar rofi mako hyprlock matugen kitty zsh
 ```
 
 ---
