@@ -1,0 +1,25 @@
+/* Matugen SwayNC Colors - Optimized for light and dark themes */
+@define-color cc-bg {{colors.surface.default.hex}};
+@define-color surface {{colors.surface_container.default.hex}};
+
+@define-color text-primary {{colors.on_surface.default.hex}};
+@define-color text-secondary {{colors.outline.default.hex}};
+
+@define-color primary {{colors.primary.default.hex}};
+@define-color on-primary {{colors.on_primary.default.hex}};
+
+@define-color button-bg {{colors.surface_container_high.default.hex}};
+@define-color button-text {{colors.on_surface.default.hex}};
+@define-color error {{colors.error.default.hex}};
+
+/* Dynamic Shadows & Borders */
+@define-color shadow {{colors.shadow.default.hex}};
+
+/* Borders that remain visible in both light and dark modes */
+@define-color rim-light {{colors.outline_variant.default.hex}};
+@define-color border {{colors.outline.default.hex}};
+
+/* Hover and active states */
+@define-color hover-bg {{colors.surface_container_high.default.hex}};
+@define-color active-bg {{colors.secondary_container.default.hex}};
+@define-color active-text {{colors.on_secondary_container.default.hex}};

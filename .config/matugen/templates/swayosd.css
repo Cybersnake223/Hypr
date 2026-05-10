@@ -1,0 +1,12 @@
+/* SwayOSD Colors - Optimized for better contrast in light/dark modes */
+@define-color theme_bg_color {{colors.surface_container.default.hex}};
+@define-color theme_fg_color {{colors.on_surface.default.hex}};
+@define-color theme_accent {{colors.primary.default.hex}};
+
+@define-color bg {{colors.surface.default.hex}};
+@define-color fg {{colors.on_surface.default.hex}};
+@define-color border {{colors.outline_variant.default.hex}};
+
+/* High contrast text for readability */
+@define-color text_primary {{colors.on_surface.default.hex}};
+@define-color text_secondary {{colors.outline.default.hex}};
