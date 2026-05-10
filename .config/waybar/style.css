@@ -30,8 +30,6 @@
 
 /* ─────────────────────────────
    BAR
-   v0.15.0: if your bar config has "name": "main",
-   swap window#waybar → window#main everywhere below.
    ───────────────────────────── */
 window#waybar,
 window#waybar > box {
