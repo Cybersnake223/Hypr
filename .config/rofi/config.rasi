@@ -16,77 +16,79 @@
 @import "colors.rasi"
 
 configuration {
-  matching:            "normal";
-  display-drun:        "   Apps ";
-  display-run:         "   Run ";
-  terminal:            "foot";
-  drun-display-format: "{name}";
-  font:                "JetBrainsMono Nerd Font Propo Bold 13";
-  modi:                "run,drun";
-  hide-scrollbar:      true;
-  show-icons:          false;
+	modi:                       "drun,filebrowser";
+    show-icons:                 false;
+    display-drun:               "";
+    display-run:                "";
+    display-filebrowser:        "";
+    display-window:             "";
+	drun-display-format:        "{name}";
+	window-format:              "{w} · {c} · {t}";
+  font:                "JetBrainsMono Nerd Font Mono Bold 13";
 }
-
 window {
-  background-color: @on-primary;
+  // background-color: transparent;
   width:            35%;
   padding:          15px;
   fullscreen:       false;
   border:           5px solid;
   border-radius:    10px;
   border-color:     @tertiary-container;
+  /* Backgroud Image */
+  background-image:          url("~/.config/hypr/wallpaper/rofi-cropped.png", none);
 }
 
 mainbox {
-  background-color: @on-primary;
+  background-color: transparent;
   spacing:          10px;
-  border-radius:    20px;
+  border-radius:    10px;
+  children:                    [ "inputbar", "mode-switcher", "message", "listview" ];
 }
 
 message {
   padding:          10px;
-  background-color: @on-primary;
-  border-radius:    20px;
+  background-color: transparent;
+  border-radius:    10px;
 }
 
 textbox {
-  background-color: @on-primary;
+  background-color: transparent;
   text-color:       @tertiary-container;
-  border-radius:    20px;
+  border-radius:    10px;
 }
 
 inputbar {
-  background-color: @on-primary;
+  background-color: transparent;
   spacing:          0;
   padding:          8px 10px;
-  border-radius:    20px;
+  border-radius:    10px;
   children:         [ prompt, entry, case-indicator ];
 }
 
 prompt {
-  background-color: @on-primary;
+  background-color: transparent;
   text-color:       @tertiary-container;
   padding:          0 10px;
-  border-radius:    20px;
+  border-radius:    10px;
 }
 
 entry {
-  background-color: @on-primary;
+  background-color: transparent;
   text-color:       @tertiary-container;
   padding:          0 6px;
-  border-radius:    20px;
+  border-radius:    10px;
 }
 
 case-indicator {
-  background-color: @on-primary;
+  background-color: transparent;
   text-color:       #1e1e2e;
   padding:          6px 10px;
-  border-radius:    20px;
+  border-radius:    10px;
 }
 
 listview {
-  background-color: @on-primary;
-  border-radius:    20px;
+  background-color: transparent;
+  border-radius:    10px;
   fixed-height:     false;
   dynamic:          true;
   scrollbar:        false;
@@ -97,23 +99,23 @@ listview {
 
 /* ── Element base ───────────────────────────────────────── */
 element {
-  border-radius: 20px;
+  border-radius: 10px;
 }
 
 element normal.normal {
-  background-color: @on-primary;
+  background-color: transparent;
   text-color:       @tertiary-container;
   padding:          15px 15px;
 }
 
 element normal.urgent {
-  background-color: @on-primary;
+  background-color: transparent;
   text-color:       @tertiary-container;
   padding:          0 15px;
 }
 
 element normal.active {
-  background-color: @on-primary;
+  background-color: transparent;
   text-color:       @tertiary-container;
   padding:          0 15px;
 }
@@ -125,19 +127,19 @@ element selected.normal {
 }
 
 element selected.urgent {
-  background-color: @on-primary;
+  background-color: transparent;
   text-color:       @error-container;
   padding:          0 15px;
 }
 
 element selected.active {
-  background-color: @on-primary;
+  background-color: transparent;
   text-color:       @shadow;
   padding:          0 15px;
 }
 
 element alternate.normal {
-  background-color: @on-primary;
+  background-color: transparent;
   text-color:       @tertiary-container;
   padding:          0 15px;
 }

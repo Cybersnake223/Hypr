@@ -90,3 +90,13 @@ echo "$wallpaper" > "$LAST_WALL"
         --contrast 1.0 --source-color-index 0 \
     && success "Applied: $(basename "$wallpaper")"
 } &
+
+
+# ── Image for rofi ──────────────────────────────────────────────
+magick ~/.config/hypr/wallpaper/current.png \
+  -resize 800x600^ \
+  -gravity Center \
+  -extent 800x600 \
+  -blur 0x3 \
+  -brightness-contrast -15x0 \
+  ~/.config/hypr/wallpaper/rofi-cropped.png
