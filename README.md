@@ -349,7 +349,7 @@ matugen image /path/to/wallpaper.jpg
 If colors fall out of sync after a config update, point Matugen at the wallpaper cached by `aww`:
 
 ```bash
-matugen image ~/.config/aww/current_wallpaper
+matugen image ~/.config/hypr/wallpaper/current.png
 ```
 
 > [!NOTE]
