@@ -282,7 +282,7 @@ ECOSYSTEM_DEPS=(
   "zsh:Shell"
   "rofi:App launcher (lbonn/wayland fork)"
   "mako:Notification daemon"
-  "swww:Wallpaper daemon"
+  "awww:Wallpaper daemon"
   "hyprlock:Screen locker"
   "matugen:Dynamic color theming"
   "fc-cache:Font cache (fontconfig)"
