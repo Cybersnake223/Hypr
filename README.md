@@ -12,7 +12,7 @@
 [![License](https://img.shields.io/github/license/Cybersnake223/Hypr?style=for-the-badge&color=A024F7)](LICENSE)
 [![Forks](https://img.shields.io/github/forks/Cybersnake223/Hypr?style=for-the-badge&color=A024F7)](https://github.com/Cybersnake223/Hypr/network/members)
 
-[Preview](#-preview) • [Stack](#-stack) • [Prerequisites](#-prerequisites) • [Installation](#-installation) • [Flags](#-installer-flags) • [Keybinds](#-keybinds) • [Theming](#-theming) • [Troubleshooting](#-troubleshooting) • [Security](#-security) • [License](#-license)
+[Preview](#-preview) • [Stack](#-stack) • [Prerequisites](#-prerequisites) • [Installation](#-installation) • [Flags](#-installer-flags) • [Keybinds](#-keybinds) • [Theming](#-theming) • [Zen Browser](#-zen-browser) • [Troubleshooting](#-troubleshooting) • [Security](#-security) • [License](#-license)
 
 </div>
 
@@ -346,13 +346,56 @@ matugen image /path/to/wallpaper.jpg
 
 ### Force Regenerate Colors
 
-If colors fall out of sync after a config update:
+If colors fall out of sync after a config update, point Matugen at the wallpaper cached by `aww`:
 
 ```bash
-matugen image ~/.config/hyprwat/current_wallpaper
+matugen image ~/.config/aww/current_wallpaper
 ```
 
+> [!NOTE]
+> `aww` (the wallpaper daemon used in this setup) stores the last-set wallpaper at `~/.config/aww/current_wallpaper`. If your path differs, check `aww`'s cache directory with `aww info` or look inside `~/.config/aww/`.
+
 Matugen templates live in `.config/matugen/` and map Material You color tokens to each app's config format. Edit these to customize per-app color application.
+
+---
+
+## 🌐 Zen Browser
+
+[Zen Browser](https://zen-browser.app/) is a privacy-focused, Firefox-based browser with a sidebar-first UI. This repo ships a custom `userChrome.css` and `userContent.css` under `.zen/chrome/` that reskin Zen's interface to match the overall Vicious Viper aesthetic.
+
+### What's Included
+
+| File | Purpose |
+|---|---|
+| `.zen/chrome/userChrome.css` | Customizes Zen's browser chrome — sidebar, tab bar, toolbar layout |
+| `.zen/chrome/userContent.css` | Styles internal pages (new tab, `about:` pages) |
+| `.zen/chrome/zen-logo-mocha.svg` | Custom Zen logo in Catppuccin Mocha palette |
+
+### Applying the Zen Config
+
+The installer copies `.zen/` to `~/.zen/` automatically. To apply manually:
+
+```bash
+cp -r .zen/chrome "$HOME/.zen/chrome"
+```
+
+> [!IMPORTANT]
+> You must enable **userChrome.css support** in Zen Browser first. Navigate to `about:config` and set:
+> ```
+> toolkit.legacyUserProfileCustomizations.stylesheets = true
+> ```
+> Then restart Zen for the styles to take effect.
+
+### Finding Your Zen Profile Directory
+
+Zen Browser uses Firefox-style profiles. If `~/.zen/chrome/` doesn't exist yet, locate your actual profile directory:
+
+1. Open Zen and go to `about:support`
+2. Find **Profile Directory** and click **Open Directory**
+3. Create a `chrome/` folder inside it and copy the CSS files there
+
+> [!NOTE]
+> The `.zen/` path in this repo assumes a default Zen install on Arch Linux where the profile root is `~/.zen/`. If your profile lives elsewhere (e.g. under `~/.var/app/` for Flatpak installs), adjust the path accordingly.
 
 ---
 
