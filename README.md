@@ -1,82 +1,153 @@
-<div align="center">
-
-![Cybersnake Logo](assets/cslogo.png)
-
-![Typing SVG](https://readme-typing-svg.herokuapp.com?font=Righteous&weight=600&size=75&duration=1200&pause=1000&color=A024F7&center=true&vCenter=true&random=false&width=600&height=80&lines=Vicious+Viper)
+[![Cybersnake Logo](https://github.com/Cybersnake223/Hypr/raw/main/assets/cslogo.png)](assets/cslogo.png) [![](https://camo.githubusercontent.com/61fcf89b61de7abe7bec0d2b9ec28ae7762ac5e34f3b2643a6f72f9293e9a5ca/68747470733a2f2f726561646d652d747970696e672d7376672e6865726f6b756170702e636f6d3f666f6e743d5269676874656f7573267765696768743d3630302673697a653d3735266475726174696f6e3d313230302670617573653d3130303026636f6c6f723d4130323446372663656e7465723d74727565267643656e7465723d747275652672616e646f6d3d66616c73652677696474683d363030266865696768743d3830266c696e65733d566963696f75732b5669706572)](https://camo.githubusercontent.com/61fcf89b61de7abe7bec0d2b9ec28ae7762ac5e34f3b2643a6f72f9293e9a5ca/68747470733a2f2f726561646d652d747970696e672d7376672e6865726f6b756170702e636f6d3f666f6e743d5269676874656f7573267765696768743d3630302673697a653d3735266475726174696f6e3d313230302670617573653d3130303026636f6c6f723d4130323446372663656e7465723d74727565267643656e7465723d747275652672616e646f6d3d66616c73652677696474683d363030266865696768743d3830266c696e65733d566963696f75732b5669706572)
 
 *A Hyprland dotfiles setup for Arch Linux — dynamic theming, clean workflows, curated tools.*
 
-[![Last Commit](https://img.shields.io/github/last-commit/Cybersnake223/Hypr/main?style=for-the-badge&label=last%20commit&color=A024F7)](https://github.com/Cybersnake223/Hypr/commits/main)
-[![Repo Size](https://img.shields.io/github/repo-size/Cybersnake223/Hypr?style=for-the-badge&label=size&color=A024F7)](https://github.com/Cybersnake223/Hypr)
-[![Stars](https://img.shields.io/github/stars/Cybersnake223/Hypr?style=for-the-badge&color=A024F7)](https://github.com/Cybersnake223/Hypr/stargazers)
-[![License](https://img.shields.io/github/license/Cybersnake223/Hypr?style=for-the-badge&color=A024F7)](LICENSE)
-[![Forks](https://img.shields.io/github/forks/Cybersnake223/Hypr?style=for-the-badge&color=A024F7)](https://github.com/Cybersnake223/Hypr/network/members)
-
-[Preview](#-preview) • [Stack](#-stack) • [Prerequisites](#-prerequisites) • [Installation](#-installation) • [Flags](#-installer-flags) • [Keybinds](#-keybinds) • [Theming](#-theming) • [Troubleshooting](#-troubleshooting) • [Security](#-security) • [License](#-license)
-
-</div>
+[![](https://camo.githubusercontent.com/e899db4bd4ee8ee6edaa090e0ff0959283221ffc83047cc06170a962f042223a/68747470733a2f2f696d672e736869656c64732e696f2f6769746875622f6c6173742d636f6d6d69742f4379626572736e616b653232332f487970722f6d61696e3f7374796c653d666f722d7468652d6261646765266c6162656c3d6c617374253230636f6d6d697426636f6c6f723d413032344637)](https://camo.githubusercontent.com/e899db4bd4ee8ee6edaa090e0ff0959283221ffc83047cc06170a962f042223a/68747470733a2f2f696d672e736869656c64732e696f2f6769746875622f6c6173742d636f6d6d69742f4379626572736e616b653232332f487970722f6d61696e3f7374796c653d666f722d7468652d6261646765266c6162656c3d6c617374253230636f6d6d697426636f6c6f723d413032344637) [![](https://camo.githubusercontent.com/e93bffa3c72317b853b72fa536bb41606f18a97457ed632e91f9b67d6ce08c61/68747470733a2f2f696d672e736869656c64732e696f2f6769746875622f7265706f2d73697a652f4379626572736e616b653232332f487970723f7374796c653d666f722d7468652d6261646765266c6162656c3d73697a6526636f6c6f723d413032344637)](https://camo.githubusercontent.com/e93bffa3c72317b853b72fa536bb41606f18a97457ed632e91f9b67d6ce08c61/68747470733a2f2f696d672e736869656c64732e696f2f6769746875622f7265706f2d73697a652f4379626572736e616b653232332f487970723f7374796c653d666f722d7468652d6261646765266c6162656c3d73697a6526636f6c6f723d413032344637) [![](https://camo.githubusercontent.com/8d92388e2ccdbf8b217cfadde441455deaf54b139128b0653121d4c9f684842d/68747470733a2f2f696d672e736869656c64732e696f2f6769746875622f73746172732f4379626572736e616b653232332f487970723f7374796c653d666f722d7468652d626164676526636f6c6f723d413032344637)](https://camo.githubusercontent.com/8d92388e2ccdbf8b217cfadde441455deaf54b139128b0653121d4c9f684842d/68747470733a2f2f696d672e736869656c64732e696f2f6769746875622f73746172732f4379626572736e616b653232332f487970723f7374796c653d666f722d7468652d626164676526636f6c6f723d413032344637) [![](https://camo.githubusercontent.com/85e4dc1ea7f5438535ddbc1c18493cb2b792f2828d8b991112311b8f2b8bec54/68747470733a2f2f696d672e736869656c64732e696f2f6769746875622f6c6963656e73652f4379626572736e616b653232332f487970723f7374796c653d666f722d7468652d626164676526636f6c6f723d413032344637)](https://camo.githubusercontent.com/85e4dc1ea7f5438535ddbc1c18493cb2b792f2828d8b991112311b8f2b8bec54/68747470733a2f2f696d672e736869656c64732e696f2f6769746875622f6c6963656e73652f4379626572736e616b653232332f487970723f7374796c653d666f722d7468652d626164676526636f6c6f723d413032344637) [![](https://camo.githubusercontent.com/e820c4ae182cc9e9444ef2c57eccbeffe0d771f2a8fa27f4c256d17bfd5e3d48/68747470733a2f2f696d672e736869656c64732e696f2f6769746875622f666f726b732f4379626572736e616b653232332f487970723f7374796c653d666f722d7468652d626164676526636f6c6f723d413032344637)](https://camo.githubusercontent.com/e820c4ae182cc9e9444ef2c57eccbeffe0d771f2a8fa27f4c256d17bfd5e3d48/68747470733a2f2f696d672e736869656c64732e696f2f6769746875622f666f726b732f4379626572736e616b653232332f487970723f7374796c653d666f722d7468652d626164676526636f6c6f723d413032344637)
 
 ---
 
-> [!NOTE]
-> This setup is **primarily tuned for laptops**. Desktop users should review `auto-cpufreq` settings and Waybar's battery module before installing.
+## 📑 Table of Contents
+
+- [Preview](#-preview)
+- [Quick Navigation](#quick-navigation)
+- [Stack](#-stack)
+- [Before You Install](#-before-you-install)
+- [Prerequisites](#-prerequisites)
+- [Installation](#-installation)
+- [Installer Flags](#-installer-flags)
+- [Configuration & Customization](#-configuration--customization)
+- [Theming](#-theming)
+- [Troubleshooting](#-troubleshooting)
+- [Tool Documentation](#-tool-documentation)
+- [License](#-license)
+
+---
+
+## 🎯 Quick Navigation
+
+**First time here?** → Start with [Before You Install](#-before-you-install)
+**Ready to install?** → Jump to [Quick Install](#quick-install)
+**Something broken?** → Check [Troubleshooting](#-troubleshooting)
+**Want to customize?** → See [Configuration & Customization](#-configuration--customization)
 
 ---
 
 ## 🖼 Preview
 
-| | |
-|---|---|
-| ![Desktop 1](assets/asset1.png) | ![Desktop 2](assets/asset10.png) |
-| ![Desktop 3](assets/asset11.png) | ![Desktop 4](assets/asset12.png) |
-| ![Desktop 5](assets/asset2.png) | ![Desktop 6](assets/asset3.png) |
-| ![Desktop 7](assets/asset4.png) | ![Desktop 8](assets/asset5.png) |
-| ![Desktop 9](assets/asset6.png) | ![Desktop 10](assets/asset7.png) |
-| ![Desktop 11](assets/asset8.png) | ![Desktop 12](assets/asset9.png) |
+[![Desktop 1](https://github.com/Cybersnake223/Hypr/raw/main/assets/asset1.png)](assets/asset1.png) [![Desktop 2](https://github.com/Cybersnake223/Hypr/raw/main/assets/asset10.png)](assets/asset10.png)
+
+| [![](https://github.com/Cybersnake223/Hypr/raw/main/assets/asset11.png)](assets/asset11.png) | [![](https://github.com/Cybersnake223/Hypr/raw/main/assets/asset12.png)](assets/asset12.png) |
+| --- | --- |
+| [![](https://github.com/Cybersnake223/Hypr/raw/main/assets/asset2.png)](assets/asset2.png) | [![](https://github.com/Cybersnake223/Hypr/raw/main/assets/asset3.png)](assets/asset3.png) |
+| [![](https://github.com/Cybersnake223/Hypr/raw/main/assets/asset4.png)](assets/asset4.png) | [![](https://github.com/Cybersnake223/Hypr/raw/main/assets/asset5.png)](assets/asset5.png) |
+| [![](https://github.com/Cybersnake223/Hypr/raw/main/assets/asset6.png)](assets/asset6.png) | [![](https://github.com/Cybersnake223/Hypr/raw/main/assets/asset7.png)](assets/asset7.png) |
+| [![](https://github.com/Cybersnake223/Hypr/raw/main/assets/asset8.png)](assets/asset8.png) | [![](https://github.com/Cybersnake223/Hypr/raw/main/assets/asset9.png)](assets/asset9.png) |
+
+[![](https://raw.githubusercontent.com/catppuccin/catppuccin/main/assets/footers/gray0_ctp_on_line.png)](https://raw.githubusercontent.com/catppuccin/catppuccin/main/assets/footers/gray0_ctp_on_line.png)
 
 ---
 
 ## 🧩 Stack
 
-| Role | Tool |
-|---|---|
-| 🏗 Base | [Arch Linux](https://archlinux.org/) |
-| 🪟 Compositor | [Hyprland](https://hyprland.org/) |
-| 📊 Bar | [Waybar](https://github.com/Alexays/Waybar) |
-| 🖥 Terminal | [Kitty](https://sw.kovidgoyal.net/kitty/) |
-| 🐚 Shell | [Zsh](https://zsh.sourceforge.io/) + [Starship](https://starship.rs/) |
-| 🔔 Notifications | [Mako](https://github.com/emersion/mako) |
-| 🚀 Launcher | [Rofi (lbonn/wayland fork)](https://github.com/lbonn/rofi) |
-| 🖼 Wallpaper | [Aww](https://codeberg.org/LGFae/awww) |
-| 🌐 Browser | [Zen Browser](https://zen-browser.app/) |
-| 🔒 Locker | [Hyprlock](https://github.com/hyprwm/hyprlock) |
-| 📁 File Manager | [Nautilus](https://gitlab.gnome.org/GNOME/nautilus) (GUI) / [Yazi](https://yazi-rs.github.io/) (TUI) |
-| 📝 Editor | [Neovim](https://neovim.io/) |
-| 🎨 Theming | [Matugen](https://github.com/InioX/matugen) (Material You — wallpaper-based) |
-| 📡 System Info | [Fastfetch](https://github.com/fastfetch-cli/fastfetch) |
-| 🎵 Audio | [cmus](https://cmus.github.io/) + [Cava](https://github.com/karlstav/cava) + [mpv](https://mpv.io/) |
-| 📈 Monitor | [btop](https://github.com/aristocratos/btop) |
-| ⬇ Downloads | [aria2](https://aria2.github.io/) |
+| Role | Tool | Docs |
+| --- | --- | --- |
+| 🏗 Base | [Arch Linux](https://archlinux.org/) | [Arch Wiki](https://wiki.archlinux.org/) |
+| 🪟 Compositor | [Hyprland](https://hyprland.org/) | [Hyprland Wiki](https://wiki.hyprland.org/) |
+| 📊 Bar | [Waybar](https://github.com/Alexays/Waybar) | [Waybar Docs](https://github.com/Alexays/Waybar/wiki) |
+| 🖥 Terminal | [Foot](https://github.com/DanteAlighierin/foot) | [Foot Docs](https://codeberg.org/dnkl/foot/wiki) |
+| 🐚 Shell | [Zsh](https://zsh.sourceforge.io/) + [Starship](https://starship.rs/) | [Zsh Manual](https://zsh.sourceforge.io/Doc/) \| [Starship](https://starship.rs/) |
+| 🔔 Notifications | [Mako](https://github.com/emersion/mako) | [Mako GitHub](https://github.com/emersion/mako) |
+| 🚀 Launcher | [Rofi (lbonn/wayland fork)](https://github.com/lbonn/rofi) | [Rofi Manual](https://davatorium.github.io/rofi/) |
+| 🖼 Wallpaper | [Swww](https://github.com/LGFae/swww) | [Swww GitHub](https://github.com/LGFae/swww) |
+| 🌐 Browser | [Zen Browser](https://zen-browser.app/) | [Zen Browser](https://zen-browser.app/) |
+| 🔒 Locker | [Hyprlock](https://github.com/hyprwm/hyprlock) | [Hyprlock](https://github.com/hyprwm/hyprlock) |
+| 📁 File Manager | [Thunar](https://gitlab.xfce.org/xfce/thunar) (GUI) / [Yazi](https://yazi-rs.github.io/) (TUI) | [Thunar](https://docs.xfce.org/xfce/thunar/start) \| [Yazi Docs](https://yazi-rs.github.io/) |
+| 📝 Editor | [Neovim](https://neovim.io/) | [Neovim Docs](https://neovim.io/doc/user/) |
+| 🎨 Theming | [Matugen](https://github.com/InioX/matugen) (Material You — wallpaper-based) | [Matugen GitHub](https://github.com/InioX/matugen) |
+| 📡 System Info | [Fastfetch](https://github.com/fastfetch-cli/fastfetch) | [Fastfetch GitHub](https://github.com/fastfetch-cli/fastfetch) |
+| 🎵 Audio | [cmus](https://cmus.github.io/) + [Cava](https://github.com/karlstav/cava) + [mpv](https://mpv.io/) | [cmus](https://cmus.github.io/) \| [Cava](https://github.com/karlstav/cava) \| [mpv Manual](https://mpv.io/manual/) |
+| 📈 Monitor | [btop](https://github.com/aristocratos/btop) | [btop GitHub](https://github.com/aristocratos/btop) |
+| ⬇ Downloads | [aria2](https://aria2.github.io/) | [aria2 Docs](https://aria2.github.io/) |
+
+> **💡 Note:** This setup is **primarily tuned for laptops**. Desktop users should review `auto-cpufreq` settings and Waybar's battery module.
+
+---
+
+## ✅ Before You Install
+
+Please verify you meet these requirements before running the installer:
+
+<details open>
+<summary><strong>System & Hardware Requirements</strong></summary>
+
+- [ ] **Linux OS** — Arch-based distro recommended (Arch, Endeavour OS, Manjaro tested)
+- [ ] **Wayland Capable GPU** — NVIDIA, AMD, Intel (most modern GPUs work)
+- [ ] **~2GB Free Disk Space** — For configs, fonts, themes, icons
+- [ ] **Active Internet Connection** — For package downloads
+- [ ] **Sudo/Root Access** — Required for package installation
+
+</details>
+
+<details open>
+<summary><strong>Software & Knowledge Prerequisites</strong></summary>
+
+- [ ] **Git installed** — `git --version` should return a version
+- [ ] **Bash/Zsh shell** — This repo uses shell scripts
+- [ ] **Basic terminal familiarity** — Can use `cd`, `ls`, `mkdir`
+- [ ] **Understand your package manager** — `pacman` for Arch, `paru`/`yay` for AUR
+- [ ] **Know what `~/` means** — Your home directory
+- [ ] **~30-45 minutes available** — Time to install all dependencies
+
+</details>
+
+<details open>
+<summary><strong>Backup & Data Safety</strong></summary>
+
+- [ ] **Back up existing configs** (if upgrading from another setup):
+  ```bash
+  mkdir -p ~/dotfiles-backup-$(date +%s)
+  cp -r ~/.config ~/dotfiles-backup-*/
+  cp -r ~/.local ~/dotfiles-backup-*/
+  ```
+- [ ] **Check if these paths have files** (will be backed up):
+  - `~/.config/hypr/`
+  - `~/.config/waybar/`
+  - `~/.config/rofi/`
+  - `~/.config/zsh/`
+  - `~/.zshrc`
+
+</details>
+
+<details open>
+<summary><strong>Network & Connectivity</strong></summary>
+
+- [ ] **GitHub accessible** — Can clone repositories
+- [ ] **Package mirrors working** — `pacman -Sy` completes successfully
+- [ ] **No VPN issues** — VPN interference with package managers?
+- [ ] **AUR accessible** — For packages like `matugen-bin`, `rofi-lbonn-wayland-git`
+
+</details>
+
+> **💡 Tip:** Run `./install.sh --dry-run` to preview all changes before installing!
 
 ---
 
 ## 📦 Prerequisites
 
-> [!IMPORTANT]
-> The installer checks for ecosystem packages and warns about anything missing, but **it won't stop the install**. Ensure the packages below are present before running `install.sh` for a fully working desktop on first boot.
+> **Important:** The installer checks for ecosystem packages and warns about anything missing, but it won't stop. Ensure packages below are installed **before** running `install.sh` for a fully working desktop on first boot.
 
-### Core Packages
+### Core Packages (One-liner)
 
 ```bash
-yay -S hyprland waybar kitty zsh rofi-lbonn-wayland-git mako advcpmv \
-        hyprlock nautilus yazi zen-browser-bin fastfetch matugen-bin \
+yay -S hyprland waybar foot zsh rofi-lbonn-wayland-git mako swww \
+        hyprlock thunar yazi zen-browser-bin fastfetch matugen-bin \
         btop cava cmus mpv aria2 starship neovim
 ```
 
 ### Required Supporting Packages
 
 | Package | Purpose |
-|---|---|
+| --- | --- |
 | `matugen` | Wallpaper-based dynamic color palette (Material You) |
 | `xdg-desktop-portal-hyprland` | Wayland portal — screenshare, file picker |
 | `polkit-gnome` | Authentication agent for GUI prompts |
@@ -96,7 +167,7 @@ yay -S hyprland waybar kitty zsh rofi-lbonn-wayland-git mako advcpmv \
 
 ### Fonts
 
-The `.fonts/` directory is bundled in this repo and installed automatically by `install.sh`. To install manually:
+The `.fonts/` directory is included in this repo and installed automatically by `install.sh`. To install manually:
 
 ```bash
 yay -S ttf-jetbrains-mono-nerd ttf-font-awesome nerd-fonts-symbols-only
@@ -112,8 +183,7 @@ yay -S ttf-jetbrains-mono-nerd ttf-font-awesome nerd-fonts-symbols-only
 
 ## ⚡ Installation
 
-> [!CAUTION]
-> The installer backs up existing files before overwriting them, but **only for paths present in this repo**. No unrelated configs are touched. Always run with `--dry-run` first if you're unsure.
+> **Caution:** The installer backs up existing files before overwriting them, but **only for paths present in this repo**. No unrelated configs are touched. Always review with `--dry-run` first if you're unsure.
 
 ### Quick Install
 
@@ -124,7 +194,7 @@ chmod +x install.sh
 ./install.sh
 ```
 
-**The installer will:**
+The installer will:
 
 1. ✅ Verify core system utilities are available
 2. 🔍 Check all Hyprland ecosystem packages and warn about anything missing
@@ -136,14 +206,13 @@ chmod +x install.sh
 8. 📋 Print a full install summary with counts and log path
 
 **Backups are saved to:**
-
 ```
 ~/.local/share/hypr-dotfiles-backups/<YYYYMMDD-HHMMSS>/
 ```
 
-Or `$XDG_DATA_HOME/hypr-dotfiles-backups/<timestamp>/` if `$XDG_DATA_HOME` is set. A `.manifest` file inside each backup records every installed path — used by `--uninstall` to restore originals precisely.
+Or `$XDG_DATA_HOME/hypr-dotfiles-backups/<timestamp>/` if `$XDG_DATA_HOME` is set.
 
----
+A `.manifest` file inside each backup records every installed path — used by `--uninstall` to restore originals precisely.
 
 ### Manual Install
 
@@ -171,8 +240,7 @@ echo 'export PATH="$HOME/.local/bin:$PATH"' >> ~/.zshrc
 fish_add_path $HOME/.local/bin
 ```
 
-> [!NOTE]
-> `nwg-look` may silently overwrite `.gtkrc-2.0`. If GTK 2 theming breaks after running it, re-copy from the repo:
+> **Note:** `nwg-look` may silently overwrite `.gtkrc-2.0`. If GTK 2 theming breaks after running it, re-copy from the repo:
 > ```bash
 > cp /path/to/Hypr/.gtkrc-2.0 ~/.gtkrc-2.0
 > ```
@@ -182,7 +250,7 @@ fish_add_path $HOME/.local/bin
 ## 🚩 Installer Flags
 
 | Flag | Description |
-|---|---|
+| --- | --- |
 | `--dry-run` | Preview every action — **zero changes made** |
 | `--yes` | Non-interactive, auto-confirm all prompts |
 | `--select` | Interactively toggle which modules to install |
@@ -204,6 +272,9 @@ fish_add_path $HOME/.local/bin
 # Choose only specific modules (configs, scripts, fonts, etc.)
 ./install.sh --select
 
+# Install only what you select, non-interactively preview first
+./install.sh --select --dry-run
+
 # Fast re-install — skip dep check, auto-confirm
 ./install.sh --yes --skip-deps
 
@@ -216,7 +287,7 @@ fish_add_path $HOME/.local/bin
 
 ### Modular Install — `--select`
 
-The `--select` flag opens an interactive TUI letting you toggle individual modules before committing:
+The `--select` flag opens an interactive TUI that lets you toggle individual install modules on or off before committing:
 
 ```
 [✓]  1  .config       Application configs (hypr, waybar, rofi, nvim, zsh…)
@@ -227,109 +298,242 @@ The `--select` flag opens an interactive TUI letting you toggle individual modul
 [✓]  6  dotfiles      Root dotfiles (.Xresources, .gtkrc-2.0)
 ```
 
-Type a number to toggle, then press Enter to confirm.
+Type a number to toggle, then press Enter to confirm. Useful when you only want to push a config update without touching fonts or themes.
 
 ### Shell-Aware PATH Patching
 
+The installer detects `$SHELL` and appends to the correct rc file automatically:
+
 | Shell | File patched |
-|---|---|
+| --- | --- |
 | `zsh` | `~/.zshrc` |
 | `bash` | `~/.bashrc` |
 | `fish` | `~/.config/fish/conf.d/hypr_path.fish` |
 | `ksh` / `mksh` | `~/.kshrc` |
 | Other | `~/.profile` (POSIX fallback) |
 
-Re-running the installer won't stack duplicate `export PATH=` lines — it guards against this automatically.
+It also guards against duplicates — re-running the installer won't stack up multiple `export PATH=` lines.
 
 ---
 
-## ⌨️ Keybinds
+## ⚙️ Configuration & Customization
 
-> [!NOTE]
-> All binds use `ALT` as the primary modifier.
+### Directory Structure
 
-### 🔧 System
+```
+~/.config/
+├── hypr/                    # Hyprland compositor
+│   ├── hyprland.conf       # Main keybinds, layout, workspaces
+│   ├── hyprlock.conf       # Lock screen appearance
+│   └── hypridle.conf       # Idle timeout actions
+├── waybar/                  # Status bar
+│   ├── config.jsonc        # Modules & layout
+│   └── style.css           # Colors & fonts
+├── rofi/                    # Application launcher
+│   ├── config.rasi         # Launcher behavior
+│   └── theme.rasi          # Launcher appearance
+├── foot/                    # Terminal emulator
+│   └── foot.ini            # Terminal settings
+├── zsh/                     # Shell config
+│   └── .zshrc              # Aliases & functions
+├── nvim/                    # Neovim editor
+├── mako/                    # Notifications
+└── starship.toml           # Prompt styling
+```
 
-| Keybind | Action |
-|---|---|
-| `F1` | Toggle mute (speakers) |
-| `F2` | Volume down 10% |
-| `F3` | Volume up 10% |
-| `F4` | Toggle mute (microphone) |
-| `F7` | Toggle Wi-Fi |
-| `F9` | Lock screen (Hyprlock) |
-| `F11` | Brightness down 10% |
-| `F12` | Brightness up 10% |
-| `Print` | Screenshot |
+### Common Customization Examples
 
-### 🚀 Apps & Launchers
+#### 1️⃣ Change Default Keybinding
 
-| Keybind | Action |
-|---|---|
-| `ALT + Enter` | Terminal (Kitty) |
-| `ALT + D` | App launcher (Rofi) |
-| `ALT + R` | File manager TUI (Yazi) in Kitty |
-| `ALT + N` | Text editor (Neovim) in Kitty |
-| `ALT + M` | Music player (cmus) in Kitty |
-| `ALT + H` | System monitor (btop) in Kitty |
-| `ALT + T` | Email client (aerc) in Kitty |
-| `ALT + S` | LocalSend |
-| `ALT + E` | Emoji picker (rofiemoji) |
-| `ALT + X` | Power menu |
-| `ALT + B` | Bluetooth menu |
-| `ALT + L` | AirPods TUI |
-| `ALT + Y` | YouTube downloader (ytdla) |
-| `ALT + V` | Clipboard history (cliphist) |
-| `ALT + W` | Change wallpaper |
-| `ALT + K` | Kill a window (wkill) |
-| `ALT + C` | Dismiss all notifications |
-| `ALT SHIFT + T` | File manager GUI (Nautilus) |
-| `ALT SHIFT + P` | Audio mixer (wiremix) in Kitty |
-| `ALT SHIFT + V` | Watch video (watchvid) |
-| `ALT SHIFT + S` | Universal snip (QuickShell) |
-| `ALT SHIFT + K` | System cleaner |
-| `ALT SHIFT + D` | aria2 download manager |
-| `ALT SHIFT + C` | Script editor |
-| `ALT SHIFT + E` | Config editor |
-| `ALT SHIFT + N` | Wi-Fi menu |
+Edit `~/.config/hypr/hyprland.conf`:
 
-### 🌐 Web
+```conf
+# Change application launcher keybind (default: SUPER+D)
+bind = SUPER, D, exec, rofi -show drun
 
-| Keybind | Action |
-|---|---|
-| `ALT SHIFT + B` | Browser (Zen) |
-| `ALT SHIFT + I` | Incognito (Zen private window) |
-| `ALT + G` | GitHub profile |
-| `ALT SHIFT + Y` | YouTube |
-| `ALT SHIFT + G` | Gemini |
-| `ALT SHIFT + W` | Wallhaven |
-| `ALT SHIFT + O` | ChatGPT |
-| `ALT SHIFT + R` | Reddit |
+# Add custom keybinding for your favorite app
+bind = SUPER, B, exec, firefox
 
-### 🪟 Window Management
+# Change workspace switcher
+bind = SUPER, 1, workspace, 1
+bind = SUPER, 2, workspace, 2
+bind = SUPER, 3, workspace, 3
+```
 
-| Keybind | Action |
-|---|---|
-| `ALT + Q` | Close active window |
-| `ALT + F` | Toggle fullscreen |
-| `ALT + P` | Toggle floating |
-| `ALT + J` | Toggle split |
-| `ALT + ↑ ↓ ← →` | Move focus |
-| `ALT SHIFT + ↑ ↓ ← →` | Swap window |
-| `ALT CTRL + ↑ ↓ ← →` | Resize window |
-| `ALT + Mouse drag (LMB)` | Move window |
-| `ALT + Mouse drag (RMB)` | Resize window |
+See [Hyprland Keybind Syntax](https://wiki.hyprland.org/Configuring/Binds/) for full documentation.
 
-### 🗂 Workspaces
+#### 2️⃣ Modify Wallpaper
 
-| Keybind | Action |
-|---|---|
-| `ALT + 1–0` | Switch to workspace 1–10 |
-| `ALT SHIFT + 1–0` | Move window to workspace 1–10 (silent) |
-| `ALT + Scroll up` | Next workspace |
-| `ALT + Scroll down` | Previous workspace |
-| `ALT + `` ` `` ` | Toggle scratchpad |
-| `ALT SHIFT + `` ` `` ` | Move window to scratchpad |
+```bash
+# Change wallpaper (colors auto-generate via Matugen)
+swww img /path/to/wallpaper.jpg --transition-type grow
+
+# Make permanent — add to ~/.config/hypr/hyprland.conf:
+exec-once = swww init && swww img /path/to/wallpaper.jpg
+```
+
+#### 3️⃣ Customize Waybar Modules
+
+Edit `~/.config/waybar/config.jsonc`:
+
+```json
+{
+  "modules-left": ["hyprland/workspaces", "hyprland/window"],
+  "modules-center": ["clock"],
+  "modules-right": ["backlight", "pulseaudio", "battery"],
+
+  "clock": {
+    "format": "{:%H:%M %A, %B %d}",
+    "tooltip-format": "<big>{:%Y %B}</big>\n<tt><big>{calendar}</big></tt>"
+  }
+}
+```
+
+Edit `~/.config/waybar/style.css` for colors and fonts.
+
+#### 4️⃣ Change Terminal Font & Colors
+
+Edit `~/.config/foot/foot.ini`:
+
+```ini
+[main]
+font=JetBrains Mono Nerd Font:size=11
+pad=10x10
+selection-target=primary
+term=xterm-256color
+
+[colors]
+background=1e1e2e
+foreground=cdd6f4
+```
+
+#### 5️⃣ Add Custom Shell Aliases
+
+Edit `~/.zshrc`:
+
+```bash
+# Custom aliases
+alias ll='eza -la --icons'
+alias grep='grep --color=auto'
+alias vim='nvim'
+alias update='yay -Syu'
+
+# Custom functions
+mkcd() {
+  mkdir -p "$1" && cd "$1"
+}
+```
+
+#### 6️⃣ Override Color Scheme Manually
+
+Edit `~/.config/hypr/hyprland.conf`:
+
+```conf
+# Define custom colors (Material You auto-generates these, but you can override)
+$accent = rgb(160, 36, 247)
+$background = rgb(30, 30, 46)
+$foreground = rgb(205, 214, 244)
+$text = rgb(205, 214, 244)
+
+# Apply to windows
+general {
+    col.active_border = $accent
+    col.inactive_border = $background
+}
+```
+
+#### 7️⃣ Reduce/Disable Animations
+
+Edit `~/.config/hypr/hyprland.conf`:
+
+```conf
+# Slower animations for laptops
+animation = windows, 1, 5, default
+animation = windowsMove, 1, 4, default
+animation = workspaces, 1, 3, default
+
+# Or disable completely
+animation = windows, 0
+animation = workspaces, 0
+```
+
+#### 8️⃣ Customize Monitor Layout
+
+Edit `~/.config/hypr/hyprland.conf`:
+
+```conf
+# Single monitor
+monitor = eDP-1, 1920x1080@60, 0x0, 1
+
+# Dual monitors (laptop + external)
+monitor = eDP-1, 1920x1080@60, 0x0, 1
+monitor = HDMI-1, 2560x1440@60, 1920x0, 1
+
+# Set workspace distribution
+workspace = 1, monitor:eDP-1
+workspace = 2, monitor:eDP-1
+workspace = 3, monitor:HDMI-1
+```
+
+#### 9️⃣ Add Startup Applications
+
+Edit `~/.config/hypr/hyprland.conf`:
+
+```conf
+# Start apps on login (exec-once = run once; exec = run on reload)
+exec-once = dbus-launch dunst
+exec-once = syncthingtray
+exec-once = keepassxc
+
+# Start in background
+exec = steam &
+exec = discord &
+```
+
+#### 🔟 Create Custom Rofi Theme
+
+Edit `~/.config/rofi/theme.rasi`:
+
+```css
+* {
+  background: #1e1e2e;
+  foreground: #cdd6f4;
+  accent:     #a024f7;
+  text:       #ffffff;
+
+  spacing: 4;
+  border-radius: 8;
+}
+
+window {
+  background-color: @background;
+  border: 2px solid @accent;
+  width: 600px;
+}
+
+inputbar {
+  background-color: @background;
+  children: [prompt, entry];
+}
+
+prompt {
+  text-color: @accent;
+}
+```
+
+### Theming System (Matugen Integration)
+
+This setup uses **Matugen** to auto-generate color palettes from your wallpaper:
+
+```bash
+# Manually regenerate colors if they get out of sync
+matugen image ~/.config/hypr/current_wallpaper
+
+# View available color tokens
+cat ~/.config/matugen/colors.toml
+```
+
+Templates in `~/.config/matugen/templates/` control how colors map to each app.
 
 ---
 
@@ -340,100 +544,468 @@ Color theming is powered by **[Matugen](https://github.com/InioX/matugen)** — 
 ### Changing Wallpaper
 
 ```bash
-aww set /path/to/wallpaper.jpg
+swww img /path/to/wallpaper.jpg --transition-type grow --transition-pos center
 matugen image /path/to/wallpaper.jpg
 ```
 
 ### Force Regenerate Colors
 
-If colors fall out of sync after a config update:
+If colors get out of sync after an app config update:
 
 ```bash
-matugen image ~/.config/hyprwat/current_wallpaper
+matugen image ~/.config/hypr/current_wallpaper
 ```
 
-Matugen templates live in `.config/matugen/` and map Material You color tokens to each app's config format. Edit these to customize per-app color application.
+Matugen templates live in `.config/matugen/` and map Material You color tokens to each app's config format. Edit these templates to customize how colors are applied per app.
 
 ---
 
-## 🔧 Troubleshooting
+## 🐛 Troubleshooting
 
-**Waybar / Rofi / Mako not launching**
+### Installation Issues
 
-Run the installer's built-in ecosystem check:
+#### **Installer failed or won't start**
 
 ```bash
-./install.sh --dry-run
+# Try with verbose output to see exact errors
+./install.sh --verbose
+
+# Check system disk space
+df -h ~
+
+# Look at install logs
+tail -100 /tmp/hypr-install-*.log
 ```
 
-Or verify manually:
+#### **Can't install packages (pacman/yay errors)**
 
 ```bash
-which hyprland waybar rofi mako hyprlock matugen kitty zsh
+# Refresh package database
+paru -Sy
+
+# Clear cache
+paru -Sc
+
+# Try problem package with no-check flag
+paru -S problematic-package --nocheck
+```
+
+#### **AUR packages fail to build**
+
+```bash
+# Ensure build tools installed
+sudo pacman -S base-devel
+
+# Check what's failing
+paru -S package-name --verbose
+cat ~/.cache/paru/clone/*/PKGBUILD
+```
+
+#### **Scripts not working (`command not found`)**
+
+```bash
+# Verify ~/.local/bin is in PATH
+echo $PATH | grep ".local/bin"
+
+# Add to PATH if missing
+echo 'export PATH="$HOME/.local/bin:$PATH"' >> ~/.zshrc
+source ~/.zshrc
+
+# Make scripts executable
+chmod +x ~/.local/bin/scripts/*
 ```
 
 ---
 
-**Scripts not working (`command not found`)**
+### Display & GPU Issues
 
-`~/.local/bin` is not in your `$PATH`. Add it manually:
+#### **Black screen after login / Hyprland won't start**
 
 ```bash
-echo 'export PATH="$HOME/.local/bin:$PATH"' >> ~/.zshrc && source ~/.zshrc
+# Check error logs
+cat ~/.local/share/hyprland/hyprland.log
+
+# Common causes:
+# 1. Missing GPU drivers
+sudo pacman -S nvidia-dkms  # For NVIDIA
+sudo pacman -S amdgpu       # For AMD (usually pre-installed)
+
+# 2. Missing Wayland support package
+yay -S xdg-desktop-portal-hyprland
+
+# 3. Restart display manager or reboot
+sudo systemctl restart displaymanager
+# or reboot
+```
+
+#### **Monitor not detected / Wrong resolution**
+
+```bash
+# List connected monitors
+hyprctl monitors
+
+# Edit ~/.config/hypr/hyprland.conf with correct values
+monitor = HDMI-1, 2560x1440@60, 0x0, 1
+
+# Reload Hyprland
+hyprctl reload
+```
+
+#### **Screen tearing / Flickering**
+
+```bash
+# Edit ~/.config/hypr/hyprland.conf
+general {
+    allow_tearing = true  # Enable tearing for gaming
+}
+
+# Or reduce refresh rate if flickering
+monitor = eDP-1, 1920x1080@60, 0x0, 1  # Instead of 144Hz
+```
+
+#### **Cursor invisible or broken**
+
+```bash
+# Edit ~/.config/hypr/hyprland.conf
+cursor {
+    no_hardware_cursor = false
+}
+
+# If still broken, try hyprcursor
+yay -S hyprcursor
+```
+
+#### **NVIDIA: Black screen on startup**
+
+```bash
+# Install NVIDIA drivers
+sudo pacman -S nvidia-dkms nvidia-utils
+
+# Edit /etc/mkinitcpio.conf, add to MODULES line:
+MODULES=(nvidia nvidia_modeset nvidia_uvm nvidia_drm)
+
+# Rebuild kernel image
+sudo mkinitcpio -P
+
+# Reboot
+sudo reboot
 ```
 
 ---
 
-**GTK 2 theming broken after `nwg-look`**
+### Audio Issues
 
-`nwg-look` silently overwrites `.gtkrc-2.0`. Re-apply from the repo:
+#### **No sound / Speakers not working**
 
 ```bash
+# Check PipeWire status
+systemctl --user status pipewire
+systemctl --user status wireplumber
+
+# Restart audio system
+systemctl --user restart pipewire wireplumber
+
+# List audio devices
+pactl list sinks
+
+# Unmute if muted
+pactl set-sink-mute @DEFAULT_SINK@ 0
+
+# Set volume
+pactl set-sink-volume @DEFAULT_SINK@ 70%
+```
+
+#### **Microphone not detected**
+
+```bash
+# List audio sources
+pactl list sources
+
+# If missing, reinstall audio packages
+yay -S pipewire-pulse pipewire-alsa
+systemctl --user restart pipewire
+```
+
+#### **Audio crackling / Bad quality**
+
+```bash
+# Check for PulseAudio interference
+ps aux | grep pulseaudio
+
+# If running, kill it (PipeWire should handle audio)
+systemctl --user mask pulseaudio
+```
+
+---
+
+### UI Component Issues
+
+#### **Waybar not showing**
+
+```bash
+# Kill existing instance
+killall waybar
+
+# Start manually to see errors
+waybar -l debug
+
+# Check config syntax
+waybar -c ~/.config/waybar/config.jsonc
+```
+
+#### **Rofi not launching / Blank window**
+
+```bash
+# Test rofi directly
+rofi -show drun
+
+# Check config
+rofi -config ~/.config/rofi/config.rasi -show drun
+
+# Regenerate theme
+rofi-theme-selector
+```
+
+#### **Mako notifications not showing**
+
+```bash
+# Kill existing mako
+killall mako
+
+# Start manually
+mako -l debug &
+
+# Test notification
+notify-send "Test Title" "Test message"
+```
+
+#### **Font icons showing as boxes**
+
+```bash
+# Install fonts
+yay -S ttf-jetbrains-mono-nerd ttf-font-awesome nerd-fonts-symbols-only
+
+# Rebuild font cache
+fc-cache -fv
+
+# Verify fonts installed
+fc-list | grep "JetBrains"
+fc-list | grep "Noto Color Emoji"
+```
+
+---
+
+### Performance Issues
+
+#### **High CPU/Memory usage**
+
+```bash
+# Monitor in real-time
+btop
+
+# Identify problematic process (look for >20% CPU)
+ps aux --sort=-%cpu | head -10
+
+# Disable animations if causing lag
+# Edit ~/.config/hypr/hyprland.conf
+animation = windows, 0
+animation = workspaces, 0
+```
+
+#### **Battery draining too fast**
+
+```bash
+# Install CPU frequency scaler
+yay -S auto-cpufreq
+
+# Enable service
+sudo auto-cpufreq --install
+
+# Verify
+sudo systemctl status auto-cpufreq
+```
+
+#### **High GPU usage despite light workload**
+
+```bash
+# Check GPU processes
+watch -n 1 "ps aux | grep -i gpu"
+
+# Try disabling blur effects
+# Edit ~/.config/hypr/hyprland.conf
+decoration {
+    blur = {
+        enabled = false
+    }
+}
+
+# Reload
+hyprctl reload
+```
+
+---
+
+### Keyboard & Input Issues
+
+#### **Keyboard not responding in certain apps**
+
+```bash
+# Check XKB layout
+setxkbmap -query
+
+# Set correct layout in ~/.config/hypr/hyprland.conf
+input {
+    kb_layout = us
+    kb_variant =
+    kb_model =
+    kb_options =
+}
+
+# Reload
+hyprctl reload
+```
+
+#### **Trackpad gestures not working**
+
+```bash
+# Install libinput
+yay -S libinput
+
+# Enable in ~/.config/hypr/hyprland.conf
+input {
+    touchpad {
+        natural_scroll = true
+        clickfinger_behavior = true
+        tap-to-click = true
+    }
+}
+```
+
+#### **Mouse/Trackpad lag or sensitivity wrong**
+
+```bash
+# List input devices
+hyprctl devices
+
+# Adjust sensitivity in ~/.config/hypr/hyprland.conf
+input {
+    sensitivity = 0.0  # -1.0 to 1.0
+    accel_profile = flat  # or "adaptive"
+}
+```
+
+---
+
+### Color & Theming Issues
+
+#### **Colors not changing after wallpaper switch**
+
+```bash
+# Manually regenerate palette
+matugen image /path/to/new/wallpaper.jpg
+
+# Check if Matugen installed
+which matugen
+
+# Verify config exists
+ls -la ~/.config/matugen/
+```
+
+#### **GTK 2 theming broken**
+
+```bash
+# nwg-look overwrites .gtkrc-2.0, restore from repo
 cp /path/to/Hypr/.gtkrc-2.0 ~/.gtkrc-2.0
 ```
 
----
-
-**Colors didn't update after wallpaper change**
-
-Regenerate the Matugen palette manually:
+#### **Rofi colors don't match wallpaper**
 
 ```bash
-matugen image /path/to/your/wallpaper
+# Regenerate Matugen templates
+matugen clear
+matugen image /path/to/wallpaper.jpg
+
+# Check template syntax
+cat ~/.config/matugen/config.toml
 ```
 
 ---
 
-**Font icons showing as boxes**
+### Getting Help
 
-Fonts aren't installed or the cache needs rebuilding:
+If your issue isn't covered:
 
-```bash
-yay -S ttf-font-awesome nerd-fonts-symbols-only
-fc-cache -f
-```
+1. **Check logs:**
+   ```bash
+   tail -f ~/.local/share/hyprland/hyprland.log
+   cat /tmp/hypr-install-*.log
+   ```
 
----
+2. **Get system info:**
+   ```bash
+   hyprctl version
+   uname -a
+   lspci | grep -i gpu
+   yay -Q | grep hypr
+   ```
 
-**`--uninstall` says "No install manifest found"**
+3. **Search [GitHub Issues](https://github.com/Cybersnake223/Hypr/issues)**
 
-The installer was never run from this repo, or the backup directory was deleted. See the [Wiki → Uninstalling](https://github.com/Cybersnake223/Hypr/wiki/Uninstalling) for the full manual file list.
-
----
-
-**Something went wrong mid-install**
-
-Every run writes a plain-text log to `/tmp/hypr-install-<timestamp>.log`:
-
-```bash
-cat /tmp/hypr-install-*.log | tail -50
-```
+4. **Ask on [r/hyprland](https://reddit.com/r/hyprland) or [Hyprland Discord](https://discord.gg/hQ9XvMUjjr)**
 
 ---
 
-## 🔐 Security
+## 📚 Tool Documentation
 
-Please **do not open a public GitHub issue** to report security vulnerabilities. See [SECURITY.md](SECURITY.md) for the responsible disclosure process.
+Quick reference links for each component. Click through for full documentation.
+
+### Core Environment
+- **[Hyprland Wiki](https://wiki.hyprland.org/)** - Compositor docs, keybindings, config
+- **[Hyprland GitHub Issues](https://github.com/hyprwm/hyprland/issues)** - Report bugs
+- **[Arch Wiki: Wayland](https://wiki.archlinux.org/title/Wayland)** - General Wayland setup
+
+### Desktop Components
+- **[Waybar Wiki](https://github.com/Alexays/Waybar/wiki)** - Status bar modules & config
+- **[Rofi Manual](https://davatorium.github.io/rofi/)** - Launcher documentation
+- **[Mako GitHub](https://github.com/emersion/mako)** - Notification daemon
+
+### Terminal & Shell
+- **[Foot Docs](https://codeberg.org/dnkl/foot/wiki)** - Terminal emulator guide
+- **[Zsh Manual](https://zsh.sourceforge.io/Doc/)** - Shell scripting & features
+- **[Starship Documentation](https://starship.rs/)** - Prompt customization
+- **[Oh My Zsh](https://ohmyz.sh/)** - Zsh plugin framework
+
+### File Management
+- **[Thunar Docs](https://docs.xfce.org/xfce/thunar/start)** - GUI file manager
+- **[Yazi Docs](https://yazi-rs.github.io/)** - TUI file manager
+
+### Media & System Tools
+- **[MPV Manual](https://mpv.io/manual/)** - Video player config
+- **[cmus Manual](https://cmus.github.io/)** - Terminal music player
+- **[Cava GitHub](https://github.com/karlstav/cava)** - Audio visualizer
+- **[btop GitHub](https://github.com/aristocratos/btop)** - System monitor
+- **[Fastfetch GitHub](https://github.com/fastfetch-cli/fastfetch)** - System info
+
+### Audio & Connectivity
+- **[PipeWire Documentation](https://docs.pipewire.org/)** - Audio system
+- **[Wireplumber Docs](https://github.com/pipewire/wireplumber)** - Session manager
+- **[Arch: NetworkManager](https://wiki.archlinux.org/title/NetworkManager)** - Network config
+- **[Arch: Bluetooth](https://wiki.archlinux.org/title/Bluetooth)** - Bluetooth setup
+
+### Theming & Customization
+- **[Matugen GitHub](https://github.com/InioX/matugen)** - Wallpaper color generation
+- **[Swww GitHub](https://github.com/LGFae/swww)** - Wallpaper manager
+- **[Hyprlock](https://github.com/hyprwm/hyprlock)** - Lock screen customization
+
+### Editor & Development
+- **[Neovim Docs](https://neovim.io/doc/user/)** - Editor documentation
+- **[Neovim GitHub](https://github.com/neovim/neovim)** - Issues & releases
+
+### Additional Resources
+- **[Arch Wiki](https://wiki.archlinux.org/)** - Linux & system setup
+- **[Arch User Repository (AUR)](https://aur.archlinux.org/)** - Community packages
+- **[Nerd Fonts](https://www.nerdfonts.com/)** - Icon-enhanced fonts
+- **[Catppuccin](https://catppuccin.com/)** - Color palette (used as inspiration)
 
 ---
 
@@ -441,12 +1013,6 @@ Please **do not open a public GitHub issue** to report security vulnerabilities.
 
 This project is licensed under the **MIT License** — see [LICENSE](LICENSE) for details.
 
----
-
-<div align="center">
-
-![Footer](https://raw.githubusercontent.com/catppuccin/catppuccin/main/assets/footers/gray0_ctp_on_line.png)
+[![](https://raw.githubusercontent.com/catppuccin/catppuccin/main/assets/footers/gray0_ctp_on_line.png)](https://raw.githubusercontent.com/catppuccin/catppuccin/main/assets/footers/gray0_ctp_on_line.png)
 
 Made with 💜 by [Cybersnake](https://github.com/Cybersnake223)
-
-</div>
