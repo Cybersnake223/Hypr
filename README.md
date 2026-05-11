@@ -48,10 +48,6 @@
 
 <br/>
 
-<img src="assets/asset1.png" width="100%"/>
-
-<br/>
-
 ---
 
 ## 🖼 Preview
@@ -146,6 +142,14 @@
 
 > [!IMPORTANT]
 > The installer checks for these and warns about anything missing. It will not block installation unless core system utilities like `cp` or `find` are absent.
+
+### Tested On
+
+| | |
+|:---:|:---|
+| 🖥 **OS** | Arch Linux (latest) |
+| GPU | Intel / AMD / NVIDIA (all supported via Hyprland) |
+| 🪟 **Display** | Wayland (Hyprland) |
 
 ### Core packages
 
@@ -616,6 +620,13 @@ Do **not** open a public GitHub issue for vulnerabilities. See [SECURITY.md](SEC
 ## 🤝 Contributing
 
 PRs are welcome for fixes, improvements, and documentation updates. Include screenshots when UI is affected.
+
+### 💬 Getting Help
+
+Need help or have questions? Start a discussion:
+- **[GitHub Discussions](https://github.com/Cybersnake223/Hypr/discussions)** — ask questions, share setups, get help
+
+For bugs and issues, use the **[Issue Tracker](https://github.com/Cybersnake223/Hypr/issues)**.
 
 ---
 
