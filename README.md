@@ -353,7 +353,7 @@ matugen image ~/.config/hypr/wallpaper/current.png
 ```
 
 > [!NOTE]
-> `aww` (the wallpaper daemon used in this setup) stores the last-set wallpaper at `~/.config/aww/current_wallpaper`. If your path differs, check `aww`'s cache directory with `aww info` or look inside `~/.config/aww/`.
+> `aww` (the wallpaper daemon used in this setup) stores the last-set wallpaper at `~/.config/hypr/wallpaper/current.png`.
 
 Matugen templates live in `.config/matugen/` and map Material You color tokens to each app's config format. Edit these to customize per-app color application.
 
