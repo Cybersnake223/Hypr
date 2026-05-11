@@ -3,8 +3,9 @@
 <img src="assets/cslogo.png" width="120" alt="Vicious Viper Logo"/>
 
 <br/>
+<br/>
 
-![Typing SVG](https://readme-typing-svg.herokuapp.com?font=Righteous&weight=600&size=80&duration=1200&pause=1000&color=A024F7&center=true&vCenter=true&random=false&width=700&height=90&lines=Vicious+Viper)
+# Vicious Viper
 
 <p>
   <img src="https://img.shields.io/badge/OS-Arch_Linux-A024F7?style=for-the-badge&logo=archlinux&logoColor=white"/>
@@ -36,9 +37,6 @@
 </p>
 
 <p><i>A wallpaper-synced Hyprland rice for Arch Linux.<br/>Material You theming · Automated backups · Modular installer · Clean daily workflow.</i></p>
-
-<br/>
-
 
 <br/>
 
@@ -91,17 +89,13 @@
 
 <div align="center">
 
-| | |
-|:---:|:---|
-| 🔮 | **Material You theming** — Matugen derives a full palette from your wallpaper and applies it to every component |
-| 💾 | **Safe installer** — every file that would be overwritten is backed up to a timestamped directory first |
-| 🎛 | **Modular installs** — choose exactly which modules to deploy: configs, scripts, icons, themes, fonts, dotfiles |
-| 🪄 | **Dry-run mode** — preview every single action without touching a single file |
-| 🐚 | **Shell-aware PATH patching** — detects Zsh, Bash, Fish, Ksh, and falls back to POSIX `.profile` |
-| ↩️ | **One-command undo** — restore all your originals with `./install.sh --uninstall` |
-| 🔤 | **Bundled fonts** — JetBrains Mono Nerd, Font Awesome, Icomoon Feather, Nerd Symbols — installed and cached |
-| 🌐 | **Zen Browser CSS** — custom `userChrome.css` and `userContent.css` tuned to match the Viper aesthetic |
-| 📜 | **50+ custom scripts** — automatically marked executable and patched into `PATH` |
+| 🔮 | 💾 | 🎛 | 🪄 | 🐚 |
+|:---:|:---:|:---:|:---:|:---:|
+| **Material You theming** — Matugen derives a full palette from your wallpaper and applies it to every component | **Safe installer** — every file that would be overwritten is backed up to a timestamped directory first | **Modular installs** — choose exactly which modules to deploy: configs, scripts, icons, themes, fonts, dotfiles | **Dry-run mode** — preview every single action without touching a single file | **Shell-aware PATH patching** — detects Zsh, Bash, Fish, Ksh, and falls back to POSIX `.profile` |
+
+| ↩️ | 🔤 | 🌐 | 📜 | 🎨 |
+|:---:|:---:|:---:|:---:|:---:|
+| **One-command undo** — restore all your originals with `./install.sh --uninstall` | **Bundled fonts** — JetBrains Mono Nerd, Font Awesome, Icomoon Feather, Nerd Symbols — installed and cached | **Zen Browser CSS** — custom `userChrome.css` and `userContent.css` tuned to match the Viper aesthetic | **50+ custom scripts** — automatically marked executable and patched into `PATH` | **Live theming** — change wallpaper, run matugen, everything recolors instantly |
 
 </div>
 
