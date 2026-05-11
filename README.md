@@ -26,20 +26,13 @@
 
 A few snapshots from the current setup.
 
-|---|---|
 | ![Desktop 1](assets/asset1.png) | ![Desktop 2](assets/asset10.png) |
-|---|---|
 | ![Desktop 3](assets/asset11.png) | ![Desktop 4](assets/asset12.png) |
-|---|---|
 | ![Desktop 5](assets/asset2.png) | ![Desktop 6](assets/asset3.png) |
-|---|---|
 | ![Desktop 7](assets/asset4.png) | ![Desktop 8](assets/asset5.png) |
-|---|---|
 | ![Desktop 9](assets/asset6.png) | ![Desktop 10](assets/asset7.png) |
-|---|---|
 | ![Desktop 11](assets/asset8.png) | ![Desktop 12](assets/asset9.png) |
 
----
 
 ## ✨ Features
 
