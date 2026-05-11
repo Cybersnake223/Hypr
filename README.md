@@ -39,15 +39,6 @@
 
 <br/>
 
-```
-██╗   ██╗██╗ ██████╗██╗ ██████╗ ██╗   ██╗███████╗
-██║   ██║██║██╔════╝██║██╔═══██╗██║   ██║██╔════╝
-██║   ██║██║██║     ██║██║   ██║██║   ██║███████╗
-╚██╗ ██╔╝██║██║     ██║██║   ██║██║   ██║╚════██║
- ╚████╔╝ ██║╚██████╗██║╚██████╔╝╚██████╔╝███████║
-  ╚═══╝  ╚═╝ ╚═════╝╚═╝ ╚═════╝  ╚═════╝╚══════╝
-            V I P E R  —  D O T F I L E S
-```
 
 <br/>
 
@@ -69,48 +60,24 @@
 
 <table>
   <tr>
-    <td align="center"><b>Desktop · Idle</b></td>
-    <td align="center"><b>Desktop · Busy</b></td>
-  </tr>
-  <tr>
     <td><img src="assets/asset1.png"/></td>
     <td><img src="assets/asset10.png"/></td>
-  </tr>
-  <tr>
-    <td align="center"><b>Rofi Launcher</b></td>
-    <td align="center"><b>Waybar</b></td>
   </tr>
   <tr>
     <td><img src="assets/asset11.png"/></td>
     <td><img src="assets/asset12.png"/></td>
   </tr>
   <tr>
-    <td align="center"><b>Neovim</b></td>
-    <td align="center"><b>Matugen Theming</b></td>
-  </tr>
-  <tr>
     <td><img src="assets/asset2.png"/></td>
     <td><img src="assets/asset3.png"/></td>
-  </tr>
-  <tr>
-    <td align="center"><b>Yazi · File Manager</b></td>
-    <td align="center"><b>btop · System Monitor</b></td>
   </tr>
   <tr>
     <td><img src="assets/asset4.png"/></td>
     <td><img src="assets/asset5.png"/></td>
   </tr>
   <tr>
-    <td align="center"><b>Hyprlock</b></td>
-    <td align="center"><b>Terminal · Kitty</b></td>
-  </tr>
-  <tr>
     <td><img src="assets/asset6.png"/></td>
     <td><img src="assets/asset7.png"/></td>
-  </tr>
-  <tr>
-    <td align="center"><b>cmus · Music</b></td>
-    <td align="center"><b>Fastfetch</b></td>
   </tr>
   <tr>
     <td><img src="assets/asset8.png"/></td>
