@@ -23,4 +23,4 @@ notify-send "Waybar" "Reloaded" -t 1000
 # Terminate already running bar instances
 pkill waybar
 
-hyprctl dispatch exec "waybar -l off "
+waybar -l off
