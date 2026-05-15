@@ -54,7 +54,7 @@ Item {
         fragmentShader: root.fragmentShader
     }
 
-    // 2. Alignment Guides (Canvas)
+    // 3. Alignment Guides (Canvas)
     Canvas {
         id: guides
         anchors.fill: parent
@@ -64,34 +64,74 @@ Item {
             var ctx = getContext("2d");
             ctx.clearRect(0, 0, width, height);
 
-            ctx.beginPath();
-            ctx.strokeStyle = "rgba(255, 255, 255, 0.5)";
-            ctx.lineWidth = 1;
+            // Crosshair / Selection styling
+            ctx.strokeStyle = "rgba(255, 255, 255, 0.9)";
+            ctx.lineWidth = 1.5;
             ctx.setLineDash([5, 5]);
 
             if (!mouseArea.pressed) {
                 // MODE 1: Crosshair at mouse cursor (Before clicking)
                 // Vertical
+                ctx.beginPath();
                 ctx.moveTo(root.mouseX, 0);
                 ctx.lineTo(root.mouseX, root.height);
                 // Horizontal
                 ctx.moveTo(0, root.mouseY);
                 ctx.lineTo(root.width, root.mouseY);
+                ctx.stroke();
             } else {
                 // MODE 2: Guides around the selection box (While dragging)
+                ctx.beginPath();
                 // Vertical Left & Right
                 ctx.moveTo(root.selectionX, 0);
                 ctx.lineTo(root.selectionX, root.height);
                 ctx.moveTo(root.selectionX + root.selectionWidth, 0);
                 ctx.lineTo(root.selectionX + root.selectionWidth, root.height);
-
                 // Horizontal Top & Bottom
                 ctx.moveTo(0, root.selectionY);
                 ctx.lineTo(root.width, root.selectionY);
                 ctx.moveTo(0, root.selectionY + root.selectionHeight);
                 ctx.lineTo(root.width, root.selectionY + root.selectionHeight);
+                ctx.stroke();
+
+                // Corner brackets
+                ctx.strokeStyle = "#3b8eea";
+                ctx.lineWidth = 2.5;
+                ctx.setLineDash([]);
+                var bracketSize = 16;
+                var x = root.selectionX;
+                var y = root.selectionY;
+                var w = root.selectionWidth;
+                var h = root.selectionHeight;
+
+                // Top-left
+                ctx.beginPath();
+                ctx.moveTo(x, y + bracketSize);
+                ctx.lineTo(x, y);
+                ctx.lineTo(x + bracketSize, y);
+                ctx.stroke();
+
+                // Top-right
+                ctx.beginPath();
+                ctx.moveTo(x + w - bracketSize, y);
+                ctx.lineTo(x + w, y);
+                ctx.lineTo(x + w, y + bracketSize);
+                ctx.stroke();
+
+                // Bottom-left
+                ctx.beginPath();
+                ctx.moveTo(x, y + h - bracketSize);
+                ctx.lineTo(x, y + h);
+                ctx.lineTo(x + bracketSize, y + h);
+                ctx.stroke();
+
+                // Bottom-right
+                ctx.beginPath();
+                ctx.moveTo(x + w - bracketSize, y + h);
+                ctx.lineTo(x + w, y + h);
+                ctx.lineTo(x + w, y + h - bracketSize);
+                ctx.stroke();
             }
-            ctx.stroke();
         }
     }
 
@@ -150,5 +190,24 @@ Item {
                                 Math.round(root.selectionHeight)
             )
         }
+    }
+
+    // 4. Live Dimension Readout
+    Text {
+        id: dimensionLabel
+        visible: mouseArea.pressed && root.selectionWidth > 20 && root.selectionHeight > 20
+        z: 10
+        anchors.horizontalCenter: parent.horizontalCenter
+        y: root.selectionY + root.selectionHeight + 12
+
+        text: Math.round(root.selectionWidth) + " × " + Math.round(root.selectionHeight)
+        color: "#ffffff"
+        styleColor: "#000000"
+        style: Text.Outline
+        font.pixelSize: 13
+        font.family: "JetBrains Mono, monospace"
+        font.bold: true
+        opacity: 0.95
+        Behavior on opacity { NumberAnimation { duration: 100 } }
     }
 }
