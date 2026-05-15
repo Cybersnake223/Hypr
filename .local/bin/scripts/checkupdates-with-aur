@@ -1,4 +1,8 @@
 #!/bin/bash
-#
-# [[ $total -gt 0 ]] && notify-send "Updates Available" \
-#     "$pacman_count pacman · $aur_count AUR · $total total"
+# Combines checkupdates (official repos) and yay (AUR) output
+
+# Official repo updates
+checkupdates 2>/dev/null
+
+# AUR updates (yay -Qua lists AUR-only updates)
+yay -Qua 2>/dev/null | awk '{print $1, $2, "->", $3}'

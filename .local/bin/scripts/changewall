@@ -88,6 +88,6 @@ magick ~/.config/hypr/wallpaper/current.png \
   -resize 800x600^ \
   -gravity Center \
   -extent 800x600 \
-  -blur 0x3 \
-  -brightness-contrast -15x0 \
+  -blur 3x0 \
+  -brightness-contrast -10x0 \
   ~/.config/hypr/wallpaper/rofi-cropped.png
