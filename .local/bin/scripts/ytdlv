@@ -1,18 +1,4 @@
 #!/bin/bash
-
-############################################################################################################
-##   ______  __      __  _______   ________  _______    ______   __    __   ______   __    __  ________   ##
-##  /      \|  \    /  \|       \ |        \|       \  /      \ |  \  |  \ /      \ |  \  /  \|        \  ##
-## |  $$$$$$\\$$\  /  $$| $$$$$$$\| $$$$$$$$| $$$$$$$\|  $$$$$$\| $$\ | $$|  $$$$$$\| $$ /  $$| $$$$$$$$  ##
-## | $$   \$$ \$$\/  $$ | $$__/ $$| $$__    | $$__| $$| $$___\$$| $$$\| $$| $$__| $$| $$/  $$ | $$__      ##
-## | $$        \$$  $$  | $$    $$| $$  \   | $$    $$ \$$    \ | $$$$\ $$| $$    $$| $$  $$  | $$  \     ##
-## | $$   __    \$$$$   | $$$$$$$\| $$$$$   | $$$$$$$\ _\$$$$$$\| $$\$$ $$| $$$$$$$$| $$$$$\  | $$$$$     ##
-## | $$__/  \   | $$    | $$__/ $$| $$_____ | $$  | $$|  \__| $$| $$ \$$$$| $$  | $$| $$ \$$\ | $$_____   ##
-##  \$$    $$   | $$    | $$    $$| $$     \| $$  | $$ \$$    $$| $$  \$$$| $$  | $$| $$  \$$\| $$     \  ##
-##   \$$$$$$     \$$     \$$$$$$$  \$$$$$$$$ \$$   \$$  \$$$$$$  \$$   \$$ \$$   \$$ \$$   \$$ \$$$$$$$$  ##
-##                                                                                                        ##
-## YT VIDEO DOWNLOAD SCRIPT                                                                               ##
-## Created by Cybersnake                                                                                  ##
 ############################################################################################################
 
 set -euo pipefail
@@ -22,17 +8,24 @@ dir="$HOME/Videos/Youtube/%(title)s.%(ext)s"
 url=$(wl-paste 2>/dev/null | tr -d '[:space:]') || true
 [[ -z "$url" ]] && { notify-send -u critical "ytdlv" "Clipboard is empty"; exit 1; }
 
+if ! [[ "$url" =~ ^https?:// ]]; then
+    notify-send -u critical "ytdlv" "Invalid URL: $url"
+    exit 1
+fi
+
 notify-send "ytdlv" "Fetching formats..."
 
 format_list=$(yt-dlp --list-formats "$url" 2>/dev/null \
-    | awk 'NR>4 {print $1"\t"$2"\t"$3"\t"$4"\t"$6"\t"$7}')
+    | awk 'NR>4 && $3 ~ /video/ {print $1"\t"$2"\t"$3"\t"$4"\t"$6"\t"$7}')
 
-resolution=$(echo "$format_list" | grep "mp4" | grep "1920x" \
-    | rofi -dmenu -p "Select Video Format:") || true
+[[ -z "$format_list" ]] && { notify-send -u critical "ytdlv" "No video formats found"; exit 1; }
+
+resolution=$(echo "$format_list" | rofi -dmenu -p "Select Video Format:") || true
 [[ -z "$resolution" ]] && { notify-send "ytdlv" "Aborted"; exit 0; }
 res_id=$(echo "$resolution" | awk '{print $1}')
 
-audio=$(echo "$format_list" | grep "m4a" \
+audio=$(yt-dlp --list-formats "$url" 2>/dev/null \
+    | awk 'NR>4 && $3 ~ /audio/ {print $1"\t"$2"\t"$3"\t"$4"\t"$6"\t"$7}' \
     | rofi -dmenu -p "Select Audio Quality:") || true
 [[ -z "$audio" ]] && { notify-send "ytdlv" "Aborted"; exit 0; }
 audio_id=$(echo "$audio" | awk '{print $1}')

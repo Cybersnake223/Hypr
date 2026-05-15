@@ -1,20 +1,5 @@
 #!/bin/bash
 
-# ###########################################################################################################
-# ##   ______  __      __  _______   ________  _______    ______   __    __   ______   __    __  ________   ##
-# ##  /      \|  \    /  \|       \ |        \|       \  /      \ |  \  |  \ /      \ |  \  /  \|        \  ##
-# ## |  $$$$$$\\$$\  /  $$| $$$$$$$\| $$$$$$$$| $$$$$$$\|  $$$$$$\| $$\ | $$|  $$$$$$\| $$ /  $$| $$$$$$$$  ##
-# ## | $$   \$$ \$$\/  $$ | $$__/ $$| $$__    | $$__| $$| $$___\$$| $$$\| $$| $$__| $$| $$/  $$ | $$__      ##
-# ## | $$        \$$  $$  | $$    $$| $$  \   | $$    $$ \$$    \ | $$$$\ $$| $$    $$| $$  $$  | $$  \     ##
-# ## | $$   __    \$$$$   | $$$$$$$\| $$$$$   | $$$$$$$\ _\$$$$$$\| $$\$$ $$| $$$$$$$$| $$$$$\  | $$$$$     ##
-# ## | $$__/  \   | $$    | $$__/ $$| $$_____ | $$  | $$|  \__| $$| $$ \$$$$| $$  | $$| $$ \$$\ | $$_____   ##
-# ##  \$$    $$   | $$    | $$    $$| $$     \| $$  | $$ \$$    $$| $$  \$$$| $$  | $$| $$  \$$\| $$     \  ##
-# ##   \$$$$$$     \$$     \$$$$$$$  \$$$$$$$$ \$$   \$$  \$$$$$$  \$$   \$$ \$$   \$$ \$$   \$$ \$$$$$$$$  ##
-# ##                                                                                                        ##
-# ## Timer Script                                                                                           ##
-# ## Created by Cybersnake                                                                                  ##
-# ############################################################################################################
-
 # Check if mako is installed
 if ! command -v mako &> /dev/null; then
     echo "Mako is not installed. Please install mako-notifier."
@@ -62,12 +47,16 @@ format_time() {
 # Send initial notification
 notification_id=$(notify-send -p -u normal "Timer Started" "Time remaining: $(format_time $duration)" --icon=clock)
 
-# Countdown loop
+last_update=$duration
+update_interval=5
+
 while [ $duration -gt 0 ]; do
     sleep 1
     duration=$((duration - 1))
-    # Update notification with the same ID to replace the existing one
-    notify-send -r $notification_id -u normal "Timer Running" "Time remaining: $(format_time $duration)" --icon=clock
+    if (( (last_update - duration) >= update_interval )) || (( duration <= 10 )); then
+        notify-send -r $notification_id -u normal "Timer Running" "Time remaining: $(format_time $duration)" --icon=clock
+        last_update=$duration
+    fi
 done
 
 # Send final notification

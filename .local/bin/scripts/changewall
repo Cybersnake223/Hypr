@@ -1,33 +1,24 @@
-#!/bin/bash
+#!/bin/sh
 
-############################################################################################################
-##   ______  __      __  _______   ________  _______    ______   __    __   ______   __    __  ________   ##
-##  /      \|  \    /  \|       \ |        \|       \  /      \ |  \  |  \ /      \ |  \  /  \|        \  ##
-## |  $$$$$$\\$$\  /  $$| $$$$$$$\| $$$$$$$$| $$$$$$$\|  $$$$$$\| $$\ | $$|  $$$$$$\| $$ /  $$| $$$$$$$$  ##
-## | $$   \$$ \$$\/  $$ | $$__/ $$| $$__    | $$__| $$| $$___\$$| $$$\| $$| $$__| $$| $$/  $$ | $$__      ##
-## | $$        \$$  $$  | $$    $$| $$  \   | $$    $$ \$$    \ | $$$$\ $$| $$    $$| $$  $$  | $$  \     ##
-## | $$   __    \$$$$   | $$$$$$$\| $$$$$   | $$$$$$$\ _\$$$$$$\| $$\$$ $$| $$$$$$$$| $$$$$\  | $$$$$     ##
-## | $$__/  \   | $$    | $$__/ $$| $$_____ | $$  | $$|  \__| $$| $$ \$$$$| $$  | $$| $$ \$$\ | $$_____   ##
-##  \$$    $$   | $$    | $$    $$| $$     \| $$  | $$ \$$    $$| $$  \$$$| $$  | $$| $$  \$$\| $$     \  ##
-##   \$$$$$$     \$$     \$$$$$$$  \$$$$$$$$ \$$   \$$  \$$$$$$  \$$   \$$ \$$   \$$ \$$   \$$ \$$$$$$$$  ##
-##                                                                                                        ##
-## Wallpaper Script                                                                                      ##
-## Created by Cybersnake                                                                                  ##
-############################################################################################################
+# ── Required Environment Variables ────────────────────────────────────────────
+# DIR                  Directory containing wallpapers
+# HYPR_WALL_DIR        Directory for hyprpaper wallpaper symlink
+# HYPRPAPER_CONF       Path to hyprpaper.conf
+# LAST_WALL            Path to last wallpaper cache file
+# TRANSITION_TYPE      awww transition type (e.g., "random")
+# TRANSITION_FPS       awww transition FPS (e.g., 60)
+# TRANSITION_DURATION  awww transition duration in seconds (e.g., 0.4)
+# TRANSITION_POS       awww transition position (e.g., "center")
 
-
-set -euo pipefail
-
-# ── Configuration ─────────────────────────────────────────────────────────────
-
-DIR="${WALLPAPER_DIR:-$HOME/Pictures/Wallpapers}"
-LAST_WALL="${XDG_CACHE_HOME:-$HOME/.cache}/last-wallpaper"
-HYPR_WALL_DIR="${XDG_CONFIG_HOME:-$HOME/.config}/hypr/wallpaper"
+# ── Defaults ──────────────────────────────────────────────────────────────────
+DIR="${DIR:-$HOME/Pictures/Wallpapers}"
+HYPR_WALL_DIR="${HYPR_WALL_DIR:-$HOME/.config/hypr/wallpaper}"
+HYPRPAPER_CONF="${HYPRPAPER_CONF:-$HOME/.config/hypr/hyprpaper.conf}"
+LAST_WALL="${LAST_WALL:-$HOME/.cache/last-wallpaper}"
+TRANSITION_TYPE="${TRANSITION_TYPE:-random}"
 TRANSITION_FPS="${TRANSITION_FPS:-60}"
-TRANSITION_DURATION="${TRANSITION_DURATION:-2}"
-TRANSITION_TYPE="${TRANSITION_TYPE:-grow}"
+TRANSITION_DURATION="${TRANSITION_DURATION:-0.4}"
 TRANSITION_POS="${TRANSITION_POS:-center}"
-HYPRPAPER_CONF="${XDG_CONFIG_HOME:-$HOME/.config}/hypr/hyprpaper.conf"
 
 # ── Helpers ───────────────────────────────────────────────────────────────────
 

@@ -1,28 +1,13 @@
 #!/bin/sh
-
-version="0.0.1"
-
-
-####################
-## User variables ##
-####################
-
-[ -z $VIEWER ] && VIEWER=nsxiv
-# the dir where wallpapers are stored
-walldir="$HOME/Pictures/Wallpapers"
-# the dir used to cache thumbnails
-cachedir="$HOME/.cache/wallhaven"
-# nsxiv options
-nsxiv_otps=" -tfpo -z 100" # o is needed for selection
-# number of pages to show in search results
-# each page contains 24 results
+nsxiv_otps=" -tfpo -z 100"
 max_pages=24
-# sorting : date_added, relevance, random, views, favorites, toplist
 sorting=relevance
-# quality : large original small
 quality=original
-# atleast : least res
 atleast=3840x2160
+
+walldir="${WALLDIR:-$HOME/Pictures/Wallpapers}"
+cachedir="${WALLCACHE:-/tmp/walldlv2_cache}"
+VIEWER="${WALLVIEWER:-nsxiv}"
 
 # allow the user to customize the defaults
 [ -e "$HOME/.config/waldlrc" ] && . "$HOME/.config/waldlrc"
@@ -60,7 +45,7 @@ dep_ck () {
 		command -v $pr >/dev/null 2>&1 || sh_info "command $pr not found, install: $pr" 1
 	done
 }
-dep_ck "$VIEWER" "curl" "jq"
+dep_ck "$VIEWER" "curl" "jq" "nsxiv"
 
 
 # clean up command that would be called when the program exits

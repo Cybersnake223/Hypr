@@ -1,18 +1,4 @@
 #!/bin/bash
-############################################################################################################
-##   ______  __      __  _______   ________  _______    ______   __    __   ______   __    __  ________   ##
-##  /      \|  \    /  \|       \ |        \|       \  /      \ |  \  |  \ /      \ |  \  /  \|        \  ##
-## |  $$$$$$\\$$\  /  $$| $$$$$$$\| $$$$$$$$| $$$$$$$\|  $$$$$$\| $$\ | $$|  $$$$$$\| $$ /  $$| $$$$$$$$  ##
-## | $$   \$$ \$$\/  $$ | $$__/ $$| $$__    | $$__| $$| $$___\$$| $$$\| $$| $$__| $$| $$/  $$ | $$__      ##
-## | $$        \$$  $$  | $$    $$| $$  \   | $$    $$ \$$    \ | $$$$\ $$| $$    $$| $$  $$  | $$  \     ##
-## | $$   __    \$$$$   | $$$$$$$\| $$$$$   | $$$$$$$\ _\$$$$$$\| $$\$$ $$| $$$$$$$$| $$$$$\  | $$$$$     ##
-## | $$__/  \   | $$    | $$__/ $$| $$_____ | $$  | $$|  \__| $$| $$ \$$$$| $$  | $$| $$ \$$\ | $$_____   ##
-##  \$$    $$   | $$    | $$    $$| $$     \| $$  | $$ \$$    $$| $$  \$$$| $$  | $$| $$  \$$\| $$     \  ##
-##   \$$$$$$     \$$     \$$$$$$$  \$$$$$$$$ \$$   \$$  \$$$$$$  \$$   \$$ \$$   \$$ \$$   \$$ \$$$$$$$$  ##
-##                                                                                                        ##
-## Wallhaven Wallpaper Downloader                                                                         ##
-## Created by Cybersnake                                                                                  ##
-############################################################################################################
 
 # Rofi menus
 stype=$(echo -e "standard\nsearch" | rofi -l 2 -dmenu -p "Search Type:")
@@ -27,7 +13,7 @@ fi
 pageno=$(rofi -l 0 -dmenu -p "Enter Page Number")
 wpnum=$(echo -e "24\n48\n72\n96\n120" | rofi -l 5 -dmenu -p "No. of Wallpapers:")
 STARTPAGE=$pageno
-APIKEY="your_api_here"
+APIKEY="${WALLHAVEN_API_KEY:-}"
 DIR=$HOME/Pictures/Wallpapers
 
 #####################################
@@ -56,19 +42,14 @@ THUMBS=24               # valid values: 24, 32, 64 (if set to 32 or 64 you need 
 
 
 function setAPIkeyHeader {
-    # checking parameters -> if not ok print error and exit script
     if [ $# -lt 1 ] || [ "$1" == '' ]
     then
-        printf "Please make sure to enter a valid API key,\n"
-        printf "it is needed for NSFW Content and downloading \n"
-        printf "your Collections also make sure your Thumbnails per\n"
-        printf "Page Setting matches the THUMBS Variable\n\n"
-        printf "Press any key to exit\n"
-        read -r
-        exit
+        printf "WALLHAVEN_API_KEY environment variable is not set.\n"
+        printf "Get one from https://wallhaven.cc/settings/account\n"
+        printf "Then export WALLHAVEN_API_KEY=your_key\n"
+        exit 1
     fi
 
-    # everythings ok --> set api key header
     httpHeader="X-API-Key: $APIKEY"
 } # /setAPIkeyHeader
 
@@ -175,11 +156,13 @@ function WGET {
     fi
 
     # default wget command
+    cookies_file=$(mktemp "${TMPDIR:-/tmp}/walldl_cookies.XXXXXX")
     wget --server-response -q --header="$httpHeader" --keep-session-cookies \
-         --save-cookies cookies.txt --load-cookies cookies.txt "$@" 2>&1 | \
+         --save-cookies "$cookies_file" --load-cookies "$cookies_file" "$@" 2>&1 | \
          grep "429 Too Many Requests" >/dev/null && coolDown "$@"
-
-    return "${PIPESTATUS[0]}"
+    local ret="${PIPESTATUS[0]}"
+    rm -f "$cookies_file"
+    return "$ret"
 } # /WGET
 
 
@@ -309,5 +292,5 @@ else
     printf "error in TYPE please check Variable\\n"
 fi
 
-rm -rf cookies.txt
+rm -rf "$cookies_file" 2>/dev/null || true
 notify-send "Wallpapers Downloaded" "$LOCATION"

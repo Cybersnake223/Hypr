@@ -1,0 +1,53 @@
+#!/bin/bash
+############################################################################################################
+
+set -euo pipefail
+
+usage() {
+    echo "Usage: rfkill-toggle [wifi|bluetooth|all]"
+    echo "  wifi       - Toggle Wi-Fi (wlan)"
+    echo "  bluetooth  - Toggle Bluetooth"
+    echo "  all        - Toggle both"
+    exit 1
+}
+
+command -v rfkill &>/dev/null || { echo "Error: 'rfkill' command not found."; exit 1; }
+
+toggle_device() {
+    local device="$1"
+    local label="$2"
+
+    local status
+    status=$(rfkill list "$device" | awk '/Soft/{print $3; exit}')
+
+    case $status in
+        "no")
+            rfkill block "$device"
+            notify-send "$label" "Blocked"
+            ;;
+        "yes")
+            rfkill unblock "$device"
+            notify-send "$label" "Unblocked"
+            ;;
+        *)
+            echo "Unknown status: $status"
+            exit 1
+            ;;
+    esac
+}
+
+case "${1:-}" in
+    wifi|wlan)
+        toggle_device wlan "Wlan"
+        ;;
+    bluetooth|bt)
+        toggle_device bluetooth "Bluetooth"
+        ;;
+    all)
+        toggle_device wlan "Wlan"
+        toggle_device bluetooth "Bluetooth"
+        ;;
+    *)
+        usage
+        ;;
+esac

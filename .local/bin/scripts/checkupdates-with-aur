@@ -1,18 +1,4 @@
 #!/bin/bash
-set -euo pipefail
-
-command -v checkupdates &>/dev/null || { echo "checkupdates not found" >&2; exit 1; }
-command -v aur &>/dev/null          || { echo "aurutils not found" >&2; exit 1; }
-
-pacman_out=$(checkupdates 2>/dev/null || true)
-aur_out=$(pacman -Qm 2>/dev/null | aur vercmp 2>/dev/null || true)
-
-pacman_count=$(echo "$pacman_out" | grep -c . || true)
-aur_count=$(echo "$aur_out" | grep -c . || true)
-total=$(( pacman_count + aur_count ))
-
-echo "$pacman_out"
-echo "$aur_out"
 #
 # [[ $total -gt 0 ]] && notify-send "Updates Available" \
 #     "$pacman_count pacman · $aur_count AUR · $total total"

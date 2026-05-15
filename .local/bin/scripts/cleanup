@@ -1,40 +1,43 @@
-#!/bin/sh
-############################################################################################################
-##   ______  __      __  _______   ________  _______    ______   __    __   ______   __    __  ________   ##
-##  /      \|  \    /  \|       \ |        \|       \  /      \ |  \  |  \ /      \ |  \  /  \|        \  ##
-## |  $$$$$$\\$$\  /  $$| $$$$$$$\| $$$$$$$$| $$$$$$$\|  $$$$$$\| $$\ | $$|  $$$$$$\| $$ /  $$| $$$$$$$$  ##
-## | $$   \$$ \$$\/  $$ | $$__/ $$| $$__    | $$__| $$| $$___\$$| $$$\| $$| $$__| $$| $$/  $$ | $$__      ##
-## | $$        \$$  $$  | $$    $$| $$  \   | $$    $$ \$$    \ | $$$$\ $$| $$    $$| $$  $$  | $$  \     ##
-## | $$   __    \$$$$   | $$$$$$$\| $$$$$   | $$$$$$$\ _\$$$$$$\| $$\$$ $$| $$$$$$$$| $$$$$\  | $$$$$     ##
-## | $$__/  \   | $$    | $$__/ $$| $$_____ | $$  | $$|  \__| $$| $$ \$$$$| $$  | $$| $$ \$$\ | $$_____   ##
-##  \$$    $$   | $$    | $$    $$| $$     \| $$  | $$ \$$    $$| $$  \$$$| $$  | $$| $$  \$$\| $$     \  ##
-##   \$$$$$$     \$$     \$$$$$$$  \$$$$$$$$ \$$   \$$  \$$$$$$  \$$   \$$ \$$   \$$ \$$   \$$ \$$$$$$$$  ##
-##                                                                                                        ##
-## Pacman And Yay Cache Cleaner                                                                           ##
-## Created by Cybersnake                                                                                  ##
-############################################################################################################
+#!/bin/bash
 
 set -euo pipefail
+
+DRY_RUN=false
+if [[ "${1:-}" == "--dry-run" || "${1:-}" == "-n" ]]; then
+    DRY_RUN=true
+    echo -e "\033[1;33m[DRY RUN] No changes will be made.\033[0m"
+fi
 
 step() { echo -e "\n\033[1;34m=>\033[0m $1"; }
 ok()   { echo -e "\033[1;32m  ✓ $1\033[0m"; }
 
+run() {
+    if $DRY_RUN; then
+        echo -e "\033[1;33m  [DRY RUN] Would run: $*\033[0m"
+    else
+        "$@"
+    fi
+}
+
 step "Cleaning yay cache (unneeded packages)..."
-yay -Sc --noconfirm && ok "Done"
+run yay -Sc --noconfirm && ok "Done"
 
 step "Removing orphaned packages..."
 mapfile -t orphans < <(pacman -Qttdq 2>/dev/null || true)
 if (( ${#orphans[@]} > 0 )); then
-    sudo pacman -Runs --noconfirm "${orphans[@]}" && ok "Removed ${#orphans[@]} orphan(s)"
+    run sudo pacman -Runs --noconfirm "${orphans[@]}" && ok "Removed ${#orphans[@]} orphan(s)"
 else
     ok "No orphans found."
 fi
 
 step "Removing cached pacman packages (keep 1 version)..."
-paccache -rvk1 && ok "Done"
+run paccache -rvk1 && ok "Done"
 
 step "Removing yay build cache..."
-# paccache doesn't work on yay's cache dir — use find instead
 find "$HOME/.cache/yay" -name "*.pkg.tar.zst" -delete 2>/dev/null && ok "Done"
 
-echo -e "\n\033[1;32m✓ System cleaned successfully.\033[0m"
+if $DRY_RUN; then
+    echo -e "\n\033[1;33m✓ Dry run complete. No changes made.\033[0m"
+else
+    echo -e "\n\033[1;32m✓ System cleaned successfully.\033[0m"
+fi

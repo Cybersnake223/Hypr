@@ -1,18 +1,4 @@
 #!/bin/bash
-
-############################################################################################################
-##   ______  __      __  _______   ________  _______    ______   __    __   ______   __    __  ________   ##
-##  /      \|  \    /  \|       \ |        \|       \  /      \ |  \  |  \ /      \ |  \  /  \|        \  ##
-## |  $$$$$$\\$$\  /  $$| $$$$$$$\| $$$$$$$$| $$$$$$$\|  $$$$$$\| $$\ | $$|  $$$$$$\| $$ /  $$| $$$$$$$$  ##
-## | $$   \$$ \$$\/  $$ | $$__/ $$| $$__    | $$__| $$| $$___\$$| $$$\| $$| $$__| $$| $$/  $$ | $$__      ##
-## | $$        \$$  $$  | $$    $$| $$  \   | $$    $$ \$$    \ | $$$$\ $$| $$    $$| $$  $$  | $$  \     ##
-## | $$   __    \$$$$   | $$$$$$$\| $$$$$   | $$$$$$$\ _\$$$$$$\| $$\$$ $$| $$$$$$$$| $$$$$\  | $$$$$     ##
-## | $$__/  \   | $$    | $$__/ $$| $$_____ | $$  | $$|  \__| $$| $$ \$$$$| $$  | $$| $$ \$$\ | $$_____   ##
-##  \$$    $$   | $$    | $$    $$| $$     \| $$  | $$ \$$    $$| $$  \$$$| $$  | $$| $$  \$$\| $$     \  ##
-##   \$$$$$$     \$$     \$$$$$$$  \$$$$$$$$ \$$   \$$  \$$$$$$  \$$   \$$ \$$   \$$ \$$   \$$ \$$$$$$$$  ##
-##                                                                                                        ##
-## YT AUDIO DOWNLOAD SCRIPT                                                                               ##
-## Created by Cybersnake                                                                                  ##
 ############################################################################################################
 
 set -euo pipefail
@@ -22,10 +8,15 @@ dir="$HOME/Music/%(title)s.%(ext)s"
 url=$(wl-paste 2>/dev/null | tr -d '[:space:]') || true
 [[ -z "$url" ]] && { notify-send -u critical "ytdla" "Clipboard is empty"; exit 1; }
 
+if ! [[ "$url" =~ ^https?:// ]]; then
+    notify-send -u critical "ytdla" "Invalid URL: $url"
+    exit 1
+fi
+
 confirmed=$(printf "Download\nCancel" | rofi -dmenu -p "Audio: $url")
 [[ "$confirmed" != "Download" ]] && { notify-send "ytdla" "Aborted"; exit 0; }
 
 notify-send "ytdla" "Downloading audio..."
 yt-dlp -q -x --audio-quality 0 --audio-format flac -o "$dir" "$url" \
-    && notify-send "ytdla" "✅ Download complete" \
-    || notify-send -u critical "ytdla" "❌ Download failed"
+    && notify-send "ytdla" "Download complete" \
+    || notify-send -u critical "ytdla" "Download failed"
