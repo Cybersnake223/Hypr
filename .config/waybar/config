@@ -2,7 +2,7 @@
 [
   {
     "include": [
-      "$HOME/.config/waybar/config.jsonc",
-    ],
+      "$HOME/.config/waybar/config.jsonc"
+    ]
   }
 ]

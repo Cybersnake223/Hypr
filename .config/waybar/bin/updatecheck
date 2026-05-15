@@ -21,8 +21,12 @@ if ! command -v checkupdates-with-aur &>/dev/null; then
     exit 1
 fi
 
-# --- Kill stale instances ---
-pkill -x checkupdates-with-aur 2>/dev/null
+# --- Concurrency guard ---
+LOCKFILE="/tmp/waybar-updatecheck.lock"
+exec 200>"$LOCKFILE"
+if ! flock -n 200; then
+    exit 0
+fi
 
 # --- Pad/truncate string to fixed width ---
 stringToLen() {

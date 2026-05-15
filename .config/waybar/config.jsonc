@@ -28,7 +28,7 @@
   "modules-left": [
     "network",
     "memory",
-    "custom/updates"
+    "mpris"
   ],
 
   "modules-center": [
@@ -38,22 +38,35 @@
 
   "modules-right": [
     "tray",
+    "custom/updates",
     "pulseaudio",
     "pulseaudio#microphone",
     "bluetooth",
-    "battery"
+    "backlight",
+    "battery",
+    "idle_inhibitor"
   ],
 
   // ─────────────────────────────
-  // WORKSPACES
+  // WORKSPACES — dot indicators
   // ─────────────────────────────
   "hyprland/workspaces": {
     "active-only": false,
-    "all-outputs": true,
-    "format": "{name}",
+    "all-outputs": false,
+    "format": "{icon}",
     "show-special": true,
-    "on-scroll-up": "hyprctl dispatch workspace e-1",
-    "on-scroll-down": "hyprctl dispatch workspace e+1"
+    "on-scroll-up": "hyprctl dispatch workspace r-1",
+    "on-scroll-down": "hyprctl dispatch workspace r+1",
+    "persistent-workspaces": {
+      "*": 0
+    },
+    "format-icons": {
+      "active": "󰮯",
+      "default": "󰊠",
+      "urgent": "󰪥",
+      "empty": "󰊠",
+      "special": "󰊠"
+    }
   },
 
   // ─────────────────────────────
@@ -81,15 +94,15 @@
   // ─────────────────────────────
   "network": {
     "interval": 5,
-    "format-wifi":        "󰤥 {essid} {signalStrength}%",
+    "format-wifi":        "󰤥 {essid}",
     "format-ethernet":    "󰈀 wired",
     "format-disconnected": "󰤮",
     "tooltip-format": "↑ {bandwidthUpBits}  ↓ {bandwidthDownBits}",
-    "on-click": "wifimenu"
+    "on-click": "nm-connection-editor"
   },
 
   // ─────────────────────────────
-  // MEMORY
+  // MEMORY — with progress bar
   // ─────────────────────────────
   "memory": {
     "interval": 5,
@@ -106,7 +119,7 @@
     "format-connected": "󰂱 {device_alias}",
     "tooltip-format": "{device_alias}\n{controller_alias}",
     "tooltip-format-enumerate-connected": "{device_alias}",
-    "on-click": "btblock"
+    "on-click": "blueman-manager"
   },
 
   // ─────────────────────────────
@@ -114,9 +127,8 @@
   // ─────────────────────────────
   "pulseaudio": {
     "format":       "{icon} {volume}%",
-    "format-muted": "",
+    "format-muted": "󰖁",
     "tooltip": false,
-    "scroll-step": 5,
     "on-click":        "wpctl set-mute @DEFAULT_SINK@ toggle",
     "on-scroll-up":    "wpctl set-volume @DEFAULT_SINK@ 5%+",
     "on-scroll-down":  "wpctl set-volume @DEFAULT_SINK@ 5%-",
@@ -137,16 +149,15 @@
   "pulseaudio#microphone": {
     "format":              "{format_source}",
     "format-source":       "󰍬 {volume}%",
-    "format-source-muted": "",
+    "format-source-muted": "󰍭",
     "tooltip": false,
-    "scroll-step": 5,
     "on-click":        "wpctl set-mute @DEFAULT_SOURCE@ toggle",
     "on-scroll-up":    "wpctl set-volume @DEFAULT_SOURCE@ 5%+",
     "on-scroll-down":  "wpctl set-volume @DEFAULT_SOURCE@ 5%-"
   },
 
   // ─────────────────────────────
-  // BATTERY
+  // BATTERY — with progress bar
   // ─────────────────────────────
   "battery": {
     "interval": 60,
@@ -167,6 +178,41 @@
   },
 
   // ─────────────────────────────
+  // BACKLIGHT
+  // ─────────────────────────────
+  "backlight": {
+    "device": "intel_backlight",
+    "format": "{icon} {percent}%",
+    "format-icons": ["󰃚", "󰃛", "󰃜", "󰃝", "󰃞", "󰃟", "󰃠"],
+    "on-scroll-up": "brightnessctl set 5%+",
+    "on-scroll-down": "brightnessctl set 5%-",
+    "tooltip-format": "Brightness: {percent}%"
+  },
+
+  // ─────────────────────────────
+  // MPRIS (Media Player)
+  // ─────────────────────────────
+  "mpris": {
+    "format": "{player_icon} {title}",
+    "format-paused": "{status_icon} {title}",
+    "player-icons": {
+      "default": "▶",
+      "spotify": "",
+      "firefox": "",
+      "chromium": "",
+      "vlc": "󰕼",
+      "mpv": ""
+    },
+    "status-icons": {
+      "paused": "⏸"
+    },
+    "max-length": 40,
+    "title-len": 30,
+    "tooltip": true,
+    "tooltip-format": "{player} • {status}\n{title}"
+  },
+
+  // ─────────────────────────────
   // UPDATES
   // ─────────────────────────────
   "custom/updates": {
@@ -174,7 +220,8 @@
     "tooltip":     true,
     "interval":    600,
     "return-type": "json",
-    "exec":        "$HOME/.config/waybar/bin/updatecheck"
+    "exec":        "$HOME/.config/waybar/bin/updatecheck",
+    "on-click":    "kitty yay"
   },
 
   // ─────────────────────────────
@@ -184,5 +231,16 @@
     "icon-size": 16,
     "spacing": 6,
     "show-passive-items": true
+  },
+
+  // ─────────────────────────────
+  // IDLE INHIBITOR
+  // ─────────────────────────────
+  "idle_inhibitor": {
+    "format": "{icon}",
+    "format-icons": {
+      "activated": "󰒳",
+      "deactivated": "󰒲"
+    }
   }
 }
