@@ -109,7 +109,7 @@ window#waybar.hidden {
 }
 
 /* ─────────────────────────────
-   HOVER — scale + gradient sweep
+   HOVER
    ───────────────────────────── */
 #clock:hover,
 #memory:hover,
@@ -255,7 +255,7 @@ window#waybar.hidden {
 }
 
 /* ─────────────────────────────
-   CLOCK — warm rose
+   CLOCK
    ───────────────────────────── */
 #clock {
   color: @error_container;
@@ -269,7 +269,7 @@ window#waybar.hidden {
 }
 
 /* ─────────────────────────────
-   MEMORY — blue
+   MEMORY
    ───────────────────────────── */
 #memory {
   color: @tertiary_container;
@@ -503,7 +503,7 @@ window#waybar.hidden {
 }
 
 /* ─────────────────────────────
-   TOOLTIP — enhanced with accent border + calendar
+   TOOLTIP
    ───────────────────────────── */
 tooltip {
   background: rgba(2, 16, 14, 0.92);
