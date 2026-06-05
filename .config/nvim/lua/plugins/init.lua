@@ -30,13 +30,23 @@ return {
   {
     "lewis6991/gitsigns.nvim",
     event = { "BufReadPost", "BufNewFile" },
-    opts = {},
+    opts = {
+      current_line_blame = true,
+      current_line_blame_opts = {
+        virt_text = true,
+        virt_text_pos = "eol",
+        delay = 500,
+        ignore_whitespace = false,
+      },
+      signs = { add = { text = "▎" }, change = { text = "▎" }, delete = { text = "󰍵" } },
+      signs_staged_enable = true,
+      preview_config = { border = "rounded" },
+    },
   },
 
   {
     "nvim-lualine/lualine.nvim",
     event = "VeryLazy",
-    dependencies = { "nvim-tree/nvim-web-devicons" },
     opts = require "plugins.configs.lualine",
   },
 
@@ -60,7 +70,7 @@ return {
   {
     "folke/which-key.nvim",
     event = "VeryLazy",
-    opts = {},
+    opts = { timeout = 300 },
     keys = {
       {
         "<leader>?",
@@ -70,6 +80,22 @@ return {
         desc = "Buffer Local Keymaps",
       },
     },
+    config = function(_, opts)
+      require("which-key").setup(opts)
+      local wk = require "which-key"
+      wk.add {
+        { "<leader>b", group = "buffer" },
+        { "<leader>c", group = "code/lsp" },
+        { "<leader>d", group = "database" },
+        { "<leader>f", group = "find" },
+        { "<leader>g", group = "git" },
+        { "<leader>l", group = "lsp" },
+        { "<leader>m", group = "molten" },
+        { "<leader>r", group = "run" },
+        { "<leader>t", group = "terminal" },
+        { "<leader>w", group = "workspace" },
+      }
+    end,
   },
 
   -- ─────────────────────────────────────────────────────────
@@ -94,7 +120,7 @@ return {
   {
     "saghen/blink.cmp",
     -- build = "cargo build --release",
-    version = "*",
+    version = "^1",
     event = "InsertEnter",
     dependencies = { "L3MON4D3/LuaSnip", "rafamadriz/friendly-snippets" },
     opts = function()
@@ -128,7 +154,7 @@ return {
     event = "BufReadPost",
     dependencies = { "williamboman/mason.nvim", "neovim/nvim-lspconfig" },
     opts = {
-      ensure_installed = { "lua_ls", "pyright", "sqls", "bashls" },
+      ensure_installed = { "lua_ls", "pyright", "sqls", "bashls", "cssls", "html", "marksman" },
       automatic_enable = true,
     },
   },
@@ -307,7 +333,7 @@ return {
   -- ─────────────────────────────────────────────────────────
   {
     "GCBallesteros/jupytext.nvim",
-    lazy = false,
+    event = { "BufReadPost", "BufNewFile" },
     opts = {
       style = "markdown",
       output_extension = "md",
@@ -358,41 +384,14 @@ return {
       vim.g.molten_image_provider = "image.nvim"
       vim.g.molten_wrap_output = false
       vim.g.molten_virt_text_output = true
-      vim.g.molten_virt_lines_off_by_1 = false
-      vim.g.molten_tick_rate = 142 -- ~7fps, less CPU than 100
+      vim.g.molten_virt_lines_off_by_1 = true
+      vim.g.molten_tick_rate = 142
       vim.g.molten_output_show_more = true
-      vim.g.molten_limit_output_chars = 5000
-      vim.g.molten_virt_text_max_lines = 100
+      vim.g.molten_limit_output_chars = 100000
+      vim.g.molten_virt_text_max_lines = 5000
       vim.g.molten_output_show_exec_time = true
       vim.g.molten_cover_empty_lines = true
-      vim.g.molten_enter_output_behavior = "open_and_enter"
-    end,
-    config = function()
-      local default_notebook = [[
-{
-  "cells": [{"cell_type":"markdown","metadata":{},"source":[""]}],
-  "metadata": {
-    "kernelspec": {"display_name":"Python 3","language":"python","name":"python3"},
-    "language_info": {
-      "codemirror_mode":{"name":"ipython"},"file_extension":".py",
-      "mimetype":"text/x-python","name":"python",
-      "nbconvert_exporter":"python","pygments_lexer":"ipython3"
-    }
-  },
-  "nbformat": 4, "nbformat_minor": 5
-}
-]]
-      vim.api.nvim_create_user_command("NewNotebook", function(opts)
-        local path = opts.args .. ".ipynb"
-        local f = io.open(path, "w")
-        if not f then
-          vim.notify("Error: could not write " .. path, vim.log.levels.ERROR)
-          return
-        end
-        f:write(default_notebook)
-        f:close()
-        vim.cmd("edit " .. path)
-      end, { nargs = 1, complete = "file", desc = "Create a new .ipynb" })
+      vim.g.molten_enter_output_behavior = "open_no_enter"
     end,
   },
 
@@ -403,7 +402,7 @@ return {
     "quarto-dev/quarto-nvim",
     dependencies = {
       "jmbuhr/otter.nvim",
-      "benlubas/molten-nvim", -- ensures load order for codeRunner
+      "benlubas/molten-nvim",
       "nvim-treesitter/nvim-treesitter",
     },
     ft = { "quarto", "markdown" },
@@ -423,11 +422,12 @@ return {
         },
       }
 
-      -- <leader>n: buffer-local (uses cursor position)
+      -- <leader>n + runner keymaps: buffer-local
       vim.api.nvim_create_autocmd("FileType", {
         pattern = { "quarto", "markdown" },
         group = vim.api.nvim_create_augroup("QuartoKeymaps", { clear = true }),
         callback = function(ev)
+          -- <leader>n: new python chunk below
           vim.keymap.set("n", "<leader>n", function()
             local row = vim.api.nvim_win_get_cursor(0)[1]
             local lines = { "```python", "", "```", "" }
@@ -435,14 +435,25 @@ return {
             vim.api.nvim_win_set_cursor(0, { row + 2, 0 })
             vim.cmd "startinsert"
           end, { buffer = ev.buf, desc = "New python chunk below", silent = true })
+
+          -- runner keymaps
+          local runner = require "quarto.runner"
+          vim.keymap.set("n", "<leader>r", runner.run_cell, { buffer = ev.buf, desc = "Run cell", silent = true })
+          vim.keymap.set("n", "<leader>ra", runner.run_all, { buffer = ev.buf, desc = "Run all cells", silent = true })
+          vim.keymap.set("n", "<leader>rl", runner.run_line, { buffer = ev.buf, desc = "Run line", silent = true })
         end,
       })
 
-      -- runner keymaps: global (quarto.runner handles buffer context internally)
-      local runner = require "quarto.runner"
-      vim.keymap.set("n", "<leader>r", runner.run_cell, { desc = "Run cell", silent = true })
-      vim.keymap.set("n", "<leader>ra", runner.run_all, { desc = "Run all cells", silent = true })
-      vim.keymap.set("n", "<leader>rl", runner.run_line, { desc = "Run line", silent = true })
+      -- Auto-activate Quarto for jupytext notebook markdown buffers
+      vim.api.nvim_create_autocmd("BufReadPost", {
+        group = vim.api.nvim_create_augroup("QuartoJupytext", { clear = true }),
+        callback = function(ev)
+          local name = vim.api.nvim_buf_get_name(ev.buf)
+          if name:match("%.ipynb%.md$") or (name:match("%.md$") and vim.b[ev.buf].jupytext) then
+            require("quarto").activate()
+          end
+        end,
+      })
     end,
   },
 

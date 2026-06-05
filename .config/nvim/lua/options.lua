@@ -23,13 +23,18 @@ opt.listchars = { tab = "» ", trail = "·", nbsp = "␣" }
 opt.mouse = "a"
 opt.splitbelow = true
 opt.splitright = true
--- opt.scrolloff = 10
+opt.scrolloff = 10
 opt.sidescrolloff = 8
 opt.timeoutlen = 500
 opt.updatetime = 250
 opt.inccommand = "split"
 opt.completeopt = "menuone,noselect,noinsert"
 opt.diffopt:append "linematch:60"
+opt.confirm = true
+opt.shortmess:append "filnxtToOFIc"
+opt.winminwidth = 10
+opt.smoothscroll = true
+opt.numberwidth = 2
 
 -- ── Search ───────────────────────────────────────────────
 opt.ignorecase = true
@@ -43,16 +48,17 @@ opt.expandtab = true
 opt.shiftwidth = 2
 opt.tabstop = 2
 opt.softtabstop = 2
-opt.smartindent = true
 
 -- ── Python / Neovim provider ─────────────────────────────
 local venv = os.getenv "VIRTUAL_ENV"
-g.python3_host_prog = venv and (venv .. "/bin/python3")
-  or (vim.fn.expand "~/.venv/bin/python3")
+if venv and vim.fn.executable(venv .. "/bin/python3") == 1 then
+  g.python3_host_prog = venv .. "/bin/python3"
+elseif vim.fn.executable(vim.fn.expand "~/.venv/bin/python3") == 1 then
+  g.python3_host_prog = vim.fn.expand "~/.venv/bin/python3"
+end
 
 -- ── Appearance ───────────────────────────────────────────
 g.have_nerd_font = true
-vim.api.nvim_set_hl(0, "IndentLine", { link = "Comment" })
 
 -- ── Mason → PATH ─────────────────────────────────────────
 local sep = package.config:sub(1, 1) == "\\" and ";" or ":"

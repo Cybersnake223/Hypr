@@ -28,32 +28,11 @@ vim.api.nvim_create_autocmd("LspAttach", {
     map("n", "K",     vim.lsp.buf.hover,            "Hover Documentation")
     map("n", "<C-k>", vim.lsp.buf.signature_help,   "Signature Help")
     map("i", "<C-k>", vim.lsp.buf.signature_help,   "Signature Help")
-    map("n", "<leader>rn", vim.lsp.buf.rename,      "Rename Symbol")
-    map("n", "<leader>ca", vim.lsp.buf.code_action, "Code Action")
-    map("x", "<leader>ca", vim.lsp.buf.code_action, "Code Action (range)")
     map("n", "<leader>wa", vim.lsp.buf.add_workspace_folder,    "Add Workspace Folder")
     map("n", "<leader>wr", vim.lsp.buf.remove_workspace_folder, "Remove Workspace Folder")
     map("n", "<leader>wl", function()
       print(vim.inspect(vim.lsp.buf.list_workspace_folders()))
     end, "List Workspace Folders")
-
-    map("n", "<leader>f", function()
-      local ok, conform = pcall(require, "conform")
-      if ok then
-        conform.format { bufnr = ev.buf, lsp_fallback = true }
-      else
-        vim.lsp.buf.format { bufnr = ev.buf }
-      end
-    end, "Format Buffer")
-
-    if vim.lsp.inlay_hint then
-      map("n", "<leader>ih", function()
-        vim.lsp.inlay_hint.enable(
-          not vim.lsp.inlay_hint.is_enabled { bufnr = ev.buf },
-          { bufnr = ev.buf }
-        )
-      end, "Toggle Inlay Hints")
-    end
   end,
 })
 
@@ -88,7 +67,7 @@ vim.lsp.config("bashls", {
 })
 
 -- ── 4. Enable servers ─────────────────────────────────────
-vim.lsp.enable { "lua_ls", "pyright", "sqls", "bashls", "vtsls", "cssls", "beautysh", "html" }
+vim.lsp.enable { "lua_ls", "pyright", "sqls", "bashls", "cssls", "html", "marksman" }
 
 -- ── 5. Diagnostics ────────────────────────────────────────
 vim.diagnostic.config {
@@ -102,6 +81,13 @@ vim.diagnostic.config {
 
 vim.api.nvim_create_autocmd("CursorHold", {
   callback = function()
+    local ft = vim.bo.filetype
+    if vim.tbl_contains(
+      { "dbee", "lazy", "mason", "TelescopePrompt", "snacks_picker_input", "lspinfo", "help" },
+      ft
+    ) then
+      return
+    end
     if #vim.lsp.get_clients { bufnr = vim.api.nvim_get_current_buf() } == 0 then return end
     vim.diagnostic.open_float(nil, { focus = false })
   end,

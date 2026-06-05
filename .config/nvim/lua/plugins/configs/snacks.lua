@@ -16,13 +16,14 @@ return {
 
   bigfile = { enabled = true },
   dashboard = { enabled = false },
-  explorer = { enabled = false, replace_netrw = true },
+  explorer = { enabled = true, replace_netrw = true },
   indent = { enabled = false },
   input = { enabled = true },
-  notifier = { enabled = false },
+  notifier = { enabled = true },
   quickfile = { enabled = true },
   scope = { enabled = false },
   scroll = { enabled = false },
   statuscolumn = { enabled = false },
+  terminal = { enabled = true },
   words = { enabled = true },
 }

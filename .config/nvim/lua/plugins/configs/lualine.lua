@@ -5,10 +5,14 @@ return {
     globalstatus = true,
     refresh = { statusline = 3000, tabline = 3000, winbar = 1000 },
   },
+  extensions = {},
   sections = {
     lualine_a = { "mode" },
-    lualine_b = { "branch" },
+    lualine_b = { "branch", "diff", "diagnostics" },
     lualine_c = { "filename" },
+    lualine_x = { "filetype", "progress" },
+    lualine_y = { "location" },
+    lualine_z = { "fileformat", "encoding" },
   },
   tabline = {
     lualine_a = {
@@ -29,5 +33,4 @@ return {
     lualine_y = {},
     lualine_z = {},
   },
-  extensions = { "oil" },
 }

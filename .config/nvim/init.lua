@@ -13,10 +13,8 @@ require "options"
 require "mappings"
 require "commands"
 
-vim.o.conceallevel = 0
 vim.opt.shada = "!,'100,<50,s10,h"
 vim.lsp.set_log_level = "off"
-vim.g.db_ui_save_location = vim.fn.getcwd() .. "/.sql_queries"
 
 -- ─────────────────────────────────────────────────────────
 -- 2. Clipboard detection
@@ -86,21 +84,19 @@ vim.api.nvim_create_autocmd("FileType", {
   end,
 })
 
--- Molten: Auto-import output only if molten has actually loaded
-vim.api.nvim_create_autocmd("FileType", {
+-- Molten: Auto-import output on initial buffer load (not on every file type change)
+vim.api.nvim_create_autocmd("BufReadPost", {
   group = vim.api.nvim_create_augroup("MoltenSetup", { clear = true }),
-  pattern = { "markdown", "quarto", "ipynb" },
+  pattern = { "*.md", "*.qmd", "*.ipynb" },
   callback = function()
     if package.loaded["molten"] then
-      vim.schedule(function()
-        pcall(vim.cmd, "MoltenImportOutput")
-      end)
+      pcall(vim.cmd, "MoltenImportOutput")
     end
   end,
 })
 
 -- Quarto/Markdown: force conceal off (render-markdown handles visuals)
-vim.api.nvim_create_autocmd({ "BufEnter", "FileType" }, {
+vim.api.nvim_create_autocmd("FileType", {
   group = vim.api.nvim_create_augroup("MarkdownUIFix", { clear = true }),
   pattern = { "quarto", "qmd", "markdown" },
   callback = function()
@@ -109,34 +105,15 @@ vim.api.nvim_create_autocmd({ "BufEnter", "FileType" }, {
   end,
 })
 
--- Big file guard: disable treesitter for files over 500KB
+-- Big file guard: skip data extensions always; disable treesitter for files over 2 MB
 vim.api.nvim_create_autocmd("BufReadPre", {
   group = vim.api.nvim_create_augroup("BigFileGuard", { clear = true }),
   callback = function(ev)
-    if vim.fn.getfsize(ev.file) > 1024 * 500 then
+    local ext = vim.fn.fnamemodify(ev.file, ":e")
+    if vim.tbl_contains({ "csv", "tsv", "parquet", "arrow", "feather", "log", "json", "xml" }, ext) then
+      vim.b.treesitter_enabled = false
+    elseif vim.fn.getfsize(ev.file) > 1024 * 1024 * 2 then
       vim.b.treesitter_enabled = false
     end
   end,
 })
-
--- ─────────────────────────────────────────────────────────
--- 6. User Commands
--- ─────────────────────────────────────────────────────────
-
-vim.api.nvim_create_user_command("PeekOpen", function()
-  local ok, peek = pcall(require, "peek")
-  if ok then
-    peek.open()
-  else
-    vim.notify("peek.nvim is not loaded. Uncomment it in plugins/.", vim.log.levels.WARN)
-  end
-end, { desc = "Open Peek markdown preview" })
-
-vim.api.nvim_create_user_command("PeekClose", function()
-  local ok, peek = pcall(require, "peek")
-  if ok then
-    peek.close()
-  else
-    vim.notify("peek.nvim is not loaded. Uncomment it in plugins/.", vim.log.levels.WARN)
-  end
-end, { desc = "Close Peek markdown preview" })

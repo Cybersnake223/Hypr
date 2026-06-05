@@ -6,8 +6,8 @@ local augroup    = vim.api.nvim_create_augroup
 create_cmd("MasonInstallAll", function()
   local tools = {
     "lua-language-server", "pyright", "ruff", "sqls",
-    "sqlfluff", "marksman", "bash-language-server",
-    "prettier", "stylua",
+    "sqlfluff", "bash-language-server", "cssls", "html", "marksman",
+    "prettier", "stylua", "shfmt",
   }
   local registry = require "mason-registry"
   registry.refresh(function()
@@ -92,13 +92,40 @@ create_au("BufWritePre", {
 })
 
 -- ── 6. Return to last cursor position on file open ───────
--- create_au("BufReadPost", {
---   group = augroup("RestoreCursor", { clear = true }),
---   callback = function()
---     local mark = vim.api.nvim_buf_get_mark(0, '"')
---     local line_count = vim.api.nvim_buf_line_count(0)
---     if mark[1] > 0 and mark[1] <= line_count then
---       pcall(vim.api.nvim_win_set_cursor, 0, mark)
---     end
---   end,
--- })
+create_au("BufReadPost", {
+  group = augroup("RestoreCursor", { clear = true }),
+  callback = function()
+    local mark = vim.api.nvim_buf_get_mark(0, '"')
+    local line_count = vim.api.nvim_buf_line_count(0)
+    if mark[1] > 0 and mark[1] <= line_count then
+      pcall(vim.api.nvim_win_set_cursor, 0, mark)
+    end
+  end,
+})
+
+-- ── 7. NewNotebook ───────────────────────────────────────
+local default_notebook = [[
+{
+  "cells": [{"cell_type":"markdown","metadata":{},"source":[""]}],
+  "metadata": {
+    "kernelspec": {"display_name":"Python 3","language":"python","name":"python3"},
+    "language_info": {
+      "codemirror_mode":{"name":"ipython"},"file_extension":".py",
+      "mimetype":"text/x-python","name":"python",
+      "nbconvert_exporter":"python","pygments_lexer":"ipython3"
+    }
+  },
+  "nbformat": 4, "nbformat_minor": 5
+}
+]]
+create_cmd("NewNotebook", function(opts)
+  local path = opts.args .. ".ipynb"
+  local f = io.open(path, "w")
+  if not f then
+    vim.notify("Error: could not write " .. path, vim.log.levels.ERROR)
+    return
+  end
+  f:write(default_notebook)
+  f:close()
+  vim.cmd("edit " .. path)
+end, { nargs = 1, complete = "file", desc = "Create a new .ipynb" })

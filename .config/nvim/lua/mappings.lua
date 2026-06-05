@@ -5,7 +5,7 @@ local map = vim.keymap.set
 -----------------------------------------------------------
 map("n", "<C-s>", "<cmd>w<CR>", { desc = "File: Save" })
 map("i", "jk", "<ESC>", { desc = "Exit insert mode" })
-map("n", "<C-c>", "<cmd>%y+<CR>", { desc = "File: Copy all" })
+map("n", "<leader>Y", "<cmd>%y+<CR>", { desc = "File: Copy all" })
 map("n", "<leader>/", "gcc", { remap = true, desc = "Comment: Line" })
 map("v", "<leader>/", "gc", { remap = true, desc = "Comment: Selection" })
 -----------------------------------------------------------
@@ -14,7 +14,7 @@ map("v", "<leader>/", "gc", { remap = true, desc = "Comment: Selection" })
 -- Switch Buffers
 map("n", "<Tab>", "<cmd>bnext<CR>", { desc = "Buffer: Next" })
 map("n", "<S-Tab>", "<cmd>bprevious<CR>", { desc = "Buffer: Prev" })
-map("n", "<C-q>", "<cmd>bd<CR>", { desc = "Buffer: Close" })
+map("n", "<leader>bd", "<cmd>bd<CR>", { desc = "Buffer: Close" })
 
 -- Window movement (Alt + hjkl for speed)
 map("n", "<A-h>", "<C-w>h", { desc = "Window: Left" })
@@ -61,6 +61,11 @@ map("n", "<leader>mi", function()
   end
 end, { desc = "Molten: Init" })
 
+-- Lifecycle
+map("n", "<leader>mR", "<cmd>MoltenRestart<CR>", { desc = "Molten: Restart kernel" })
+map("n", "<leader>mI", "<cmd>MoltenInterrupt<CR>", { desc = "Molten: Interrupt" })
+map("n", "<leader>mD", "<cmd>MoltenDeactivate<CR>", { desc = "Molten: Deactivate" })
+
 -- Quarto
 map("n", "<leader>q", ":QuartoActivate<CR>", { desc = "Quarto: Activate" })
 
@@ -91,7 +96,60 @@ map("n", "<leader>P", "<cmd>Lazy<CR>", { desc = "Lazy Menu" })
 map("n", "<leader>M", "<cmd>Mason<CR>", { desc = "Mason Menu" })
 
 -----------------------------------------------------------
--- 7. Visual Mode Utility
+-- 7. Terminal (Snacks)
+-----------------------------------------------------------
+map("n", "<leader>t", function()
+  require("snacks").terminal()
+end, { desc = "Terminal: Toggle" })
+map("n", "<leader>tR", function()
+  require("snacks").terminal("R")
+end, { desc = "Terminal: R" })
+
+-----------------------------------------------------------
+-- 8. Database (Dbee) — global toggle
+-----------------------------------------------------------
+map("n", "<leader>db", "<cmd>Dbee<CR>", { desc = "DB: Open dbee" })
+
+-----------------------------------------------------------
+-- 9. Git (Gitsigns)
+-----------------------------------------------------------
+map("n", "<leader>gp", function() require("gitsigns").preview_hunk() end, { desc = "Git: Preview hunk" })
+map("n", "<leader>gr", function() require("gitsigns").reset_hunk() end, { desc = "Git: Reset hunk" })
+map("n", "<leader>gs", function() require("gitsigns").stage_hunk() end, { desc = "Git: Stage hunk" })
+map("n", "<leader>gu", function() require("gitsigns").undo_stage_hunk() end, { desc = "Git: Undo stage" })
+map("n", "<leader>gb", function() require("gitsigns").blame_line({ full = true }) end, { desc = "Git: Blame line" })
+map("n", "<leader>gd", function() require("gitsigns").diffthis() end, { desc = "Git: Diff this" })
+map({ "n", "v" }, "]h", function() require("gitsigns").next_hunk() end, { desc = "Git: Next hunk" })
+map({ "n", "v" }, "[h", function() require("gitsigns").prev_hunk() end, { desc = "Git: Prev hunk" })
+
+-----------------------------------------------------------
+-- 10. LSP — global
+-----------------------------------------------------------
+map("n", "<leader>li", "<cmd>LspInfo<CR>", { desc = "LSP: Info" })
+map("n", "<leader>lr", vim.lsp.buf.rename, { desc = "LSP: Rename" })
+map("n", "<leader>la", vim.lsp.buf.code_action, { desc = "LSP: Code action" })
+map("x", "<leader>la", vim.lsp.buf.code_action, { desc = "LSP: Code action (range)" })
+map("n", "<leader>lf", function()
+  require("conform").format { lsp_fallback = true }
+end, { desc = "LSP: Format" })
+map("n", "<leader>ls", function()
+  require("snacks").picker.lsp_symbols()
+end, { desc = "LSP: Symbols (buffer)" })
+map("n", "<leader>lS", function()
+  require("snacks").picker.lsp_workspace_symbols()
+end, { desc = "LSP: Symbols (workspace)" })
+map("n", "<leader>ld", function()
+  vim.diagnostic.open_float(nil, { focus = false, border = "rounded" })
+end, { desc = "LSP: Hover diagnostic" })
+map("n", "<leader>lh", function()
+  vim.lsp.inlay_hint.enable(
+    not vim.lsp.inlay_hint.is_enabled { bufnr = vim.api.nvim_get_current_buf() },
+    { bufnr = vim.api.nvim_get_current_buf() }
+  )
+end, { desc = "LSP: Toggle inlay hints" })
+
+-----------------------------------------------------------
+-- 11. Visual Mode Utility
 -----------------------------------------------------------
 map("v", "J", ":move '>+1<CR>gv=gv", { desc = "Move block down" })
 map("v", "K", ":move '<-2<CR>gv=gv", { desc = "Move block up" })

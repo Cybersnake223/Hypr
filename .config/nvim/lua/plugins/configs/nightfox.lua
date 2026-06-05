@@ -10,10 +10,6 @@ return {
         enable = true,
         background = false,
       },
-      native_lsp = {
-        enable = false,
-        background = false,
-      },
       treesitter = true,
       gitsigns = true,
       whichkey = true,
@@ -46,12 +42,6 @@ return {
       FloatBorder = { bg = "NONE" },
       FloatTitle = { bg = "NONE" },
 
-      -- ── Diagnostic virtual text (no bg, colored fg) ──────
-      DiagnosticVirtualTextError = { fg = "palette.red.base", bg = "NONE" },
-      DiagnosticVirtualTextWarn = { fg = "palette.yellow.base", bg = "NONE" },
-      DiagnosticVirtualTextInfo = { fg = "palette.blue.base", bg = "NONE" },
-      DiagnosticVirtualTextHint = { fg = "palette.cyan.base", bg = "NONE" },
-
       -- ── Diagnostic underlines (undercurl with sp color) ──
       DiagnosticUnderlineError = { sp = "palette.red.base", style = "undercurl" },
       DiagnosticUnderlineWarn = { sp = "palette.yellow.base", style = "undercurl" },
@@ -74,9 +64,6 @@ return {
       SnacksPickerBorder = { bg = "NONE" },
       SnacksPickerTitle = { fg = "palette.blue.base", style = "bold" },
       SnacksPickerDir = { fg = "palette.comment.base" },
-
-      -- ── Trouble.nvim ─────────────────────────────────────
-      TroubleNormal = { bg = "NONE" },
 
       -- ── Which-key ────────────────────────────────────────
       WhichKeyBorder = { bg = "NONE" },
