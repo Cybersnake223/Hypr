@@ -89,12 +89,12 @@
 
 <div align="center">
 
-| 🔮 | 💾 | 🎛 | 🪄 | 🐚 |
-|:---:|:---:|:---:|:---:|:---:|
+|                                                       🔮                                                        |                                                   💾                                                    |                                                       🎛                                                        |                                      🪄                                       |                                                🐚                                                |
+| :-------------------------------------------------------------------------------------------------------------: | :-----------------------------------------------------------------------------------------------------: | :-------------------------------------------------------------------------------------------------------------: | :---------------------------------------------------------------------------: | :----------------------------------------------------------------------------------------------: |
 | **Material You theming** — Matugen derives a full palette from your wallpaper and applies it to every component | **Safe installer** — every file that would be overwritten is backed up to a timestamped directory first | **Modular installs** — choose exactly which modules to deploy: configs, scripts, icons, themes, fonts, dotfiles | **Dry-run mode** — preview every single action without touching a single file | **Shell-aware PATH patching** — detects Zsh, Bash, Fish, Ksh, and falls back to POSIX `.profile` |
 
-| ↩️ | 🔤 | 🌐 | 📜 | 🎨 |
-|:---:|:---:|:---:|:---:|:---:|
+|                                        ↩️                                         |                                                     🔤                                                      |                                                   🌐                                                   |                                        📜                                        |                                       🎨                                        |
+| :-------------------------------------------------------------------------------: | :---------------------------------------------------------------------------------------------------------: | :----------------------------------------------------------------------------------------------------: | :------------------------------------------------------------------------------: | :-----------------------------------------------------------------------------: |
 | **One-command undo** — restore all your originals with `./install.sh --uninstall` | **Bundled fonts** — JetBrains Mono Nerd, Font Awesome, Icomoon Feather, Nerd Symbols — installed and cached | **Zen Browser CSS** — custom `userChrome.css` and `userContent.css` tuned to match the Viper aesthetic | **50+ custom scripts** — automatically marked executable and patched into `PATH` | **Live theming** — change wallpaper, run matugen, everything recolors instantly |
 
 </div>
@@ -107,24 +107,24 @@
 
 <div align="center">
 
-| Role | Tool |
-|:---:|:---|
-| 🏗 **Base** | [Arch Linux](https://archlinux.org/) |
-| 🪟 **Compositor** | [Hyprland](https://hyprland.org/) |
-| 📊 **Bar** | [Waybar](https://github.com/Alexays/Waybar) |
-| 🖥 **Terminal** | [Kitty](https://sw.kovidgoyal.net/kitty/) + [Foot](https://codeberg.org/dnkl/foot) |
-| 🐚 **Shell** | [Zsh](https://zsh.sourceforge.io/) + [Starship](https://starship.rs/) |
-| 🔔 **Notifications** | [Mako](https://github.com/emersion/mako) |
-| 🚀 **Launcher** | [Rofi Wayland fork](https://github.com/lbonn/rofi) |
-| 🌐 **Browser** | [Zen Browser](https://zen-browser.app/) |
-| 🔒 **Locker** | [Hyprlock](https://github.com/hyprwm/hyprlock) |
-| 📁 **Files** | [Nautilus](https://gitlab.gnome.org/GNOME/nautilus) + [Yazi](https://yazi-rs.github.io/) |
-| 📝 **Editor** | [Neovim](https://neovim.io/) |
-| 🎨 **Theming** | [Matugen](https://github.com/InioX/matugen) |
-| 📡 **System Info** | [Fastfetch](https://github.com/fastfetch-cli/fastfetch) |
-| 🎵 **Audio** | [cmus](https://cmus.github.io/) + [Cava](https://github.com/karlstav/cava) + [mpv](https://mpv.io/) |
-| 📈 **Monitor** | [btop](https://github.com/aristocratos/btop) |
-| ⬇ **Downloads** | [aria2](https://aria2.github.io/) |
+|         Role         | Tool                                                                                                |
+| :------------------: | :-------------------------------------------------------------------------------------------------- |
+|     🏗 **Base**      | [Arch Linux](https://archlinux.org/)                                                                |
+|  🪟 **Compositor**   | [Hyprland](https://hyprland.org/)                                                                   |
+|      📊 **Bar**      | [Waybar](https://github.com/Alexays/Waybar)                                                         |
+|   🖥 **Terminal**    | [Kitty](https://sw.kovidgoyal.net/kitty/) + [Foot](https://codeberg.org/dnkl/foot)                  |
+|     🐚 **Shell**     | [Zsh](https://zsh.sourceforge.io/) + [Starship](https://starship.rs/)                               |
+| 🔔 **Notifications** | [Mako](https://github.com/emersion/mako)                                                            |
+|   🚀 **Launcher**    | [Rofi Wayland fork](https://github.com/lbonn/rofi)                                                  |
+|    🌐 **Browser**    | [Zen Browser](https://zen-browser.app/)                                                             |
+|    🔒 **Locker**     | [Hyprlock](https://github.com/hyprwm/hyprlock)                                                      |
+|     📁 **Files**     | [Nautilus](https://gitlab.gnome.org/GNOME/nautilus) + [Yazi](https://yazi-rs.github.io/)            |
+|    📝 **Editor**     | [Neovim](https://neovim.io/)                                                                        |
+|    🎨 **Theming**    | [Matugen](https://github.com/InioX/matugen)                                                         |
+|  📡 **System Info**  | [Fastfetch](https://github.com/fastfetch-cli/fastfetch)                                             |
+|     🎵 **Audio**     | [cmus](https://cmus.github.io/) + [Cava](https://github.com/karlstav/cava) + [mpv](https://mpv.io/) |
+|    📈 **Monitor**    | [btop](https://github.com/aristocratos/btop)                                                        |
+|   ⬇ **Downloads**    | [aria2](https://aria2.github.io/)                                                                   |
 
 </div>
 
@@ -139,11 +139,11 @@
 
 ### Tested On
 
-| | |
-|:---:|:---|
-| 🖥 **OS** | Arch Linux (latest) |
-| GPU | Intel / AMD / NVIDIA (all supported via Hyprland) |
-| 🪟 **Display** | Wayland (Hyprland) |
+|                |                                                   |
+| :------------: | :------------------------------------------------ |
+|   🖥 **OS**    | Arch Linux (latest)                               |
+|      GPU       | Intel / AMD / NVIDIA (all supported via Hyprland) |
+| 🪟 **Display** | Wayland (Hyprland)                                |
 
 ### Core packages
 
@@ -160,22 +160,22 @@ yay -S hyprland waybar foot kitty zsh rofi-lbonn-wayland-git mako       \
 
 <br/>
 
-| Package | Purpose |
-|---|---|
-| `xdg-desktop-portal-hyprland` | Wayland portal — screenshare, file picker |
-| `polkit-gnome` | GUI authentication agent |
-| `grim` + `slurp` + `wl-clipboard` | Screenshot toolchain |
-| `brightnessctl` | Brightness control |
-| `pavucontrol` | Audio volume GUI |
-| `pipewire` + `pipewire-pulse` + `pipewire-alsa` | Audio stack |
-| `wireplumber` | PipeWire session manager |
-| `networkmanager` | Networking |
-| `bluez` + `bluez-tools` | Bluetooth |
-| `xorg-xwayland` | X11 app compatibility |
-| `eza` | Better `ls` |
-| `fd` | Better `find` |
-| `bat` | Better `cat` |
-| `bleachbit` | System cleaner script dependency |
+| Package                                         | Purpose                                   |
+| ----------------------------------------------- | ----------------------------------------- |
+| `xdg-desktop-portal-hyprland`                   | Wayland portal — screenshare, file picker |
+| `polkit-gnome`                                  | GUI authentication agent                  |
+| `grim` + `slurp` + `wl-clipboard`               | Screenshot toolchain                      |
+| `brightnessctl`                                 | Brightness control                        |
+| `pavucontrol`                                   | Audio volume GUI                          |
+| `pipewire` + `pipewire-pulse` + `pipewire-alsa` | Audio stack                               |
+| `wireplumber`                                   | PipeWire session manager                  |
+| `networkmanager`                                | Networking                                |
+| `bluez` + `bluez-tools`                         | Bluetooth                                 |
+| `xorg-xwayland`                                 | X11 app compatibility                     |
+| `eza`                                           | Better `ls`                               |
+| `fd`                                            | Better `find`                             |
+| `bat`                                           | Better `cat`                              |
+| `bleachbit`                                     | System cleaner script dependency          |
 
 </details>
 
@@ -283,16 +283,16 @@ $HOME
 
 <div align="center">
 
-| Flag | What it does |
-|:---:|:---|
-| `--dry-run` | 🔍 Preview every action — zero changes made |
-| `--yes` | ✅ Skip all confirmation prompts |
-| `--select` | 🎛 Interactively pick which modules to install |
-| `--no-backup` | ⚠️ Skip backup — also disables `--uninstall` |
-| `--uninstall` | ↩️ Restore originals from the most recent backup |
-| `--list-backups` | 📋 Show all backups with timestamps and sizes |
-| `--skip-deps` | 🚀 Skip the ecosystem dependency check |
-| `-h / --help` | 📖 Show usage |
+|       Flag       | What it does                                     |
+| :--------------: | :----------------------------------------------- |
+|   `--dry-run`    | 🔍 Preview every action — zero changes made      |
+|     `--yes`      | ✅ Skip all confirmation prompts                 |
+|    `--select`    | 🎛 Interactively pick which modules to install   |
+|  `--no-backup`   | ⚠️ Skip backup — also disables `--uninstall`     |
+|  `--uninstall`   | ↩️ Restore originals from the most recent backup |
+| `--list-backups` | 📋 Show all backups with timestamps and sizes    |
+|  `--skip-deps`   | 🚀 Skip the ecosystem dependency check           |
+|  `-h / --help`   | 📖 Show usage                                    |
 
 </div>
 
@@ -331,13 +331,13 @@ Toggle a number, press Enter to confirm.
 
 ### Shell-aware PATH patching
 
-| Shell | File patched |
-|---|---|
-| `zsh` | `~/.zshrc` |
-| `bash` | `~/.bashrc` |
-| `fish` | `~/.config/fish/conf.d/hypr_path.fish` |
-| `ksh / mksh` | `~/.kshrc` |
-| Other | `~/.profile` |
+| Shell        | File patched                           |
+| ------------ | -------------------------------------- |
+| `zsh`        | `~/.zshrc`                             |
+| `bash`       | `~/.bashrc`                            |
+| `fish`       | `~/.config/fish/conf.d/hypr_path.fish` |
+| `ksh / mksh` | `~/.kshrc`                             |
+| Other        | `~/.profile`                           |
 
 <br/>
 
@@ -353,15 +353,15 @@ Toggle a number, press Enter to confirm.
 
 <br/>
 
-| Keybind | Action |
-|---|---|
-| `F1` | Toggle mute (speakers) |
-| `F2` / `F3` | Volume −/+ 10% |
-| `F4` | Toggle mute (mic) |
-| `F7` | Toggle Wi-Fi |
-| `F9` | Lock screen |
-| `F11` / `F12` | Brightness −/+ 10% |
-| `Print` | Screenshot |
+| Keybind       | Action                 |
+| ------------- | ---------------------- |
+| `F1`          | Toggle mute (speakers) |
+| `F2` / `F3`   | Volume −/+ 10%         |
+| `F4`          | Toggle mute (mic)      |
+| `F7`          | Toggle Wi-Fi           |
+| `F9`          | Lock screen            |
+| `F11` / `F12` | Brightness −/+ 10%     |
+| `Print`       | Screenshot             |
 
 </details>
 
@@ -370,33 +370,33 @@ Toggle a number, press Enter to confirm.
 
 <br/>
 
-| Keybind | Action |
-|---|---|
-| `ALT + Enter` | Terminal (Kitty) |
-| `ALT + D` | App launcher (Rofi) |
-| `ALT + R` | Yazi (TUI file manager) |
-| `ALT + N` | Neovim |
-| `ALT + M` | cmus |
-| `ALT + H` | btop |
-| `ALT + T` | aerc (email) |
-| `ALT + E` | Emoji picker |
-| `ALT + X` | Power menu |
-| `ALT + B` | Bluetooth menu |
-| `ALT + L` | AirPods TUI |
-| `ALT + Y` | YouTube downloader |
-| `ALT + V` | Clipboard history |
-| `ALT + W` | Change wallpaper |
-| `ALT + K` | Kill window |
-| `ALT + C` | Dismiss notifications |
-| `ALT SHIFT + T` | Nautilus (GUI files) |
-| `ALT SHIFT + P` | Audio mixer (wiremix) |
-| `ALT SHIFT + V` | Watch video |
+| Keybind         | Action                      |
+| --------------- | --------------------------- |
+| `ALT + Enter`   | Terminal (Kitty)            |
+| `ALT + D`       | App launcher (Rofi)         |
+| `ALT + R`       | Yazi (TUI file manager)     |
+| `ALT + N`       | Neovim                      |
+| `ALT + M`       | cmus                        |
+| `ALT + H`       | btop                        |
+| `ALT + T`       | aerc (email)                |
+| `ALT + E`       | Emoji picker                |
+| `ALT + X`       | Power menu                  |
+| `ALT + B`       | Bluetooth menu              |
+| `ALT + L`       | AirPods TUI                 |
+| `ALT + Y`       | YouTube downloader          |
+| `ALT + V`       | Clipboard history           |
+| `ALT + W`       | Change wallpaper            |
+| `ALT + K`       | Kill window                 |
+| `ALT + C`       | Dismiss notifications       |
+| `ALT SHIFT + T` | Nautilus (GUI files)        |
+| `ALT SHIFT + P` | Audio mixer (wiremix)       |
+| `ALT SHIFT + V` | Watch video                 |
 | `ALT SHIFT + S` | Universal snip (QuickShell) |
-| `ALT SHIFT + K` | System cleaner |
-| `ALT SHIFT + D` | aria2 downloader |
-| `ALT SHIFT + C` | Script editor |
-| `ALT SHIFT + E` | Config editor |
-| `ALT SHIFT + N` | Wi-Fi menu |
+| `ALT SHIFT + K` | System cleaner              |
+| `ALT SHIFT + D` | aria2 downloader            |
+| `ALT SHIFT + C` | Script editor               |
+| `ALT SHIFT + E` | Config editor               |
+| `ALT SHIFT + N` | Wi-Fi menu                  |
 
 </details>
 
@@ -408,16 +408,16 @@ Toggle a number, press Enter to confirm.
 > [!NOTE]
 > These open personal bookmarks hardcoded in the Hyprland config. Edit them before adopting this setup.
 
-| Keybind | Action |
-|---|---|
-| `ALT SHIFT + B` | Zen Browser |
+| Keybind         | Action             |
+| --------------- | ------------------ |
+| `ALT SHIFT + B` | Zen Browser        |
 | `ALT SHIFT + I` | Zen private window |
-| `ALT + G` | GitHub |
-| `ALT SHIFT + Y` | YouTube |
-| `ALT SHIFT + G` | Gemini |
-| `ALT SHIFT + W` | Wallhaven |
-| `ALT SHIFT + O` | ChatGPT |
-| `ALT SHIFT + R` | Reddit |
+| `ALT + G`       | GitHub             |
+| `ALT SHIFT + Y` | YouTube            |
+| `ALT SHIFT + G` | Gemini             |
+| `ALT SHIFT + W` | Wallhaven          |
+| `ALT SHIFT + O` | ChatGPT            |
+| `ALT SHIFT + R` | Reddit             |
 
 </details>
 
@@ -426,17 +426,17 @@ Toggle a number, press Enter to confirm.
 
 <br/>
 
-| Keybind | Action |
-|---|---|
-| `ALT + Q` | Close window |
-| `ALT + F` | Toggle fullscreen |
-| `ALT + P` | Toggle floating |
-| `ALT + J` | Toggle split |
-| `ALT + ↑ ↓ ← →` | Move focus |
-| `ALT SHIFT + ↑ ↓ ← →` | Swap window |
-| `ALT CTRL + ↑ ↓ ← →` | Resize window |
-| `ALT + LMB drag` | Move window |
-| `ALT + RMB drag` | Resize window |
+| Keybind               | Action            |
+| --------------------- | ----------------- |
+| `ALT + Q`             | Close window      |
+| `ALT + F`             | Toggle fullscreen |
+| `ALT + P`             | Toggle floating   |
+| `ALT + J`             | Toggle split      |
+| `ALT + ↑ ↓ ← →`       | Move focus        |
+| `ALT SHIFT + ↑ ↓ ← →` | Swap window       |
+| `ALT CTRL + ↑ ↓ ← →`  | Resize window     |
+| `ALT + LMB drag`      | Move window       |
+| `ALT + RMB drag`      | Resize window     |
 
 </details>
 
@@ -445,13 +445,13 @@ Toggle a number, press Enter to confirm.
 
 <br/>
 
-| Keybind | Action |
-|---|---|
-| `ALT + 1–0` | Switch to workspace 1–10 |
-| `ALT SHIFT + 1–0` | Move window to workspace 1–10 |
-| `ALT + Scroll up/down` | Cycle workspaces |
-| `ALT + `` ` `` ` | Toggle scratchpad |
-| `ALT SHIFT + `` ` `` ` | Move window to scratchpad |
+| Keybind                | Action                        |
+| ---------------------- | ----------------------------- |
+| `ALT + 1–0`            | Switch to workspace 1–10      |
+| `ALT SHIFT + 1–0`      | Move window to workspace 1–10 |
+| `ALT + Scroll up/down` | Cycle workspaces              |
+| `ALT + `` ` `` `       | Toggle scratchpad             |
+| `ALT SHIFT + `` ` `` ` | Move window to scratchpad     |
 
 </details>
 
@@ -491,11 +491,11 @@ matugen image ~/.config/hypr/wallpaper/current.png
 
 Custom styling for [Zen Browser](https://zen-browser.app/) is included under `.zen/chrome/` to match the Viper aesthetic.
 
-| File | Purpose |
-|---|---|
-| `.zen/chrome/userChrome.css` | Browser chrome — sidebar, tab bar, toolbar |
-| `.zen/chrome/userContent.css` | Internal pages — new tab, `about:` pages |
-| `.zen/chrome/zen-logo-mocha.svg` | Custom logo asset |
+| File                             | Purpose                                    |
+| -------------------------------- | ------------------------------------------ |
+| `.zen/chrome/userChrome.css`     | Browser chrome — sidebar, tab bar, toolbar |
+| `.zen/chrome/userContent.css`    | Internal pages — new tab, `about:` pages   |
+| `.zen/chrome/zen-logo-mocha.svg` | Custom logo asset                          |
 
 > [!IMPORTANT]
 > The installer does **not** copy `.zen/` automatically. Apply it manually:
@@ -618,6 +618,7 @@ PRs are welcome for fixes, improvements, and documentation updates. Include scre
 ### 💬 Getting Help
 
 Need help or have questions? Start a discussion:
+
 - **[GitHub Discussions](https://github.com/Cybersnake223/Hypr/discussions)** — ask questions, share setups, get help
 
 For bugs and issues, use the **[Issue Tracker](https://github.com/Cybersnake223/Hypr/issues)**.
@@ -636,7 +637,7 @@ MIT — see [LICENSE](LICENSE) for details.
 
 <br/>
 
-*Crafted with* 💜 *by* [**Cybersnake**](https://github.com/Cybersnake223)
+_Crafted with_ 💜 _by_ [**Cybersnake**](https://github.com/Cybersnake223)
 
 <br/>
 
