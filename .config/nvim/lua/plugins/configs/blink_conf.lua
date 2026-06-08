@@ -32,7 +32,7 @@ return {
         columns = { { "label", "label_description", gap = 1 }, { "kind_icon", "kind" } },
       },
     },
-    ghost_text = { enabled = false },
+    ghost_text = { enabled = true },
     documentation = {
       auto_show = true,
       auto_show_delay_ms = 300,

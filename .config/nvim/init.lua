@@ -14,7 +14,7 @@ require "mappings"
 require "commands"
 
 vim.opt.shada = "!,'100,<50,s10,h"
-vim.lsp.set_log_level = "off"
+vim.lsp.log.set_level("OFF")
 
 -- ─────────────────────────────────────────────────────────
 -- 2. Clipboard detection
@@ -90,7 +90,7 @@ vim.api.nvim_create_autocmd("BufReadPost", {
   pattern = { "*.md", "*.qmd", "*.ipynb" },
   callback = function()
     if package.loaded["molten"] then
-      pcall(vim.cmd, "MoltenImportOutput")
+      vim.cmd.MoltenImportOutput()
     end
   end,
 })

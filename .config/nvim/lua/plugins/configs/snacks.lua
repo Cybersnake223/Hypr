@@ -17,7 +17,7 @@ return {
   bigfile = { enabled = true },
   dashboard = { enabled = false },
   explorer = { enabled = true, replace_netrw = true },
-  indent = { enabled = false },
+  indent = { enabled = true, indent = { only_scope = false, animate = { enabled = false } } },
   input = { enabled = true },
   notifier = { enabled = true },
   quickfile = { enabled = true },

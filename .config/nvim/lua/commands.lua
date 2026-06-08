@@ -5,8 +5,9 @@ local augroup    = vim.api.nvim_create_augroup
 -- ── 1. Mason ─────────────────────────────────────────────
 create_cmd("MasonInstallAll", function()
   local tools = {
-    "lua-language-server", "pyright", "ruff", "sqls",
+    "lua-language-server", "ruff", "sqls",
     "sqlfluff", "bash-language-server", "cssls", "html", "marksman",
+    "taplo", "jsonls",
     "prettier", "stylua", "shfmt",
   }
   local registry = require "mason-registry"

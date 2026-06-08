@@ -49,15 +49,12 @@ vim.lsp.config("lua_ls", {
   },
 })
 
-vim.lsp.config("pyright", {
+vim.lsp.config("ruff", {
   settings = {
-    python = {
-      analysis = {
-        autoSearchPaths        = true,
-        useLibraryCodeForTypes = true,
-        typeCheckingMode       = "standard",
-        diagnosticMode         = "openFilesOnly",
-      },
+    settings = {
+      lineLength = 120,
+      lint = { respectGitignore = true },
+      format = { quoteStyle = "double", indentWidth = 4 },
     },
   },
 })
@@ -67,7 +64,7 @@ vim.lsp.config("bashls", {
 })
 
 -- ── 4. Enable servers ─────────────────────────────────────
-vim.lsp.enable { "lua_ls", "pyright", "sqls", "bashls", "cssls", "html", "marksman" }
+vim.lsp.enable { "lua_ls", "ruff", "sqls", "bashls", "cssls", "html", "marksman", "taplo", "jsonls" }
 
 -- ── 5. Diagnostics ────────────────────────────────────────
 vim.diagnostic.config {

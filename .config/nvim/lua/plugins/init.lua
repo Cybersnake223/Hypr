@@ -9,6 +9,7 @@ return {
     opts = require "plugins.configs.nightfox",
     config = function(_, opts)
       require("nightfox").setup(opts)
+      require("nightfox").compile()
       vim.cmd "colorscheme nightfox"
     end,
   },
@@ -41,6 +42,26 @@ return {
       signs = { add = { text = "▎" }, change = { text = "▎" }, delete = { text = "󰍵" } },
       signs_staged_enable = true,
       preview_config = { border = "rounded" },
+    },
+  },
+
+  -- ─────────────────────────────────────────────────────────
+  -- Git UI (Neogit)
+  -- ─────────────────────────────────────────────────────────
+  {
+    "NeogitOrg/neogit",
+    cmd = "Neogit",
+    dependencies = { "nvim-lua/plenary.nvim", "sindrets/diffview.nvim" },
+    opts = {
+      kind = "tab",
+      integrations = { diffview = true },
+    },
+    keys = {
+      { "<leader>gg", "<cmd>Neogit<CR>", desc = "Neogit: Status" },
+      { "<leader>gc", "<cmd>Neogit commit<CR>", desc = "Neogit: Commit" },
+      { "<leader>gl", "<cmd>Neogit log<CR>", desc = "Neogit: Log" },
+      { "<leader>gP", "<cmd>Neogit pull<CR>", desc = "Neogit: Pull" },
+      { "<leader>gpu", "<cmd>Neogit push<CR>", desc = "Neogit: Push" },
     },
   },
 
@@ -89,6 +110,11 @@ return {
         { "<leader>d", group = "database" },
         { "<leader>f", group = "find" },
         { "<leader>g", group = "git" },
+        { "<leader>gc", desc = "Neogit: Commit" },
+        { "<leader>gg", desc = "Neogit: Status" },
+        { "<leader>gl", desc = "Neogit: Log" },
+        { "<leader>gP", desc = "Neogit: Pull" },
+        { "<leader>gpu", desc = "Neogit: Push" },
         { "<leader>l", group = "lsp" },
         { "<leader>m", group = "molten" },
         { "<leader>r", group = "run" },
@@ -122,7 +148,7 @@ return {
     -- build = "cargo build --release",
     version = "^1",
     event = "InsertEnter",
-    dependencies = { "L3MON4D3/LuaSnip", "rafamadriz/friendly-snippets" },
+    dependencies = { "L3MON4D3/LuaSnip", "rafamadriz/friendly-snippets", "saghen/blink.lib" },
     opts = function()
       local conf = require "plugins.configs.blink_conf"
       conf.sources = conf.sources or {}
@@ -154,7 +180,7 @@ return {
     event = "BufReadPost",
     dependencies = { "williamboman/mason.nvim", "neovim/nvim-lspconfig" },
     opts = {
-      ensure_installed = { "lua_ls", "pyright", "sqls", "bashls", "cssls", "html", "marksman" },
+      ensure_installed = { "lua_ls", "ruff", "sqls", "bashls", "cssls", "html", "marksman", "taplo", "jsonls" },
       automatic_enable = true,
     },
   },
@@ -199,9 +225,12 @@ return {
         sh = { "shellcheck" },
         sql = { "sqlfluff" },
       }
+      local lint_group = vim.api.nvim_create_augroup("NvimLint", { clear = true })
       vim.api.nvim_create_autocmd({ "BufWritePost", "InsertLeave" }, {
-        group = vim.api.nvim_create_augroup("NvimLint", { clear = true }),
+        group = lint_group,
         callback = function()
+          if vim.b._lint_changedtick == vim.b.changedtick then return end
+          vim.b._lint_changedtick = vim.b.changedtick
           lint.try_lint()
         end,
       })
@@ -248,15 +277,6 @@ return {
   -- },
 
   -- ─────────────────────────────────────────────────────────
-  -- Indent guides
-  -- ─────────────────────────────────────────────────────────
-  {
-    "nvimdev/indentmini.nvim",
-    event = { "BufReadPre", "BufNewFile" },
-    opts = {},
-  },
-
-  -- ─────────────────────────────────────────────────────────
   -- Surround
   -- ─────────────────────────────────────────────────────────
   {
@@ -273,6 +293,29 @@ return {
         update_n_lines = "gsn",
       },
     },
+  },
+
+  -- ─────────────────────────────────────────────────────────
+  -- Textobjects (mini.ai)
+  -- ─────────────────────────────────────────────────────────
+  {
+    "echasnovski/mini.ai",
+    event = "VeryLazy",
+    opts = function()
+      local ai = require "mini.ai"
+      return {
+        n_lines = 50,
+        custom_textobjects = {
+          o = ai.gen_spec.treesitter {
+            a = { "@block.outer", "@conditional.outer", "@loop.outer" },
+            i = { "@block.inner", "@conditional.inner", "@loop.inner" },
+          },
+          f = ai.gen_spec.treesitter { a = "@function.outer", i = "@function.inner" },
+          c = ai.gen_spec.treesitter { a = "@class.outer", i = "@class.inner" },
+          t = { { "%b()" }, { "^%s*()[(%s])().-[^()]())[^()]*", "^%s*()[(%s])().-[^()]())[^()]*" } },
+        },
+      }
+    end,
   },
 
   -- ─────────────────────────────────────────────────────────
@@ -449,7 +492,7 @@ return {
         group = vim.api.nvim_create_augroup("QuartoJupytext", { clear = true }),
         callback = function(ev)
           local name = vim.api.nvim_buf_get_name(ev.buf)
-          if name:match("%.ipynb%.md$") or (name:match("%.md$") and vim.b[ev.buf].jupytext) then
+          if name:match "%.ipynb%.md$" or (name:match "%.md$" and vim.b[ev.buf].jupytext) then
             require("quarto").activate()
           end
         end,

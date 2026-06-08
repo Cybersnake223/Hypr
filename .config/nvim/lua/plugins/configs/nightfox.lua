@@ -15,7 +15,6 @@ return {
       whichkey = true,
       lualine = true,
       mini = true,
-      render_markdown = false,
     },
   },
 
@@ -56,9 +55,9 @@ return {
       -- ── Inlay hints ──────────────────────────────────────
       LspInlayHint = { fg = "palette.comment.base", style = "italic" },
 
-      -- ── Indent guides (indentmini) ───────────────────────
-      IndentLine = { link = "Comment" },
-      IndentLineCurrent = { fg = "palette.blue.dim" },
+      -- ── Indent guides (snacks.indent) ────────────────────
+      SnacksIndent = { link = "Comment" },
+      SnacksIndentScope = { fg = "palette.blue.dim" },
 
       -- ── Snacks picker ────────────────────────────────────
       SnacksPickerBorder = { bg = "NONE" },
@@ -70,10 +69,37 @@ return {
       WhichKeyFloat = { bg = "NONE" },
 
       -- ── Render-markdown ──────────────────────────────────
-      RenderMarkdownCode = { bg = "palette.bg2.base" },
-      RenderMarkdownCodeInline = { bg = "palette.bg2.base" },
-      RenderMarkdownH1Bg = { bg = "palette.blue.dim" },
-      RenderMarkdownH2Bg = { bg = "palette.cyan.dim" },
+      -- Headings: subtle blended background bars + bright accent fg/icon
+      RenderMarkdownH1Bg = { bg = "diff.change" },
+      RenderMarkdownH2Bg = { bg = "diff.text" },
+      RenderMarkdownH3Bg = { bg = "diff.add" },
+      RenderMarkdownH4Bg = { bg = "diag_bg.warn" },
+      RenderMarkdownH5Bg = { bg = "diag_bg.error" },
+      RenderMarkdownH6Bg = { bg = "diff.delete" },
+      RenderMarkdownH1 = { fg = "palette.blue.bright", style = "bold" },
+      RenderMarkdownH2 = { fg = "palette.cyan.bright", style = "bold" },
+      RenderMarkdownH3 = { fg = "palette.green.bright", style = "bold" },
+      RenderMarkdownH4 = { fg = "palette.yellow.base", style = "bold" },
+      RenderMarkdownH5 = { fg = "palette.red.base", style = "bold" },
+      RenderMarkdownH6 = { fg = "palette.magenta.base", style = "bold" },
+
+      -- Code blocks: sunken panel slightly darker than editor bg
+      RenderMarkdownCode = { bg = "palette.bg0.base" },
+      RenderMarkdownCodeInline = { bg = "palette.bg3.base", fg = "palette.fg1.base" },
+      RenderMarkdownCodeBorder = { fg = "palette.bg0.base", bg = "palette.bg0.base" },
+      RenderMarkdownCodeInfo = { fg = "palette.comment.base", bg = "palette.bg0.base", style = "italic" },
+      RenderMarkdownCodeFallback = { bg = "palette.bg0.base" },
+
+      -- General markdown elements
+      RenderMarkdownDash = { fg = "palette.fg3.base" },
+      RenderMarkdownBullet = { fg = "palette.blue.bright" },
+      RenderMarkdownQuote = { fg = "palette.green.base", style = "italic" },
+      RenderMarkdownLink = { fg = "palette.blue.bright", style = "underline" },
+      RenderMarkdownWikiLink = { fg = "palette.cyan.base", style = "underline" },
+      RenderMarkdownTableHead = { fg = "palette.blue.bright", style = "bold" },
+      RenderMarkdownTableRow = { fg = "palette.fg2.base" },
+      RenderMarkdownSign = { bg = "NONE" },
+      RenderMarkdownMath = { fg = "palette.yellow.base", style = "italic" },
     },
   },
 }
