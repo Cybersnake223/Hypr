@@ -34,6 +34,8 @@ OPT_UNINSTALL=0
 OPT_LIST_BACKUPS=0
 OPT_SELECT=0
 OPT_SKIP_DEPS=0
+OPT_INSTALL_DEPS=0
+OPT_INSTALL_NVIM_DEPS=0
 
 # Counters
 COPIED=0
@@ -51,13 +53,14 @@ if [[ -t 1 ]]; then
   G='\033[0;32m'   # Green
   C='\033[0;36m'   # Cyan
   M='\033[0;35m'   # Magenta
-  B='\033[0;34m'   # Blue
+  # shellcheck disable=SC2034
+  B='\033[0;34m'   # Blue (reserved)
   W='\033[1;37m'   # White Bold
   D='\033[2m'      # Dim
   BOLD='\033[1m'
   RESET='\033[0m'
 else
-  R=''; Y=''; G=''; C=''; M=''; B=''; W=''; D=''; BOLD=''; RESET=''
+  R=''; Y=''; G=''; C=''; M=''; W=''; D=''; BOLD=''; RESET=''
 fi
 
 # Logging — write plain text to log, colored to terminal
@@ -90,7 +93,9 @@ ${BOLD}Options:${RESET}
   ${G}--uninstall${RESET}      Restore originals from the most recent backup
   ${G}--list-backups${RESET}   Show all available backups with file counts
   ${G}--select${RESET}         Interactively choose which modules to install
-  ${G}--skip-deps${RESET}      Skip the Hyprland ecosystem dependency check
+  ${G}--install-deps${RESET}        Auto-install missing Hyprland ecosystem deps
+  ${G}--install-nvim-deps${RESET}   Auto-install Neovim system dependencies
+  ${G}--skip-deps${RESET}           Skip the Hyprland ecosystem dependency check
   ${G}-h, --help${RESET}       Show this message
 
 ${BOLD}Examples:${RESET}
@@ -102,6 +107,9 @@ ${BOLD}Examples:${RESET}
 
   ${D}# Fully non-interactive CI install${RESET}
   ./install.sh --yes --skip-deps
+
+  ${D}# Install everything including missing packages${RESET}
+  ./install.sh --install-deps
 
   ${D}# Pick only the modules you want${RESET}
   ./install.sh --select
@@ -127,7 +135,9 @@ while [[ $# -gt 0 ]]; do
     --uninstall)     OPT_UNINSTALL=1;    shift ;;
     --list-backups)  OPT_LIST_BACKUPS=1; shift ;;
     --select)        OPT_SELECT=1;       shift ;;
-    --skip-deps)     OPT_SKIP_DEPS=1;    shift ;;
+    --install-deps)     OPT_INSTALL_DEPS=1;     shift ;;
+    --install-nvim-deps) OPT_INSTALL_NVIM_DEPS=1; shift ;;
+    --skip-deps)        OPT_SKIP_DEPS=1;       shift ;;
     -h|--help)       usage; exit 0 ;;
     *) die "Unknown option: '$1'  —  run with --help for usage." ;;
   esac
@@ -207,7 +217,8 @@ safe_copy() {
 # safe_copy_tree: backup then merge a directory tree into dest,
 # recording every individual file path into the manifest
 safe_copy_tree() {
-  local src="$1" dest="$2" label="${3:-$(basename "$src")}"
+  local src="$1" dest="$2"
+  local label="${3:-$(basename "$src")}"
   [[ -d "$src" ]] || return 0
 
   # Backup existing target tree
@@ -275,21 +286,126 @@ cmd_list_backups() {
 # ══════════════════════════════════════════════════════════════════════════════
 
 # Ecosystem tools this dotfiles setup depends on
+# Format: "cmd:package:repo:description"
 ECOSYSTEM_DEPS=(
-  "hyprland:Wayland compositor"
-  "waybar:Status bar"
-  "foot:Terminal emulator"
-  "zsh:Shell"
-  "rofi:App launcher (lbonn/wayland fork)"
-  "mako:Notification daemon"
-  "awww:Wallpaper daemon"
-  "hyprlock:Screen locker"
-  "matugen:Dynamic color theming"
-  "fc-cache:Font cache (fontconfig)"
-  "btop:Resource monitor"
-  "yazi:TUI file manager"
-  "fastfetch:System info fetch"
+  "hyprland:hyprland:extra:Wayland compositor"
+  "waybar:waybar:extra:Status bar"
+  "foot:foot:extra:Terminal emulator"
+  "zsh:zsh:extra:Shell"
+  "rofi:rofi:extra:App launcher"
+  "mako:mako:extra:Notification daemon"
+  "awww:awww-git:aur:Wallpaper daemon"
+  "hyprlock:hyprlock:extra:Screen locker"
+  "matugen:matugen-bin:aur:Dynamic color theming"
+  "fc-cache:fontconfig:extra:Font cache"
+  "btop:btop:extra:Resource monitor"
+  "yazi:yazi:extra:TUI file manager"
+  "fastfetch:fastfetch:extra:System info fetch"
 )
+
+cmd_install_deps() {
+  local official=() aur=()
+
+  for entry in "${ECOSYSTEM_DEPS[@]}"; do
+    IFS=':' read -r cmd pkg repo desc <<< "$entry"
+    if ! command -v "$cmd" >/dev/null 2>&1; then
+      if [[ "$repo" == "aur" ]]; then
+        aur+=("$pkg")
+      else
+        official+=("$pkg")
+      fi
+    fi
+  done
+
+  [[ ${#official[@]} -eq 0 && ${#aur[@]} -eq 0 ]] && return 0
+
+  echo
+
+  if [[ ${#official[@]} -gt 0 ]]; then
+    info "Installing ${#official[@]} official package(s): ${official[*]}"
+    if [[ "$OPT_DRY_RUN" -eq 1 ]]; then
+      run echo "sudo pacman -S --noconfirm --needed ${official[*]}"
+    else
+      run sudo pacman -S --noconfirm --needed "${official[@]}" || {
+        error "Failed to install some official packages."
+      }
+    fi
+    echo
+  fi
+
+  if [[ ${#aur[@]} -gt 0 ]]; then
+    info "AUR packages required: ${aur[*]}"
+    local aur_helper=""
+    for helper in yay paru; do
+      command -v "$helper" >/dev/null 2>&1 && { aur_helper="$helper"; break; }
+    done
+
+    if [[ -z "$aur_helper" ]]; then
+      error "No AUR helper found (install yay or paru). Install manually:"
+      for pkg in "${aur[@]}"; do
+        echo "  → https://aur.archlinux.org/packages/$pkg"
+      done
+      return 1
+    fi
+
+    info "Using $aur_helper for AUR packages..."
+    if [[ "$OPT_DRY_RUN" -eq 1 ]]; then
+      run echo "$aur_helper -S --noconfirm --needed ${aur[*]}"
+    else
+      run "$aur_helper" -S --noconfirm --needed "${aur[@]}" || {
+        error "Failed to install some AUR packages."
+        return 1
+      }
+    fi
+  fi
+}
+
+# ══════════════════════════════════════════════════════════════════════════════
+# NEOVIM DEPENDENCIES
+# ══════════════════════════════════════════════════════════════════════════════
+
+# Neovim system dependencies (not managed by Mason)
+# Format: "cmd:package:repo:description"
+NEOVIM_DEPS=(
+  "wl-copy:wl-clipboard:extra:Wayland clipboard support"
+  "python3:python:extra:Python interpreter (provider + Jupyter)"
+  "convert:imagemagick:extra:Image rendering in Neovim"
+  "luarocks:luarocks:extra:Lua package manager"
+  "shellcheck:shellcheck:extra:Shell script linter (nvim-lint)"
+  "gcc:gcc:extra:C compiler (Treesitter parser compilation)"
+  "node:nodejs:extra:Node.js runtime (JS-based language servers)"
+  "npm:npm:extra:Node package manager"
+)
+
+cmd_install_neovim_deps() {
+  local official=()
+
+  for entry in "${NEOVIM_DEPS[@]}"; do
+    IFS=':' read -r cmd pkg repo desc <<< "$entry"
+    if ! command -v "$cmd" >/dev/null 2>&1; then
+      official+=("$pkg")
+    fi
+  done
+
+  [[ ${#official[@]} -eq 0 ]] && { success "All Neovim dependencies already installed."; return 0; }
+
+  step "Neovim System Dependencies"
+  info "Installing ${#official[@]} package(s): ${official[*]}"
+  if [[ "$OPT_DRY_RUN" -eq 1 ]]; then
+    run echo "sudo pacman -S --noconfirm --needed ${official[*]}"
+  else
+    run sudo pacman -S --noconfirm --needed "${official[@]}" || {
+      error "Failed to install some Neovim dependencies."
+      return 1
+    }
+  fi
+
+  echo
+  info "LSP servers, formatters, and linters are managed by Mason inside Neovim."
+  info "After starting Neovim, run:"
+  echo -e "    ${C}:MasonInstallAll${RESET}"
+  echo
+}
 
 cmd_check_deps() {
   step "Dependency Check"
@@ -307,26 +423,43 @@ cmd_check_deps() {
 
   # Ecosystem tools — advisory
   echo
-  local eco_missing=()
+  local eco_missing=() missing_cmds=()
   local col_w=20
   for entry in "${ECOSYSTEM_DEPS[@]}"; do
-    local cmd="${entry%%:*}"
-    local desc="${entry#*:}"
+    IFS=':' read -r cmd pkg repo desc <<< "$entry"
     if command -v "$cmd" >/dev/null 2>&1; then
       printf "  ${G}✓${RESET}  %-${col_w}s ${D}%s${RESET}\n" "$cmd" "$desc"
     else
       printf "  ${Y}✗${RESET}  %-${col_w}s ${Y}not found — %s${RESET}\n" "$cmd" "$desc"
-      eco_missing+=("$cmd")
+      eco_missing+=("$entry")
+      missing_cmds+=("$cmd")
     fi
   done
 
   echo
   if [[ ${#eco_missing[@]} -gt 0 ]]; then
-    warn "${#eco_missing[@]} ecosystem package(s) not installed: ${eco_missing[*]}"
+    warn "${#eco_missing[@]} ecosystem package(s) not installed: ${missing_cmds[*]}"
     warn "Configs will install, but the desktop won't work until these are present."
-    warn "See README Prerequisites or run with --skip-deps to bypass this check."
     echo
-    confirm "Continue with missing packages?" || { echo "Aborted."; exit 0; }
+
+    if [[ "$OPT_INSTALL_DEPS" -eq 1 ]]; then
+      cmd_install_deps
+    elif [[ "$OPT_YES" -eq 0 ]]; then
+      confirm "Install missing packages?" && cmd_install_deps || true
+    fi
+
+    local still_missing=()
+    for cmd in "${missing_cmds[@]}"; do
+      command -v "$cmd" >/dev/null 2>&1 || still_missing+=("$cmd")
+    done
+
+    if [[ ${#still_missing[@]} -gt 0 ]]; then
+      echo
+      warn "Still missing: ${still_missing[*]}"
+      [[ "$OPT_YES" -eq 1 ]] || confirm "Continue with missing packages?" || { echo "Aborted."; exit 0; }
+    else
+      success "All dependencies satisfied."
+    fi
   else
     success "All ecosystem dependencies found."
   fi
@@ -572,7 +705,6 @@ patch_path() {
 
   warn "  ~/.local/bin is not in your PATH."
 
-  # Detect shell and pick appropriate rc file + syntax
   local shell_name rc_file path_line
   shell_name="$(basename "${SHELL:-sh}")"
 
@@ -594,7 +726,6 @@ patch_path() {
       path_line='export PATH="$HOME/.local/bin:$PATH"'
       ;;
     *)
-      # POSIX fallback — sourced by most login shells
       rc_file="$HOME/.profile"
       path_line='export PATH="$HOME/.local/bin:$PATH"'
       ;;
@@ -643,7 +774,8 @@ print_banner() {
   printf "  ${D}%-16s${RESET} %s\n"  "Log"     "$LOG_FILE"
   [[ "$OPT_DRY_RUN"    -eq 1 ]] && printf "  ${Y}%-16s${RESET} ${Y}%s${RESET}\n" "Mode"   "DRY RUN — no changes will be made"
   [[ "$OPT_BACKUP"     -eq 0 ]] && printf "  ${R}%-16s${RESET} ${R}%s${RESET}\n" "Backup" "DISABLED"
-  [[ "$OPT_SKIP_DEPS"  -eq 1 ]] && printf "  ${Y}%-16s${RESET} ${Y}%s${RESET}\n" "Deps"   "check skipped"
+  [[ "$OPT_INSTALL_DEPS" -eq 1 ]] && printf "  ${C}%-16s${RESET} ${C}%s${RESET}\n" "Deps"   "auto-install on"
+  [[ "$OPT_SKIP_DEPS"   -eq 1 ]] && printf "  ${Y}%-16s${RESET} ${Y}%s${RESET}\n" "Deps"   "check skipped"
   echo
 }
 
@@ -692,6 +824,14 @@ print_summary() {
 # Main install flow
 print_banner
 cmd_check_deps
+
+# Neovim dependency install
+if [[ "$OPT_INSTALL_DEPS" -eq 1 || "$OPT_INSTALL_NVIM_DEPS" -eq 1 ]]; then
+  cmd_install_neovim_deps
+elif [[ "$OPT_YES" -eq 0 ]]; then
+  echo
+  confirm "Install Neovim system dependencies?" && cmd_install_neovim_deps || true
+fi
 
 # Module selection (interactive)
 [[ "$OPT_SELECT" -eq 1 ]] && cmd_select_modules
