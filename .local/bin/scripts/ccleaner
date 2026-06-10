@@ -10,6 +10,7 @@ command -v bleachbit &>/dev/null || die "bleachbit is not installed."
 
 declare -a targets=(
     "$HOME/.cache/rofi3.druncache"
+    "$HOME/.cache/rofi"
     "$HOME/.cache/nsxiv"
     "$HOME/.cache/nvim"
     "$HOME/.local/state/nvim/swap"
@@ -32,4 +33,8 @@ notify "App cache cleaned: freed ~${freed}MB"
 
 # Run bleachbit only for cleaners that exist
 sys=$(bleachbit -c system.cache zen.cache 2>/dev/null | awk '/Disk space/ {print}' || true)
-[[ -n "$sys" ]] && notify "System cache: $sys" || notify "No system cache freed."
+if [[ -n "$sys" ]]; then
+    notify "System cache: $sys"
+else
+    notify "No system cache freed."
+fi

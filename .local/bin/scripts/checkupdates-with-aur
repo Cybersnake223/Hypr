@@ -1,8 +1,14 @@
 #!/bin/bash
-# Combines checkupdates (official repos) and yay (AUR) output
+set -euo pipefail
 
-# Official repo updates
-checkupdates 2>/dev/null
+notify() { notify-send "checkupdates" "$1"; }
 
-# AUR updates (yay -Qua lists AUR-only updates)
-yay -Qua 2>/dev/null | awk '{print $1, $2, "->", $3}'
+official=$(checkupdates 2>/dev/null) || true
+aur=$(yay -Qua 2>/dev/null | awk '{print $1, $2, "->", $3}') || true
+
+if [[ -z "$official$aur" ]]; then
+    exit 2
+fi
+
+[[ -n "$official" ]] && echo "$official"
+[[ -n "$aur" ]]      && echo "$aur"

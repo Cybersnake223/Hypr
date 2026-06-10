@@ -1,68 +1,47 @@
 #!/bin/bash
+set -euo pipefail
 
-# Check if mako is installed
-if ! command -v mako &> /dev/null; then
-    echo "Mako is not installed. Please install mako-notifier."
-    exit 1
-fi
+for cmd in mako notify-send rofi; do
+    command -v "$cmd" &>/dev/null || { echo "$cmd is not installed" >&2; exit 1; }
+done
 
-# Check if notify-send is installed
-if ! command -v notify-send &> /dev/null; then
-    echo "notify-send is not installed. Please install libnotify-bin."
-    exit 1
-fi
-
-# Check if rofi is installed
-if ! command -v rofi &> /dev/null; then
-    echo "Rofi is not installed. Please install rofi."
-    exit 1
-fi
-
-# Prompt for input in minutes using rofi
 minutes=$(rofi -dmenu -p "Enter timer duration (minutes):" -l 0)
 
-# Check if user provided input
 if [ -z "$minutes" ]; then
     notify-send -u critical "Timer Error" "No duration provided. Timer cancelled." --icon=error
     exit 1
 fi
 
-# Check if input is a positive number
 if ! [[ $minutes =~ ^[0-9]+(\.[0-9]+)?$ ]] || (( $(echo "$minutes <= 0" | bc -l) )); then
     notify-send -u critical "Timer Error" "Invalid duration. Please enter a positive number." --icon=error
     exit 1
 fi
 
-# Convert minutes to seconds
 duration=$(echo "$minutes * 60" | bc | cut -d. -f1)
 
 notification_id=0
 
-# Function to format seconds into mm:ss
 format_time() {
     local seconds=$1
     printf "%02d:%02d" $((seconds / 60)) $((seconds % 60))
 }
 
-# Send initial notification
-notification_id=$(notify-send -p -u normal "Timer Started" "Time remaining: $(format_time $duration)" --icon=clock)
+notification_id=$(notify-send -p -u normal "Timer Started" "Time remaining: $(format_time "$duration")" --icon=clock)
 
 last_update=$duration
 update_interval=5
 
-while [ $duration -gt 0 ]; do
+while [ "$duration" -gt 0 ]; do
     sleep 1
     duration=$((duration - 1))
     if (( (last_update - duration) >= update_interval )) || (( duration <= 10 )); then
-        notify-send -r $notification_id -u normal "Timer Running" "Time remaining: $(format_time $duration)" --icon=clock
+        notify-send -r "$notification_id" -u normal "Timer Running" "Time remaining: $(format_time "$duration")" --icon=clock
         last_update=$duration
     fi
 done
 
-# Send final notification
-notify-send -r $notification_id -u critical "Timer Finished" "Time is up!" --icon=clock
+notify-send -r "$notification_id" -u critical "Timer Finished" "Time is up!" --icon=clock
 
-# Play audio alert
-paplay /usr/share/sounds/freedesktop/stereo/alarm-clock-elapsed.oga &
+paplay /usr/share/sounds/freedesktop/stereo/alarm-clock-elapsed.oga 2>/dev/null || true
 
 exit 0

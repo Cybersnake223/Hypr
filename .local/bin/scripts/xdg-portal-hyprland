@@ -1,4 +1,5 @@
 #!/bin/bash
+set -euo pipefail
 
 pkill -f xdg-desktop-portal-hyprland 2>/dev/null || true
 pkill -f xdg-desktop-portal           2>/dev/null || true

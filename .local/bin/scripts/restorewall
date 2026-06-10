@@ -1,4 +1,8 @@
 #!/bin/bash
+set -euo pipefail
 
 LAST="${LAST_WALL:-$HOME/.cache/last-wallpaper}"
-[ -s "$LAST" ] && exec awww img "$(cat "$LAST")" || exec changewall
+if [ -s "$LAST" ]; then
+    exec awww img "$(cat "$LAST")"
+fi
+exec changewall

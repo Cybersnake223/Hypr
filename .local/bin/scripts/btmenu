@@ -1,54 +1,70 @@
 #!/bin/bash
-############################################################################################################
 set -euo pipefail
 
+# ── Configuration (env-overridable) ──────────────────────────────
 readonly CONNECT_TIMEOUT="${CONNECT_TIMEOUT:-10}"
 readonly SCAN_TIMEOUT="${SCAN_TIMEOUT:-15}"
 readonly NOTIFY_ICON="${NOTIFY_ICON:-bluetooth}"
 
+# Icons — set any to empty for plain ASCII fallback
+: "${ICON_TOGGLE:=󰂯}"
+: "${ICON_CONNECTED:=󰂱}"
+: "${ICON_DISCONNECTED:=󰂲}"
+: "${ICON_CONNECT:=󰂯}"
+: "${ICON_DISCONNECT:=󰂲}"
+: "${ICON_TRUST:=󰓼}"
+: "${ICON_UNTRUST:=󰓻}"
+: "${ICON_REMOVE:=󰚃}"
+: "${ICON_BACK:=󰌍}"
+: "${ICON_BLUETOOTH:=󰂱}"
+: "${ICON_MANAGE:=󰖴}"
+: "${ICON_PAIR:=󰂰}"
+: "${ICON_SCAN:=󰂰}"
+
 readonly URGENCY_NORMAL="normal"
 readonly URGENCY_CRITICAL="critical"
 
-# ---------------------------
-# Dependency Check
-# ---------------------------
+ROFI_CMD=(rofi -dmenu -i)
+
+# ── Dependency Check ──────────────────────────────────────────────
 for cmd in bluetoothctl rofi notify-send rfkill; do
-    command -v "$cmd" &>/dev/null || {
-        echo "Missing: $cmd" >&2
-        exit 1
-    }
+    command -v "$cmd" &>/dev/null || { echo "Missing: $cmd" >&2; exit 1; }
 done
 
+# ── Globals & Cleanup ─────────────────────────────────────────────
 PIDS=()
+TMPDIR=$(mktemp -d "/tmp/btmenu.XXXXXX")
 cleanup() {
-    for pid in "${PIDS[@]:-}"; do
+    rm -rf "$TMPDIR"
+    for pid in "${PIDS[@]}"; do
         kill "$pid" 2>/dev/null || true
     done
 }
 trap cleanup EXIT INT TERM
 
+# ── Helpers ───────────────────────────────────────────────────────
 bt_notify() {
     notify-send -u "${1:-$URGENCY_NORMAL}" -i "$NOTIFY_ICON" "Bluetooth" "$2"
 }
 
 rofi_menu() {
-    rofi -dmenu -i -p "$1" -l "$2"
+    "${ROFI_CMD[@]}" -p "$1" -l "$2"
 }
 
 get_info() {
-    bluetoothctl info "$1" 2>/dev/null
+    bluetoothctl info "$1" 2>"$TMPDIR/btctl_err"
 }
 
 is_connected() {
-    local info
-    info=$(get_info "$1")
-    [[ $info =~ Connected:\ yes ]]
+    local info; info=$(get_info "$1"); [[ $info =~ Connected:\ yes ]]
 }
 
 is_paired() {
-    local info
-    info=$(get_info "$1")
-    [[ $info =~ Paired:\ yes ]]
+    local info; info=$(get_info "$1"); [[ $info =~ Paired:\ yes ]]
+}
+
+is_trusted() {
+    local info; info=$(get_info "$1"); [[ $info =~ Trusted:\ yes ]]
 }
 
 extract_mac() {
@@ -56,23 +72,37 @@ extract_mac() {
 }
 
 extract_name() {
-    echo "${1% (*}"
+    echo "${1%% (*}"
 }
 
-# ---------------------------
-# Bluetooth Init
-# ---------------------------
+# ── Daemon Check ──────────────────────────────────────────────────
+check_daemon() {
+    if command -v systemctl &>/dev/null; then
+        systemctl is-active --quiet bluetooth 2>/dev/null && return
+    fi
+    if pgrep -x bluetoothd &>/dev/null; then
+        return
+    fi
+    bt_notify "$URGENCY_CRITICAL" "bluetoothd is not running"
+    exit 1
+}
+
+# ── Bluetooth Init ────────────────────────────────────────────────
 init_bluetooth() {
     rfkill unblock bluetooth 2>/dev/null || true
 
     if rfkill list bluetooth 2>/dev/null | grep -q "Hard blocked: yes"; then
-        bt_notify "$URGENCY_CRITICAL" "Failed to unblock (hard-blocked?)"
+        bt_notify "$URGENCY_CRITICAL" "Hardware switch blocks Bluetooth"
         exit 1
     fi
 
     bluetoothctl show | grep -q "Powered: yes" && return
 
-    bluetoothctl power on >/dev/null 2>&1
+    if ! bluetoothctl power on >/dev/null 2>"$TMPDIR/btctl_err"; then
+        local err; err=$(<"$TMPDIR/btctl_err")
+        bt_notify "$URGENCY_CRITICAL" "Failed to power on adapter${err:+: $err}"
+        exit 1
+    fi
 
     for _ in {1..5}; do
         bluetoothctl show | grep -q "Powered: yes" && return
@@ -83,66 +113,83 @@ init_bluetooth() {
     exit 1
 }
 
-# ---------------------------
-# Device Formatting
-# ---------------------------
+# ── Power Off ─────────────────────────────────────────────────────
+power_off_bluetooth() {
+    bluetoothctl power off >/dev/null 2>"$TMPDIR/btctl_err" || true
+    bt_notify "$URGENCY_NORMAL" "Bluetooth powered off"
+}
+
+# ── Device Formatting ─────────────────────────────────────────────
 format_devices() {
     while IFS= read -r line; do
         [[ -z $line ]] && continue
-
         local mac="${line%% *}"
         mac=${mac//-/:}
-
         local name="${line#* }"
         [[ -z $name ]] && name="$mac"
-
         printf '%s (%s)\n' "$name" "$mac"
     done
 }
 
-# ---------------------------
-# Scan
-# ---------------------------
+# ── Scan with poll-for-readiness ─────────────────────────────────
 run_scan() {
     bt_notify "$URGENCY_NORMAL" "Scanning for ${SCAN_TIMEOUT}s..."
 
-    bluetoothctl scan on >/dev/null 2>&1
+    bluetoothctl scan on >/dev/null 2>"$TMPDIR/btctl_scan" &
+    local scan_pid=$!
+    PIDS+=("$scan_pid")
+
+    local waited=0
+    while ! bluetoothctl show 2>/dev/null | grep -q "Discovering: yes"; do
+        sleep 0.3
+        ((waited++))
+        ((waited >= 6)) && break
+    done
+
     sleep "$SCAN_TIMEOUT"
+    kill "$scan_pid" 2>/dev/null || true
+    PIDS=("${PIDS[@]/$scan_pid}")
+
     bluetoothctl scan off >/dev/null 2>&1
 
-    {
-        bluetoothctl devices Paired
-        bluetoothctl devices
-    } | awk '!seen[$2]++' | sed 's/^Device //'
+    local scan_result
+    scan_result=$(bluetoothctl devices | sed 's/^Device //' | sort -u)
+
+    if [[ -z $scan_result ]]; then
+        bt_notify "$URGENCY_NORMAL" "No devices found during scan."
+    fi
+
+    echo "$scan_result"
 }
 
+# ── Generic Bluetooth Action ──────────────────────────────────────
 run_bt_action() {
     local action="$1" mac="$2" name="$3"
-
     bt_notify "$URGENCY_NORMAL" "$action $name..."
 
-    if bluetoothctl "$action" "$mac" >/dev/null 2>&1; then
+    if bluetoothctl "$action" "$mac" >/dev/null 2>"$TMPDIR/btctl_err"; then
         bt_notify "$URGENCY_NORMAL" "${action^} succeeded for $name ✓"
         return 0
     else
-        bt_notify "$URGENCY_CRITICAL" "${action^} failed for $name"
+        local err; err=$(<"$TMPDIR/btctl_err")
+        bt_notify "$URGENCY_CRITICAL" "${action^} failed for $name${err:+: $err}"
         return 1
     fi
 }
 
 disconnect_device() { run_bt_action disconnect "$1" "$2"; }
 remove_device()     { run_bt_action remove     "$1" "$2"; }
+trust_device()      { run_bt_action trust      "$1" "$2"; }
+untrust_device()    { run_bt_action untrust    "$1" "$2"; }
 
-# ---------------------------
-# Connect
-# ---------------------------
+# ── Connect ───────────────────────────────────────────────────────
 connect_device() {
     local mac="$1" name="$2"
     local timeout=$CONNECT_TIMEOUT
 
     bt_notify "$URGENCY_NORMAL" "Connecting to $name..."
 
-    bluetoothctl connect "$mac" >/dev/null 2>&1 &
+    bluetoothctl connect "$mac" >/dev/null 2>"$TMPDIR/btctl_connect" &
     local pid=$!
     PIDS+=("$pid")
 
@@ -156,34 +203,32 @@ connect_device() {
     done
 
     kill "$pid" 2>/dev/null || true
-    bt_notify "$URGENCY_CRITICAL" "Failed to connect to $name"
+    local err; err=$(<"$TMPDIR/btctl_connect")
+    bt_notify "$URGENCY_CRITICAL" "Failed to connect to $name${err:+: $err}"
     return 1
 }
 
-# ---------------------------
-# Pair
-# ---------------------------
+# ── Pair ──────────────────────────────────────────────────────────
 pair_device() {
     local mac="$1" name="$2"
 
     bt_notify "$URGENCY_NORMAL" "Pairing with $name..."
 
-    bluetoothctl agent on >/dev/null 2>&1
-    bluetoothctl default-agent >/dev/null 2>&1
-    bluetoothctl trust "$mac" >/dev/null 2>&1
+    bluetoothctl agent on >/dev/null 2>"$TMPDIR/btctl_err"
+    bluetoothctl default-agent >/dev/null 2>"$TMPDIR/btctl_err"
 
-    if bluetoothctl pair "$mac" >/dev/null 2>&1; then
+    if bluetoothctl pair "$mac" >/dev/null 2>"$TMPDIR/btctl_err"; then
+        bluetoothctl trust "$mac" >/dev/null 2>&1
         bt_notify "$URGENCY_NORMAL" "Paired with $name ✓"
         return 0
     else
-        bt_notify "$URGENCY_CRITICAL" "Pairing failed with $name"
+        local err; err=$(<"$TMPDIR/btctl_err")
+        bt_notify "$URGENCY_CRITICAL" "Pairing failed with $name${err:+: $err}"
         return 1
     fi
 }
 
-# ---------------------------
-# Menus
-# ---------------------------
+# ── Menus ─────────────────────────────────────────────────────────
 menu_paired_devices() {
     local devices chosen
 
@@ -203,21 +248,32 @@ menu_paired_devices() {
 
 menu_device_action() {
     local name="$1" mac="$2"
+    local items=() label
 
-    local label="󰂲  Disconnected"
-    is_connected "$mac" && label="󰂱  Connected"
+    if is_connected "$mac"; then
+        items+=("$ICON_DISCONNECT  Disconnect")
+        label="$ICON_CONNECTED  Connected"
+    else
+        items+=("$ICON_CONNECT  Connect")
+        label="$ICON_DISCONNECTED  Disconnected"
+    fi
 
-    printf "󰂯  Connect\n󰂲  Disconnect\n󰚃  Remove Device\n󰌍  Back" \
-        | rofi_menu "$name  ·  $label" 4
+    if is_trusted "$mac"; then
+        items+=("$ICON_UNTRUST  Untrust")
+    else
+        items+=("$ICON_TRUST  Trust")
+    fi
+
+    items+=("$ICON_REMOVE  Remove Device" "$ICON_BACK  Back")
+
+    printf '%s\n' "${items[@]}" | rofi_menu "$name  ·  $label" "${#items[@]}"
 }
 
-# ---------------------------
-# Flow
-# ---------------------------
+# ── Flows ─────────────────────────────────────────────────────────
 flow_toggle() {
     local chosen mac name
 
-    chosen=$(menu_paired_devices "󰂯 Bluetooth") || return
+    chosen=$(menu_paired_devices "$ICON_BLUETOOTH Bluetooth") || return
     mac=$(extract_mac "$chosen")
     name=$(extract_name "$chosen")
 
@@ -231,7 +287,7 @@ flow_toggle() {
 flow_manage() {
     local chosen mac name action
 
-    chosen=$(menu_paired_devices "󰖴 Manage Device") || return
+    chosen=$(menu_paired_devices "$ICON_MANAGE Manage Device") || return
     mac=$(extract_mac "$chosen")
     name=$(extract_name "$chosen")
 
@@ -241,6 +297,8 @@ flow_manage() {
     case "$action" in
         *Disconnect*) disconnect_device "$mac" "$name" ;;
         *Connect*)    connect_device    "$mac" "$name" ;;
+        *Untrust*)    untrust_device    "$mac" "$name" ;;
+        *Trust*)      trust_device      "$mac" "$name" ;;
         *Remove*)     remove_device     "$mac" "$name" ;;
     esac
 }
@@ -256,7 +314,7 @@ flow_scan() {
 
     formatted=$(echo "$all_devices" | format_devices)
 
-    chosen=$(echo "$formatted" | rofi_menu "󰂰 Pair Device" 8)
+    chosen=$(echo "$formatted" | rofi_menu "$ICON_PAIR Pair Device" 8)
     [[ -z $chosen ]] && return
 
     mac=$(extract_mac "$chosen")
@@ -271,24 +329,81 @@ flow_scan() {
     fi
 }
 
-# ---------------------------
-# Main Menu
-# ---------------------------
+flow_status() {
+    local status
+    status=$(bluetoothctl show 2>/dev/null | grep "Powered:" | awk '{print $2}')
+    if [[ $status == "yes" ]]; then
+        bt_notify "$URGENCY_NORMAL" "Bluetooth is ON"
+    else
+        bt_notify "$URGENCY_NORMAL" "Bluetooth is OFF"
+    fi
+}
+
+# ── Main Menu ─────────────────────────────────────────────────────
 main_menu() {
     while true; do
         local choice
 
-        choice=$(printf "󰂯  Toggle Device\n󰂰  Scan & Pair New Device\n󰖴  Manage Device" \
-            | rofi_menu "󰂱 Bluetooth" 3)
+        choice=$(printf "%s  Toggle Device\n%s  Scan & Pair New Device\n%s  Manage Device\n%s  Power Off" \
+            "$ICON_TOGGLE" "$ICON_SCAN" "$ICON_MANAGE" "$ICON_DISCONNECT" \
+            | rofi_menu "$ICON_BLUETOOTH Bluetooth" 4)
 
         case "$choice" in
-            *Toggle*) flow_toggle ;;
-            *Scan*)   flow_scan   ;;
-            *Manage*) flow_manage ;;
-            *)        exit 0      ;;
+            *Toggle*)  flow_toggle ;;
+            *Scan*)    flow_scan   ;;
+            *Manage*)  flow_manage ;;
+            *Power*)   power_off_bluetooth ; break ;;
+            *)         exit 0      ;;
         esac
     done
 }
 
-init_bluetooth
-main_menu
+# ── CLI Entry ─────────────────────────────────────────────────────
+usage() {
+    cat <<EOF
+Usage: btmenu [OPTION]
+
+Bluetooth manager with rofi menu.
+
+Options:
+  -h, --help      Show this help
+  -t, --toggle    Toggle a paired device (connect/disconnect)
+  -s, --scan      Scan and pair new device
+  -m, --manage    Manage paired devices
+  --status        Show Bluetooth power status
+  --off           Power off Bluetooth
+
+Without options, opens the interactive main menu.
+EOF
+    exit 0
+}
+
+main() {
+    local mode="menu"
+
+    while [[ $# -gt 0 ]]; do
+        case "$1" in
+            -h|--help)     usage ;;
+            -t|--toggle)   mode="toggle" ; shift ;;
+            -s|--scan)     mode="scan"   ; shift ;;
+            -m|--manage)   mode="manage" ; shift ;;
+            --status)      mode="status" ; shift ;;
+            --off)         mode="off"    ; shift ;;
+            *) echo "Unknown option: $1" >&2; usage ;;
+        esac
+    done
+
+    check_daemon
+    init_bluetooth
+
+    case "$mode" in
+        menu)   main_menu ;;
+        toggle) flow_toggle ;;
+        scan)   flow_scan ;;
+        manage) flow_manage ;;
+        status) flow_status ;;
+        off)    power_off_bluetooth ;;
+    esac
+}
+
+main "$@"
