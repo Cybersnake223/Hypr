@@ -1,0 +1,3 @@
+#!/bin/bash
+cap=/sys/class/power_supply/BAT0/capacity
+[ -f "$cap" ] && echo "⚡$(cat "$cap")%"

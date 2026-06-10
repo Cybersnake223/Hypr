@@ -8,8 +8,8 @@ hl.config({
     general = {
         gaps_in                    = 2,
         gaps_out                   = 0,
-        layout                     = "scrolling",
-        border_size                = 2,
+        layout                     = "dwindle",
+        border_size                = 4,
         ["col.active_border"]      = colors.tertiary,
         ["col.inactive_border"]    = colors.shadow,
         resize_on_border           = true,

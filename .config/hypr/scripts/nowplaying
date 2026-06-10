@@ -1,0 +1,6 @@
+#!/bin/bash
+track=$(playerctl metadata --format "{{artist}} - {{title}}" 2>/dev/null)
+if [ -z "$track" ]; then
+    track=$(cmus-remote -Q 2>/dev/null | grep "^tag title" | cut -d" " -f3-)
+fi
+[ -n "$track" ] && echo "$track"
