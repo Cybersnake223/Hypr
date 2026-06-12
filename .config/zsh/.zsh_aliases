@@ -9,7 +9,7 @@
 ##  \$$    $$   | $$    | $$    $$| $$     \| $$  | $$ \$$    $$| $$  \$$$| $$  | $$| $$  \$$\| $$     \  ##
 ##   \$$$$$$     \$$     \$$$$$$$  \$$$$$$$$ \$$   \$$  \$$$$$$  \$$   \$$ \$$   \$$ \$$   \$$ \$$$$$$$$  ##
 ##                                                                                                        ##
-## ZSH CUSTOM ALIASES                                                                                     ##  
+## ZSH CUSTOM ALIASES                                                                                     ##
 ## Created by Cybersnake                                                                                  ##
 ############################################################################################################
 
@@ -21,6 +21,9 @@ alias .....="cd ../../../.."
 alias config="cd $HOME/.config"
 alias scripts="cd $HOME/.local/bin/scripts/"
 alias testing="cd $HOME/Templates/Tests"
+
+# Claude
+# alias claude="cd ~/.claude && claude"
 
 # Auto-cpu Conf
 alias cpuconf="sudoedit /etc/auto-cpufreq.conf"
@@ -37,7 +40,7 @@ alias mkdir="mkdir -pv"
 # Figlet
 alias figlet="figlet -w 140"
 
-# Disk Usage 
+# Disk Usage
 alias ncdu="ncdu -2 -e --si --color off"
 
 
@@ -63,7 +66,7 @@ alias sss="systemctl status"
 alias sst="sudo systemctl start"
 alias sstp="sudo systemctl stop"
 
-# Ping 
+# Ping
 alias ping="prettyping"
 
 # DISK USAGE
@@ -82,7 +85,7 @@ alias tojpg="mogrify -quality 0 -format jpeg"
 alias targ="tar -xvzf"
 alias tar="tar -xvf"
 
-# PIP 
+# PIP
 alias pip="uv pip"
 alias pip3="uv pip"
 
@@ -98,19 +101,19 @@ alias fdh="fd -H"
 alias fds="fd -s -H"
 
 # Copy
-alias cp='advcp -rvgf'
-alias sucp='sudo advcp -rvgi'
+alias cp='advcp -iv'
+alias sucp='sudo advcp -rvi'
 
 # Move
-alias mv='advmv -vgf'
-alias sumv='sudo advmv -vg'
+alias mv='advmv -iv'
+alias sumv='sudo advmv -vi'
 
 # GRUB
 alias egrub="sudoedit /etc/default/grub"
 alias ugrub="sudo grub-mkconfig -o /boot/grub/grub.cfg"
 
 # Cat
-# alias cat="bat --theme=catppuccin-mocha"  
+# alias cat="bat --theme=catppuccin-mocha"
 
 # Nvim
 alias nv="nvim"
@@ -119,6 +122,7 @@ alias snv="sudoedit"
 # Ls
 alias l="eza -Glax --icons --sort=Name --no-permissions --no-time"
 alias la="eza -Glax --icons --sort=Name --no-permissions --no-time"
+alias a="eza -Glax --icons --sort=Name --no-permissions --no-time"
 alias ls="eza --icons"
 
 # Git

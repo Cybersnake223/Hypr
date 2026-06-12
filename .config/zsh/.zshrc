@@ -14,8 +14,20 @@
 ## Created by Cybersnake                                                                                  ##
 ############################################################################################################
 
-# ── Starship ──────────────────────────────────────────────────────
-eval "$(starship init zsh)"
+export MOZ_ENABLE_WAYLAND=1
+
+autoload -Uz add-zsh-hook
+
+# ── Prompt (fast, static) ────────────────────────────────────────────
+autoload -Uz vcs_info
+zstyle ':vcs_info:*' enable git
+zstyle ':vcs_info:git:*' formats ' %F{red}(%b)%f'
+zstyle ':vcs_info:git:*' actionformats ' %F{red}(%b|%a)%f'
+precmd_vcs_info() { vcs_info }
+add-zsh-hook precmd precmd_vcs_info
+PROMPT='%B%F{green}%n@%m%f %F{cyan}%~%f${vcs_info_msg_0_}
+%(?.%F{cyan}.%F{red})%B$ %b%f'
+RPROMPT='%(?..%F{red}✗ %?%f )%F{8}%*%f'
 
 # ── Zsh Options ───────────────────────────────────────────────────
 setopt AUTOCD
@@ -29,45 +41,20 @@ setopt HIST_IGNORE_DUPS
 setopt HIST_FIND_NO_DUPS
 setopt HIST_IGNORE_SPACE
 setopt HIST_REDUCE_BLANKS
+setopt EXTENDED_HISTORY
 setopt INC_APPEND_HISTORY_TIME
 
 # ── History ───────────────────────────────────────────────────────
-SAVEHIST=100000
-HISTSIZE=100000
+SAVEHIST=10000
+HISTSIZE=10000
 HISTFILE=$HOME/.config/zsh/.zsh_history
-mkdir -p "${HISTFILE:h}"
-
-# ── Modules ───────────────────────────────────────────────────────
-zmodload -F zsh/stat b:zstat     
-zmodload    zsh/zutil            
-
-# ── Hook Framework ────────────────────────────────────────────────
-autoload -Uz add-zsh-hook
-
-# ── Pacman Rehash (fork-free via zstat) ───────────────────────────
-zshcache_time=0
-
-rehash_precmd() {
-  if [[ -a /var/cache/zsh/pacman ]]; then
-    local paccache_time
-    zstat -A paccache_time +mtime /var/cache/zsh/pacman
-    if (( zshcache_time < paccache_time )); then
-      rehash
-      zshcache_time=$paccache_time
-    fi
-  fi
-}
-add-zsh-hook precmd rehash_precmd
+[[ -d "${HISTFILE:h}" ]] || mkdir -p "${HISTFILE:h}"
 
 # ── Tab Completion (cached, rebuilt once per day) ─────────────────
 autoload -Uz compinit
-mkdir -p "$HOME/.cache/zsh"
+[[ -d "$HOME/.cache/zsh" ]] || mkdir -p "$HOME/.cache/zsh"
 
-if [[ -n "$HOME/.cache/zsh/zcompdump"(#qN.mh+24) ]]; then
-  compinit -u -d "$HOME/.cache/zsh/zcompdump"
-else
-  compinit -u -C -d "$HOME/.cache/zsh/zcompdump"
-fi
+compinit -u -C -d "$HOME/.cache/zsh/zcompdump"
 
 _comp_options+=(globdots)
 
@@ -105,29 +92,26 @@ bindkey '^O'      clear-screen-and-scrollback
 
 # ── Plugins ───────────────────────────────────────────────────────
 
-# 1. history-substring-search 
+# 1. history-substring-search
 if [[ -f "$HOME/.config/zsh/plugins/zsh-history-substring-search.zsh" ]]; then
   source "$HOME/.config/zsh/plugins/zsh-history-substring-search.zsh" 2>/dev/null
   bindkey '^[[A' history-substring-search-up
   bindkey '^[[B' history-substring-search-down
 fi
 
-# 2. zsh-autosuggestions 
+# 2. zsh-autosuggestions
 if [[ -f "$HOME/.config/zsh/plugins/zsh-autosuggestions/zsh-autosuggestions.zsh" ]]; then
   source "$HOME/.config/zsh/plugins/zsh-autosuggestions/zsh-autosuggestions.zsh" 2>/dev/null
   ZSH_AUTOSUGGEST_USE_ASYNC=1
-  ZSH_AUTOSUGGEST_STRATEGY=(history completion)
+  ZSH_AUTOSUGGEST_STRATEGY=history
   ZSH_AUTOSUGGEST_BUFFER_MAX_SIZE=10
 fi
 
-# 3. fast-syntax-highlighting 
+# 3. fast-syntax-highlighting
 _load_fsh() {
   if [[ -f "$HOME/.config/zsh/plugins/fast-syntax-highlighting/F-Sy-H.plugin.zsh" ]]; then
     source "$HOME/.config/zsh/plugins/fast-syntax-highlighting/F-Sy-H.plugin.zsh" 2>/dev/null
-    [[ ! -f "$HOME/.cache/zsh/.fsh_theme_set" ]] && {
-      fast-theme -q catppuccin-mocha
-      touch "$HOME/.cache/zsh/.fsh_theme_set"
-    }
+    fast-theme -q catppuccin-mocha 2>/dev/null
   fi
   add-zsh-hook -d precmd _load_fsh
 }

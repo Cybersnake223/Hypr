@@ -14,12 +14,12 @@
 ############################################################################################################
 
 # Autostart Hyprland on tty1
-# if uwsm check may-start; then
-#        exec uwsm start hyprland.desktop
-# fi
+#if uwsm check may-start; then
+#      exec uwsm start hyprland.desktop
+#fi
 #
 # Gnome Keyring
-if [ -z "$GNOME_KEYRING_CONTROL" ]; then
+if [ -z "$GNOME_KEYRING_CONTROL" ] && [[ "$(tty)" == /dev/tty1 ]]; then
     eval $(gnome-keyring-daemon --start --components=pkcs11,secrets,ssh)
     export SSH_AUTH_SOCK
 fi

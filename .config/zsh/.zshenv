@@ -1,12 +1,5 @@
-# uv (Pyhton)
-export PATH="$HOME/.local/share/../bin:$PATH"
-export PATH="$HOME/.venv/bin:$PATH"
+export PATH="$HOME/.local/bin/scripts:$HOME/.local/bin:$HOME/.local/share/../bin:$HOME/.venv/bin:$HOME/.cargo/bin:$HOME/.npm-global/bin:$HOME/go/bin:$PATH"
 
-# cargo (Rust)
-export PATH="$HOME/.cargo/bin:$PATH"
-
-# pnpm (Npm)
-export PATH="$HOME/.npm-global/bin:$PATH"
 
 # Manpager
 export MANPAGER='nvim +Man!'
