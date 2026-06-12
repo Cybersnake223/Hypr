@@ -27,21 +27,20 @@
 
   "modules-left": [
     "network",
+    "bluetooth",
     "memory",
-    "mpris"
   ],
 
   "modules-center": [
     "hyprland/workspaces",
-    "clock"
+    "clock",
+    "custom/updates",
   ],
 
   "modules-right": [
     "tray",
-    "custom/updates",
     "pulseaudio",
     "pulseaudio#microphone",
-    "bluetooth",
     "backlight",
     "battery",
     "idle_inhibitor"
@@ -93,7 +92,7 @@
   // NETWORK
   // ─────────────────────────────
   "network": {
-    "interval": 5,
+    "interval": 15,
     "format-wifi":        "󰤥 {essid}",
     "format-ethernet":    "󰈀 wired",
     "format-disconnected": "󰤮",
@@ -105,7 +104,7 @@
   // MEMORY
   // ─────────────────────────────
   "memory": {
-    "interval": 5,
+    "interval": 15,
     "format": "󰍛 {used:0.1f}G",
     "tooltip-format": "{used:0.1f}G used / {total:0.1f}G total\n{percentage}% utilized"
   },
@@ -221,7 +220,6 @@
     "interval":    600,
     "return-type": "json",
     "exec":        "$HOME/.config/waybar/bin/updatecheck",
-    "on-click":    "kitty yay"
   },
 
   // ─────────────────────────────

@@ -40,35 +40,7 @@ window#waybar.hidden {
   opacity: 0.1;
 }
 
-/* ─────────────────────────────
-   MODULE ENTRY ANIMATION
-   ───────────────────────────── */
-#workspaces,
-#clock,
-#memory,
-#network,
-#bluetooth,
-#pulseaudio,
-#pulseaudio\#microphone,
-#battery,
-#backlight,
-#custom-updates,
-#idle_inhibitor,
-#mpris,
-#clock {
-  animation: idle-breathe 6s ease-in-out infinite;
-}
 
-@keyframes module-enter {
-  0% { opacity: 0; }
-  100% { opacity: 1; }
-}
-
-@keyframes idle-breathe {
-  0%   { opacity: 1.0; }
-  50%  { opacity: 0.88; }
-  100% { opacity: 1.0; }
-}
 
 /* ─────────────────────────────
    GLASS MODULE BASE
@@ -85,27 +57,27 @@ window#waybar.hidden {
 #custom-updates,
 #idle_inhibitor,
 #mpris {
-  background: rgba(2, 16, 14, 0.50);
+  background: rgba(2, 16, 14, 0.5);
   border-radius: 999px;
   margin: 6px 3px;
   padding: 4px 16px;
 
-  border-top:    1px solid rgba(255, 255, 255, 0.30);
-  border-left:   1px solid rgba(255, 255, 255, 0.14);
-  border-right:  1px solid rgba(255, 255, 255, 0.06);
+  border-top: 1px solid rgba(255, 255, 255, 0.3);
+  border-left: 1px solid rgba(255, 255, 255, 0.14);
+  border-right: 1px solid rgba(255, 255, 255, 0.06);
   border-bottom: 1px solid rgba(0, 0, 0, 0.28);
 
   box-shadow:
-    inset 0  1px 0 rgba(255, 255, 255, 0.10),
-    inset 0 -1px 0 rgba(0,   0,   0,   0.20);
+    inset 0 1px 0 rgba(255, 255, 255, 0.1),
+    inset 0 -1px 0 rgba(0, 0, 0, 0.2);
 
   color: @surface_tint;
   transition:
-    background   0.18s ease,
+    background 0.18s ease,
     border-color 0.18s ease,
-    color        0.18s ease,
-    opacity      0.22s ease,
-    box-shadow   0.22s ease;
+    color 0.18s ease,
+    opacity 0.22s ease,
+    box-shadow 0.22s ease;
 }
 
 /* ─────────────────────────────
@@ -123,7 +95,8 @@ window#waybar.hidden {
 #idle_inhibitor:hover,
 #mpris:hover,
 #clock:hover {
-  background: linear-gradient(120deg,
+  background: linear-gradient(
+    120deg,
     rgba(4, 28, 22, 0.68) 0%,
     rgba(8, 40, 32, 0.78) 40%,
     rgba(4, 28, 22, 0.68) 100%
@@ -131,17 +104,21 @@ window#waybar.hidden {
   background-size: 200% 100%;
   animation: gradient-sweep 2.5s ease infinite;
 
-  border-top:    1px solid rgba(255, 255, 255, 0.44);
-  border-left:   1px solid rgba(255, 255, 255, 0.22);
-  border-right:  1px solid rgba(255, 255, 255, 0.09);
-  border-bottom: 1px solid rgba(0, 0, 0, 0.30);
+  border-top: 1px solid rgba(255, 255, 255, 0.44);
+  border-left: 1px solid rgba(255, 255, 255, 0.22);
+  border-right: 1px solid rgba(255, 255, 255, 0.09);
+  border-bottom: 1px solid rgba(0, 0, 0, 0.3);
 
   color: @on_surface;
 }
 
 @keyframes gradient-sweep {
-  0%   { background-position: 200% 0; }
-  100% { background-position: -200% 0; }
+  0% {
+    background-position: 200% 0;
+  }
+  100% {
+    background-position: -200% 0;
+  }
 }
 
 /* ─────────────────────────────
@@ -162,10 +139,10 @@ window#waybar.hidden {
   border: 1px solid transparent;
   font-size: 10px;
   transition:
-    background   0.12s ease,
+    background 0.12s ease,
     border-color 0.12s ease,
-    color        0.12s ease,
-    box-shadow   0.18s ease;
+    color 0.12s ease,
+    box-shadow 0.18s ease;
 }
 
 #workspaces button label {
@@ -183,14 +160,14 @@ window#waybar.hidden {
 #workspaces button.active {
   background: rgba(0, 200, 160, 0.18);
   border-radius: 999px;
-  border-top:    1px solid rgba(0, 220, 180, 0.50);
-  border-left:   1px solid rgba(0, 200, 160, 0.25);
-  border-right:  1px solid rgba(0, 200, 160, 0.12);
+  border-top: 1px solid rgba(0, 220, 180, 0.5);
+  border-left: 1px solid rgba(0, 200, 160, 0.25);
+  border-right: 1px solid rgba(0, 200, 160, 0.12);
   border-bottom: 1px solid rgba(0, 0, 0, 0.22);
   box-shadow:
     inset 0 1px 0 rgba(0, 255, 200, 0.18),
     0 0 8px rgba(0, 220, 180, 0.25),
-    0 0 16px rgba(0, 200, 160, 0.10);
+    0 0 16px rgba(0, 200, 160, 0.1);
   color: @primary_container;
   animation: active-pulse 2.5s ease-in-out infinite;
 }
@@ -200,19 +177,19 @@ window#waybar.hidden {
     box-shadow:
       inset 0 1px 0 rgba(0, 255, 200, 0.18),
       0 0 8px rgba(0, 220, 180, 0.25),
-      0 0 16px rgba(0, 200, 160, 0.10);
+      0 0 16px rgba(0, 200, 160, 0.1);
   }
   50% {
     box-shadow:
       inset 0 1px 0 rgba(0, 255, 200, 0.28),
-      0 0 12px rgba(0, 220, 180, 0.40),
+      0 0 12px rgba(0, 220, 180, 0.4),
       0 0 24px rgba(0, 200, 160, 0.18);
   }
   100% {
     box-shadow:
       inset 0 1px 0 rgba(0, 255, 200, 0.18),
       0 0 8px rgba(0, 220, 180, 0.25),
-      0 0 16px rgba(0, 200, 160, 0.10);
+      0 0 16px rgba(0, 200, 160, 0.1);
   }
 }
 
@@ -226,7 +203,7 @@ window#waybar.hidden {
   color: @error;
   border: 1px solid rgba(255, 100, 80, 0.38);
   box-shadow:
-    0 0 8px rgba(255, 80, 60, 0.30),
+    0 0 8px rgba(255, 80, 60, 0.3),
     0 0 16px rgba(255, 60, 40, 0.15);
   animation: urgent-pulse 0.8s ease infinite;
 }
@@ -234,23 +211,23 @@ window#waybar.hidden {
 @keyframes urgent-pulse {
   0% {
     box-shadow:
-      0 0 8px rgba(255, 80, 60, 0.30),
+      0 0 8px rgba(255, 80, 60, 0.3),
       0 0 16px rgba(255, 60, 40, 0.15);
   }
   50% {
     box-shadow:
       0 0 14px rgba(255, 80, 60, 0.55),
-      0 0 28px rgba(255, 60, 40, 0.30);
+      0 0 28px rgba(255, 60, 40, 0.3);
   }
   100% {
     box-shadow:
-      0 0 8px rgba(255, 80, 60, 0.30),
+      0 0 8px rgba(255, 80, 60, 0.3),
       0 0 16px rgba(255, 60, 40, 0.15);
   }
 }
 
 #workspaces button.special {
-  color: alpha(@tertiary_container, 0.50);
+  color: alpha(@tertiary_container, 0.5);
   border-color: rgba(130, 180, 255, 0.12);
 }
 
@@ -264,8 +241,8 @@ window#waybar.hidden {
 }
 
 #clock:hover {
-  border-bottom-color: rgba(255, 180, 160, 0.35);
-  text-shadow: 0 0 8px rgba(255, 180, 160, 0.40);
+  border-top-color: rgba(255, 200, 185, 0.5);
+  text-shadow: 0 0 8px rgba(255, 180, 160, 0.4);
 }
 
 /* ─────────────────────────────
@@ -284,17 +261,17 @@ window#waybar.hidden {
   color: @tertiary;
   border-top-color: rgba(200, 160, 80, 0.38);
   box-shadow:
-    inset 0 1px 0 rgba(255, 255, 255, 0.10),
-    inset 0 -1px 0 rgba(0, 0, 0, 0.20),
-    0 0 10px rgba(200, 160, 80, 0.20);
+    inset 0 1px 0 rgba(255, 255, 255, 0.1),
+    inset 0 -1px 0 rgba(0, 0, 0, 0.2),
+    0 0 10px rgba(200, 160, 80, 0.2);
 }
 
 #memory.critical {
   color: @error_container;
   border-top-color: rgba(255, 120, 100, 0.52);
   box-shadow:
-    inset 0 1px 0 rgba(255, 255, 255, 0.10),
-    inset 0 -1px 0 rgba(0, 0, 0, 0.20),
+    inset 0 1px 0 rgba(255, 255, 255, 0.1),
+    inset 0 -1px 0 rgba(0, 0, 0, 0.2),
     0 0 14px rgba(255, 80, 60, 0.35),
     0 0 28px rgba(255, 60, 40, 0.18);
   animation: critical-glow 0.7s ease infinite;
@@ -303,22 +280,22 @@ window#waybar.hidden {
 @keyframes critical-glow {
   0% {
     box-shadow:
-      inset 0 1px 0 rgba(255, 255, 255, 0.10),
-      inset 0 -1px 0 rgba(0, 0, 0, 0.20),
+      inset 0 1px 0 rgba(255, 255, 255, 0.1),
+      inset 0 -1px 0 rgba(0, 0, 0, 0.2),
       0 0 14px rgba(255, 80, 60, 0.35),
       0 0 28px rgba(255, 60, 40, 0.18);
   }
   50% {
     box-shadow:
-      inset 0 1px 0 rgba(255, 255, 255, 0.10),
-      inset 0 -1px 0 rgba(0, 0, 0, 0.20),
+      inset 0 1px 0 rgba(255, 255, 255, 0.1),
+      inset 0 -1px 0 rgba(0, 0, 0, 0.2),
       0 0 20px rgba(255, 80, 60, 0.55),
-      0 0 40px rgba(255, 60, 40, 0.30);
+      0 0 40px rgba(255, 60, 40, 0.3);
   }
   100% {
     box-shadow:
-      inset 0 1px 0 rgba(255, 255, 255, 0.10),
-      inset 0 -1px 0 rgba(0, 0, 0, 0.20),
+      inset 0 1px 0 rgba(255, 255, 255, 0.1),
+      inset 0 -1px 0 rgba(0, 0, 0, 0.2),
       0 0 14px rgba(255, 80, 60, 0.35),
       0 0 28px rgba(255, 60, 40, 0.18);
   }
@@ -327,11 +304,22 @@ window#waybar.hidden {
 /* ─────────────────────────────
    NETWORK
    ───────────────────────────── */
-#network              { color: alpha(@surface_tint, 0.38); }
-#network.wifi         { color: @surface_tint; }
-#network.ethernet     { color: @primary; border-top-color: rgba(0, 200, 170, 0.28); }
-#network.linked       { color: alpha(@surface_tint, 0.58); }
-#network.disconnected { color: alpha(@tertiary_fixed, 0.18); }
+#network {
+  color: alpha(@surface_tint, 0.38);
+}
+#network.wifi {
+  color: @surface_tint;
+}
+#network.ethernet {
+  color: @primary;
+  border-top-color: rgba(0, 200, 170, 0.28);
+}
+#network.linked {
+  color: alpha(@surface_tint, 0.58);
+}
+#network.disconnected {
+  color: alpha(@tertiary_fixed, 0.18);
+}
 
 /* ─────────────────────────────
    AUDIO OUTPUT
@@ -342,7 +330,7 @@ window#waybar.hidden {
 }
 
 #pulseaudio.muted {
-  color: alpha(@tertiary_container, 0.40);
+  color: alpha(@tertiary_container, 0.4);
   border-top-color: rgba(130, 180, 255, 0.12);
 }
 
@@ -355,7 +343,7 @@ window#waybar.hidden {
 }
 
 #pulseaudio\#microphone.muted {
-  color: alpha(@tertiary_fixed, 0.40);
+  color: alpha(@tertiary_fixed, 0.4);
   border-top-color: rgba(180, 240, 210, 0.12);
 }
 
@@ -371,8 +359,8 @@ window#waybar.hidden {
   color: @error_container;
   border-top-color: rgba(255, 180, 160, 0.38);
   box-shadow:
-    inset 0 1px 0 rgba(255, 255, 255, 0.10),
-    inset 0 -1px 0 rgba(0, 0, 0, 0.20),
+    inset 0 1px 0 rgba(255, 255, 255, 0.1),
+    inset 0 -1px 0 rgba(0, 0, 0, 0.2),
     0 0 8px rgba(255, 180, 160, 0.15);
 }
 
@@ -400,17 +388,25 @@ window#waybar.hidden {
 /* ─────────────────────────────
    BATTERY
    ───────────────────────────── */
-#battery               { color: @surface_tint; }
-#battery.good          { color: @primary; }
-#battery.discharging   { color: @surface_tint; }
-#battery.not-charging  { color: @tertiary; }
+#battery {
+  color: @surface_tint;
+}
+#battery.good {
+  color: @primary;
+}
+#battery.discharging {
+  color: @surface_tint;
+}
+#battery.not-charging {
+  color: @tertiary;
+}
 
 #battery.warning {
   color: @tertiary;
   border-top-color: rgba(200, 160, 80, 0.38);
   box-shadow:
-    inset 0 1px 0 rgba(255, 255, 255, 0.10),
-    inset 0 -1px 0 rgba(0, 0, 0, 0.20),
+    inset 0 1px 0 rgba(255, 255, 255, 0.1),
+    inset 0 -1px 0 rgba(0, 0, 0, 0.2),
     0 0 10px rgba(200, 160, 80, 0.18);
 }
 
@@ -419,8 +415,8 @@ window#waybar.hidden {
   color: @primary;
   border-top-color: rgba(0, 200, 170, 0.38);
   box-shadow:
-    inset 0 1px 0 rgba(255, 255, 255, 0.10),
-    inset 0 -1px 0 rgba(0, 0, 0, 0.20),
+    inset 0 1px 0 rgba(255, 255, 255, 0.1),
+    inset 0 -1px 0 rgba(0, 0, 0, 0.2),
     0 0 8px rgba(0, 200, 170, 0.15);
 }
 
@@ -433,10 +429,10 @@ window#waybar.hidden {
   color: @error_container;
   border-top-color: rgba(255, 120, 100, 0.52);
   box-shadow:
-    inset 0 1px 0 rgba(255, 255, 255, 0.10),
-    inset 0 -1px 0 rgba(0, 0, 0, 0.20),
-    0 0 14px rgba(255, 80, 60, 0.40),
-    0 0 28px rgba(255, 60, 40, 0.20);
+    inset 0 1px 0 rgba(255, 255, 255, 0.1),
+    inset 0 -1px 0 rgba(0, 0, 0, 0.2),
+    0 0 14px rgba(255, 80, 60, 0.4),
+    0 0 28px rgba(255, 60, 40, 0.2);
   animation: critical-glow 0.7s ease infinite;
 }
 
@@ -464,8 +460,8 @@ window#waybar.hidden {
   color: @tertiary;
   border-top-color: rgba(200, 160, 80, 0.38);
   box-shadow:
-    inset 0 1px 0 rgba(255, 255, 255, 0.10),
-    inset 0 -1px 0 rgba(0, 0, 0, 0.20),
+    inset 0 1px 0 rgba(255, 255, 255, 0.1),
+    inset 0 -1px 0 rgba(0, 0, 0, 0.2),
     0 0 8px rgba(200, 160, 80, 0.15);
 }
 
@@ -481,8 +477,8 @@ window#waybar.hidden {
   color: @primary;
   border-top-color: rgba(0, 200, 170, 0.38);
   box-shadow:
-    inset 0 1px 0 rgba(255, 255, 255, 0.10),
-    inset 0 -1px 0 rgba(0, 0, 0, 0.20),
+    inset 0 1px 0 rgba(255, 255, 255, 0.1),
+    inset 0 -1px 0 rgba(0, 0, 0, 0.2),
     0 0 8px rgba(0, 200, 170, 0.15);
 }
 
@@ -508,13 +504,13 @@ window#waybar.hidden {
 tooltip {
   background: rgba(2, 16, 14, 0.92);
   border-radius: 16px;
-  border-top:    1px solid rgba(255, 255, 255, 0.28);
-  border-left:   3px solid @surface_tint;
-  border-right:  1px solid rgba(255, 255, 255, 0.07);
-  border-bottom: 1px solid rgba(0, 0, 0, 0.30);
+  border-top: 1px solid rgba(255, 255, 255, 0.28);
+  border-left: 3px solid @surface_tint;
+  border-right: 1px solid rgba(255, 255, 255, 0.07);
+  border-bottom: 1px solid rgba(0, 0, 0, 0.3);
   box-shadow:
-    inset 0  1px 0 rgba(255, 255, 255, 0.10),
-    inset 0 -1px 0 rgba(0,   0,   0,   0.22),
+    inset 0 1px 0 rgba(255, 255, 255, 0.1),
+    inset 0 -1px 0 rgba(0, 0, 0, 0.22),
     0 8px 32px rgba(0, 0, 0, 0.45);
 }
 
@@ -543,7 +539,7 @@ tooltip calendar {
 }
 
 tooltip calendar:selected {
-  background: rgba(255, 180, 160, 0.20);
+  background: rgba(255, 180, 160, 0.2);
   border-radius: 8px;
   color: @error_container;
 }
