@@ -23,7 +23,7 @@ hl.config({
 	},
 
 	debug = {
-		damage_tracking = 2,
+		damage_tracking = 1,
 		disable_logs = true,
 		disable_time = true,
 	},

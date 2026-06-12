@@ -29,7 +29,7 @@ hl.layer_rule({
     name         = "waybar-slide",
     match        = { namespace = "waybar" },
     animation    = "slide",
-    blur         = true,
+    blur         = false,
     xray         = false,
     ignore_alpha = 0.2,
 })

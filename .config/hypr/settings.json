@@ -1,6 +1,6 @@
 {
   "uiScale": 1,
-  "openGuideAtStartup": true,
+  "openGuideAtStartup": false,
   "topbarHelpIcon": true,
   "wallpaperDir": "/home/cybersnake/Pictures/Wallpapers",
   "language": "",
