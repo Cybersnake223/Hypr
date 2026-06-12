@@ -5,11 +5,14 @@ return {
   {
     "EdenEast/nightfox.nvim",
     priority = 1000,
-    lazy = false,
+    event = "UIEnter",
     opts = require "plugins.configs.nightfox",
     config = function(_, opts)
       require("nightfox").setup(opts)
-      require("nightfox").compile()
+      local compile_file = vim.fn.stdpath "cache" .. "/nightfox/nightfox_compiled"
+      if not (vim.uv or vim.loop).fs_stat(compile_file) then
+        require("nightfox").compile()
+      end
       vim.cmd "colorscheme nightfox"
     end,
   },
@@ -32,16 +35,20 @@ return {
     "lewis6991/gitsigns.nvim",
     event = { "BufReadPost", "BufNewFile" },
     opts = {
-      current_line_blame = true,
-      current_line_blame_opts = {
-        virt_text = true,
-        virt_text_pos = "eol",
-        delay = 500,
-        ignore_whitespace = false,
-      },
+      current_line_blame = false,
       signs = { add = { text = "▎" }, change = { text = "▎" }, delete = { text = "󰍵" } },
       signs_staged_enable = true,
       preview_config = { border = "rounded" },
+    },
+    keys = {
+      {
+        "<leader>gb",
+        function()
+          require("gitsigns").blame_line { full = true }
+        end,
+        desc = "Git: Blame line",
+        silent = true,
+      },
     },
   },
 
@@ -79,7 +86,7 @@ return {
     "nvim-treesitter/nvim-treesitter",
     branch = "main",
     build = ":TSUpdate",
-    lazy = false,
+    event = { "BufReadPost", "BufNewFile" },
     config = function()
       require("plugins.configs.treesitter").setup()
     end,
@@ -91,7 +98,9 @@ return {
   {
     "folke/which-key.nvim",
     event = "VeryLazy",
-    opts = { timeout = 300 },
+    opts = {
+      timeout = 300,
+    },
     keys = {
       {
         "<leader>?",
@@ -110,14 +119,10 @@ return {
         { "<leader>d", group = "database" },
         { "<leader>f", group = "find" },
         { "<leader>g", group = "git" },
-        { "<leader>gc", desc = "Neogit: Commit" },
-        { "<leader>gg", desc = "Neogit: Status" },
-        { "<leader>gl", desc = "Neogit: Log" },
-        { "<leader>gP", desc = "Neogit: Pull" },
-        { "<leader>gpu", desc = "Neogit: Push" },
         { "<leader>l", group = "lsp" },
         { "<leader>m", group = "molten" },
         { "<leader>r", group = "run" },
+        { "<leader>S", group = "session" },
         { "<leader>t", group = "terminal" },
         { "<leader>w", group = "workspace" },
       }
@@ -136,10 +141,26 @@ return {
   {
     "L3MON4D3/LuaSnip",
     lazy = true,
+    keys = {
+      {
+        "<C-j>",
+        function()
+          require("luasnip").jump(-1)
+        end,
+        mode = { "i", "s" },
+        desc = "Snippet: Prev",
+      },
+      {
+        "<C-k>",
+        function()
+          require("luasnip").jump(1)
+        end,
+        mode = { "i", "s" },
+        desc = "Snippet: Next",
+      },
+    },
     config = function()
-      vim.schedule(function()
-        require("luasnip.loaders.from_vscode").lazy_load()
-      end)
+      require("luasnip.loaders.from_vscode").lazy_load()
     end,
   },
 
@@ -150,17 +171,7 @@ return {
     event = "InsertEnter",
     dependencies = { "L3MON4D3/LuaSnip", "rafamadriz/friendly-snippets", "saghen/blink.lib" },
     opts = function()
-      local conf = require "plugins.configs.blink_conf"
-      conf.sources = conf.sources or {}
-      conf.sources.per_filetype = {
-        sql = { "snippets", "dadbod", "buffer" },
-        mysql = { "snippets", "dadbod", "buffer" },
-        plsql = { "snippets", "dadbod", "buffer" },
-      }
-      conf.sources.providers = vim.tbl_extend("keep", conf.sources.providers or {}, {
-        dadbod = { name = "Dadbod", module = "vim_dadbod_completion.blink" },
-      })
-      return conf
+      return require "plugins.configs.blink_conf"
     end,
   },
 
@@ -171,17 +182,14 @@ return {
     "williamboman/mason.nvim",
     build = ":MasonUpdate",
     cmd = { "Mason", "MasonInstall" },
-    event = "BufReadPost",
     opts = { ui = { border = "rounded", winblend = 0 } },
   },
 
   {
     "williamboman/mason-lspconfig.nvim",
-    event = "BufReadPost",
     dependencies = { "williamboman/mason.nvim", "neovim/nvim-lspconfig" },
     opts = {
-      ensure_installed = { "lua_ls", "ruff", "sqls", "bashls", "cssls", "html", "marksman", "taplo", "jsonls" },
-      automatic_enable = true,
+      ensure_installed = { "lua_ls", "ruff", "sqls", "bashls", "marksman", "taplo", "jsonls" },
     },
   },
 
@@ -226,10 +234,12 @@ return {
         sql = { "sqlfluff" },
       }
       local lint_group = vim.api.nvim_create_augroup("NvimLint", { clear = true })
-      vim.api.nvim_create_autocmd({ "BufWritePost", "InsertLeave" }, {
+      vim.api.nvim_create_autocmd({ "BufWritePost" }, {
         group = lint_group,
         callback = function()
-          if vim.b._lint_changedtick == vim.b.changedtick then return end
+          if vim.b._lint_changedtick == vim.b.changedtick then
+            return
+          end
           vim.b._lint_changedtick = vim.b.changedtick
           lint.try_lint()
         end,
@@ -364,7 +374,7 @@ return {
   -- ─────────────────────────────────────────────────────────
   {
     "echasnovski/mini.hipatterns",
-    event = "BufReadPre",
+    event = "BufReadPost",
     config = function()
       local hp = require "mini.hipatterns"
       hp.setup { highlighters = { hex_color = hp.gen_highlighter.hex_color() } }
@@ -387,9 +397,9 @@ return {
   {
     "vhyrro/luarocks.nvim",
     priority = 1000,
-    lazy = true,
     config = true,
     opts = {
+      rocks = { "magick" },
       luarocks_build_args = {
         "--with-lua-interpreter=lua5.1",
         "--with-lua-include=/usr/include/luajit-2.1",
@@ -423,15 +433,16 @@ return {
     ft = { "python", "markdown", "quarto" },
     dependencies = { "3rd/image.nvim" },
     init = function()
-      vim.g.molten_auto_open_output = false
+      vim.g.molten_auto_open_output = true
       vim.g.molten_image_provider = "image.nvim"
       vim.g.molten_wrap_output = false
-      vim.g.molten_virt_text_output = true
-      vim.g.molten_virt_lines_off_by_1 = true
-      vim.g.molten_tick_rate = 142
+      vim.g.molten_virt_text_output = false
+      vim.g.molten_output_win_max_height = 80
+      vim.g.molten_output_win_max_width = 999
+      vim.g.molten_tick_rate = 300
       vim.g.molten_output_show_more = true
-      vim.g.molten_limit_output_chars = 100000
-      vim.g.molten_virt_text_max_lines = 5000
+      vim.g.molten_limit_output_chars = 20000
+      vim.g.molten_virt_text_max_lines = 300
       vim.g.molten_output_show_exec_time = true
       vim.g.molten_cover_empty_lines = true
       vim.g.molten_enter_output_behavior = "open_no_enter"
@@ -505,7 +516,6 @@ return {
   -- ─────────────────────────────────────────────────────────
   {
     "MeanderingProgrammer/render-markdown.nvim",
-    ft = { "markdown", "rmd", "quarto" },
     cmd = "RenderMarkdown",
     dependencies = { "nvim-treesitter/nvim-treesitter", "echasnovski/mini.icons" },
     keys = {

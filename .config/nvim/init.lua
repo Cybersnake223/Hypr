@@ -5,7 +5,6 @@ vim.g.loaded_perl_provider = 0
 vim.g.loaded_ruby_provider = 0
 vim.g.loaded_node_provider = 0
 
-
 -- ─────────────────────────────────────────────────────────
 -- 1. Core Options
 -- ─────────────────────────────────────────────────────────
@@ -14,7 +13,7 @@ require "mappings"
 require "commands"
 
 vim.opt.shada = "!,'100,<50,s10,h"
-vim.lsp.log.set_level("OFF")
+vim.lsp.log.set_level "OFF"
 
 -- ─────────────────────────────────────────────────────────
 -- 2. Clipboard detection
@@ -84,7 +83,7 @@ vim.api.nvim_create_autocmd("FileType", {
   end,
 })
 
--- Molten: Auto-import output on initial buffer load (not on every file type change)
+-- Molten: Auto-import output on initial buffer load
 vim.api.nvim_create_autocmd("BufReadPost", {
   group = vim.api.nvim_create_augroup("MoltenSetup", { clear = true }),
   pattern = { "*.md", "*.qmd", "*.ipynb" },
@@ -105,14 +104,15 @@ vim.api.nvim_create_autocmd("FileType", {
   end,
 })
 
--- Big file guard: skip data extensions always; disable treesitter for files over 2 MB
+-- Big file guard: skip treesitter for data extensions (Snacks bigfile handles size-based)
 vim.api.nvim_create_autocmd("BufReadPre", {
   group = vim.api.nvim_create_augroup("BigFileGuard", { clear = true }),
   callback = function(ev)
+    if not ev.file then
+      return
+    end
     local ext = vim.fn.fnamemodify(ev.file, ":e")
     if vim.tbl_contains({ "csv", "tsv", "parquet", "arrow", "feather", "log", "json", "xml" }, ext) then
-      vim.b.treesitter_enabled = false
-    elseif vim.fn.getfsize(ev.file) > 1024 * 1024 * 2 then
       vim.b.treesitter_enabled = false
     end
   end,

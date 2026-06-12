@@ -21,6 +21,10 @@ map("n", "<A-h>", "<C-w>h", { desc = "Window: Left" })
 map("n", "<A-j>", "<C-w>j", { desc = "Window: Down" })
 map("n", "<A-k>", "<C-w>k", { desc = "Window: Up" })
 map("n", "<A-l>", "<C-w>l", { desc = "Window: Right" })
+map("t", "<A-h>", "<C-\\><C-n><C-w>h", { desc = "Terminal: Window Left" })
+map("t", "<A-j>", "<C-\\><C-n><C-w>j", { desc = "Terminal: Window Down" })
+map("t", "<A-k>", "<C-\\><C-n><C-w>k", { desc = "Terminal: Window Up" })
+map("t", "<A-l>", "<C-\\><C-n><C-w>l", { desc = "Terminal: Window Right" })
 
 -- Resize Windows (Ctrl + Arrows)
 map("n", "<C-Up>", "<cmd>resize +2<CR>", { desc = "Resize: Increase Height" })
@@ -61,22 +65,29 @@ end, { desc = "Find: Commands" })
 -----------------------------------------------------------
 -- Initialization
 map("n", "<leader>mi", function()
-  local venv = os.getenv "VIRTUAL_ENV" or os.getenv "CONDA_PREFIX"
-  if venv ~= nil then
-    venv = string.match(venv, "/.+/(.+)")
-    vim.cmd(("MoltenInit %s"):format(venv))
-  else
-    vim.cmd "MoltenInit python3"
-  end
+  vim.cmd "MoltenInit optimized"
 end, { desc = "Molten: Init" })
 
 -- Lifecycle
 map("n", "<leader>mR", "<cmd>MoltenRestart<CR>", { desc = "Molten: Restart kernel" })
 map("n", "<leader>mI", "<cmd>MoltenInterrupt<CR>", { desc = "Molten: Interrupt" })
 map("n", "<leader>mD", "<cmd>MoltenDeactivate<CR>", { desc = "Molten: Deactivate" })
+map("n", "<leader>mo", function()
+  vim.cmd "MoltenShowOutput"
+  vim.schedule(function()
+    for _, win in ipairs(vim.api.nvim_list_wins()) do
+      local buf = vim.api.nvim_win_get_buf(win)
+      if vim.bo[buf].filetype == "molten_output" then
+        pcall(vim.api.nvim_set_current_win, win)
+        break
+      end
+    end
+  end)
+end, { desc = "Molten: Open output & enter" })
+map("n", "<leader>mc", "<cmd>MoltenReevaluateCell<CR>", { desc = "Molten: Re-run cell" })
 
 -- Quarto
-map("n", "<leader>q", ":QuartoActivate<CR>", { desc = "Quarto: Activate" })
+map("n", "<leader>qa", ":QuartoActivate<CR>", { desc = "Quarto: Activate" })
 
 -----------------------------------------------------------
 -- 5. Database (Dbee)
@@ -107,7 +118,7 @@ map("n", "<leader>M", "<cmd>Mason<CR>", { desc = "Mason Menu" })
 -----------------------------------------------------------
 -- 7. Terminal (Snacks)
 -----------------------------------------------------------
-map("n", "<leader>t", function()
+map("n", "<leader>tt", function()
   require("snacks").terminal()
 end, { desc = "Terminal: Toggle" })
 map("n", "<leader>tR", function()
@@ -122,11 +133,10 @@ map("n", "<leader>db", "<cmd>Dbee<CR>", { desc = "DB: Open dbee" })
 -----------------------------------------------------------
 -- 9. Git (Gitsigns)
 -----------------------------------------------------------
-map("n", "<leader>gp", function() require("gitsigns").preview_hunk() end, { desc = "Git: Preview hunk" })
+map("n", "<leader>gh", function() require("gitsigns").preview_hunk() end, { desc = "Git: Preview hunk" })
 map("n", "<leader>gr", function() require("gitsigns").reset_hunk() end, { desc = "Git: Reset hunk" })
 map("n", "<leader>gs", function() require("gitsigns").stage_hunk() end, { desc = "Git: Stage hunk" })
 map("n", "<leader>gu", function() require("gitsigns").undo_stage_hunk() end, { desc = "Git: Undo stage" })
-map("n", "<leader>gb", function() require("gitsigns").blame_line({ full = true }) end, { desc = "Git: Blame line" })
 map("n", "<leader>gd", function() require("gitsigns").diffthis() end, { desc = "Git: Diff this" })
 map({ "n", "v" }, "]h", function() require("gitsigns").next_hunk() end, { desc = "Git: Next hunk" })
 map({ "n", "v" }, "[h", function() require("gitsigns").prev_hunk() end, { desc = "Git: Prev hunk" })
@@ -158,7 +168,27 @@ map("n", "<leader>lh", function()
 end, { desc = "LSP: Toggle inlay hints" })
 
 -----------------------------------------------------------
--- 11. Visual Mode Utility
+-- 11. Quickfix / Location List
+-----------------------------------------------------------
+map("n", "]q", "<cmd>cnext<CR>", { desc = "Quickfix: Next" })
+map("n", "[q", "<cmd>cprev<CR>", { desc = "Quickfix: Prev" })
+map("n", "]l", "<cmd>lnext<CR>", { desc = "Location: Next" })
+map("n", "[l", "<cmd>lprev<CR>", { desc = "Location: Prev" })
+map("n", "<leader>qq", "<cmd>copen<CR>", { desc = "Quickfix: Open" })
+map("n", "<leader>qc", "<cmd>cclose<CR>", { desc = "Quickfix: Close" })
+
+-----------------------------------------------------------
+-- 12. Session (Snacks)
+-----------------------------------------------------------
+map("n", "<leader>Ss", function()
+  require("snacks").session.save()
+end, { desc = "Session: Save" })
+map("n", "<leader>Sl", function()
+  require("snacks").session.load()
+end, { desc = "Session: Load" })
+
+-----------------------------------------------------------
+-- 13. Visual Mode Utility
 -----------------------------------------------------------
 map("v", "J", ":move '>+1<CR>gv=gv", { desc = "Move block down" })
 map("v", "K", ":move '<-2<CR>gv=gv", { desc = "Move block up" })

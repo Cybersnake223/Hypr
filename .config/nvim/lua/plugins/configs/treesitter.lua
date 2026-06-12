@@ -28,16 +28,16 @@ M.ignore_ft = {
 }
 
 function M.setup()
-  local ts = require "nvim-treesitter"
-
   -- Register ft → parser name for known mismatches
-  vim.treesitter.language.register("bash", "sh")    -- vim ft=sh → bash parser
-  vim.treesitter.language.register("bash", "zsh")   -- zsh → bash parser (close enough)
+  vim.treesitter.language.register("bash", "sh")
+  vim.treesitter.language.register("bash", "zsh")
 
-  -- Install parsers; no-op if already present
-  ts.install(M.parsers, { summary = false }):wait(30000)
+  -- Ensure parsers are installed (async, no-op if already present)
+  vim.defer_fn(function()
+    pcall(require("nvim-treesitter.install").ensure_installed, M.parsers)
+  end, 0)
 
-  -- Treesitter-based folding (start with folds open)
+  -- Treesitter-based folding (global default; foldexpr returns 0 fast on non-TS buffers)
   vim.opt.foldmethod = "expr"
   vim.opt.foldexpr   = "v:lua.vim.treesitter.foldexpr()"
   vim.opt.foldenable = false   -- folds available but open by default; zi to toggle

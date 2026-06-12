@@ -26,7 +26,7 @@ opt.splitright = true
 opt.scrolloff = 10
 opt.sidescrolloff = 8
 opt.timeoutlen = 500
-opt.updatetime = 250
+opt.updatetime = 500
 opt.inccommand = "split"
 opt.completeopt = "menuone,noselect,noinsert"
 opt.diffopt:append "linematch:60"

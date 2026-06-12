@@ -1,14 +1,20 @@
 local create_cmd = vim.api.nvim_create_user_command
-local create_au  = vim.api.nvim_create_autocmd
-local augroup    = vim.api.nvim_create_augroup
+local create_au = vim.api.nvim_create_autocmd
+local augroup = vim.api.nvim_create_augroup
 
 -- ── 1. Mason ─────────────────────────────────────────────
 create_cmd("MasonInstallAll", function()
   local tools = {
-    "lua-language-server", "ruff", "sqls",
-    "sqlfluff", "bash-language-server", "cssls", "html", "marksman",
-    "taplo", "jsonls",
-    "prettier", "stylua", "shfmt",
+    "lua-language-server",
+    "ruff",
+    "sqls",
+    "sqlfluff",
+    "bash-language-server",
+    "cssls",
+    "html",
+    "marksman",
+    "prettier",
+    "stylua",
   }
   local registry = require "mason-registry"
   registry.refresh(function()
@@ -45,20 +51,20 @@ create_cmd("LspInfo", function()
   vim.bo[buf].modifiable = false
   vim.bo[buf].filetype = "lspinfo"
 
-  local width  = 60
+  local width = 60
   local height = math.min(#lines, math.floor(vim.o.lines * 0.8))
   vim.api.nvim_open_win(buf, true, {
-    relative  = "editor",
-    width     = width,
-    height    = height,
-    row       = math.floor((vim.o.lines - height) / 2),
-    col       = math.floor((vim.o.columns - width) / 2),
-    style     = "minimal",
-    border    = "rounded",
-    title     = " LSP Info ",
+    relative = "editor",
+    width = width,
+    height = height,
+    row = math.floor((vim.o.lines - height) / 2),
+    col = math.floor((vim.o.columns - width) / 2),
+    style = "minimal",
+    border = "rounded",
+    title = " LSP Info ",
     title_pos = "center",
   })
-  vim.keymap.set("n", "q",   "<cmd>close<cr>", { buffer = buf, silent = true })
+  vim.keymap.set("n", "q", "<cmd>close<cr>", { buffer = buf, silent = true })
   vim.keymap.set("n", "<Esc>", "<cmd>close<cr>", { buffer = buf, silent = true })
 end, { desc = "Show attached LSP clients" })
 
@@ -80,15 +86,22 @@ create_au("VimResized", {
   end,
 })
 
--- ── 5. Remove trailing whitespace on save ────────────────
+-- ── 5. Remove trailing whitespace on save (fast Lua impl) ─
 create_au("BufWritePre", {
   group = augroup("TrimWhitespace", { clear = true }),
   callback = function()
-    if not vim.bo.binary and vim.bo.filetype ~= "diff" then
-      local view = vim.fn.winsaveview()
-      vim.cmd [[%s/\s\+$//e]]
-      vim.fn.winrestview(view)
+    if vim.bo.binary or vim.bo.filetype == "diff" then
+      return
     end
+    local view = vim.fn.winsaveview()
+    local lines = vim.api.nvim_buf_get_lines(0, 0, -1, false)
+    for i, line in ipairs(lines) do
+      local trimmed = line:gsub("%s+$", "")
+      if trimmed ~= line then
+        vim.api.nvim_buf_set_lines(0, i - 1, i, false, { trimmed })
+      end
+    end
+    vim.fn.winrestview(view)
   end,
 })
 
@@ -130,3 +143,12 @@ create_cmd("NewNotebook", function(opts)
   f:close()
   vim.cmd("edit " .. path)
 end, { nargs = 1, complete = "file", desc = "Create a new .ipynb" })
+
+-- ── 8. Make Molten output windows focusable ──────────────
+create_au("BufWinEnter", {
+  pattern = "molten_output",
+  group = augroup("MoltenFocusable", { clear = true }),
+  callback = function()
+    pcall(vim.api.nvim_win_set_config, 0, { focusable = true })
+  end,
+})
