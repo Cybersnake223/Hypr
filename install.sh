@@ -19,12 +19,13 @@ set -Eeuo pipefail
 # ══════════════════════════════════════════════════════════════════════════════
 
 REPO_DIR="$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" && pwd)"
-SCRIPT_VERSION="2.0.0"
+SCRIPT_VERSION="2.0.1"
 TS="$(date +"%Y%m%d-%H%M%S")"
 BACKUP_BASE="${XDG_DATA_HOME:-$HOME/.local/share}/hypr-dotfiles-backups"
 BACKUP_DIR="$BACKUP_BASE/$TS"
 INSTALL_MANIFEST="$BACKUP_DIR/.manifest"
-LOG_FILE="/tmp/hypr-install-${TS}.log"
+LOG_FILE="${TMPDIR:-/tmp}/hypr-install-${TS}.log"
+LOCK_FILE="${TMPDIR:-/tmp}/hypr-install.lock"
 
 # Flags
 OPT_YES=0
@@ -40,7 +41,6 @@ OPT_INSTALL_NVIM_DEPS=0
 # Counters
 COPIED=0
 BACKED_UP=0
-SKIPPED=0
 ERRORS=0
 
 # ══════════════════════════════════════════════════════════════════════════════
@@ -53,8 +53,6 @@ if [[ -t 1 ]]; then
   G='\033[0;32m'   # Green
   C='\033[0;36m'   # Cyan
   M='\033[0;35m'   # Magenta
-  # shellcheck disable=SC2034
-  B='\033[0;34m'   # Blue (reserved)
   W='\033[1;37m'   # White Bold
   D='\033[2m'      # Dim
   BOLD='\033[1m'
@@ -96,6 +94,7 @@ ${BOLD}Options:${RESET}
   ${G}--install-deps${RESET}        Auto-install missing Hyprland ecosystem deps
   ${G}--install-nvim-deps${RESET}   Auto-install Neovim system dependencies
   ${G}--skip-deps${RESET}           Skip the Hyprland ecosystem dependency check
+  ${G}--version${RESET}        Show version and exit
   ${G}-h, --help${RESET}       Show this message
 
 ${BOLD}Examples:${RESET}
@@ -139,6 +138,7 @@ while [[ $# -gt 0 ]]; do
     --install-nvim-deps) OPT_INSTALL_NVIM_DEPS=1; shift ;;
     --skip-deps)        OPT_SKIP_DEPS=1;       shift ;;
     -h|--help)       usage; exit 0 ;;
+    --version)       echo "Vicious Viper Dotfiles Installer v${SCRIPT_VERSION}"; exit 0 ;;
     *) die "Unknown option: '$1'  —  run with --help for usage." ;;
   esac
 done
@@ -711,7 +711,7 @@ patch_path() {
   case "$shell_name" in
     zsh)
       rc_file="$HOME/.zshrc"
-      path_line='export PATH="$HOME/.local/bin:$PATH"'
+      path_line='path=(~/.local/bin $path)'
       ;;
     bash)
       rc_file="$HOME/.bashrc"
@@ -790,7 +790,6 @@ print_summary() {
   echo -e "${BOLD}  ─────────────────────────────────────────────${RESET}"
   printf "  ${G}%-20s${RESET} %d\n" "Files copied"     "$COPIED"
   printf "  ${C}%-20s${RESET} %d\n" "Files backed up"  "$BACKED_UP"
-  printf "  ${D}%-20s${RESET} %d\n" "Files skipped"    "$SKIPPED"
   [[ "$ERRORS" -gt 0 ]] \
     && printf "  ${R}%-20s${RESET} %d\n" "Errors"      "$ERRORS"
   echo
@@ -814,12 +813,38 @@ print_summary() {
 }
 
 # ══════════════════════════════════════════════════════════════════════════════
+# CLEANUP & LOCK
+# ══════════════════════════════════════════════════════════════════════════════
+
+cleanup() {
+  rm -f "$LOCK_FILE" 2>/dev/null || true
+}
+
+acquire_lock() {
+  if [[ -f "$LOCK_FILE" ]]; then
+    local pid
+    pid="$(cat "$LOCK_FILE" 2>/dev/null)"
+    if kill -0 "$pid" 2>/dev/null; then
+      die "Another install is already running (PID $pid)."
+    else
+      warn "Stale lockfile found — removing."
+      rm -f "$LOCK_FILE"
+    fi
+  fi
+  echo "$$" > "$LOCK_FILE"
+  trap cleanup EXIT INT TERM
+}
+
+# ══════════════════════════════════════════════════════════════════════════════
 # ENTRY POINT
 # ══════════════════════════════════════════════════════════════════════════════
 
 # Dispatch simple commands first
 [[ "$OPT_LIST_BACKUPS" -eq 1 ]] && { cmd_list_backups; exit 0; }
 [[ "$OPT_UNINSTALL"    -eq 1 ]] && { cmd_uninstall;    exit $?; }
+
+# Acquire lock to prevent concurrent runs
+acquire_lock
 
 # Main install flow
 print_banner

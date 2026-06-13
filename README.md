@@ -120,6 +120,7 @@
 |    🔒 **Locker**     | [Hyprlock](https://github.com/hyprwm/hyprlock)                                                      |
 |     📁 **Files**     | [Nautilus](https://gitlab.gnome.org/GNOME/nautilus) + [Yazi](https://yazi-rs.github.io/)            |
 |    📝 **Editor**     | [Neovim](https://neovim.io/)                                                                        |
+|   🖼 **Wallpaper**   | [awww](https://github.com/InioX/awww)                                                               |
 |    🎨 **Theming**    | [Matugen](https://github.com/InioX/matugen)                                                         |
 |  📡 **System Info**  | [Fastfetch](https://github.com/fastfetch-cli/fastfetch)                                             |
 |     🎵 **Audio**     | [cmus](https://cmus.github.io/) + [Cava](https://github.com/karlstav/cava) + [mpv](https://mpv.io/) |
@@ -148,7 +149,7 @@
 ### Core packages
 
 ```bash
-yay -S hyprland waybar foot kitty zsh rofi-lbonn-wayland-git mako       \
+yay -S hyprland waybar foot kitty zsh rofi mako       \
         hyprlock matugen-bin btop yazi fastfetch neovim starship          \
         cava cmus mpv nautilus zen-browser-bin aria2 advcpmv
 ```
@@ -230,14 +231,16 @@ Each backup contains a `.manifest` of every installed path — used by `--uninst
 
 ### Manual install (no script)
 
+The installer is just a Bash script — review it, then replicate manually:
+
 ```bash
-cp -r .config/* "$HOME/.config"
-cp -r .local/bin/scripts "$HOME/.local/bin"
-cp -r .icons "$HOME/.icons"
-cp -r .themes "$HOME/.themes"
-cp -r .fonts "$HOME/.fonts"
-cp .Xresources "$HOME/.Xresources"
-cp .gtkrc-2.0 "$HOME/.gtkrc-2.0"
+for dir in .config .icons .themes .fonts; do
+  [ -d "$dir" ] && cp -r "$dir" "$HOME/"
+done
+[ -d .local/bin/scripts ] && cp -r .local/bin/scripts "$HOME/.local/bin/"
+for f in .Xresources .gtkrc-2.0; do
+  [ -f "$f" ] && cp "$f" "$HOME/"
+done
 find "$HOME/.local/bin/scripts" -type f -exec chmod +x {} +
 fc-cache -f
 echo 'export PATH="$HOME/.local/bin:$PATH"' >> ~/.zshrc
@@ -273,6 +276,13 @@ $HOME
 ├── .themes/              ← GTK/Qt themes
 ├── .Xresources
 └── .gtkrc-2.0
+
+System-level configs (not installed — apply manually):
+```
+/etc/
+├── auto-cpufreq.conf    ← CPU governor tuning
+├── pacman.conf          ← Pacman parallel downloads + eye candy
+└── pacman.d/
 ```
 
 <br/>
@@ -283,16 +293,19 @@ $HOME
 
 <div align="center">
 
-|       Flag       | What it does                                     |
-| :--------------: | :----------------------------------------------- |
-|   `--dry-run`    | 🔍 Preview every action — zero changes made      |
-|     `--yes`      | ✅ Skip all confirmation prompts                 |
-|    `--select`    | 🎛 Interactively pick which modules to install   |
-|  `--no-backup`   | ⚠️ Skip backup — also disables `--uninstall`     |
-|  `--uninstall`   | ↩️ Restore originals from the most recent backup |
-| `--list-backups` | 📋 Show all backups with timestamps and sizes    |
-|  `--skip-deps`   | 🚀 Skip the ecosystem dependency check           |
-|  `-h / --help`   | 📖 Show usage                                    |
+|       Flag               | What it does                                     |
+| :----------------------: | :----------------------------------------------- |
+|   `--dry-run`            | 🔍 Preview every action — zero changes made      |
+|     `--yes`              | ✅ Skip all confirmation prompts                 |
+|    `--select`            | 🎛 Interactively pick which modules to install   |
+|  `--no-backup`           | ⚠️ Skip backup — also disables `--uninstall`     |
+|  `--uninstall`           | ↩️ Restore originals from the most recent backup |
+| `--list-backups`         | 📋 Show all backups with timestamps and sizes    |
+|  `--install-deps`        | 📦 Auto-install missing Hyprland ecosystem deps  |
+| `--install-nvim-deps`    | 📦 Auto-install Neovim system dependencies       |
+|  `--skip-deps`           | 🚀 Skip the ecosystem dependency check           |
+|  `--version`             | ℹ️  Show version and exit                        |
+|  `-h / --help`           | 📖 Show usage                                    |
 
 </div>
 
@@ -596,7 +609,8 @@ The installer was never run, or the backup directory was deleted. Restore files 
 <summary>Something went wrong mid-install</summary>
 
 ```bash
-cat /tmp/hypr-install-*.log | tail -50
+# Show the last 50 lines of the most recent install log
+tail -50 /tmp/hypr-install-*.log 2>/dev/null | head -50
 ```
 
 </details>
