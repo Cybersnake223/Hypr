@@ -40,7 +40,7 @@
 
 <br/>
 
-**[🖼 Preview](#-preview) · [✨ Features](#-features) · [🧩 Stack](#-stack) · [📦 Prerequisites](#-prerequisites) · [⚡ Installation](#-installation) · [📂 Layout](#-file-layout) · [🚩 Flags](#-installer-flags) · [⌨️ Keybinds](#️-keybinds) · [🎨 Theming](#-theming) · [🌐 Zen](#-zen-browser) · [🔄 Updating](#-updating) · [🔧 Troubleshoot](#-troubleshooting)**
+**[🖼 Preview](#-preview) · [✨ Features](#-features) · [🧩 Stack](#-stack) · [📦 Prerequisites](#-prerequisites) · [⚡ Installation](#-installation) · [📂 Layout](#-file-layout) · [🚩 Flags](#-installer-flags) · [⌨️ Keybinds](#-keybinds) · [🎨 Theming](#-theming) · [🌐 Zen](#-zen-browser) · [🔄 Updating](#-updating) · [🔧 Troubleshoot](#-troubleshooting)**
 
 </div>
 
