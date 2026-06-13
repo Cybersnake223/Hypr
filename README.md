@@ -344,13 +344,13 @@ Toggle a number, press Enter to confirm.
 
 ### Shell-aware PATH patching
 
-| Shell        | File patched                           |
-| ------------ | -------------------------------------- |
-| `zsh`        | `~/.zshrc`                             |
-| `bash`       | `~/.bashrc`                            |
-| `fish`       | `~/.config/fish/conf.d/hypr_path.fish` |
-| `ksh / mksh` | `~/.kshrc`                             |
-| Other        | `~/.profile`                           |
+| Shell        | Line added                              | File patched                           |
+| ------------ | --------------------------------------- | -------------------------------------- |
+| `zsh`        | `path=(~/.local/bin $path)`             | `~/.zshrc`                             |
+| `bash`       | `export PATH="$HOME/.local/bin:$PATH"`  | `~/.bashrc`                            |
+| `fish`       | `fish_add_path $HOME/.local/bin`        | `~/.config/fish/conf.d/hypr_path.fish` |
+| `ksh / mksh` | `export PATH="$HOME/.local/bin:$PATH"`  | `~/.kshrc`                             |
+| Other        | `export PATH="$HOME/.local/bin:$PATH"`  | `~/.profile`                           |
 
 <br/>
 
@@ -564,8 +564,13 @@ which hyprland waybar rofi mako hyprlock matugen kitty foot zsh
 <summary>Scripts fail with <code>command not found</code></summary>
 
 ```bash
-echo 'export PATH="$HOME/.local/bin:$PATH"' >> ~/.zshrc
+# Zsh
+echo 'path=(~/.local/bin $path)' >> ~/.zshrc
 source ~/.zshrc
+
+# Bash / others
+echo 'export PATH="$HOME/.local/bin:$PATH"' >> ~/.bashrc
+source ~/.bashrc
 ```
 
 </details>
@@ -610,7 +615,7 @@ The installer was never run, or the backup directory was deleted. Restore files 
 
 ```bash
 # Show the last 50 lines of the most recent install log
-tail -50 /tmp/hypr-install-*.log 2>/dev/null | head -50
+tail -50 /tmp/hypr-install-*.log 2>/dev/null
 ```
 
 </details>
