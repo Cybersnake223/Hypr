@@ -277,9 +277,7 @@ $HOME
 ├── .Xresources
 └── .gtkrc-2.0
 
-System-level configs (not installed — apply manually):
-```
-/etc/
+/etc/ (system-level — not installed, apply manually):
 ├── auto-cpufreq.conf    ← CPU governor tuning
 ├── pacman.conf          ← Pacman parallel downloads + eye candy
 └── pacman.d/
