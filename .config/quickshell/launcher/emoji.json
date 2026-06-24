@@ -1,0 +1,892 @@
+[
+  {
+    "char": "😀",
+    "name": "Grinning face",
+    "keywords": "smile happy grin"
+  },
+  {
+    "char": "😃",
+    "name": "Grinning face with big eyes",
+    "keywords": "smile happy joy"
+  },
+  {
+    "char": "😄",
+    "name": "Grinning face with smiling eyes",
+    "keywords": "smile laugh happy"
+  },
+  {
+    "char": "😁",
+    "name": "Beaming face with smiling eyes",
+    "keywords": "happy grin pleased"
+  },
+  {
+    "char": "😆",
+    "name": "Grinning squinting face",
+    "keywords": "laugh haha funny"
+  },
+  {
+    "char": "😅",
+    "name": "Grinning face with sweat",
+    "keywords": "relief awkward laugh"
+  },
+  {
+    "char": "🤣",
+    "name": "Rolling on the floor laughing",
+    "keywords": "rofl laugh lol"
+  },
+  {
+    "char": "😂",
+    "name": "Face with tears of joy",
+    "keywords": "lol laugh cry"
+  },
+  {
+    "char": "🙂",
+    "name": "Slightly smiling face",
+    "keywords": "smile soft"
+  },
+  {
+    "char": "🙃",
+    "name": "Upside-down face",
+    "keywords": "silly ironic"
+  },
+  {
+    "char": "😉",
+    "name": "Winking face",
+    "keywords": "wink playful"
+  },
+  {
+    "char": "😊",
+    "name": "Smiling face with smiling eyes",
+    "keywords": "blush happy warm"
+  },
+  {
+    "char": "😇",
+    "name": "Smiling face with halo",
+    "keywords": "angel innocent"
+  },
+  {
+    "char": "🥰",
+    "name": "Smiling face with hearts",
+    "keywords": "love adore affection"
+  },
+  {
+    "char": "😍",
+    "name": "Smiling face with heart-eyes",
+    "keywords": "love crush adore"
+  },
+  {
+    "char": "🤩",
+    "name": "Star-struck",
+    "keywords": "wow excited star eyes"
+  },
+  {
+    "char": "😘",
+    "name": "Face blowing a kiss",
+    "keywords": "kiss love"
+  },
+  {
+    "char": "😗",
+    "name": "Kissing face",
+    "keywords": "kiss"
+  },
+  {
+    "char": "☺️",
+    "name": "Smiling face",
+    "keywords": "gentle blush content"
+  },
+  {
+    "char": "😚",
+    "name": "Kissing face with closed eyes",
+    "keywords": "kiss affection"
+  },
+  {
+    "char": "😙",
+    "name": "Kissing face with smiling eyes",
+    "keywords": "kiss smile"
+  },
+  {
+    "char": "🥲",
+    "name": "Smiling face with tear",
+    "keywords": "proud emotional"
+  },
+  {
+    "char": "😋",
+    "name": "Face savoring food",
+    "keywords": "yum tasty"
+  },
+  {
+    "char": "😛",
+    "name": "Face with tongue",
+    "keywords": "playful silly"
+  },
+  {
+    "char": "😜",
+    "name": "Winking face with tongue",
+    "keywords": "joke playful"
+  },
+  {
+    "char": "🤪",
+    "name": "Zany face",
+    "keywords": "crazy goofy"
+  },
+  {
+    "char": "😝",
+    "name": "Squinting face with tongue",
+    "keywords": "playful teasing"
+  },
+  {
+    "char": "🫠",
+    "name": "Melting face",
+    "keywords": "awkward hot embarrassed"
+  },
+  {
+    "char": "🤗",
+    "name": "Hugging face",
+    "keywords": "hug affection"
+  },
+  {
+    "char": "🤭",
+    "name": "Face with hand over mouth",
+    "keywords": "oops giggle"
+  },
+  {
+    "char": "🫢",
+    "name": "Face with open eyes and hand over mouth",
+    "keywords": "shock gasp"
+  },
+  {
+    "char": "🫣",
+    "name": "Face with peeking eye",
+    "keywords": "peek shy"
+  },
+  {
+    "char": "🤫",
+    "name": "Shushing face",
+    "keywords": "quiet secret"
+  },
+  {
+    "char": "🤔",
+    "name": "Thinking face",
+    "keywords": "hmm question"
+  },
+  {
+    "char": "🫡",
+    "name": "Saluting face",
+    "keywords": "respect salute"
+  },
+  {
+    "char": "🤐",
+    "name": "Zipper-mouth face",
+    "keywords": "silent quiet"
+  },
+  {
+    "char": "🤨",
+    "name": "Face with raised eyebrow",
+    "keywords": "skeptical suspicious"
+  },
+  {
+    "char": "😐",
+    "name": "Neutral face",
+    "keywords": "meh blank"
+  },
+  {
+    "char": "😑",
+    "name": "Expressionless face",
+    "keywords": "blank deadpan"
+  },
+  {
+    "char": "😶",
+    "name": "Face without mouth",
+    "keywords": "silent speechless"
+  },
+  {
+    "char": "🫥",
+    "name": "Dotted line face",
+    "keywords": "invisible absent"
+  },
+  {
+    "char": "😶‍🌫️",
+    "name": "Face in clouds",
+    "keywords": "dazed foggy"
+  },
+  {
+    "char": "😏",
+    "name": "Smirking face",
+    "keywords": "smug flirt"
+  },
+  {
+    "char": "😒",
+    "name": "Unamused face",
+    "keywords": "annoyed unimpressed"
+  },
+  {
+    "char": "🙄",
+    "name": "Face with rolling eyes",
+    "keywords": "eyeroll annoyed"
+  },
+  {
+    "char": "😬",
+    "name": "Grimacing face",
+    "keywords": "awkward cringe"
+  },
+  {
+    "char": "😮‍💨",
+    "name": "Face exhaling",
+    "keywords": "relief tired sigh"
+  },
+  {
+    "char": "🤥",
+    "name": "Lying face",
+    "keywords": "lie dishonest"
+  },
+  {
+    "char": "😌",
+    "name": "Relieved face",
+    "keywords": "calm peaceful"
+  },
+  {
+    "char": "😔",
+    "name": "Pensive face",
+    "keywords": "sad thoughtful"
+  },
+  {
+    "char": "😪",
+    "name": "Sleepy face",
+    "keywords": "tired sleep"
+  },
+  {
+    "char": "🤤",
+    "name": "Drooling face",
+    "keywords": "hungry desire"
+  },
+  {
+    "char": "😴",
+    "name": "Sleeping face",
+    "keywords": "sleep zzz"
+  },
+  {
+    "char": "🫩",
+    "name": "Face with bags under eyes",
+    "keywords": "tired exhausted"
+  },
+  {
+    "char": "😷",
+    "name": "Face with medical mask",
+    "keywords": "sick ill"
+  },
+  {
+    "char": "🤒",
+    "name": "Face with thermometer",
+    "keywords": "fever sick"
+  },
+  {
+    "char": "🤕",
+    "name": "Face with head-bandage",
+    "keywords": "injured hurt"
+  },
+  {
+    "char": "🤢",
+    "name": "Nauseated face",
+    "keywords": "sick disgust"
+  },
+  {
+    "char": "🤮",
+    "name": "Face vomiting",
+    "keywords": "vomit sick"
+  },
+  {
+    "char": "🤧",
+    "name": "Sneezing face",
+    "keywords": "sneeze sick"
+  },
+  {
+    "char": "🥵",
+    "name": "Hot face",
+    "keywords": "heat sweating"
+  },
+  {
+    "char": "🥶",
+    "name": "Cold face",
+    "keywords": "freezing cold"
+  },
+  {
+    "char": "🥴",
+    "name": "Woozy face",
+    "keywords": "dizzy drunk"
+  },
+  {
+    "char": "😵",
+    "name": "Face with crossed-out eyes",
+    "keywords": "dizzy shocked"
+  },
+  {
+    "char": "😵‍💫",
+    "name": "Face with spiral eyes",
+    "keywords": "hypnotized dizzy"
+  },
+  {
+    "char": "🤯",
+    "name": "Exploding head",
+    "keywords": "mind blown wow"
+  },
+  {
+    "char": "🤠",
+    "name": "Cowboy hat face",
+    "keywords": "cowboy yeehaw"
+  },
+  {
+    "char": "🥳",
+    "name": "Partying face",
+    "keywords": "celebration birthday"
+  },
+  {
+    "char": "😎",
+    "name": "Smiling face with sunglasses",
+    "keywords": "cool chill"
+  },
+  {
+    "char": "🤓",
+    "name": "Nerd face",
+    "keywords": "geek smart"
+  },
+  {
+    "char": "🧐",
+    "name": "Face with monocle",
+    "keywords": "fancy inspect"
+  },
+  {
+    "char": "😕",
+    "name": "Confused face",
+    "keywords": "confused unsure"
+  },
+  {
+    "char": "🫤",
+    "name": "Face with diagonal mouth",
+    "keywords": "awkward unsure"
+  },
+  {
+    "char": "😟",
+    "name": "Worried face",
+    "keywords": "worry anxious"
+  },
+  {
+    "char": "🙁",
+    "name": "Slightly frowning face",
+    "keywords": "sad"
+  },
+  {
+    "char": "☹️",
+    "name": "Frowning face",
+    "keywords": "sad upset"
+  },
+  {
+    "char": "😮",
+    "name": "Face with open mouth",
+    "keywords": "surprised wow"
+  },
+  {
+    "char": "😯",
+    "name": "Hushed face",
+    "keywords": "surprised quiet"
+  },
+  {
+    "char": "😲",
+    "name": "Astonished face",
+    "keywords": "shock surprise"
+  },
+  {
+    "char": "😳",
+    "name": "Flushed face",
+    "keywords": "embarrassed blush"
+  },
+  {
+    "char": "🥹",
+    "name": "Face holding back tears",
+    "keywords": "emotional please"
+  },
+  {
+    "char": "😦",
+    "name": "Frowning face with open mouth",
+    "keywords": "worried shock"
+  },
+  {
+    "char": "😧",
+    "name": "Anguished face",
+    "keywords": "pain anxious"
+  },
+  {
+    "char": "😨",
+    "name": "Fearful face",
+    "keywords": "scared fear"
+  },
+  {
+    "char": "😰",
+    "name": "Anxious face with sweat",
+    "keywords": "nervous stress"
+  },
+  {
+    "char": "😥",
+    "name": "Sad but relieved face",
+    "keywords": "relief sad"
+  },
+  {
+    "char": "😢",
+    "name": "Crying face",
+    "keywords": "sad tear"
+  },
+  {
+    "char": "😭",
+    "name": "Loudly crying face",
+    "keywords": "sob cry"
+  },
+  {
+    "char": "😱",
+    "name": "Face screaming in fear",
+    "keywords": "horror scream"
+  },
+  {
+    "char": "😖",
+    "name": "Confounded face",
+    "keywords": "frustrated upset"
+  },
+  {
+    "char": "😣",
+    "name": "Persevering face",
+    "keywords": "struggling"
+  },
+  {
+    "char": "😞",
+    "name": "Disappointed face",
+    "keywords": "sad disappointed"
+  },
+  {
+    "char": "😓",
+    "name": "Downcast face with sweat",
+    "keywords": "stress tired"
+  },
+  {
+    "char": "😩",
+    "name": "Weary face",
+    "keywords": "tired upset"
+  },
+  {
+    "char": "😫",
+    "name": "Tired face",
+    "keywords": "exhausted"
+  },
+  {
+    "char": "🥱",
+    "name": "Yawning face",
+    "keywords": "sleepy tired"
+  },
+  {
+    "char": "😤",
+    "name": "Face with steam from nose",
+    "keywords": "triumph annoyed"
+  },
+  {
+    "char": "😡",
+    "name": "Pouting face",
+    "keywords": "angry mad"
+  },
+  {
+    "char": "😠",
+    "name": "Angry face",
+    "keywords": "angry upset"
+  },
+  {
+    "char": "🤬",
+    "name": "Face with symbols on mouth",
+    "keywords": "swearing curse"
+  },
+  {
+    "char": "😈",
+    "name": "Smiling face with horns",
+    "keywords": "devil mischievous"
+  },
+  {
+    "char": "👿",
+    "name": "Angry face with horns",
+    "keywords": "devil angry"
+  },
+  {
+    "char": "💀",
+    "name": "Skull",
+    "keywords": "dead spooky"
+  },
+  {
+    "char": "☠️",
+    "name": "Skull and crossbones",
+    "keywords": "danger pirate"
+  },
+  {
+    "char": "💩",
+    "name": "Pile of poo",
+    "keywords": "poop funny"
+  },
+  {
+    "char": "🤡",
+    "name": "Clown face",
+    "keywords": "clown circus"
+  },
+  {
+    "char": "👻",
+    "name": "Ghost",
+    "keywords": "spooky halloween"
+  },
+  {
+    "char": "👽",
+    "name": "Alien",
+    "keywords": "space extraterrestrial"
+  },
+  {
+    "char": "👾",
+    "name": "Alien monster",
+    "keywords": "game retro"
+  },
+  {
+    "char": "🤖",
+    "name": "Robot",
+    "keywords": "bot machine"
+  },
+  {
+    "char": "🙈",
+    "name": "See-no-evil monkey",
+    "keywords": "shy"
+  },
+  {
+    "char": "🙉",
+    "name": "Hear-no-evil monkey",
+    "keywords": "ignore"
+  },
+  {
+    "char": "🙊",
+    "name": "Speak-no-evil monkey",
+    "keywords": "quiet"
+  },
+  {
+    "char": "❤️",
+    "name": "Red heart",
+    "keywords": "love heart"
+  },
+  {
+    "char": "🩷",
+    "name": "Pink heart",
+    "keywords": "love affection"
+  },
+  {
+    "char": "🧡",
+    "name": "Orange heart",
+    "keywords": "heart"
+  },
+  {
+    "char": "💛",
+    "name": "Yellow heart",
+    "keywords": "heart"
+  },
+  {
+    "char": "💚",
+    "name": "Green heart",
+    "keywords": "heart"
+  },
+  {
+    "char": "💙",
+    "name": "Blue heart",
+    "keywords": "heart"
+  },
+  {
+    "char": "💜",
+    "name": "Purple heart",
+    "keywords": "heart"
+  },
+  {
+    "char": "🖤",
+    "name": "Black heart",
+    "keywords": "heart"
+  },
+  {
+    "char": "🤍",
+    "name": "White heart",
+    "keywords": "heart"
+  },
+  {
+    "char": "🤎",
+    "name": "Brown heart",
+    "keywords": "heart"
+  },
+  {
+    "char": "💔",
+    "name": "Broken heart",
+    "keywords": "sad heartbreak"
+  },
+  {
+    "char": "❣️",
+    "name": "Heart exclamation",
+    "keywords": "love"
+  },
+  {
+    "char": "💕",
+    "name": "Two hearts",
+    "keywords": "love affection"
+  },
+  {
+    "char": "💞",
+    "name": "Revolving hearts",
+    "keywords": "love"
+  },
+  {
+    "char": "💓",
+    "name": "Beating heart",
+    "keywords": "heart pulse"
+  },
+  {
+    "char": "💗",
+    "name": "Growing heart",
+    "keywords": "love"
+  },
+  {
+    "char": "💖",
+    "name": "Sparkling heart",
+    "keywords": "love sparkle"
+  },
+  {
+    "char": "💘",
+    "name": "Heart with arrow",
+    "keywords": "cupid love"
+  },
+  {
+    "char": "💝",
+    "name": "Heart with ribbon",
+    "keywords": "gift love"
+  },
+  {
+    "char": "✨",
+    "name": "Sparkles",
+    "keywords": "sparkle shiny"
+  },
+  {
+    "char": "🔥",
+    "name": "Fire",
+    "keywords": "lit hot"
+  },
+  {
+    "char": "💯",
+    "name": "Hundred points",
+    "keywords": "100 perfect"
+  },
+  {
+    "char": "✅",
+    "name": "Check mark button",
+    "keywords": "check done yes"
+  },
+  {
+    "char": "❌",
+    "name": "Cross mark",
+    "keywords": "x no wrong"
+  },
+  {
+    "char": "⚠️",
+    "name": "Warning",
+    "keywords": "alert caution"
+  },
+  {
+    "char": "🚀",
+    "name": "Rocket",
+    "keywords": "launch space"
+  },
+  {
+    "char": "🎉",
+    "name": "Party popper",
+    "keywords": "celebration party"
+  },
+  {
+    "char": "👍",
+    "name": "Thumbs up",
+    "keywords": "yes approve like"
+  },
+  {
+    "char": "👎",
+    "name": "Thumbs down",
+    "keywords": "no dislike"
+  },
+  {
+    "char": "👏",
+    "name": "Clapping hands",
+    "keywords": "applause clap"
+  },
+  {
+    "char": "🙏",
+    "name": "Folded hands",
+    "keywords": "thanks pray please"
+  },
+  {
+    "char": "👀",
+    "name": "Eyes",
+    "keywords": "look watching"
+  },
+  {
+    "char": "🤝",
+    "name": "Handshake",
+    "keywords": "deal agreement"
+  },
+  {
+    "char": "💪",
+    "name": "Flexed biceps",
+    "keywords": "strong gym"
+  },
+  {
+    "char": "🎵",
+    "name": "Musical note",
+    "keywords": "music song"
+  },
+  {
+    "char": "📌",
+    "name": "Pushpin",
+    "keywords": "pin mark"
+  },
+  {
+    "char": "📎",
+    "name": "Paperclip",
+    "keywords": "attach clip"
+  },
+  {
+    "char": "💡",
+    "name": "Light bulb",
+    "keywords": "idea"
+  },
+  {
+    "char": "📣",
+    "name": "Megaphone",
+    "keywords": "announce"
+  },
+  {
+    "char": "⭐",
+    "name": "Star",
+    "keywords": "favorite"
+  },
+  {
+    "char": "🌟",
+    "name": "Glowing star",
+    "keywords": "special star"
+  },
+  {
+    "char": "☀️",
+    "name": "Sun",
+    "keywords": "weather sunny"
+  },
+  {
+    "char": "🌙",
+    "name": "Crescent moon",
+    "keywords": "night"
+  },
+  {
+    "char": "☁️",
+    "name": "Cloud",
+    "keywords": "weather"
+  },
+  {
+    "char": "🌧️",
+    "name": "Cloud with rain",
+    "keywords": "rain weather"
+  },
+  {
+    "char": "⚡",
+    "name": "High voltage",
+    "keywords": "lightning electric"
+  },
+  {
+    "char": "🍀",
+    "name": "Four leaf clover",
+    "keywords": "luck"
+  },
+  {
+    "char": "🌸",
+    "name": "Cherry blossom",
+    "keywords": "flower spring"
+  },
+  {
+    "char": "🌈",
+    "name": "Rainbow",
+    "keywords": "pride colorful"
+  },
+  {
+    "char": "🍕",
+    "name": "Pizza",
+    "keywords": "food"
+  },
+  {
+    "char": "🍔",
+    "name": "Hamburger",
+    "keywords": "burger food"
+  },
+  {
+    "char": "☕",
+    "name": "Hot beverage",
+    "keywords": "coffee tea"
+  },
+  {
+    "char": "🍺",
+    "name": "Beer mug",
+    "keywords": "beer drink"
+  },
+  {
+    "char": "🎮",
+    "name": "Video game",
+    "keywords": "gaming controller"
+  },
+  {
+    "char": "🎧",
+    "name": "Headphone",
+    "keywords": "music audio"
+  },
+  {
+    "char": "💻",
+    "name": "Laptop",
+    "keywords": "computer work"
+  },
+  {
+    "char": "📱",
+    "name": "Mobile phone",
+    "keywords": "smartphone"
+  },
+  {
+    "char": "📝",
+    "name": "Memo",
+    "keywords": "write note"
+  },
+  {
+    "char": "🔒",
+    "name": "Locked",
+    "keywords": "lock secure"
+  },
+  {
+    "char": "🔓",
+    "name": "Unlocked",
+    "keywords": "open lock"
+  },
+  {
+    "char": "🔑",
+    "name": "Key",
+    "keywords": "password access"
+  },
+  {
+    "char": "🧠",
+    "name": "Brain",
+    "keywords": "smart think"
+  },
+  {
+    "char": "🫶",
+    "name": "Heart hands",
+    "keywords": "love support"
+  },
+  {
+    "char": "🫰",
+    "name": "Hand with index finger and thumb crossed",
+    "keywords": "money love finger heart"
+  },
+  {
+    "char": "🫂",
+    "name": "People hugging",
+    "keywords": "hug support"
+  }
+]
