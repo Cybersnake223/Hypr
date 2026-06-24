@@ -6,12 +6,12 @@ local term = "kitty"
 local editor = "nvim"
 local browser = "zen-browser"
 local incogbrowser = "zen-browser --private-window"
-local launcher = "rofi -show drun"
+local launcher = "quickshell -p ~/.config/quickshell/launcher ipc call launcher toggle"
 local sysmon = "kitty -e btop"
 local music = "kitty -e cmus"
 
 local yt = "https://youtube.com"
-local gemini = "https://perplexity.ai"
+local perplexity = "https://perplexity.ai"
 local chatgpt = "https://chat.openai.com"
 local reddit = "https://reddit.com"
 local ghprofile = "https://github.com/Cybersnake223?tab=repositories"
@@ -25,8 +25,8 @@ hl.bind("F4", hl.dsp.exec_cmd("wpctl set-mute @DEFAULT_SOURCE@ toggle"))
 hl.bind("F11", hl.dsp.exec_cmd("brightnessctl -q s 10%-"))
 hl.bind("F12", hl.dsp.exec_cmd("brightnessctl -q s +10%"))
 hl.bind("F7", hl.dsp.exec_cmd("rfkill-toggle wlan"))
-hl.bind("F9", hl.dsp.exec_cmd("hyprlock"))
-hl.bind("Print", hl.dsp.exec_cmd("screenshot"))
+hl.bind("F9", hl.dsp.exec_cmd("quickshell -p ~/.config/quickshell/lockscreen ipc call lockscreen toggle"))
+hl.bind("Print", hl.dsp.exec_cmd("quickshell -p ~/.config/quickshell/launcher ipc call screenshot toggle"))
 
 -- Terminal & Core Apps
 hl.bind("ALT + Return", hl.dsp.exec_cmd(term))
@@ -37,26 +37,26 @@ hl.bind("ALT + N", hl.dsp.exec_cmd(term .. " -e " .. editor))
 hl.bind("ALT + H", hl.dsp.exec_cmd(sysmon))
 hl.bind("ALT + S", hl.dsp.exec_cmd("localsend"))
 hl.bind("ALT + D", hl.dsp.exec_cmd(launcher))
-hl.bind("ALT + E", hl.dsp.exec_cmd("rofiemoji"))
-hl.bind("ALT + X", hl.dsp.exec_cmd("powermenu"))
-hl.bind("ALT + B", hl.dsp.exec_cmd("btmenu"))
+hl.bind("ALT + E", hl.dsp.exec_cmd("quickshell -p ~/.config/quickshell/launcher ipc call emoji toggle"))
+hl.bind("ALT + X", hl.dsp.exec_cmd("quickshell -p ~/.config/quickshell/launcher ipc call powermenu toggle"))
+hl.bind("ALT + B", hl.dsp.exec_cmd("quickshell -p ~/.config/quickshell/launcher ipc call bluetooth toggle"))
 hl.bind("ALT + F", hl.dsp.window.fullscreen({ mode = "fullscreen", action = "toggle" }))
 hl.bind("ALT + T", hl.dsp.exec_cmd(term .. " -e aerc"))
 hl.bind("ALT + K", hl.dsp.exec_cmd("wkill"))
 hl.bind("ALT + W", hl.dsp.exec_cmd("changewall"))
 hl.bind("ALT + L", hl.dsp.exec_cmd(term .. " --title airpods-tui -e airpods-tui"))
 hl.bind("ALT + Y", hl.dsp.exec_cmd("ytdla"))
-hl.bind("ALT + C", hl.dsp.exec_cmd("makoctl dismiss -a"))
-hl.bind("ALT + V", hl.dsp.exec_cmd("cliphist list | rofi -dmenu -display-columns 2 | cliphist decode | wl-copy"))
+hl.bind("ALT + C", hl.dsp.exec_cmd("quickshell -p ~/.config/quickshell/launcher ipc call notifications dismissAll"))
+hl.bind("ALT + V", hl.dsp.exec_cmd("quickshell -p ~/.config/quickshell/launcher ipc call clipboard toggle"))
 
 hl.bind("ALT + SHIFT + V", hl.dsp.exec_cmd("watchvid"))
 hl.bind("ALT + SHIFT + S", hl.dsp.exec_cmd("qs -p ~/.config/quickshell/hyprlens/UniversalSnip.qml -n"))
-hl.bind("ALT + SHIFT + K", hl.dsp.exec_cmd("ccleaner"))
+hl.bind("ALT + SHIFT + K", hl.dsp.exec_cmd("ccleaner -y"))
 hl.bind("ALT + SHIFT + T", hl.dsp.exec_cmd("nautilus"))
 hl.bind("ALT + SHIFT + D", hl.dsp.exec_cmd("aria2cd"))
-hl.bind("ALT + SHIFT + C", hl.dsp.exec_cmd("scriptedit"))
-hl.bind("ALT + SHIFT + E", hl.dsp.exec_cmd("editconf"))
-hl.bind("ALT + SHIFT + N", hl.dsp.exec_cmd("wifimenu"))
+hl.bind("ALT + SHIFT + C", hl.dsp.exec_cmd("quickshell -p ~/.config/quickshell/launcher ipc call scriptedit toggle"))
+hl.bind("ALT + SHIFT + E", hl.dsp.exec_cmd("quickshell -p ~/.config/quickshell/launcher ipc call editconf toggle"))
+hl.bind("ALT + SHIFT + N", hl.dsp.exec_cmd("quickshell -p ~/.config/quickshell/launcher ipc call wifi toggle"))
 hl.bind("ALT + SHIFT + P", hl.dsp.exec_cmd(term .. " --title wiremix -e wiremix"))
 
 -- Web Apps
@@ -64,7 +64,7 @@ hl.bind("ALT + SHIFT + B", hl.dsp.exec_cmd(browser))
 hl.bind("ALT + SHIFT + I", hl.dsp.exec_cmd(incogbrowser))
 hl.bind("ALT + G", hl.dsp.exec_cmd(browser .. " " .. ghprofile))
 hl.bind("ALT + SHIFT + Y", hl.dsp.exec_cmd(browser .. " " .. yt))
-hl.bind("ALT + SHIFT + G", hl.dsp.exec_cmd(browser .. " " .. gemini))
+hl.bind("ALT + SHIFT + G", hl.dsp.exec_cmd(browser .. " " .. perplexity))
 hl.bind("ALT + SHIFT + W", hl.dsp.exec_cmd(browser .. " " .. wallhaven))
 hl.bind("ALT + SHIFT + O", hl.dsp.exec_cmd(browser .. " " .. chatgpt))
 hl.bind("ALT + SHIFT + R", hl.dsp.exec_cmd(browser .. " " .. reddit))
