@@ -33,57 +33,39 @@ map("n", "<C-Left>", "<cmd>vertical resize -2<CR>", { desc = "Resize: Decrease W
 map("n", "<C-Right>", "<cmd>vertical resize +2<CR>", { desc = "Resize: Increase Width" })
 
 -----------------------------------------------------------
--- 3. Search & File Management (Snacks)
------------------------------------------------------------
-map("n", "<leader>ff", function()
-  require("snacks").picker.files()
-end, { desc = "Find: Files" })
-map("n", "<leader>fg", function()
-  require("snacks").picker.grep()
-end, { desc = "Find: Live Grep" })
-map("n", "<leader>fb", function()
-  require("snacks").picker.buffers()
-end, { desc = "Find: Buffers" })
-map("n", "<leader>fr", function()
-  require("snacks").picker.recent()
-end, { desc = "Find: Recent" })
-map("n", "<leader>e", function()
-  require("snacks").explorer()
-end, { desc = "Explorer" })
-map("n", "<leader>fh", function()
-  require("snacks").picker.help()
-end, { desc = "Find: Help" })
-map("n", "<leader>fk", function()
-  require("snacks").picker.keymaps()
-end, { desc = "Find: Keymaps" })
-map("n", "<leader>fc", function()
-  require("snacks").picker.commands()
-end, { desc = "Find: Commands" })
-
------------------------------------------------------------
--- 4. Data Science (Molten & Quarto)
+-- 3. Data Science (Molten & Quarto)
 -----------------------------------------------------------
 -- Initialization
 map("n", "<leader>mi", function()
-  vim.cmd "MoltenInit optimized"
-end, { desc = "Molten: Init" })
+  vim.cmd "MoltenInit python3"
+end, { desc = "Molten: Init python3" })
+map("n", "<leader>ms", function()
+  vim.cmd "MoltenInit shared python3"
+end, { desc = "Molten: Share python3 kernel" })
 
 -- Lifecycle
 map("n", "<leader>mR", "<cmd>MoltenRestart<CR>", { desc = "Molten: Restart kernel" })
 map("n", "<leader>mI", "<cmd>MoltenInterrupt<CR>", { desc = "Molten: Interrupt" })
 map("n", "<leader>mD", "<cmd>MoltenDeactivate<CR>", { desc = "Molten: Deactivate" })
-map("n", "<leader>mo", function()
+map("n", "<leader>mO", function()
   vim.cmd "MoltenShowOutput"
-  vim.schedule(function()
-    for _, win in ipairs(vim.api.nvim_list_wins()) do
-      local buf = vim.api.nvim_win_get_buf(win)
-      if vim.bo[buf].filetype == "molten_output" then
-        pcall(vim.api.nvim_set_current_win, win)
-        break
-      end
+  for _, win in ipairs(vim.api.nvim_list_wins()) do
+    local buf = vim.api.nvim_win_get_buf(win)
+    if vim.bo[buf].filetype == "molten_output" then
+      vim.api.nvim_set_current_win(win)
+      break
     end
-  end)
+  end
 end, { desc = "Molten: Open output & enter" })
+map("n", "<leader>me", function()
+  for _, win in ipairs(vim.api.nvim_list_wins()) do
+    local buf = vim.api.nvim_win_get_buf(win)
+    if vim.bo[buf].filetype == "molten_output" then
+      vim.api.nvim_set_current_win(win)
+      break
+    end
+  end
+end, { desc = "Molten: Enter output window" })
 map("n", "<leader>mc", "<cmd>MoltenReevaluateCell<CR>", { desc = "Molten: Re-run cell" })
 
 -- Quarto
@@ -94,6 +76,7 @@ map("n", "<leader>qa", ":QuartoActivate<CR>", { desc = "Quarto: Activate" })
 -----------------------------------------------------------
 vim.api.nvim_create_autocmd("FileType", {
   pattern = "dbee_result",
+  group = vim.api.nvim_create_augroup("DbeeResultMappings", { clear = true }),
   callback = function()
     map("n", "<leader>dc", function()
       local timestamp = os.date "%Y%m%d_%H%M%S"
@@ -133,6 +116,9 @@ map("n", "<leader>db", "<cmd>Dbee<CR>", { desc = "DB: Open dbee" })
 -----------------------------------------------------------
 -- 9. Git (Gitsigns)
 -----------------------------------------------------------
+map("n", "<leader>gb", function()
+  require("gitsigns").blame_line { full = true }
+end, { desc = "Git: Blame line", silent = true })
 map("n", "<leader>gh", function() require("gitsigns").preview_hunk() end, { desc = "Git: Preview hunk" })
 map("n", "<leader>gr", function() require("gitsigns").reset_hunk() end, { desc = "Git: Reset hunk" })
 map("n", "<leader>gs", function() require("gitsigns").stage_hunk() end, { desc = "Git: Stage hunk" })
@@ -144,7 +130,7 @@ map({ "n", "v" }, "[h", function() require("gitsigns").prev_hunk() end, { desc =
 -----------------------------------------------------------
 -- 10. LSP — global
 -----------------------------------------------------------
-map("n", "<leader>li", "<cmd>LspInfo<CR>", { desc = "LSP: Info" })
+map("n", "<leader>li", "<cmd>LspClients<CR>", { desc = "LSP: Clients" })
 map("n", "<leader>lr", vim.lsp.buf.rename, { desc = "LSP: Rename" })
 map("n", "<leader>la", vim.lsp.buf.code_action, { desc = "LSP: Code action" })
 map("x", "<leader>la", vim.lsp.buf.code_action, { desc = "LSP: Code action (range)" })

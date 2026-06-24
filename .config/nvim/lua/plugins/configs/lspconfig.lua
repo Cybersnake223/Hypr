@@ -1,8 +1,4 @@
-vim.lsp.config("*", {
-  capabilities = vim.lsp.protocol.make_client_capabilities(),
-})
-
--- ── 2. LspAttach: keymaps + per-client overrides ─────────
+-- ── 1. LspAttach: keymaps + per-client overrides ─────────
 vim.api.nvim_create_autocmd("LspAttach", {
   group = vim.api.nvim_create_augroup("UserLspConfig", { clear = true }),
   callback = function(ev)
@@ -11,7 +7,6 @@ vim.api.nvim_create_autocmd("LspAttach", {
       return
     end
 
-    -- sqls: disable formatting (let conform/sqlfluff handle it)
     local map = function(mode, lhs, rhs, desc)
       vim.keymap.set(mode, lhs, rhs, { buffer = ev.buf, desc = desc, silent = true })
     end
@@ -23,16 +18,17 @@ vim.api.nvim_create_autocmd("LspAttach", {
     map("n", "gt", vim.lsp.buf.type_definition, "Go to Type Definition")
     map("n", "K", vim.lsp.buf.hover, "Hover Documentation")
     map("n", "<C-k>", vim.lsp.buf.signature_help, "Signature Help")
-    map("i", "<C-k>", vim.lsp.buf.signature_help, "Signature Help")
     map("n", "<leader>wa", vim.lsp.buf.add_workspace_folder, "Add Workspace Folder")
     map("n", "<leader>wr", vim.lsp.buf.remove_workspace_folder, "Remove Workspace Folder")
     map("n", "<leader>wl", function()
       print(vim.inspect(vim.lsp.buf.list_workspace_folders()))
     end, "List Workspace Folders")
+    map("n", "]d", vim.diagnostic.goto_next, "Next Diagnostic")
+    map("n", "[d", vim.diagnostic.goto_prev, "Prev Diagnostic")
   end,
 })
 
--- ── 3. Per-server settings ────────────────────────────────
+-- ── 2. Per-server settings ────────────────────────────────
 vim.lsp.config("lua_ls", {
   settings = {
     Lua = {
@@ -55,21 +51,23 @@ vim.lsp.config("ruff", {
   },
 })
 
--- ── 4. Filetype aliases (for marksman + .mdx) ────────────
+-- ── 3. Filetype aliases (for marksman + .mdx) ────────────
 vim.filetype.add { extension = { mdx = "markdown" } }
 
--- ── 5. Enable servers ─────────────────────────────────────
-vim.lsp.enable { "lua_ls", "ruff", "sqls", "bashls", "marksman" }
+-- ── 4. Enable servers ─────────────────────────────────────
+vim.lsp.enable { "lua_ls", "ruff", "sqls", "bashls", "marksman", "cssls", "html", "jsonls", "yamlls" }
 
--- ── 6. Diagnostics ────────────────────────────────────────
+-- ── 5. Diagnostics ────────────────────────────────────────
 vim.diagnostic.config {
   virtual_text = false,
   signs = true,
   underline = true,
-  update_in_insert = false,
+  update_in_insert = true,
   severity_sort = true,
   float = { border = "rounded", source = true, header = "", prefix = "" },
 }
+
+vim.lsp.inlay_hint.enable(true)
 
 vim.api.nvim_create_autocmd("CursorHold", {
   callback = function()

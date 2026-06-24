@@ -26,21 +26,26 @@ return {
       dadbod = { name = "Dadbod", module = "vim_dadbod_completion.blink" },
       lsp = { min_keyword_length = 2 },
       snippets = { min_keyword_length = 2 },
+      buffer = { min_keyword_length = 3 },
     },
   },
 
   keymap = {
     preset = "default",
-    ["<Tab>"] = { "select_and_accept", "fallback" },
+    ["<Tab>"] = { "select_next", "fallback" },
     ["<S-Tab>"] = { "select_prev", "fallback" },
     ["<CR>"] = { "accept", "fallback" },
     ["<C-b>"] = { "scroll_documentation_up", "fallback" },
     ["<C-f>"] = { "scroll_documentation_down", "fallback" },
+    ["<C-j>"] = { "snippet_forward", "select_next", "fallback" },
+    ["<C-k>"] = { "snippet_backward", "select_prev", "fallback" },
+    ["<C-space>"] = { "show", "fallback" },
+    ["<C-e>"] = { "hide", "fallback" },
   },
 
   completion = {
     list = {
-      selection = { preselect = true, auto_insert = true },
+      selection = { preselect = true, auto_insert = false },
     },
     menu = {
       auto_show = true,

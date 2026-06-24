@@ -10,8 +10,10 @@ create_cmd("MasonInstallAll", function()
     "sqls",
     "sqlfluff",
     "bash-language-server",
-    "cssls",
-    "html",
+    "css-lsp",
+    "html-lsp",
+    "json-lsp",
+    "yaml-language-server",
     "marksman",
     "prettier",
     "stylua",
@@ -32,8 +34,8 @@ create_cmd("MasonInstallAll", function()
   end)
 end, { desc = "Install all required LSP/formatters/linters" })
 
--- ── 2. LspInfo ───────────────────────────────────────────
-create_cmd("LspInfo", function()
+-- ── 2. LspClients ────────────────────────────────────────
+create_cmd("LspClients", function()
   local clients = vim.lsp.get_clients { bufnr = vim.api.nvim_get_current_buf() }
   local lines = { "  LSP Clients", string.rep("─", 50) }
   if #clients == 0 then
@@ -66,7 +68,7 @@ create_cmd("LspInfo", function()
   })
   vim.keymap.set("n", "q", "<cmd>close<cr>", { buffer = buf, silent = true })
   vim.keymap.set("n", "<Esc>", "<cmd>close<cr>", { buffer = buf, silent = true })
-end, { desc = "Show attached LSP clients" })
+end, { desc = "List attached LSP clients" })
 
 -- ── 3. Highlight on yank ─────────────────────────────────
 create_au("TextYankPost", {
@@ -81,31 +83,12 @@ create_au("VimResized", {
   group = augroup("WindowResize", { clear = true }),
   callback = function()
     local tab = vim.fn.tabpagenr()
-    vim.cmd "tabdo wincmd ="
-    vim.cmd("tabnext " .. tab)
+    vim.cmd("tabdo wincmd =")
+    pcall(vim.cmd.tabnext, tab)
   end,
 })
 
--- ── 5. Remove trailing whitespace on save (fast Lua impl) ─
-create_au("BufWritePre", {
-  group = augroup("TrimWhitespace", { clear = true }),
-  callback = function()
-    if vim.bo.binary or vim.bo.filetype == "diff" then
-      return
-    end
-    local view = vim.fn.winsaveview()
-    local lines = vim.api.nvim_buf_get_lines(0, 0, -1, false)
-    for i, line in ipairs(lines) do
-      local trimmed = line:gsub("%s+$", "")
-      if trimmed ~= line then
-        vim.api.nvim_buf_set_lines(0, i - 1, i, false, { trimmed })
-      end
-    end
-    vim.fn.winrestview(view)
-  end,
-})
-
--- ── 6. Return to last cursor position on file open ───────
+-- ── 5. Return to last cursor position on file open ───────
 create_au("BufReadPost", {
   group = augroup("RestoreCursor", { clear = true }),
   callback = function()

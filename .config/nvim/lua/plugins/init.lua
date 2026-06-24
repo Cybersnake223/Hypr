@@ -6,7 +6,9 @@ return {
     "EdenEast/nightfox.nvim",
     priority = 1000,
     event = "UIEnter",
-    opts = require "plugins.configs.nightfox",
+    opts = function()
+      return require "plugins.configs.nightfox"
+    end,
     config = function(_, opts)
       require("nightfox").setup(opts)
       local compile_file = vim.fn.stdpath "cache" .. "/nightfox/nightfox_compiled"
@@ -18,15 +20,9 @@ return {
   },
 
   -- ─────────────────────────────────────────────────────────
-  -- Core async Lua library
-  -- ─────────────────────────────────────────────────────────
-  { "nvim-lua/plenary.nvim", lazy = true },
-
-  -- ─────────────────────────────────────────────────────────
   -- Icons
   -- ─────────────────────────────────────────────────────────
-  -- { "nvim-tree/nvim-web-devicons", lazy = true },
-  { "echasnovski/mini.icons", lazy = true },
+  { "echasnovski/mini.icons", event = "VeryLazy" },
 
   -- ─────────────────────────────────────────────────────────
   -- UI: Statusline + Git signs
@@ -39,16 +35,6 @@ return {
       signs = { add = { text = "▎" }, change = { text = "▎" }, delete = { text = "󰍵" } },
       signs_staged_enable = true,
       preview_config = { border = "rounded" },
-    },
-    keys = {
-      {
-        "<leader>gb",
-        function()
-          require("gitsigns").blame_line { full = true }
-        end,
-        desc = "Git: Blame line",
-        silent = true,
-      },
     },
   },
 
@@ -75,7 +61,9 @@ return {
   {
     "nvim-lualine/lualine.nvim",
     event = "VeryLazy",
-    opts = require "plugins.configs.lualine",
+    opts = function()
+      return require "plugins.configs.lualine"
+    end,
   },
 
   -- ─────────────────────────────────────────────────────────
@@ -115,7 +103,7 @@ return {
       local wk = require "which-key"
       wk.add {
         { "<leader>b", group = "buffer" },
-        { "<leader>c", group = "code/lsp" },
+        -- { "<leader>c", group = "code/lsp" },
         { "<leader>d", group = "database" },
         { "<leader>f", group = "find" },
         { "<leader>g", group = "git" },
@@ -128,6 +116,8 @@ return {
       }
     end,
   },
+
+  { "sam4llis/nvim-lua-gf" },
 
   -- ─────────────────────────────────────────────────────────
   -- Completion + Snippets + Autopairs
@@ -145,22 +135,23 @@ return {
       {
         "<C-j>",
         function()
-          require("luasnip").jump(-1)
-        end,
-        mode = { "i", "s" },
-        desc = "Snippet: Prev",
-      },
-      {
-        "<C-k>",
-        function()
           require("luasnip").jump(1)
         end,
         mode = { "i", "s" },
         desc = "Snippet: Next",
       },
+      {
+        "<C-k>",
+        function()
+          require("luasnip").jump(-1)
+        end,
+        mode = { "i", "s" },
+        desc = "Snippet: Prev",
+      },
     },
     config = function()
       require("luasnip.loaders.from_vscode").lazy_load()
+      require("luasnip.loaders.from_lua").load { paths = "~/.config/nvim/snippets" }
     end,
   },
 
@@ -189,7 +180,7 @@ return {
     "williamboman/mason-lspconfig.nvim",
     dependencies = { "williamboman/mason.nvim", "neovim/nvim-lspconfig" },
     opts = {
-      ensure_installed = { "lua_ls", "ruff", "sqls", "bashls", "marksman", "taplo", "jsonls" },
+      ensure_installed = { "lua_ls", "ruff", "sqls", "bashls", "marksman", "cssls", "html", "jsonls", "yamlls" },
     },
   },
 
@@ -220,7 +211,9 @@ return {
     "stevearc/conform.nvim",
     event = "BufWritePre",
     cmd = { "ConformInfo" },
-    opts = require "plugins.configs.conform",
+    opts = function()
+      return require "plugins.configs.conform"
+    end,
   },
 
   {
@@ -246,45 +239,6 @@ return {
       })
     end,
   },
-
-  -- ─────────────────────────────────────────────────────────
-  -- Diagnostics + TODOs
-  -- ─────────────────────────────────────────────────────────
-  -- {
-  --   "folke/trouble.nvim",
-  --   cmd = "Trouble",
-  --   opts = { focus = true },
-  --   keys = {
-  --     { "<leader>xx", "<cmd>Trouble diagnostics toggle<cr>", desc = "Diagnostics (project)" },
-  --     { "<leader>xb", "<cmd>Trouble diagnostics toggle filter.buf=0<cr>", desc = "Diagnostics (buffer)" },
-  --     { "<leader>xs", "<cmd>Trouble symbols toggle<cr>", desc = "Symbols" },
-  --     { "<leader>xq", "<cmd>Trouble qflist toggle<cr>", desc = "Quickfix" },
-  --     { "<leader>xt", "<cmd>Trouble todo toggle<cr>", desc = "TODOs" },
-  --   },
-  -- },
-  --
-  -- {
-  --   "folke/todo-comments.nvim",
-  --   event = "BufReadPost",
-  --   dependencies = { "nvim-lua/plenary.nvim" },
-  --   opts = { signs = false },
-  --   keys = {
-  --     {
-  --       "]t",
-  --       function()
-  --         require("todo-comments").jump_next()
-  --       end,
-  --       desc = "Next TODO",
-  --     },
-  --     {
-  --       "[t",
-  --       function()
-  --         require("todo-comments").jump_prev()
-  --       end,
-  --       desc = "Prev TODO",
-  --     },
-  --   },
-  -- },
 
   -- ─────────────────────────────────────────────────────────
   -- Surround
@@ -329,13 +283,31 @@ return {
   },
 
   -- ─────────────────────────────────────────────────────────
-  -- File Explorer
+  -- Flash (fast screen cursor motion)
   -- ─────────────────────────────────────────────────────────
-  -- {
-  --   "stevearc/oil.nvim",
-  --   lazy = false,
-  --   opts = { view_options = { show_hidden = true } },
-  -- },
+  {
+    "folke/flash.nvim",
+    event = "VeryLazy",
+    opts = {},
+    keys = {
+      {
+        "s",
+        mode = { "n", "x", "o" },
+        function()
+          require("flash").jump()
+        end,
+        desc = "Flash: Jump Forward",
+      },
+      {
+        "S",
+        mode = { "n", "x", "o" },
+        function()
+          require("flash").jump { backward = true }
+        end,
+        desc = "Flash: Jump Backward",
+      },
+    },
+  },
 
   -- ─────────────────────────────────────────────────────────
   -- SQL Database Client
@@ -352,8 +324,6 @@ return {
     end,
   },
 
-  -- { "tpope/vim-dadbod", lazy = true },
-
   {
     "kristijanhusak/vim-dadbod-completion",
     ft = { "sql", "mysql", "plsql" },
@@ -366,8 +336,82 @@ return {
   {
     "folke/snacks.nvim",
     priority = 1000,
-    lazy = false,
-    opts = require "plugins.configs.snacks",
+    event = "VeryLazy",
+    keys = {
+      {
+        "<leader>e",
+        function()
+          require("snacks").explorer()
+        end,
+        desc = "Explorer",
+      },
+      {
+        "<leader>ff",
+        function()
+          require("snacks").picker.files()
+        end,
+        desc = "Find Files",
+      },
+      {
+        "<leader>fg",
+        function()
+          require("snacks").picker.grep()
+        end,
+        desc = "Grep",
+      },
+      {
+        "<C-\\>",
+        function()
+          require("snacks").terminal(nil, { toggle = true })
+        end,
+        desc = "Terminal: Toggle last",
+      },
+      {
+        "<leader>fb",
+        function()
+          require("snacks").picker.buffers()
+        end,
+        desc = "Find: Buffers",
+      },
+      {
+        "<leader>fr",
+        function()
+          require("snacks").picker.recent()
+        end,
+        desc = "Find: Recent",
+      },
+      {
+        "<leader>fh",
+        function()
+          require("snacks").picker.help()
+        end,
+        desc = "Find: Help",
+      },
+      {
+        "<leader>fk",
+        function()
+          require("snacks").picker.keymaps()
+        end,
+        desc = "Find: Keymaps",
+      },
+      {
+        "<leader>fc",
+        function()
+          require("snacks").picker.commands()
+        end,
+        desc = "Find: Commands",
+      },
+      {
+        "<leader>fw",
+        function()
+          require("snacks").picker.grep { search = vim.fn.expand "<cword>" }
+        end,
+        desc = "Find: Word Under Cursor",
+      },
+    },
+    opts = function()
+      return require "plugins.configs.snacks"
+    end,
   },
   -- ─────────────────────────────────────────────────────────
   -- Colorizer
@@ -378,6 +422,33 @@ return {
     config = function()
       local hp = require "mini.hipatterns"
       hp.setup { highlighters = { hex_color = hp.gen_highlighter.hex_color() } }
+    end,
+  },
+
+  -- ─────────────────────────────────────────────────────────
+  -- Better folding (LSP + treesitter hybrid)
+  -- ─────────────────────────────────────────────────────────
+  {
+    "kevinhwang91/nvim-ufo",
+    dependencies = { "kevinhwang91/promise-async" },
+    event = "VeryLazy",
+    opts = {
+      provider_selector = function()
+        return { "treesitter", "indent" }
+      end,
+    },
+    config = function(_, opts)
+      require("ufo").setup(opts)
+      vim.opt.foldenable = true
+      vim.opt.foldlevel = 99
+      vim.keymap.set("n", "zR", require("ufo").openAllFolds, { desc = "Open all folds" })
+      vim.keymap.set("n", "zM", require("ufo").closeAllFolds, { desc = "Close all folds" })
+      vim.keymap.set("n", "zp", function()
+        local winid = require("ufo").peekFoldedLinesUnderCursor()
+        if not winid then
+          vim.notify("No fold under cursor", vim.log.levels.INFO)
+        end
+      end, { desc = "Peek folded lines" })
     end,
   },
 
@@ -395,21 +466,21 @@ return {
   },
 
   {
-    "vhyrro/luarocks.nvim",
-    priority = 1000,
-    config = true,
-    opts = {
-      rocks = { "magick" },
-      luarocks_build_args = {
-        "--with-lua-interpreter=lua5.1",
-        "--with-lua-include=/usr/include/luajit-2.1",
-      },
-    },
-  },
-
-  {
     "3rd/image.nvim",
     lazy = true,
+    dependencies = {
+      {
+        "vhyrro/luarocks.nvim",
+        opts = {
+          rocks = { "magick" },
+          luarocks_build_args = {
+            "--with-lua-interpreter=lua5.1",
+            "--with-lua-include=/usr/include/luajit-2.1",
+          },
+        },
+        config = true,
+      },
+    },
     opts = {
       backend = "kitty",
       processor = "magick_cli",
@@ -430,23 +501,28 @@ return {
   {
     "benlubas/molten-nvim",
     version = "^1.0.0",
-    ft = { "python", "markdown", "quarto" },
+    ft = { "markdown", "quarto", "ipynb" },
     dependencies = { "3rd/image.nvim" },
     init = function()
-      vim.g.molten_auto_open_output = true
+      vim.g.molten_auto_open_output = false
       vim.g.molten_image_provider = "image.nvim"
       vim.g.molten_wrap_output = false
-      vim.g.molten_virt_text_output = false
-      vim.g.molten_output_win_max_height = 80
-      vim.g.molten_output_win_max_width = 999
-      vim.g.molten_tick_rate = 300
+      vim.g.molten_output_virt_lines = true
+      vim.g.molten_virt_text_output = true
+      vim.g.molten_output_win_max_height = 99999
+      vim.g.molten_output_win_max_width = 99999
+      vim.g.molten_tick_rate = 200
+      vim.g.molten_split_size = 100
       vim.g.molten_output_show_more = true
-      vim.g.molten_limit_output_chars = 20000
-      vim.g.molten_virt_text_max_lines = 300
+      vim.g.molten_limit_output_chars = 25000
+      vim.g.molten_virt_text_max_lines = 3000
       vim.g.molten_output_show_exec_time = true
       vim.g.molten_cover_empty_lines = true
-      vim.g.molten_enter_output_behavior = "open_no_enter"
+      vim.g.molten_enter_output_behavior = "open_and_enter"
     end,
+    keys = {
+      { "<leader>mos", ":noautocmd MoltenEnterOutput<CR>", desc = "Molten: Enter output", silent = true },
+    },
   },
 
   -- ─────────────────────────────────────────────────────────

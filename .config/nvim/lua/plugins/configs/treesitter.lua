@@ -11,7 +11,7 @@ M.parsers = {
 }
 
 -- Filetypes where TS highlight is deferred (avoids startup spike)
-M.skip_ft = {
+M.defer_ft = {
   markdown        = true,
   markdown_inline = true,
 }
@@ -37,11 +37,7 @@ function M.setup()
     pcall(require("nvim-treesitter.install").ensure_installed, M.parsers)
   end, 0)
 
-  -- Treesitter-based folding (global default; foldexpr returns 0 fast on non-TS buffers)
-  vim.opt.foldmethod = "expr"
-  vim.opt.foldexpr   = "v:lua.vim.treesitter.foldexpr()"
-  vim.opt.foldenable = false   -- folds available but open by default; zi to toggle
-  vim.opt.foldlevel  = 99
+  -- Folding handled by nvim-ufo (LSP + treesitter hybrid)
 
   -- Per-FileType highlighting
   vim.api.nvim_create_autocmd("FileType", {
@@ -53,11 +49,11 @@ function M.setup()
       -- Skip special/ignored buffers
       if M.ignore_ft[ft] then return end
 
-      -- Skip if big-file guard set in commands.lua BufReadPre autocmd
-      if vim.b[ev.buf].treesitter_enabled == false then return end
+      -- Skip if big-file guard (set by snacks.bigfile)
+      if vim.b.bigfile then return end
 
       -- Defer markdown to avoid 29ms FileType spike seen in startup profiles
-      if M.skip_ft[ft] then
+      if M.defer_ft[ft] then
         vim.defer_fn(function()
           if vim.api.nvim_buf_is_valid(ev.buf) then
             pcall(vim.treesitter.start, ev.buf)

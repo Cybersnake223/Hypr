@@ -2,13 +2,16 @@ return {
   formatters_by_ft = {
     lua = { "stylua" },
     python = { "ruff_format" },
-    -- sql uses LSP (sqls)
+    sql = { "lsp" },
+    json = { "lsp" },
+    yaml = { "lsp" },
+    sh = { "lsp" },
+    zsh = { "lsp" },
     -- markdown/quarto format manually via <leader>lf (prettier is slow)
-    -- json/yaml/sh use LSP fallback (faster than external formatters)
   },
   format_on_save = {
-    lsp_format = "fallback",
     timeout_ms = 2000,
+    lsp_format = "fallback",
     exclude = {
       function(bufnr)
         local name = vim.api.nvim_buf_get_name(bufnr)
@@ -16,5 +19,8 @@ return {
           or name:match("%.ipynb%.md$") ~= nil
       end,
     },
+  },
+  default_format_opts = {
+    trim_whitespace = true,
   },
 }

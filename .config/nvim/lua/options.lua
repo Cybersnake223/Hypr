@@ -28,20 +28,21 @@ opt.sidescrolloff = 8
 opt.timeoutlen = 500
 opt.updatetime = 500
 opt.inccommand = "split"
-opt.completeopt = "menuone,noselect,noinsert"
 opt.diffopt:append "linematch:60"
 opt.confirm = true
 opt.shortmess:append "filnxtToOFIc"
 opt.winminwidth = 10
 opt.smoothscroll = true
+opt.sessionoptions:append { "globals", "folds", "localoptions" }
 opt.numberwidth = 2
 
 -- ── Search ───────────────────────────────────────────────
 opt.ignorecase = true
 opt.smartcase = true
 
--- ── Undo (persistent across restarts) ───────────────────
+-- ── Undo / ShaDA (persistent across restarts) ───────────
 opt.undofile = true
+opt.shada = "!,'100,<50,s10,h"
 
 -- ── Indentation ──────────────────────────────────────────
 opt.expandtab = true
