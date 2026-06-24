@@ -1,6 +1,6 @@
 <div align="center">
 
-<img src="assets/cslogo.png" width="120" alt="Vicious Viper Logo"/>
+<img src="assets/cslogo.jpeg" width="120" alt="Vicious Viper Logo"/>
 
 <br/>
 <br/>
@@ -54,28 +54,28 @@
 
 <table>
   <tr>
-    <td><img src="assets/asset1.png"/></td>
-    <td><img src="assets/asset10.png"/></td>
+    <td><img src="assets/asset1.jpeg"/></td>
+    <td><img src="assets/asset10.jpeg"/></td>
   </tr>
   <tr>
-    <td><img src="assets/asset11.png"/></td>
-    <td><img src="assets/asset12.png"/></td>
+    <td><img src="assets/asset11.jpeg"/></td>
+    <td><img src="assets/asset12.jpeg"/></td>
   </tr>
   <tr>
-    <td><img src="assets/asset2.png"/></td>
-    <td><img src="assets/asset3.png"/></td>
+    <td><img src="assets/asset2.jpeg"/></td>
+    <td><img src="assets/asset3.jpeg"/></td>
   </tr>
   <tr>
-    <td><img src="assets/asset4.png"/></td>
-    <td><img src="assets/asset5.png"/></td>
+    <td><img src="assets/asset4.jpeg"/></td>
+    <td><img src="assets/asset5.jpeg"/></td>
   </tr>
   <tr>
-    <td><img src="assets/asset6.png"/></td>
-    <td><img src="assets/asset7.png"/></td>
+    <td><img src="assets/asset6.jpeg"/></td>
+    <td><img src="assets/asset7.jpeg"/></td>
   </tr>
   <tr>
-    <td><img src="assets/asset8.png"/></td>
-    <td><img src="assets/asset9.png"/></td>
+    <td><img src="assets/asset8.jpeg"/></td>
+    <td><img src="assets/asset9.jpeg"/></td>
   </tr>
 </table>
 
@@ -488,7 +488,7 @@ matugen image /path/to/wallpaper.jpg
 
 ```bash
 # Force a refresh from the cached wallpaper
-matugen image ~/.config/hypr/wallpaper/current.png
+matugen image ~/.config/hypr/wallpaper/current.jpeg
 ```
 
 > [!NOTE]
@@ -650,7 +650,7 @@ MIT — see [LICENSE](LICENSE) for details.
 
 <div align="center">
 
-<img src="assets/cslogo.png" width="48"/>
+<img src="assets/cslogo.jpeg" width="48"/>
 
 <br/>
 
