@@ -5,12 +5,12 @@
 hl.config({
 	misc = {
 		disable_hyprland_logo = true,
-		enable_swallow = false,
+		enable_swallow = true,
 		swallow_regex = "^(kitty|zen-browser)$",
 		focus_on_activate = true,
 		mouse_move_enables_dpms = true,
 		-- vfr                     = false,
-		vrr = 2,
+		vrr = 1,
 		animate_manual_resizes = false,
 		mouse_move_focuses_monitor = true,
 		disable_splash_rendering = true,

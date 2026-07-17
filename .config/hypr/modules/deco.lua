@@ -6,7 +6,7 @@ local colors = require("colors.colors")
 
 hl.config({
 	decoration = {
-		rounding = 10,
+		rounding = 5,
 		rounding_power = 5,
 		inactive_opacity = 1.0,
 		active_opacity = 1.0,
@@ -23,9 +23,9 @@ hl.config({
 
 		blur = {
 			enabled = true,
-			size = 8,
+			size = 6,
 			passes = 2,
-			brightness = 1.0,
+			brightness = 0.8,
 			contrast = 1.0,
 			vibrancy = 0.00,
 			vibrancy_darkness = 0,

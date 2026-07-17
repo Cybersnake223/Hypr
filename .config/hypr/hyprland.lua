@@ -16,21 +16,32 @@
 -- ## Sourcing Modules
 
 -- colors must load first — everything else depends on it
-local colors = require("colors.colors")
+local ok, colors = pcall(require, "colors.colors")
+if not ok then
+	colors = {}
+end
 
--- pass colors into modules that need it
-require("modules.startup")
-require("modules.general")
-require("modules.deco")
-require("modules.input")
-require("modules.animations")
-require("modules.misc")
-require("modules.layout")
-require("modules.xwayland")
-require("modules.ecosystem")
-require("modules.env-var")
-require("modules.monitors")
-require("modules.keybinds")
-require("modules.window-rules")
-require("modules.workspace-rules")
-require("modules.layer-rules")
+local modules = {
+	"modules.startup",
+	"modules.general",
+	"modules.deco",
+	"modules.input",
+	"modules.animations",
+	"modules.misc",
+	"modules.layout",
+	"modules.xwayland",
+	"modules.ecosystem",
+	"modules.env-var",
+	"modules.monitors",
+	"modules.keybinds",
+	"modules.window-rules",
+	"modules.workspace-rules",
+	"modules.layer-rules",
+}
+
+for _, mod in ipairs(modules) do
+	local ok, err = pcall(require, mod)
+	if not ok then
+		print("Warning: failed to load " .. mod .. " — " .. tostring(err))
+	end
+end

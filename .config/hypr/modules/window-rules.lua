@@ -9,6 +9,13 @@ hl.window_rule({
 })
 
 hl.window_rule({
+	name = "zen-dl-float",
+	match = { title = "^(Library)$" },
+	float = true,
+	size = { 1000, 800 },
+})
+
+hl.window_rule({
 	name = "wiremix-float",
 	match = { class = "^(kitty)$", title = "^(wiremix)$" },
 	float = true,

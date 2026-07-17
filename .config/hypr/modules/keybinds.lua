@@ -17,23 +17,38 @@ local reddit = "https://reddit.com"
 local ghprofile = "https://github.com/Cybersnake223?tab=repositories"
 local wallhaven = "https://wallhaven.cc"
 
+-- Config reload (SUPER is otherwise unused, so no conflict)
+hl.bind("SUPER + SHIFT + R", hl.dsp.exec_cmd("hyprctl reload"))
+
+-- Dynamic Island
+hl.bind("ALT + I", hl.dsp.exec_cmd("bash -c 'echo toggle > /tmp/qs_island_toggle'"))
+hl.bind("ALT + C", hl.dsp.exec_cmd("bash -c '~/.config/hypr/scripts/qs_manager.sh toggle calendar' "))
+hl.bind("ALT + SHIFT + X", hl.dsp.exec_cmd("bash -c 'touch /tmp/qs_island_clear_notifs'"))
+hl.bind("ALT + N", hl.dsp.exec_cmd("bash -c 'touch /tmp/qs_island_notifs_panel'"))
+-- hl.bind("ALT + M", hl.dsp.exec_cmd("bash -c 'touch /tmp/qs_island_music'"))
+
 -- F-keys
-hl.bind("F1", hl.dsp.exec_cmd("wpctl set-mute @DEFAULT_SINK@ toggle"))
-hl.bind("F2", hl.dsp.exec_cmd("wpctl set-volume @DEFAULT_SINK@ 10%-"))
-hl.bind("F3", hl.dsp.exec_cmd("wpctl set-volume @DEFAULT_SINK@ 10%+"))
+hl.bind("F1", hl.dsp.exec_cmd("~/.config/quickshell/dynamic/osd_volume.sh mute"))
+hl.bind("F2", hl.dsp.exec_cmd("~/.config/quickshell/dynamic/osd_volume.sh down 10"))
+hl.bind("F3", hl.dsp.exec_cmd("~/.config/quickshell/dynamic/osd_volume.sh up 10"))
 hl.bind("F4", hl.dsp.exec_cmd("wpctl set-mute @DEFAULT_SOURCE@ toggle"))
-hl.bind("F11", hl.dsp.exec_cmd("brightnessctl -q s 10%-"))
-hl.bind("F12", hl.dsp.exec_cmd("brightnessctl -q s +10%"))
 hl.bind("F7", hl.dsp.exec_cmd("rfkill-toggle wlan"))
-hl.bind("F9", hl.dsp.exec_cmd("quickshell -p ~/.config/quickshell/lockscreen ipc call lockscreen toggle"))
+hl.bind("F9", hl.dsp.exec_cmd("~/.config/hypr/scripts/lock.sh"))
+hl.bind("F11", hl.dsp.exec_cmd("~/.config/quickshell/dynamic/osd_brightness.sh down"))
+hl.bind("F12", hl.dsp.exec_cmd("~/.config/quickshell/dynamic/osd_brightness.sh up"))
 hl.bind("Print", hl.dsp.exec_cmd("quickshell -p ~/.config/quickshell/launcher ipc call screenshot toggle"))
+
+-- hl.bind("F11", hl.dsp.exec_cmd("brightnessctl -q s 10%-"))
+-- hl.bind("F2", hl.dsp.exec_cmd("wpctl set-volume @DEFAULT_SINK@ 10%-"))
+-- hl.bind("F3", hl.dsp.exec_cmd("wpctl set-volume @DEFAULT_SINK@ 10%+"))
+-- hl.bind("F12", hl.dsp.exec_cmd("brightnessctl -q s +10%"))
+-- hl.bind("F9", hl.dsp.exec_cmd("quickshell -p ~/.config/quickshell/lockscreen ipc call lockscreen toggle"))
 
 -- Terminal & Core Apps
 hl.bind("ALT + Return", hl.dsp.exec_cmd(term))
 hl.bind("ALT + Q", hl.dsp.window.close())
 hl.bind("ALT + R", hl.dsp.exec_cmd(term .. " -e yazi"))
-hl.bind("ALT + M", hl.dsp.exec_cmd(music))
-hl.bind("ALT + N", hl.dsp.exec_cmd(term .. " -e " .. editor))
+-- hl.bind("ALT + N", hl.dsp.exec_cmd(term .. " -e " .. editor))
 hl.bind("ALT + H", hl.dsp.exec_cmd(sysmon))
 hl.bind("ALT + S", hl.dsp.exec_cmd("localsend"))
 hl.bind("ALT + D", hl.dsp.exec_cmd(launcher))
@@ -46,11 +61,11 @@ hl.bind("ALT + K", hl.dsp.exec_cmd("wkill"))
 hl.bind("ALT + W", hl.dsp.exec_cmd("changewall"))
 hl.bind("ALT + L", hl.dsp.exec_cmd(term .. " --title airpods-tui -e airpods-tui"))
 hl.bind("ALT + Y", hl.dsp.exec_cmd("ytdla"))
-hl.bind("ALT + C", hl.dsp.exec_cmd("quickshell -p ~/.config/quickshell/launcher ipc call notifications dismissAll"))
-hl.bind("ALT + V", hl.dsp.exec_cmd("quickshell -p ~/.config/quickshell/launcher ipc call clipboard toggle"))
+-- hl.bind("ALT + C", hl.dsp.exec_cmd("quickshell -p ~/.config/quickshell/launcher ipc call notifications dismissAll"))
+hl.bind("ALT + V", hl.dsp.exec_cmd("bash -c 'echo toggle > /tmp/qs_clipboard'"))
 
-hl.bind("ALT + SHIFT + V", hl.dsp.exec_cmd("watchvid"))
-hl.bind("ALT + SHIFT + S", hl.dsp.exec_cmd("qs -p ~/.config/quickshell/hyprlens/UniversalSnip.qml -n"))
+hl.bind("ALT + SHIFT + V", hl.dsp.exec_cmd("quickshell -p ~/.config/quickshell/launcher ipc call watchvid toggle"))
+hl.bind("ALT + SHIFT + S", hl.dsp.exec_cmd("quickshell -p ~/.config/quickshell/hyprlens/UniversalSnip.qml -n"))
 hl.bind("ALT + SHIFT + K", hl.dsp.exec_cmd("ccleaner -y"))
 hl.bind("ALT + SHIFT + T", hl.dsp.exec_cmd("nautilus"))
 hl.bind("ALT + SHIFT + D", hl.dsp.exec_cmd("aria2cd"))
