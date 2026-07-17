@@ -1,0 +1,4 @@
+singleton SharedConfig 1.0 SharedConfig.qml
+MatugenColors 1.0 MatugenColors.qml
+Scaler 1.0 Scaler.qml
+ArcGauge 1.0 ArcGauge.qml

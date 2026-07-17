@@ -1,0 +1,6 @@
+module pages
+ClockPage 1.0 ClockPage.qml
+NotifsPage 1.0 NotifsPage.qml
+NotifExpandedPage 1.0 NotifExpandedPage.qml
+CalendarPage 1.0 CalendarPage.qml
+BatteryPage 1.0 BatteryPage.qml

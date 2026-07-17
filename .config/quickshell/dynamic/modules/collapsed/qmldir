@@ -1,0 +1,4 @@
+module collapsed
+OSDCollapsed 1.0 OSDCollapsed.qml
+ClockCollapsed 1.0 ClockCollapsed.qml
+NotifsCollapsed 1.0 NotifsCollapsed.qml
