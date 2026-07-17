@@ -410,13 +410,9 @@ PanelWindow {
         onToggleRequested: root.open = !root.open
     }
 
-    MouseArea {
-        anchors.fill: parent
-        onClicked: root.open = false
-    }
-
     MenuCard {
         cardOpen: root.open
+        onRequestClose: root.open = false
         cardWidth: 520
         cardHeight: Math.min(menuModel.count, 10) * 54 + 90
 
@@ -504,7 +500,7 @@ PanelWindow {
 
                 delegate: Rectangle {
                     width: menuList.width
-                    height: 50
+                    height: 54
                     radius: 12
 
                     color: menuList.currentIndex === index

@@ -2,14 +2,14 @@ import Quickshell
 import QtQuick
 
 ShellRoot {
-  LauncherWindow {}
+  // LauncherWindow {}
+  WatchVid {}
   WifiMenu {}
   BluetoothMenu {}
-  Notifications {}
   ScreenshotMenu {}
   EditConfig {}
   ScriptEdit {}
-  ClipboardMenu {}
   PowerMenu {}
   EmojiPicker {}
+  AppLauncher {}
 }

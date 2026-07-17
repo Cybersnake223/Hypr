@@ -1,6 +1,5 @@
 import QtQuick
 import QtQuick.Layouts
-import QtQuick.Effects
 
 Item {
     id: root
@@ -9,62 +8,56 @@ Item {
     property real cardWidth: 520
     property real cardHeight: 400
 
-    anchors.centerIn: parent
-    width: cardWidth
-    height: cardHeight
-    scale: cardOpen ? 1.0 : 0.85
-    opacity: cardOpen ? 1.0 : 0.0
+    signal requestClose()
 
-    Behavior on scale {
-        NumberAnimation { duration: 450; easing.type: Easing.OutBack }
-    }
-    Behavior on opacity {
-        NumberAnimation { duration: 300; easing.type: Easing.OutCubic }
-    }
+    anchors.fill: parent
+    clip: false
 
-    clip: true
-
-    transform: Translate {
-        id: slideT
-        y: cardOpen ? 0 : -80
-        Behavior on y {
-            NumberAnimation { duration: 450; easing.type: Easing.OutBack }
-        }
-    }
-
-    layer.enabled: true
-    layer.effect: MultiEffect {
-        shadowEnabled: true
-        shadowColor: Qt.rgba(0, 0, 0, 0.5)
-        shadowBlur: 0.3
-        shadowHorizontalOffset: 0
-        shadowVerticalOffset: 8
-        shadowOpacity: 0.3
-    }
-
-    Rectangle {
-        id: gradientBorder
-        anchors.fill: parent
-        radius: 24
-        gradient: Gradient {
-            GradientStop { position: 0.0; color: theme.mauve }
-            GradientStop { position: 0.33; color: theme.tertiaryContainer }
-            GradientStop { position: 0.66; color: Qt.rgba(theme.mauve.r, theme.mauve.g, theme.mauve.b, 0.6) }
-            GradientStop { position: 1.0; color: theme.tertiaryContainer }
-        }
-    }
-
+    // ─── Backdrop dim ────────────────────────────────────────────────────────
     Rectangle {
         anchors.fill: parent
-        anchors.margins: 3
-        radius: 21
-        color: Qt.rgba(theme.base.r, theme.base.g, theme.base.b, 0.85)
+        color: Qt.rgba(0, 0, 0, root.cardOpen ? 0.55 : 0)
+        Behavior on color { ColorAnimation { duration: 380 } }
+        visible: color.a > 0.001
 
-        ColumnLayout {
-            id: contentLayout
+        MouseArea { anchors.fill: parent; onClicked: root.requestClose() }
+    }
+
+    // ─── Card ────────────────────────────────────────────────────────────────
+    Item {
+        id: card
+        anchors.centerIn: parent
+        width: cardWidth
+        height: cardHeight
+        scale: root.cardOpen ? 1.0 : 0.95
+        opacity: root.cardOpen ? 1.0 : 0.0
+
+        Behavior on scale {
+            NumberAnimation { duration: 400; easing.type: Easing.Bezier; easing.bezierCurve: [0.16, 1, 0.3, 1] }
+        }
+        Behavior on opacity {
+            NumberAnimation { duration: 220 }
+        }
+        Behavior on width {
+            NumberAnimation { duration: 400; easing.type: Easing.Bezier; easing.bezierCurve: [0.16, 1, 0.3, 1] }
+        }
+        Behavior on height {
+            NumberAnimation { duration: 400; easing.type: Easing.Bezier; easing.bezierCurve: [0.16, 1, 0.3, 1] }
+        }
+
+        Rectangle {
             anchors.fill: parent
-            anchors.margins: 16
-            spacing: 6
+            radius: 24
+            color: Qt.rgba(theme.base.r, theme.base.g, theme.base.b, 0.97)
+            border.width: 1
+            border.color: Qt.rgba(theme.surface2.r, theme.surface2.g, theme.surface2.b, 0.35)
+
+            ColumnLayout {
+                id: contentLayout
+                anchors.fill: parent
+                anchors.margins: 16
+                spacing: 6
+            }
         }
     }
 

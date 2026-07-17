@@ -137,12 +137,11 @@ PanelWindow {
   }
 
 
-  MouseArea { anchors.fill: parent; onClicked: root.open = false }
-
   MenuCard {
     cardOpen: root.open
+    onRequestClose: root.open = false
     cardWidth: 480
-    cardHeight: Math.min(filteredModel.count, 5) * 50 + 130
+      cardHeight: Math.min(filteredModel.count, 5) * 54 + 130
 
     RowLayout {
       Layout.fillWidth: true
@@ -228,7 +227,7 @@ PanelWindow {
         }
 
         delegate: Rectangle {
-          width: list.width; height: 46
+          width: list.width; height: 54
           radius: 12
           color: list.currentIndex === index
             ? Qt.rgba(theme.surface0.r, theme.surface0.g, theme.surface0.b, 0.85)

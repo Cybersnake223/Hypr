@@ -35,6 +35,8 @@ PanelWindow {
 
   onOpenChanged: {
     if (open) {
+      if (allEmojiModel.count === 0)
+        { emojiLoader.running = false; emojiLoader.running = true }
       hideTimer.stop()
       root._showing = true
       searchInput.text = ""
@@ -71,9 +73,9 @@ PanelWindow {
 
   Process {
     id: emojiLoader
+    running: false
     command: ["bash", "-c",
       "cat \"" + Quickshell.env("HOME") + "/.config/quickshell/launcher/emoji.json\""]
-    running: true
     stdout: StdioCollector {
       onStreamFinished: {
         let txt = this.text.trim()
@@ -89,7 +91,6 @@ PanelWindow {
       }
     }
   }
-
   function fuzzyScore(name, query) {
     let n = name.toLowerCase()
     let q = query.toLowerCase()
@@ -179,15 +180,11 @@ PanelWindow {
   }
 
 
-  MouseArea {
-    anchors.fill: parent
-    onClicked: root.open = false
-  }
-
   MenuCard {
     cardOpen: root.open
+    onRequestClose: root.open = false
     cardWidth: 560
-    cardHeight: Math.max(Math.min(filteredModel.count, 7) * 52 + 84, 200)
+      cardHeight: Math.max(Math.min(filteredModel.count, 7) * 54 + 84, 200)
 
     Rectangle {
       Layout.fillWidth: true
@@ -277,7 +274,7 @@ PanelWindow {
 
         delegate: Item {
           width: emojiList.width
-          height: 52
+          height: 54
 
           transform: Translate { id: itemSlide; x: -15 }
 
