@@ -1,0 +1,5 @@
+*.zwc
+*.zcompdump
+lazy-lock.json
+__pycache__/
+*.pyc

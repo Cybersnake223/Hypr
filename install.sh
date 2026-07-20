@@ -14,12 +14,15 @@
 
 set -Eeuo pipefail
 
+# Must not run as root — files would land in /root/ instead of the user's $HOME
+[[ "$EUID" -eq 0 ]] && die "Do not run as root. Run this installer as a normal user."
+
 # ══════════════════════════════════════════════════════════════════════════════
 # GLOBALS
 # ══════════════════════════════════════════════════════════════════════════════
 
 REPO_DIR="$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" && pwd)"
-SCRIPT_VERSION="2.0.1"
+SCRIPT_VERSION="2.1.0"
 TS="$(date +"%Y%m%d-%H%M%S")"
 BACKUP_BASE="${XDG_DATA_HOME:-$HOME/.local/share}/hypr-dotfiles-backups"
 BACKUP_DIR="$BACKUP_BASE/$TS"
@@ -37,6 +40,7 @@ OPT_SELECT=0
 OPT_SKIP_DEPS=0
 OPT_INSTALL_DEPS=0
 OPT_INSTALL_NVIM_DEPS=0
+OPT_INSTALL_ALL_DEPS=0
 
 # Counters
 COPIED=0
@@ -92,6 +96,7 @@ ${BOLD}Options:${RESET}
   ${G}--list-backups${RESET}   Show all available backups with file counts
   ${G}--select${RESET}         Interactively choose which modules to install
   ${G}--install-deps${RESET}        Auto-install missing Hyprland ecosystem deps
+  ${G}--install-all-deps${RESET}    Auto-install ecosystem + supporting packages (pipewire, bluez, grim…)
   ${G}--install-nvim-deps${RESET}   Auto-install Neovim system dependencies
   ${G}--skip-deps${RESET}           Skip the Hyprland ecosystem dependency check
   ${G}--version${RESET}        Show version and exit
@@ -107,8 +112,11 @@ ${BOLD}Examples:${RESET}
   ${D}# Fully non-interactive CI install${RESET}
   ./install.sh --yes --skip-deps
 
-  ${D}# Install everything including missing packages${RESET}
+  ${D}# Install ecosystem deps only${RESET}
   ./install.sh --install-deps
+
+  ${D}# Install everything including supporting packages (pipewire, bluez, …)${RESET}
+  ./install.sh --install-all-deps
 
   ${D}# Pick only the modules you want${RESET}
   ./install.sh --select
@@ -134,9 +142,10 @@ while [[ $# -gt 0 ]]; do
     --uninstall)     OPT_UNINSTALL=1;    shift ;;
     --list-backups)  OPT_LIST_BACKUPS=1; shift ;;
     --select)        OPT_SELECT=1;       shift ;;
-    --install-deps)     OPT_INSTALL_DEPS=1;     shift ;;
-    --install-nvim-deps) OPT_INSTALL_NVIM_DEPS=1; shift ;;
-    --skip-deps)        OPT_SKIP_DEPS=1;       shift ;;
+    --install-deps)        OPT_INSTALL_DEPS=1;     shift ;;
+    --install-nvim-deps)    OPT_INSTALL_NVIM_DEPS=1; shift ;;
+    --install-all-deps)     OPT_INSTALL_DEPS=1; OPT_INSTALL_ALL_DEPS=1; shift ;;
+    --skip-deps)            OPT_SKIP_DEPS=1;       shift ;;
     -h|--help)       usage; exit 0 ;;
     --version)       echo "Vicious Viper Dotfiles Installer v${SCRIPT_VERSION}"; exit 0 ;;
     *) die "Unknown option: '$1'  —  run with --help for usage." ;;
@@ -206,6 +215,7 @@ safe_copy() {
   run mkdir -p "$(dirname "$dest")"
   if run cp -a "$src" "$dest"; then
     record "$dest"
+    substitute_home_paths "$dest"
     success "  ✓  $(basename "$src")"
     (( COPIED++ )) || true
   else
@@ -240,12 +250,26 @@ safe_copy_tree() {
       while IFS= read -r -d '' f; do
         local rel="${f#"$src/"}"
         record "$dest/$rel"
+        substitute_home_paths "$dest/$rel"
         (( COPIED++ )) || true
       done < <(find "$src" -mindepth 1 -type f -print0)
     fi
   else
     error "  ✗  Failed to copy tree: $src → $dest"
     (( ERRORS++ )) || true
+  fi
+}
+
+# substitute_home_paths: replace hardcoded /home/cybersnake/ with $HOME/
+# so configs work for other users
+substitute_home_paths() {
+  local file="$1"
+  case "${file,,}" in
+    *.conf|*.lua|*.css|*.toml|*.json|*.sh|*.rc|*.txt|*.cfg|*.desktop|*.service|*.timer|*.svg|*.js|*.py|*.md|*.html) ;;
+    *) return 0 ;;
+  esac
+  if grep -q "/home/cybersnake/" "$file" 2>/dev/null; then
+    run sed -i "s|/home/cybersnake/|$HOME/|g" "$file"
   fi
 }
 
@@ -301,6 +325,34 @@ ECOSYSTEM_DEPS=(
   "btop:btop:extra:Resource monitor"
   "yazi:yazi:extra:TUI file manager"
   "fastfetch:fastfetch:extra:System info fetch"
+  "quickshell:quickshell:extra:QML shell framework (panels, launcher, OSD)"
+)
+
+# Supporting packages from README (not checked by command existence)
+SUPPORTING_DEPS=(
+  "xdg-desktop-portal-hyprland"
+  "polkit-gnome"
+  "grim"
+  "slurp"
+  "wl-clipboard"
+  "brightnessctl"
+  "pavucontrol"
+  "pipewire"
+  "pipewire-pulse"
+  "pipewire-alsa"
+  "wireplumber"
+  "networkmanager"
+  "bluez"
+  "bluez-tools"
+  "xorg-xwayland"
+  "eza"
+  "fd"
+  "bat"
+  "bleachbit"
+  "aerc"
+  "localsend"
+  "nsxiv"
+  "wiremix"
 )
 
 cmd_install_deps() {
@@ -316,6 +368,11 @@ cmd_install_deps() {
       fi
     fi
   done
+
+  # If --install-all-deps, also install supporting packages
+  if [[ "$OPT_INSTALL_ALL_DEPS" -eq 1 ]]; then
+    official+=("${SUPPORTING_DEPS[@]}")
+  fi
 
   [[ ${#official[@]} -eq 0 && ${#aur[@]} -eq 0 ]] && return 0
 
@@ -536,7 +593,7 @@ cmd_uninstall() {
 
 # Module registry — each entry: "key:label:description"
 declare -a MODULES=(
-  "config:.config      Application configs (hypr, waybar, rofi, nvim, zsh…)"
+  "config:.config      Application configs (hypr, waybar, quickshell, rofi, nvim, zsh…)"
   "scripts:scripts     Custom scripts → ~/.local/bin/scripts"
   "icons:.icons        Icon theme"
   "themes:.themes      GTK/Qt themes"
@@ -591,6 +648,11 @@ cmd_select_modules() {
       break
     fi
 
+    if [[ "$choice" == "q" || "$choice" == "Q" ]]; then
+      echo -e "  ${Y}Aborted.${RESET}"
+      exit 0
+    fi
+
     if [[ "$choice" =~ ^[0-9]+$ ]] && (( choice >= 1 && choice <= ${#keys[@]} )); then
       local idx=$(( choice - 1 ))
       local key="${keys[$idx]}"
@@ -616,16 +678,23 @@ install_config() {
   step ".config — Application Configs"
   [[ -d "$REPO_DIR/.config" ]] || { warn "No .config directory found in repo."; return 0; }
 
+  local has_quickshell=0
   while IFS= read -r -d '' subdir; do
     local name
     name="$(basename "$subdir")"
     safe_copy_tree "$subdir" "$HOME/.config/$name" ".config/$name"
+    [[ "$name" == "quickshell" ]] && has_quickshell=1
   done < <(find "$REPO_DIR/.config" -mindepth 1 -maxdepth 1 -type d -print0)
 
   # Handle lone files at the top of .config (e.g. starship.toml)
   while IFS= read -r -d '' f; do
     safe_copy "$f" "$HOME/.config/$(basename "$f")"
   done < <(find "$REPO_DIR/.config" -mindepth 1 -maxdepth 1 -type f -print0)
+
+  if [[ "$has_quickshell" -eq 0 ]]; then
+    warn "quickshell/ config not found in repo — panels, launcher, and OSD may not work."
+    warn "Install quickshell from the Arch repos and check your clone."
+  fi
 }
 
 install_scripts() {
@@ -775,6 +844,7 @@ print_banner() {
   [[ "$OPT_DRY_RUN"    -eq 1 ]] && printf "  ${Y}%-16s${RESET} ${Y}%s${RESET}\n" "Mode"   "DRY RUN — no changes will be made"
   [[ "$OPT_BACKUP"     -eq 0 ]] && printf "  ${R}%-16s${RESET} ${R}%s${RESET}\n" "Backup" "DISABLED"
   [[ "$OPT_INSTALL_DEPS" -eq 1 ]] && printf "  ${C}%-16s${RESET} ${C}%s${RESET}\n" "Deps"   "auto-install on"
+  [[ "$OPT_INSTALL_ALL_DEPS" -eq 1 ]] && printf "  ${C}%-16s${RESET} ${C}%s${RESET}\n" "Deps"   "all deps (ecosystem + supporting)"
   [[ "$OPT_SKIP_DEPS"   -eq 1 ]] && printf "  ${Y}%-16s${RESET} ${Y}%s${RESET}\n" "Deps"   "check skipped"
   echo
 }
@@ -813,6 +883,30 @@ print_summary() {
 }
 
 # ══════════════════════════════════════════════════════════════════════════════
+# ROLLBACK
+# ══════════════════════════════════════════════════════════════════════════════
+
+rollback() {
+  warn "Install failed or was interrupted — rolling back..."
+  if [[ -f "${INSTALL_MANIFEST:-}" ]]; then
+    local restored=0
+    while IFS= read -r target; do
+      [[ -z "$target" ]] && continue
+      local rel="${target#"$HOME/"}"
+      local bkp="${BACKUP_DIR:-}/$rel"
+      if [[ -e "$bkp" ]]; then
+        cp -a "$bkp" "$target" 2>/dev/null || true
+        (( restored++ )) || true
+      else
+        rm -f "$target" 2>/dev/null || true
+      fi
+    done < "$INSTALL_MANIFEST"
+    info "$restored file(s) restored from backup."
+  fi
+  cleanup
+}
+
+# ══════════════════════════════════════════════════════════════════════════════
 # CLEANUP & LOCK
 # ══════════════════════════════════════════════════════════════════════════════
 
@@ -833,6 +927,7 @@ acquire_lock() {
   fi
   echo "$$" > "$LOCK_FILE"
   trap cleanup EXIT INT TERM
+  trap rollback ERR
 }
 
 # ══════════════════════════════════════════════════════════════════════════════
@@ -851,7 +946,7 @@ print_banner
 cmd_check_deps
 
 # Neovim dependency install
-if [[ "$OPT_INSTALL_DEPS" -eq 1 || "$OPT_INSTALL_NVIM_DEPS" -eq 1 ]]; then
+if [[ "$OPT_SKIP_DEPS" -eq 0 && ("$OPT_INSTALL_DEPS" -eq 1 || "$OPT_INSTALL_NVIM_DEPS" -eq 1) ]]; then
   cmd_install_neovim_deps
 elif [[ "$OPT_YES" -eq 0 ]]; then
   echo
