@@ -118,7 +118,7 @@
 | 🔔 **Notifications** | [Mako](https://github.com/emersion/mako)                                                            |
 |   🚀 **Launcher**    | [Quickshell](https://github.com/Quickshell/Quickshell) + [Rofi](https://github.com/lbonn/rofi)      |
 |    🌐 **Browser**    | [Zen Browser](https://zen-browser.app/)                                                             |
-|    🔒 **Locker**     | [Quickshell](https://github.com/Quickshell/Quickshell) (QML lock screen) + [Hyprlock](https://github.com/hyprwm/hyprlock) |
+|    🔒 **Locker**     | [Quickshell](https://github.com/Quickshell/Quickshell) (QML lock screen) |
 |     📁 **Files**     | [Nautilus](https://gitlab.gnome.org/GNOME/nautilus) + [Yazi](https://yazi-rs.github.io/)            |
 |    📝 **Editor**     | [Neovim](https://neovim.io/)                                                                        |
 |   🖼 **Wallpaper**   | [awww](https://github.com/InioX/awww) + [hyprwat](https://github.com/InioX/hyprwat)                |
@@ -172,9 +172,9 @@ System dependencies (`--install-nvim-deps`): `wl-clipboard`, `python`, `imagemag
 
 ```bash
 yay -S hyprland waybar foot kitty zsh rofi mako       \
-        hyprlock matugen-bin btop yazi fastfetch neovim starship          \
+        matugen-bin btop yazi fastfetch neovim starship          \
         cava cmus mpv nautilus zen-browser-bin aria2 advcpmv              \
-        quickshell-git hyprwat
+        quickshell hyprwat
 ```
 
 ### Supporting packages
@@ -591,7 +591,7 @@ This setup uses **[Quickshell](https://github.com/Quickshell/Quickshell)** as th
 Quickshell processes are auto-started by `qs_manager.sh` on Hyprland startup. The config files live under `.config/quickshell/`.
 
 > [!NOTE]
-> Quickshell is an AUR package (`quickshell-git`). The installer will check for it, but you may need to install it manually beforehand.
+> Quickshell is in the official Arch repos (`quickshell`). The installer will check for it.
 
 <br/>
 
@@ -652,7 +652,7 @@ Each run creates a fresh backup. To roll back after an update:
 
 ```bash
 ./install.sh --dry-run
-which hyprland waybar rofi mako hyprlock matugen kitty foot zsh
+which hyprland waybar rofi mako matugen kitty foot zsh
 ```
 
 </details>
@@ -704,7 +704,7 @@ pgrep -f "qs_manager" || ~/.config/hypr/scripts/qs_manager.sh
 tail -30 /tmp/hypr-install-*.log 2>/dev/null
 ```
 
-Make sure `quickshell-git` is installed — it is not in the official repos.
+Make sure `quickshell` is installed.
 </details>
 
 <details>
