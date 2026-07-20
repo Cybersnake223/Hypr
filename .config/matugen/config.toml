@@ -86,3 +86,7 @@ post_hook = 'sed -i "s/^theme=.*/theme=matugen/" ~/.config/Kvantum/kvantum.kvcon
 [templates.qt6ct]
 input_path = '~/.config/matugen/templates/qt6ct.conf'
 output_path = '~/.config/qt6ct/colors/matugen.conf'
+
+[templates.zen_userchrome]
+input_path = '~/.config/matugen/templates/zen-userchrome.css'
+output_path = '~/.config/zen/sf2fjah5.Default (release)/chrome/userChrome.css'
