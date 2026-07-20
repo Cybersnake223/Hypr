@@ -2,24 +2,16 @@
 reload_apps = true
 color_scheme = "dark"
 
-[templates.waybar]
-input_path = '~/.config/matugen/templates/colors.css'
-output_path = '~/.config/waybar/colors.css'
-post_hook = 'sh ~/.local/bin/scripts/reloadway'
 
 [templates.rofi]
 input_path = '~/.config/matugen/templates/rofi-color.rasi'
 output_path = '~/.config/rofi/colors.rasi'
 
 [templates.hyprland]
-input_path = '~/.config/matugen/templates/hyprland-color.conf'
-output_path = '~/.config/hypr/colors/colors.conf'
+input_path = '~/.config/matugen/templates/hyprland-color.lua'
+output_path = '~/.config/hypr/colors/colors.lua'
 post_hook = 'hyprctl reload'
 
-[templates.mako]
-input_path = '~/.config/matugen/templates/mako'
-output_path = '~/.config/mako/mako-colors'
-post_hook = 'makoctl reload'
 
 [templates.anyrun]
 input_path = '~/.config/matugen/templates/colors.css'
@@ -48,7 +40,7 @@ output_path = '~/.config/gtk-4.0/gtk.css'
 post_hook = 'gsettings set org.gnome.desktop.interface gtk-theme "adw-gtk3-dark"; gsettings set org.gnome.desktop.interface color-scheme "prefer-dark"'
 
 [templates.kvantum_kvconfig]
-input_path = './templates/kvantum-colors.kvconfig'
+input_path = '~/.config/matugen/templates/kvantum-colors.kvconfig'
 output_path = '~/.config/Kvantum/matugen/matugen.kvconfig'
 
 [templates.kvantum_svg]
@@ -59,26 +51,38 @@ output_path = '~/.config/Kvantum/matugen/matugen.svg'
 input_path = '~/.config/matugen/templates/hyprwat.toml'
 output_path = '~/.config/hyprwat/hyprwat.conf'
 
-# [templates.qt5ct]
-# input_path = 'path/to/template'
-# output_path = '~/.config/qt5ct/colors/matugen.conf'
-#
-# [templates.qt6ct]
-# input_path = 'path/to/template'
-# output_path = '~/.config/qt6ct/colors/matugen.conf'
+[templates.opencode]
+input_path = '~/.config/matugen/templates/opencode-colors.json'
+output_path = '~/.config/opencode/themes/matugen.json'
 
-# [templates.swaync]
-# input_path = '~/.config/matugen/templates/swaync.css'
-# output_path = '~/.config/swaync/colors.css'
-# post_hook = 'swaymsg reload'
-#
-# [templates.swayosd]
-# input_path = '~/.config/matugen/templates/swayosd.css'
-# output_path = '~/.config/swayosd/swayosd.css'
-# post_hook = '~/.local/bin/scripts/restart_swayosd'
+[templates.quickshell]
+input_path = '~/.config/matugen/templates/quickshell.json'
+output_path = '~/.local/state/quickshell/generated/colors.json'
 
-# [templates.kitty]
-# input_path = '~/.config/matugen/templates/kitty-colors.conf'
-# output_path = '~/.config/kitty/themes/Matugen.conf'
-# post_hook = "kitty +kitten themes --reload-in=all Matugen"
+[templates.quickshell_dynamic]
+input_path = '~/.config/matugen/templates/quickshell-dynamic-island.json'
+output_path = '~/.config/hypr/scripts/quickshell/qs_colors.json'
+post_hook = 'touch /tmp/qs_colors_updated'
 
+[templates.aerc]
+input_path = '~/.config/matugen/templates/aerc'
+output_path = '~/.config/aerc/stylesets/matugen'
+
+# [templates.mako]
+# input_path = '~/.config/matugen/templates/mako'
+# output_path = '~/.config/mako/mako-colors'
+# post_hook = 'makoctl reload'
+
+# [templates.waybar]
+# input_path = '~/.config/matugen/templates/colors.css'
+# output_path = '~/.config/waybar/colors.css'
+# post_hook = 'sh ~/.local/bin/scripts/reloadway'
+
+[templates.qt5ct]
+input_path = '~/.config/matugen/templates/qt5ct.conf'
+output_path = '~/.config/qt5ct/colors/matugen.conf'
+post_hook = 'sed -i "s/^theme=.*/theme=matugen/" ~/.config/Kvantum/kvantum.kvconfig'
+
+[templates.qt6ct]
+input_path = '~/.config/matugen/templates/qt6ct.conf'
+output_path = '~/.config/qt6ct/colors/matugen.conf'
