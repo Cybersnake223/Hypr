@@ -95,7 +95,7 @@
 
 |                                        ↩️                                         |                                                     🔤                                                      |                                                   🌐                                                   |                                        📜                                        |                                       🎨                                        |
 | :-------------------------------------------------------------------------------: | :---------------------------------------------------------------------------------------------------------: | :----------------------------------------------------------------------------------------------------: | :------------------------------------------------------------------------------: | :-----------------------------------------------------------------------------: |
-| **One-command undo** — restore all your originals with `./install.sh --uninstall` | **Bundled fonts** — JetBrains Mono Nerd, Font Awesome, Icomoon Feather, Nerd Symbols — installed and cached | **Zen Browser CSS** — custom `userChrome.css` and `userContent.css` tuned to match the Viper aesthetic | **50+ custom scripts** — automatically marked executable and patched into `PATH` | **Live theming** — change wallpaper, run matugen, everything recolors instantly |
+| **One-command undo** — restore all your originals with `./install.sh --uninstall` | **Bundled fonts** — JetBrains Mono Nerd, Font Awesome, Icomoon Feather, Nerd Symbols — installed and cached | **Zen Browser CSS** — custom `userChrome.css` and `userContent.css` tuned to match the Viper aesthetic | **33 custom scripts** — automatically marked executable and patched into `PATH` | **Live theming** — change wallpaper, run matugen, everything recolors instantly |
 
 </div>
 
@@ -112,15 +112,16 @@
 |     🏗 **Base**      | [Arch Linux](https://archlinux.org/)                                                                |
 |  🪟 **Compositor**   | [Hyprland](https://hyprland.org/)                                                                   |
 |      📊 **Bar**      | [Waybar](https://github.com/Alexays/Waybar)                                                         |
+|   🎛 **Panels**     | [Quickshell](https://github.com/Quickshell/Quickshell) — dynamic island, OSD, launcher              |
 |   🖥 **Terminal**    | [Kitty](https://sw.kovidgoyal.net/kitty/) + [Foot](https://codeberg.org/dnkl/foot)                  |
 |     🐚 **Shell**     | [Zsh](https://zsh.sourceforge.io/) + [Starship](https://starship.rs/)                               |
 | 🔔 **Notifications** | [Mako](https://github.com/emersion/mako)                                                            |
-|   🚀 **Launcher**    | [Rofi Wayland fork](https://github.com/lbonn/rofi)                                                  |
+|   🚀 **Launcher**    | [Quickshell](https://github.com/Quickshell/Quickshell) + [Rofi](https://github.com/lbonn/rofi)      |
 |    🌐 **Browser**    | [Zen Browser](https://zen-browser.app/)                                                             |
 |    🔒 **Locker**     | [Hyprlock](https://github.com/hyprwm/hyprlock)                                                      |
 |     📁 **Files**     | [Nautilus](https://gitlab.gnome.org/GNOME/nautilus) + [Yazi](https://yazi-rs.github.io/)            |
 |    📝 **Editor**     | [Neovim](https://neovim.io/)                                                                        |
-|   🖼 **Wallpaper**   | [awww](https://github.com/InioX/awww)                                                               |
+|   🖼 **Wallpaper**   | [awww](https://github.com/InioX/awww) + [hyprwat](https://github.com/InioX/hyprwat)                |
 |    🎨 **Theming**    | [Matugen](https://github.com/InioX/matugen)                                                         |
 |  📡 **System Info**  | [Fastfetch](https://github.com/fastfetch-cli/fastfetch)                                             |
 |     🎵 **Audio**     | [cmus](https://cmus.github.io/) + [Cava](https://github.com/karlstav/cava) + [mpv](https://mpv.io/) |
@@ -151,7 +152,8 @@
 ```bash
 yay -S hyprland waybar foot kitty zsh rofi mako       \
         hyprlock matugen-bin btop yazi fastfetch neovim starship          \
-        cava cmus mpv nautilus zen-browser-bin aria2 advcpmv
+        cava cmus mpv nautilus zen-browser-bin aria2 advcpmv              \
+        quickshell-git hyprwat
 ```
 
 ### Supporting packages
@@ -177,6 +179,9 @@ yay -S hyprland waybar foot kitty zsh rofi mako       \
 | `fd`                                            | Better `find`                             |
 | `bat`                                           | Better `cat`                              |
 | `bleachbit`                                     | System cleaner script dependency          |
+| `aerc`                                          | Terminal email client (`ALT + T`)          |
+| `localsend`                                     | Local file sharing (`ALT + S`)            |
+| `nsxiv`                                         | Image viewer (used in scripts)            |
 
 </details>
 
@@ -384,7 +389,7 @@ Toggle a number, press Enter to confirm.
 | Keybind         | Action                      |
 | --------------- | --------------------------- |
 | `ALT + Enter`   | Terminal (Kitty)            |
-| `ALT + D`       | App launcher (Rofi)         |
+| `ALT + D`       | App launcher (Quickshell)   |
 | `ALT + R`       | Yazi (TUI file manager)     |
 | `ALT + N`       | Neovim                      |
 | `ALT + M`       | cmus                        |
@@ -493,6 +498,28 @@ matugen image ~/.config/hypr/wallpaper/current.jpeg
 
 > [!NOTE]
 > Matugen templates live in `.config/matugen/`. Edit them to control exactly how color tokens map to each app's config format.
+
+<br/>
+
+---
+
+## 🎛 Quickshell Panels & OSD
+
+This setup uses **[Quickshell](https://github.com/Quickshell/Quickshell)** as the core UI framework, providing a QML-based desktop shell that powers several visual components:
+
+| Component          | Role                                        |
+| ------------------ | ------------------------------------------- |
+| **TopBar**         | Desktop panel with workspaces, clock, tray  |
+| **DynamicIsland**  | Notification-style OSD overlays             |
+| **App Launcher**   | Application launcher (triggered via `ALT+D`)|
+| **Lock Screen**    | Screen lock with clock and media controls   |
+| **ClipboardViewer**| Clipboard history manager                   |
+| **OSD**            | Volume/brightness on-screen display         |
+
+Quickshell processes are auto-started by `qs_manager.sh` on Hyprland startup. The config files live under `.config/quickshell/`.
+
+> [!NOTE]
+> Quickshell is an AUR package (`quickshell-git`). The installer will check for it, but you may need to install it manually beforehand.
 
 <br/>
 
