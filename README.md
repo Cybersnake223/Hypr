@@ -40,7 +40,7 @@
 
 <br/>
 
-**[🖼 Preview](#-preview) · [✨ Features](#-features) · [🧩 Stack](#-stack) · [📦 Prerequisites](#-prerequisites) · [⚡ Installation](#-installation) · [📂 Layout](#-file-layout) · [🚩 Flags](#-installer-flags) · [⌨️ Keybinds](#-keybinds) · [🎨 Theming](#-theming) · [🌐 Zen](#-zen-browser) · [🔄 Updating](#-updating) · [🔧 Troubleshoot](#-troubleshooting)**
+**[🖼 Preview](#-preview) · [✨ Features](#-features) · [🧩 Stack](#-stack) · [📦 Prerequisites](#-prerequisites) · [⚡ Installation](#-installation) · [📂 Layout](#-file-layout) · [🚩 Flags](#-installer-flags) · [⌨️ Keybinds](#-keybinds) · [🎨 Theming](#-theming) · [🎛 Quickshell](#-quickshell-panels--osd) · [🌐 Zen](#-zen-browser) · [🔄 Updating](#-updating) · [🔧 Troubleshoot](#-troubleshooting) · [🔐 Security](#-security)**
 
 </div>
 
@@ -118,7 +118,7 @@
 | 🔔 **Notifications** | [Mako](https://github.com/emersion/mako)                                                            |
 |   🚀 **Launcher**    | [Quickshell](https://github.com/Quickshell/Quickshell) + [Rofi](https://github.com/lbonn/rofi)      |
 |    🌐 **Browser**    | [Zen Browser](https://zen-browser.app/)                                                             |
-|    🔒 **Locker**     | [Hyprlock](https://github.com/hyprwm/hyprlock)                                                      |
+|    🔒 **Locker**     | [Quickshell](https://github.com/Quickshell/Quickshell) (QML lock screen) + [Hyprlock](https://github.com/hyprwm/hyprlock) |
 |     📁 **Files**     | [Nautilus](https://gitlab.gnome.org/GNOME/nautilus) + [Yazi](https://yazi-rs.github.io/)            |
 |    📝 **Editor**     | [Neovim](https://neovim.io/)                                                                        |
 |   🖼 **Wallpaper**   | [awww](https://github.com/InioX/awww) + [hyprwat](https://github.com/InioX/hyprwat)                |
@@ -129,6 +129,27 @@
 |   ⬇ **Downloads**    | [aria2](https://aria2.github.io/)                                                                   |
 
 </div>
+
+<br/>
+
+---
+
+## 📝 Neovim
+
+The Neovim config (`.config/nvim/`) is a modern Lua-based setup:
+
+| Component          | Tool                                         |
+| ------------------ | -------------------------------------------- |
+| **Plugin manager** | [lazy.nvim](https://github.com/folke/lazy.nvim) |
+| **LSP**            | [Mason](https://github.com/williamboman/mason.nvim) — auto-installs language servers |
+| **Completion**     | [nvim-cmp](https://github.com/hrsh7th/nvim-cmp) |
+| **Telescope**      | Fuzzy finder for files, grep, buffers        |
+| **Treesitter**     | Syntax highlighting and parsing              |
+
+System dependencies (`--install-nvim-deps`): `wl-clipboard`, `python`, `imagemagick`, `luarocks`, `shellcheck`, `gcc`, `nodejs`, `npm`.
+
+> [!NOTE]
+> After first Neovim launch, run `:MasonInstallAll` to install LSP servers and formatters.
 
 <br/>
 
@@ -182,12 +203,21 @@ yay -S hyprland waybar foot kitty zsh rofi mako       \
 | `aerc`                                          | Terminal email client (`ALT + T`)          |
 | `localsend`                                     | Local file sharing (`ALT + S`)            |
 | `nsxiv`                                         | Image viewer (used in scripts)            |
+| `wiremix`                                       | Audio mixer (`ALT SHIFT + P`)            |
 
 </details>
 
 ### Fonts
 
-The `.fonts/` directory is bundled and installed automatically. To install manually:
+The `.fonts/` directory is bundled and installed automatically. It is organized into three subdirectories:
+
+| Directory         | Contents                                                   |
+| ----------------- | ---------------------------------------------------------- |
+| `normal-fonts/`   | Comfortaa, IBM Plex Mono, JetBrainsMono, Iosevka           |
+| `nerd-fonts/`     | JetBrains Mono Nerd, Fira Code Nerd, Hack Nerd, Iosevka    |
+| `icon-fonts/`     | Material Icons, Icomoon Feather, Nerd Symbols, Typicons    |
+
+To install manually:
 
 ```bash
 yay -S ttf-jetbrains-mono-nerd ttf-font-awesome nerd-fonts-symbols-only
@@ -218,12 +248,13 @@ chmod +x install.sh
 ```
 [1] ✅  Verify core system utilities
 [2] 🔍  Check Hyprland ecosystem packages
-[3] 💾  Backup all files that will be overwritten
-[4] 📁  Copy selected modules into $HOME
-[5] 🔑  chmod +x all scripts in ~/.local/bin/scripts
-[6] 🔤  Rebuild font cache via fc-cache -f
-[7] 🛤  Detect shell and optionally patch PATH
-[8] 📋  Print install summary with log path
+[3] 📦  Check Neovim system dependencies (Mason, language servers)
+[4] 💾  Backup all files that will be overwritten
+[5] 📁  Copy selected modules into $HOME
+[6] 🔑  chmod +x all scripts in ~/.local/bin/scripts
+[7] 🔤  Rebuild font cache via fc-cache -f
+[8] 🛤  Detect shell and optionally patch PATH
+[9] 📋  Print install summary with log path
 ```
 
 Backups land here:
@@ -246,9 +277,19 @@ done
 for f in .Xresources .gtkrc-2.0; do
   [ -f "$f" ] && cp "$f" "$HOME/"
 done
+
+# Copy Quickshell QML configs separately
+[ -d .config/quickshell ] && cp -r .config/quickshell "$HOME/.config/"
+[ -d .config/matugen ] && cp -r .config/matugen "$HOME/.config/"
+[ -f .config/qt5ct/qt5ct.conf ] && mkdir -p "$HOME/.config/qt5ct" \
+  && cp .config/qt5ct/qt5ct.conf "$HOME/.config/qt5ct/"
+
 find "$HOME/.local/bin/scripts" -type f -exec chmod +x {} +
 fc-cache -f
 echo 'export PATH="$HOME/.local/bin:$PATH"' >> ~/.zshrc
+
+# Start Quickshell panels
+~/.config/hypr/scripts/qs_manager.sh &
 ```
 
 <br/>
@@ -260,10 +301,11 @@ echo 'export PATH="$HOME/.local/bin:$PATH"' >> ~/.zshrc
 ```
 $HOME
 ├── .config/
-│   ├── hypr/             ← Hyprland compositor
+│   ├── hypr/             ← Hyprland compositor (Lua config)
 │   ├── waybar/           ← Status bar
+│   ├── quickshell/       ← QML panels, launcher, OSD, lock screen
 │   ├── rofi/             ← App launcher
-│   ├── nvim/             ← Neovim
+│   ├── nvim/             ← Neovim (Lua, lazy.nvim)
 │   ├── zsh/              ← Zsh (uses $ZDOTDIR)
 │   ├── kitty/            ← Kitty terminal
 │   ├── foot/             ← Foot terminal
@@ -271,16 +313,32 @@ $HOME
 │   ├── yazi/             ← TUI file manager
 │   ├── mpv/              ← Media player
 │   ├── btop/             ← System monitor
-│   ├── matugen/          ← Color templates
+│   ├── matugen/          ← Matugen config + 20 color templates
 │   ├── fastfetch/        ← System info
 │   ├── cava/             ← Audio visualizer
+│   ├── anyrun/           ← Alternative launcher (Rust)
+│   ├── bat/              ← Cat replacement
+│   ├── aerc/             ← Terminal email client (`ALT + T`)
+│   ├── cmus/             ← Music player
+│   ├── environment.d/    ← Environment variables
+│   ├── fsh/              ← Fish shell config
+│   ├── gtk-2.0/          ← GTK2 theme
+│   ├── gtk-3.0/          ← GTK3 CSS (Matugen-recolored)
+│   ├── gtk-4.0/          ← GTK4 CSS (Matugen-recolored)
+│   ├── hyprwat/          ← Wallpaper picker GUI
+│   ├── Kvantum/          ← Qt theme engine
+│   ├── qt5ct/            ← Qt5 settings
+│   ├── xsettingsd/       ← X settings daemon (GTK theming bridge)
+│   ├── yay/              ← AUR helper config
 │   └── ...
-├── .local/bin/scripts/   ← 50+ custom shell scripts
+├── .local/bin/scripts/   ← 33 custom shell scripts
 ├── .fonts/               ← Bundled fonts
 ├── .icons/               ← Icon theme
 ├── .themes/              ← GTK/Qt themes
 ├── .Xresources
-└── .gtkrc-2.0
+├── .gtkrc-2.0
+├── .zen/chrome/          ← Zen Browser custom CSS
+└── assets/               ← Screenshots and logo
 
 /etc/ (system-level — not installed, apply manually):
 ├── auto-cpufreq.conf    ← CPU governor tuning
@@ -422,7 +480,7 @@ Toggle a number, press Enter to confirm.
 <br/>
 
 > [!NOTE]
-> These open personal bookmarks hardcoded in the Hyprland config. Edit them before adopting this setup.
+> These open personal bookmarks hardcoded in the Hyprland config. Edit them before adopting this setup — they're in `.config/hypr/modules/keybinds.lua`.
 
 | Keybind         | Action             |
 | --------------- | ------------------ |
@@ -485,6 +543,8 @@ Toggle a number, press Enter to confirm.
 
 This setup uses **[Matugen](https://github.com/InioX/matugen)** — a Material You color extraction engine. Change your wallpaper, run Matugen, and Waybar, Rofi, Mako, Hyprlock, GTK apps, and the terminal all recolor automatically.
 
+Use **[hyprwat](https://github.com/InioX/hyprwat)** for a GUI wallpaper picker that triggers Matugen recolor on selection.
+
 ```bash
 # Set wallpaper and regenerate palette
 aww set /path/to/wallpaper.jpg
@@ -498,6 +558,18 @@ matugen image ~/.config/hypr/wallpaper/current.jpeg
 
 > [!NOTE]
 > Matugen templates live in `.config/matugen/`. Edit them to control exactly how color tokens map to each app's config format.
+
+Templates are provided for these components:
+
+| App            | App            | App           |
+| -------------- | -------------- | ------------- |
+| Waybar         | Rofi           | Hyprland      |
+| Mako           | Anyrun         | btop          |
+| Zathura        | Yazi           | GTK3          |
+| GTK4           | Kvantum        | hyprwat       |
+| Kitty          | SwayNC         | SwayOSD       |
+| Zen Browser    | MPV            | Cava          |
+| Neovim         | Foot           |               |
 
 <br/>
 
@@ -619,6 +691,23 @@ matugen image /path/to/your/wallpaper
 </details>
 
 <details>
+<summary>Quickshell panels / launcher not showing</summary>
+
+```bash
+# Check if quickshell is installed
+which quickshell
+
+# Verify qs_manager.sh is running
+pgrep -f "qs_manager" || ~/.config/hypr/scripts/qs_manager.sh
+
+# Check the install log for errors
+tail -30 /tmp/hypr-install-*.log 2>/dev/null
+```
+
+Make sure `quickshell-git` is installed — it is not in the official repos.
+</details>
+
+<details>
 <summary>Icon glyphs showing as boxes</summary>
 
 ```bash
@@ -632,6 +721,22 @@ fc-cache -f
 <summary>--uninstall says "No install manifest found"</summary>
 
 The installer was never run, or the backup directory was deleted. Restore files manually from the repo tree.
+
+</details>
+
+<details>
+<summary>Screen sharing / portals not working</summary>
+
+```bash
+# Make sure xdg-desktop-portal-hyprland is installed
+yay -S xdg-desktop-portal-hyprland
+
+# Restart the portal service
+systemctl --user restart xdg-desktop-portal-hyprland
+
+# Check service status
+systemctl --user status xdg-desktop-portal-hyprland
+```
 
 </details>
 
