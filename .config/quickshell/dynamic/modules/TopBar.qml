@@ -46,7 +46,7 @@ Variants {
             property int barHeight: s(36)
 
             // THICKER BAR, MINIMAL MARGINS (Scaled)
-            height: barHeight
+            implicitHeight: barHeight
             margins { top: 0; bottom: s(6); left: s(2); right: s(2) }
             
             // exclusiveZone = height + top margin
@@ -63,45 +63,34 @@ Variants {
             readonly property color overlay0_09: SharedConfig.overlay0Soft
             readonly property color surface0_04: SharedConfig.surface0Soft
 
-            // Triggers layout animations immediately to feel fast
-            property bool isStartupReady: false
-            Component.onCompleted: barWindow.isStartupReady = true
-            
             // Prevents repeaters (Workspaces/Tray) from flickering on data updates
             property bool fastPollerLoaded: false
             
             property bool isDataReady: fastPollerLoaded
 
-            // Reveal the right cluster even if the keyboard watcher never fires,
-            // so a single watcher failure can't hide the whole cluster.
+            // Reveal the right cluster when data arrives (or after 1.5s fallback)
             Timer {
                 running: !barWindow.fastPollerLoaded
                 interval: 1500
                 onTriggered: barWindow.fastPollerLoaded = true
             }
+            Connections {
+                target: SharedConfig
+                enabled: !barWindow.fastPollerLoaded
+                function onKbLayoutChanged() {
+                    barWindow.fastPollerLoaded = true
+                }
+            }
 
-            property string timeStr: ""
-            property string fullDateStr: ""
-
-            
-            property string batPercent: "100%"
-            property string batIcon: "󰁹"
-            property string batStatus: "Unknown"
-            
-    property string kbLayout: "us"
-    property string volPercent: "0"
-    property string volIcon: "󰝟"
-    property bool volMuted: false
-
-    property string micPercent: "0"
-    property string micIcon: "󰍬"
-    property bool micMuted: false
+            // Triggers layout animations immediately to feel fast
+            property bool isStartupReady: false
+            Component.onCompleted: barWindow.isStartupReady = true
 
     ListModel { id: workspacesModel }
 
             // Derived properties for UI logic
-            property int batCap: parseInt(barWindow.batPercent) || 0
-            property bool isCharging: barWindow.batStatus === "Charging" || barWindow.batStatus === "Full"
+            property int batCap: parseInt(SharedConfig.batPercent) || 0
+            property bool isCharging: SharedConfig.batStatus === "Charging" || SharedConfig.batStatus === "Full"
             
             property color batDynamicColor: {
                 if (isCharging) return mocha.green;
@@ -147,9 +136,9 @@ Variants {
                                     }
                                 }
                             } catch(e) { console.warn(e) }
-                        }
-                    }
-                }
+                                    }
+                                }
+                            }
             }
 
             Process {
@@ -163,69 +152,10 @@ Variants {
             }
 
 
-            // ==========================================
-            // MODULAR SYSTEM WATCHERS (all 4 in one process)
-            // ==========================================
-
-            Process {
-                id: topbarWatcher; running: true
-                command: ["bash", "-c", "~/.config/quickshell/dynamic/modules/watchers/topbar_combined.sh"]
-                stdout: SplitParser {
-                    splitMarker: "\n"
-                    onRead: function(line) {
-                        let txt = line.trim()
-                        if (txt === "" || txt === "{}") return
-
-                        // Prefix tag is before the first colon
-                        let colonIdx = txt.indexOf(":")
-                        if (colonIdx < 0) return
-                        let tag = txt.substring(0, colonIdx)
-                        let data = txt.substring(colonIdx + 1)
-
-                        if (tag === "kblaout") {
-                            if (data !== "" && barWindow.kbLayout !== data) barWindow.kbLayout = data
-                            if (!barWindow.fastPollerLoaded) barWindow.fastPollerLoaded = true
-                            return
-                        }
-
-                        try {
-                            let obj = JSON.parse(data)
-                            if (tag === "batout") {
-                                let newBat = obj.percent.toString() + "%"
-                                if (barWindow.batPercent !== newBat) barWindow.batPercent = newBat
-                                if (barWindow.batIcon !== obj.icon) barWindow.batIcon = obj.icon
-                                if (barWindow.batStatus !== obj.status) barWindow.batStatus = obj.status
-                            } else if (tag === "audioout") {
-                                if (barWindow.volPercent !== obj.volume) barWindow.volPercent = obj.volume
-                                if (barWindow.volIcon !== obj.icon) barWindow.volIcon = obj.icon
-                                barWindow.volMuted = obj.is_muted === "true"
-                            } else if (tag === "micout") {
-                                if (barWindow.micPercent !== obj.volume) barWindow.micPercent = obj.volume
-                                if (barWindow.micIcon !== obj.icon) barWindow.micIcon = obj.icon
-                                barWindow.micMuted = obj.is_muted === "true"
-                            }
-                        } catch(e) { /* ignore parse errors on non-JSON lines */ }
-                    }
-                }
-            }
-
-            // Native Qt Time Formatting
-            Timer {
-                interval: 1000; running: true; repeat: true; triggeredOnStart: true
-                onTriggered: {
-                    let d = new Date();
-                    barWindow.timeStr = Qt.formatDateTime(d, "hh:mm:ss AP");
-                    barWindow.fullDateStr = Qt.formatDateTime(d, "dddd, MMMM dd");
-                }
-            }
 
             // ==========================================
             // UI LAYOUT
             // ==========================================
-            Item {
-                anchors.fill: parent
-
-                // ---------------- CENTER (DYNAMIC ISLAND PLACEHOLDER) ----------------
                 // The real dynamic island is rendered by DynamicIsland.qml on the Overlay
                 // layer. This invisible item only reserves horizontal space so the
                 // left/right sections never overlap the real island.
@@ -235,7 +165,7 @@ Variants {
 
                     height: barWindow.barHeight
                     width: Math.min(barWindow.s(260), Math.max(barWindow.s(120), Screen.width * 0.20))
-                    Behavior on width { NumberAnimation { duration: 450; easing.type: Easing.Bezier; easing.bezierCurve: [0.16, 1, 0.3, 1] } }
+                    Behavior on width { NumberAnimation { duration: 450; easing.type: Easing.Bezier; easing.bezierCurve: SharedConfig.animEaseOut } }
                 }
 
                 // ---------------- LEFT ----------------
@@ -261,7 +191,7 @@ Variants {
                         onTriggered: leftLayout.showLayout = true
                     }
 
-                    Behavior on opacity { NumberAnimation { duration: 400; easing.type: Easing.Bezier; easing.bezierCurve: [0.16, 1, 0.3, 1] } }
+                    Behavior on opacity { NumberAnimation { duration: 400; easing.type: Easing.Bezier; easing.bezierCurve: SharedConfig.animEaseOut } }
 
                     property int moduleHeight: barWindow.barHeight
 
@@ -363,6 +293,53 @@ Variants {
                         }
                     }            
 
+                    // Upgradable Packages
+                    Rectangle {
+                        id: pkgPill
+                        property bool isHovered: pkgPillMouse.containsMouse
+                        property bool hasUpdates: SharedConfig.pkgUpdates > 0
+
+                        color: barWindow.base75
+                        radius: barWindow.s(14); border.width: 1; border.color: barWindow.text05
+                        Layout.preferredHeight: parent.moduleHeight
+                        clip: true
+
+                        property real targetWidth: pkgLayout.width + barWindow.s(20)
+                        Layout.preferredWidth: targetWidth
+                        Behavior on targetWidth { NumberAnimation { duration: 400; easing.type: Easing.Bezier; easing.bezierCurve: SharedConfig.animEaseOut } }
+
+                        scale: isHovered ? 1.05 : 1.0
+                        Behavior on scale { NumberAnimation { duration: 250; easing.type: Easing.Bezier; easing.bezierCurve: SharedConfig.animEaseOut } }
+
+                        Row {
+                            id: pkgLayout
+                            anchors.centerIn: parent
+                            spacing: barWindow.s(8)
+
+                            Text {
+                                anchors.verticalCenter: parent.verticalCenter
+                                text: pkgPill.hasUpdates ? "󰏔" : "󰸟"
+                                font.family: SharedConfig.nerdFont
+                                font.pixelSize: barWindow.s(16)
+                                color: pkgPill.hasUpdates ? mocha.peach : mocha.green
+                                Behavior on color { enabled: barWindow.visible; ColorAnimation { duration: 250 } }
+                            }
+                            Text {
+                                anchors.verticalCenter: parent.verticalCenter
+                                text: pkgPill.hasUpdates ? SharedConfig.pkgUpdates.toString() : "0"
+                                font.family: SharedConfig.monoFont
+                                font.pixelSize: barWindow.s(13)
+                                font.weight: Font.Black
+                                color: pkgPill.hasUpdates ? mocha.text : mocha.overlay0
+                                Behavior on color { enabled: barWindow.visible; ColorAnimation { duration: 250 } }
+                            }
+                        }
+
+                        MouseArea { id: pkgPillMouse; anchors.fill: parent; hoverEnabled: true }
+                    }
+
+                    Item { Layout.fillWidth: true }
+
                 }
 
                 // ---------------- RIGHT ----------------
@@ -388,7 +365,7 @@ Variants {
                         onTriggered: rightLayout.showLayout = true
                     }
 
-                    Behavior on opacity { NumberAnimation { duration: 400; easing.type: Easing.Bezier; easing.bezierCurve: [0.16, 1, 0.3, 1] } }
+                    Behavior on opacity { NumberAnimation { duration: 400; easing.type: Easing.Bezier; easing.bezierCurve: SharedConfig.animEaseOut } }
 
                     // Dynamic Spacer to gently push the tray and system pills completely to the right edge
                     Item { Layout.fillWidth: true } 
@@ -405,7 +382,7 @@ Variants {
 
                         property real targetWidth: trayRepeater.count > 0 ? trayLayout.width + barWindow.s(20) : 0
                         Layout.preferredWidth: targetWidth
-                        Behavior on targetWidth { NumberAnimation { duration: 400; easing.type: Easing.Bezier; easing.bezierCurve: [0.16, 1, 0.3, 1] } }
+                        Behavior on targetWidth { NumberAnimation { duration: 400; easing.type: Easing.Bezier; easing.bezierCurve: SharedConfig.animEaseOut } }
                         
                         visible: targetWidth > 0
                         opacity: targetWidth > 0 ? 1 : 0
@@ -500,16 +477,16 @@ Variants {
 
                                 property real targetWidth: kbLayoutRow.width + barWindow.s(20)
                                 width: targetWidth
-                                Behavior on width { NumberAnimation { duration: 500; easing.type: Easing.Bezier; easing.bezierCurve: [0.16, 1, 0.3, 1] } }
+                                Behavior on width { NumberAnimation { duration: 500; easing.type: Easing.Bezier; easing.bezierCurve: SharedConfig.animEaseOut } }
                                 
                                 scale: isHovered ? 1.05 : 1.0
-                                Behavior on scale { NumberAnimation { duration: 250; easing.type: Easing.Bezier; easing.bezierCurve: [0.16, 1, 0.3, 1] } }
+                                Behavior on scale { NumberAnimation { duration: 250; easing.type: Easing.Bezier; easing.bezierCurve: SharedConfig.animEaseOut } }
                                 Behavior on color { enabled: barWindow.visible; ColorAnimation { duration: 200 } }
 
                                 Row { 
                                     id: kbLayoutRow; anchors.centerIn: parent; spacing: barWindow.s(8)
                                     Text { anchors.verticalCenter: parent.verticalCenter; text: "󰌌"; font.family: SharedConfig.nerdFont; font.pixelSize: barWindow.s(16); color: mocha.text }
-                                    Text { anchors.verticalCenter: parent.verticalCenter; text: barWindow.kbLayout; font.family: SharedConfig.monoFont; font.pixelSize: barWindow.s(13); font.weight: Font.Black; color: mocha.text }
+                                    Text { anchors.verticalCenter: parent.verticalCenter; text: SharedConfig.kbLayout; font.family: SharedConfig.monoFont; font.pixelSize: barWindow.s(13); font.weight: Font.Black; color: mocha.text }
                                 }
                             MouseArea { id: kbMouse; anchors.fill: parent; hoverEnabled: true; onClicked: Quickshell.execDetached(["hyprctl", "switchxkblayout", "main", "next"]) }
                         }
@@ -525,18 +502,18 @@ Variants {
 
                                 property real targetWidth: micLayoutRow.width + barWindow.s(20)
                                 width: targetWidth
-                                Behavior on width { NumberAnimation { duration: 500; easing.type: Easing.Bezier; easing.bezierCurve: [0.16, 1, 0.3, 1] } }
+                                Behavior on width { NumberAnimation { duration: 500; easing.type: Easing.Bezier; easing.bezierCurve: SharedConfig.animEaseOut } }
 
                                 scale: isHovered ? 1.05 : 1.0
-                                Behavior on scale { NumberAnimation { duration: 250; easing.type: Easing.Bezier; easing.bezierCurve: [0.16, 1, 0.3, 1] } }
+                                Behavior on scale { NumberAnimation { duration: 250; easing.type: Easing.Bezier; easing.bezierCurve: SharedConfig.animEaseOut } }
                                 Behavior on color { enabled: barWindow.visible; ColorAnimation { duration: 200 } }
 
                                 Row {
                                     id: micLayoutRow; anchors.centerIn: parent; spacing: barWindow.s(8)
-                                    Text { anchors.verticalCenter: parent.verticalCenter; text: barWindow.micIcon; font.family: SharedConfig.nerdFont; font.pixelSize: barWindow.s(16); color: barWindow.micMuted ? mocha.red : mocha.text }
-                                    Text { anchors.verticalCenter: parent.verticalCenter; text: barWindow.micPercent + "%"; font.family: SharedConfig.monoFont; font.pixelSize: barWindow.s(13); font.weight: Font.Black; color: barWindow.micMuted ? mocha.red : mocha.text }
+                                    Text { anchors.verticalCenter: parent.verticalCenter; text: SharedConfig.micIcon; font.family: SharedConfig.nerdFont; font.pixelSize: barWindow.s(16); color: SharedConfig.micMuted ? mocha.red : mocha.text }
+                                    Text { anchors.verticalCenter: parent.verticalCenter; text: SharedConfig.micPercent + "%"; font.family: SharedConfig.monoFont; font.pixelSize: barWindow.s(13); font.weight: Font.Black; color: SharedConfig.micMuted ? mocha.red : mocha.text }
                                 }
-                            MouseArea { id: micMouse; anchors.fill: parent; hoverEnabled: true; onClicked: Quickshell.execDetached(["bash", "-c", "~/.config/quickshell/dynamic/modules/volume/audio_control.sh toggle-mute source @DEFAULT_SOURCE@"]) }
+                            MouseArea { id: micMouse; anchors.fill: parent; hoverEnabled: true; onClicked: Quickshell.execDetached(["bash", "-c", "~/.config/quickshell/dynamic/osd_volume.sh mic"]) }
                         }
 
                         Rectangle { width: 1; height: sysLayout.pillHeight * 0.55; radius: 1; color: SharedConfig.hairline }
@@ -550,16 +527,16 @@ Variants {
 
                                 property real targetWidth: volLayoutRow.width + barWindow.s(20)
                                 width: targetWidth
-                                Behavior on width { NumberAnimation { duration: 500; easing.type: Easing.Bezier; easing.bezierCurve: [0.16, 1, 0.3, 1] } }
+                                Behavior on width { NumberAnimation { duration: 500; easing.type: Easing.Bezier; easing.bezierCurve: SharedConfig.animEaseOut } }
 
                                 scale: isHovered ? 1.05 : 1.0
-                                Behavior on scale { NumberAnimation { duration: 250; easing.type: Easing.Bezier; easing.bezierCurve: [0.16, 1, 0.3, 1] } }
+                                Behavior on scale { NumberAnimation { duration: 250; easing.type: Easing.Bezier; easing.bezierCurve: SharedConfig.animEaseOut } }
                                 Behavior on color { enabled: barWindow.visible; ColorAnimation { duration: 200 } }
 
                                 Row {
                                     id: volLayoutRow; anchors.centerIn: parent; spacing: barWindow.s(8)
-                                    Text { anchors.verticalCenter: parent.verticalCenter; text: barWindow.volIcon; font.family: SharedConfig.nerdFont; font.pixelSize: barWindow.s(16); color: barWindow.volMuted ? mocha.red : mocha.text }
-                                    Text { anchors.verticalCenter: parent.verticalCenter; text: barWindow.volPercent + "%"; font.family: SharedConfig.monoFont; font.pixelSize: barWindow.s(13); font.weight: Font.Black; color: barWindow.volMuted ? mocha.red : mocha.text }
+                                    Text { anchors.verticalCenter: parent.verticalCenter; text: SharedConfig.volIcon; font.family: SharedConfig.nerdFont; font.pixelSize: barWindow.s(16); color: SharedConfig.volMuted ? mocha.red : mocha.text }
+                                    Text { anchors.verticalCenter: parent.verticalCenter; text: SharedConfig.volPercent + "%"; font.family: SharedConfig.monoFont; font.pixelSize: barWindow.s(13); font.weight: Font.Black; color: SharedConfig.volMuted ? mocha.red : mocha.text }
                                 }
                             MouseArea { id: volMouse; anchors.fill: parent; hoverEnabled: true; onClicked: Quickshell.execDetached(["bash", "-c", "~/.config/quickshell/dynamic/osd_volume.sh mute"]) }
                         }
@@ -573,52 +550,32 @@ Variants {
                                 radius: barWindow.s(12); height: barWindow.s(34);
                                 clip: true
 
-                                Rectangle {
-                                    anchors.fill: parent
-                                    radius: barWindow.s(10)
-                                    opacity: barWindow.isCharging ? chargePulse : 1.0
-                                    property real chargePulse: 1.0
-                                    SequentialAnimation on chargePulse {
-                                        running: barWindow.isCharging && barWindow.visible
-                                        loops: Animation.Infinite
-                                        PauseAnimation { duration: 1200 }
-                                        NumberAnimation { from: 1.0; to: 0.5; duration: 150; easing.type: Easing.Bezier; easing.bezierCurve: [0.16, 1, 0.3, 1] }
-                                        PauseAnimation { duration: 600 }
-                                        NumberAnimation { from: 0.5; to: 1.0; duration: 150; easing.type: Easing.Bezier; easing.bezierCurve: [0.16, 1, 0.3, 1] }
-                                    }
-                                    Behavior on opacity { NumberAnimation { duration: 300 } }
-                                    gradient: Gradient {
-                                        orientation: Gradient.Horizontal
-                                        GradientStop { position: 0.0; color: SharedConfig.isDesktop ? mocha.red : barWindow.batDynamicColor; Behavior on color { enabled: barWindow.visible; ColorAnimation { duration: 300 } } }
-                                        GradientStop { position: 1.0; color: SharedConfig.isDesktop ? Qt.lighter(mocha.red, 1.3) : Qt.lighter(barWindow.batDynamicColor, 1.3); Behavior on color { enabled: barWindow.visible; ColorAnimation { duration: 300 } } }
-                                    }
-                                }
-
                                 property real targetWidth: SharedConfig.isDesktop ? barWindow.s(20) : batLayoutRow.width + barWindow.s(20)
                                 width: targetWidth
-                                Behavior on width { NumberAnimation { duration: 500; easing.type: Easing.Bezier; easing.bezierCurve: [0.16, 1, 0.3, 1] } }
+                                Behavior on width { NumberAnimation { duration: 500; easing.type: Easing.Bezier; easing.bezierCurve: SharedConfig.animEaseOut } }
 
                                 scale: isHovered ? 1.05 : 1.0
-                                Behavior on scale { NumberAnimation { duration: 250; easing.type: Easing.Bezier; easing.bezierCurve: [0.16, 1, 0.3, 1] } }
+                                Behavior on scale { NumberAnimation { duration: 250; easing.type: Easing.Bezier; easing.bezierCurve: SharedConfig.animEaseOut } }
                                 Behavior on color { enabled: barWindow.visible; ColorAnimation { duration: 200 } }
 
                                 Row { 
                                     id: batLayoutRow; anchors.centerIn: parent; spacing: barWindow.s(8)
                                     Text { 
                                         anchors.verticalCenter: parent.verticalCenter
-                                        text: SharedConfig.isDesktop ? "" : barWindow.batIcon; 
+                                        text: SharedConfig.isDesktop ? "" : SharedConfig.batIcon; 
                                         font.family: SharedConfig.nerdFont; font.pixelSize: SharedConfig.isDesktop ? barWindow.s(14) : barWindow.s(13); 
-                                        color: mocha.base // Always mocha.base since gradient is 1.0 opacity
+                                        color: barWindow.batDynamicColor
                                         Behavior on color { enabled: barWindow.visible; ColorAnimation { duration: 300 } }
                                     }
                                     Text { 
                                         anchors.verticalCenter: parent.verticalCenter
                                         visible: !SharedConfig.isDesktop
-                                        text: barWindow.batPercent; font.family: SharedConfig.monoFont; font.pixelSize: barWindow.s(13); font.weight: Font.Black; 
-                                        color: mocha.base // Always mocha.base since gradient is 1.0 opacity
+                                        text: SharedConfig.batPercent; font.family: SharedConfig.monoFont; font.pixelSize: barWindow.s(13); font.weight: Font.Black; 
+                                        color: barWindow.batDynamicColor
                                         Behavior on color { enabled: barWindow.visible; ColorAnimation { duration: 300 } }
                                     }
                                 }
+                            MouseArea { id: batMouse; anchors.fill: parent; hoverEnabled: true }
                             }
                         }
                    } 
@@ -626,4 +583,3 @@ Variants {
             }
         }
     }
-}

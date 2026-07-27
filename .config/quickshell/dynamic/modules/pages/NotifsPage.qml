@@ -1,6 +1,7 @@
 import QtQuick
 import QtQuick.Layouts
 import QtQuick.Effects
+import "../WindowRegistry.js" as Registry
 
 Item {
     id: root
@@ -17,7 +18,7 @@ Item {
             color: Qt.rgba(island.base.r, island.base.g, island.base.b, 0.5)
             layer.enabled: true
             layer.effect: MultiEffect {
-                blurEnabled: true
+                blurEnabled: island.notifHistory.count > 0
                 blurMax: 16
                 blur: 0.7
             }
@@ -99,9 +100,9 @@ Item {
                 visible: island.notifHistory.count > 0
                 spacing: island.s(5); clip: true
 
-                add:        Transition { NumberAnimation { property: "opacity"; from: 0; to: 1; duration: 200; easing.type: Easing.Bezier; easing.bezierCurve: [0.16, 1, 0.3, 1] } }
-                remove:     Transition { NumberAnimation { property: "opacity"; from: 1; to: 0; duration: 150; easing.type: Easing.Bezier; easing.bezierCurve: [0.16, 1, 0.3, 1] } }
-                displaced:  Transition { NumberAnimation { property: "y"; duration: 200; easing.type: Easing.Bezier; easing.bezierCurve: [0.16, 1, 0.3, 1] } }
+                add:        Transition { NumberAnimation { property: "opacity"; from: 0; to: 1; duration: 200; easing.type: Easing.Bezier; easing.bezierCurve: SharedConfig.animEaseOut } }
+                remove:     Transition { NumberAnimation { property: "opacity"; from: 1; to: 0; duration: 150; easing.type: Easing.Bezier; easing.bezierCurve: SharedConfig.animEaseOut } }
+                displaced:  Transition { NumberAnimation { property: "y"; duration: 200; easing.type: Easing.Bezier; easing.bezierCurve: SharedConfig.animEaseOut } }
 
                 delegate: Rectangle {
                     id: notifDelegate
@@ -159,12 +160,7 @@ Item {
                             color: Qt.rgba(notifDelegate.accentColor.r, notifDelegate.accentColor.g, notifDelegate.accentColor.b, 0.12)
                             Image {
                                 id: histIcon; anchors.fill: parent; anchors.margins: island.s(4)
-                                source: {
-                                    let ic = model.icon || ""
-                                    if (ic === "") return ""
-                                    if (ic.startsWith("/") || ic.startsWith("file://") || ic.startsWith("http")) return ic
-                                    return "image://theme/" + ic
-                                }
+                                source: Registry.resolveIcon(model.icon || "")
                                 fillMode: Image.PreserveAspectFit; asynchronous: true
                             }
                             Text { anchors.centerIn: parent; text: "󰵙"; font.family: island.nerdFont; font.pixelSize: island.s(16); color: notifDelegate.accentColor; visible: histIcon.status !== Image.Ready }

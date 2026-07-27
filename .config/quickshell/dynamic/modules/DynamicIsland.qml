@@ -82,6 +82,16 @@ PanelWindow {
         currentPage = availablePages[(i - 1 + availablePages.length) % availablePages.length]
     }
 
+    function toggleCaffeine() {
+        var newState = !SharedConfig.caffeineEnabled
+        SharedConfig.caffeineEnabled = newState
+        exec("mkdir -p /tmp; echo '" + (newState ? "on" : "off") + "' > /tmp/qs_caffeine")
+        if (newState)
+            exec("systemd-inhibit --what=sleep:idle --who=qs-caffeine --why='Caffeine mode' sleep infinity &")
+        else
+            exec("pkill -f 'systemd-inhibit.*qs-caffeine' 2>/dev/null")
+    }
+
     function dismissNotif() {
         notifHideTimer.stop()
         notifActive = false
@@ -217,7 +227,6 @@ PanelWindow {
     property bool wasExpandedBeforeNotif: false
     property bool notifBadgeVisible: false
     property bool dndEnabled: false
-    property bool caffeineEnabled: false
 
     property bool launcherActive: false
 
@@ -231,30 +240,30 @@ PanelWindow {
     property string dayStr: ""
     property string dateStr: ""
     property string greetingStr: ""
-    property string weatherIcon: ""
-    property string weatherDesc: ""
-    property string weatherTemp: "--°"
-    property string weatherMin: ""
-    property string weatherFeels: ""
-    property string weatherHumidity: ""
-    property string weatherWind: ""
-    property string weatherPop: ""
-    property string weatherHex: "#cdd6f4"
-    property string weatherUnit: "°C"
-    property string weatherForecast: ""
-    property string weatherCurIcon: ""
-    property string weatherCurTemp: ""
-    property bool weatherLoaded: false
     property bool capsLockOn: false
     property bool numLockOn: false
-    property int pkgUpdates: 0
-    property var pkgUpdatesList: []
 
-    property string wifiSsid: ""
-    property int wifiSignal: 0
-    property bool bluetoothOn: false
-    property int bluetoothDevices: 0
-    property var btDeviceList: []
+    // ── Watcher data: forwarded from SharedConfig (single source of truth) ──
+    property string weatherIcon: SharedConfig.weatherIcon
+    property string weatherDesc: SharedConfig.weatherDesc
+    property string weatherTemp: SharedConfig.weatherTemp
+    property string weatherMin: SharedConfig.weatherMin
+    property string weatherMax: SharedConfig.weatherMax
+    property string weatherFeels: SharedConfig.weatherFeels
+    property string weatherHumidity: SharedConfig.weatherHumidity
+    property string weatherWind: SharedConfig.weatherWind
+    property string weatherPop: SharedConfig.weatherPop
+    property string weatherHex: SharedConfig.weatherHex
+    property string weatherUnit: SharedConfig.weatherUnit
+    property string weatherCurIcon: SharedConfig.weatherCurIcon
+    property string weatherCurTemp: SharedConfig.weatherCurTemp
+    property bool weatherLoaded: SharedConfig.weatherLoaded
+    property bool caffeineEnabled: SharedConfig.caffeineEnabled
+    property string wifiSsid: SharedConfig.wifiSsid
+    property int wifiSignal: SharedConfig.wifiSignal
+    property bool bluetoothOn: SharedConfig.bluetoothOn
+    property int bluetoothDevices: SharedConfig.bluetoothDevices
+    property var btDeviceList: SharedConfig.btDeviceList
 
     property bool notifDirty: false
     property real notifPulse: 0.9
@@ -315,8 +324,11 @@ PanelWindow {
     }
 
     onNotifActiveChanged: {
-        if (notifActive)
+        if (notifActive) {
             notifBadgeVisible = false
+            notifPulse = 0.9
+            notifPulseAnim.restart()
+        }
     }
 
     ListModel { id: notifHistoryList }
@@ -340,8 +352,9 @@ PanelWindow {
     }
 
     SequentialAnimation on notifPulse {
-        running: notifActive && (!expanded || !visible)
-        loops: Animation.Infinite
+        id: notifPulseAnim
+        running: notifActive && !expanded
+        loops: 3
         NumberAnimation { to: 0.3; duration: 900; easing.type: Easing.InOutSine }
         NumberAnimation { to: 0.9; duration: 900; easing.type: Easing.InOutSine }
     }
@@ -349,17 +362,18 @@ PanelWindow {
     property int lastGreetingHour: -1
 
     Timer {
-        interval: 1000
-        running: true
+        interval: expanded ? 1000 : 60000
+        running: currentPage === "clock" || osdActive
         repeat: true
         triggeredOnStart: true
         onTriggered: {
             let d = new Date()
             timeStr = Qt.formatDateTime(d, "HH:mm")
-            timeStrSec = Qt.formatDateTime(d, "HH:mm:ss")
+            if (expanded) {
+                timeStrSec = Qt.formatDateTime(d, "HH:mm:ss")
+            }
             dayStr = Qt.formatDateTime(d, "ddd")
             dateStr = Qt.formatDateTime(d, "ddd, MMM dd")
-            // Greeting only changes at hour boundaries — skip the per-second recompute.
             let h = d.getHours()
             if (h !== lastGreetingHour) {
                 lastGreetingHour = h
@@ -371,88 +385,7 @@ PanelWindow {
         }
     }
 
-    // ── Combined island watcher (weather, pkg, caffeine, wifi, bt — one process) ──
-    Process {
-        id: islandWatchers
-        running: true
-        command: ["bash", "-c", "~/.config/quickshell/dynamic/modules/watchers/island_combined.sh"]
-        stdout: SplitParser {
-            splitMarker: "\n"
-            onRead: function(line) {
-                let txt = line.trim()
-                if (txt === "" || txt === "{}") return
-                let colonIdx = txt.indexOf(":")
-                if (colonIdx < 0) return
-                let tag = txt.substring(0, colonIdx)
-                let data = txt.substring(colonIdx + 1)
 
-                if (tag === "weatherout") {
-                    // 12 tab-separated fields: icon, desc, max, min, feels, humidity, wind, pop, hex, unit, curIcon, curTemp
-                    let parts = data.split("\t")
-                    if (parts.length >= 10) {
-                        weatherLoaded = true
-                        if (parts[1]) weatherDesc = parts[1]
-                        if (parts[9]) weatherUnit = parts[9]
-                        if (parts[2]) weatherMin = parts[2] + weatherUnit
-                        if (parts[3]) weatherMin = parts[3] + weatherUnit
-                        if (parts[4]) weatherFeels = parts[4] + weatherUnit
-                        if (parts[5]) weatherHumidity = parts[5]
-                        if (parts[6]) weatherWind = parts[6]
-                        if (parts[7]) weatherPop = parts[7]
-                        if (parts[8]) weatherHex = parts[8]
-                        // Use current hourly icon/temp when available, else fall back to daily values
-                        weatherCurIcon = parts[10] || ""
-                        weatherCurTemp = parts[11] || ""
-                        weatherIcon = weatherCurIcon !== "" ? weatherCurIcon : (parts[0] || "")
-                        weatherTemp = weatherCurTemp !== "" ? weatherCurTemp : (parts[2] ? parts[2] + weatherUnit : "--°")
-                        let w = JSON.stringify({icon: weatherIcon, temp: weatherTemp, unit: weatherUnit})
-                        Quickshell.execDetached(["bash", "-c",
-                            "printf '%s\\n' '" + w.replace(/'/g, "'\\''") + "' > /tmp/qs_weather.json"])
-                    }
-                    return
-                }
-
-                if (tag === "forecastout") {
-                    weatherForecast = data
-                    return
-                }
-
-                if (tag === "pkgout") {
-                    try {
-                        let d = JSON.parse(data)
-                        pkgUpdates = d.count || 0
-                        pkgUpdatesList = d.packages || []
-                    } catch (e) { pkgUpdates = 0; pkgUpdatesList = [] }
-                    return
-                }
-
-                if (tag === "caffeineout") {
-                    caffeineEnabled = (data.trim() === "on")
-                    return
-                }
-
-                if (tag === "wifiout") {
-                    try {
-                        let d = JSON.parse(data)
-                        wifiSsid = d.ssid || ""
-                        wifiSignal = d.signal || 0
-                    } catch (e) {}
-                    return
-                }
-
-                if (tag === "btout") {
-                    try {
-                        let d = JSON.parse(data)
-                        bluetoothOn = (d.powered === "yes")
-                        bluetoothDevices = d.count || 0
-                        btDeviceList = d.devices || []
-                    } catch (e) { bluetoothOn = false; bluetoothDevices = 0; btDeviceList = [] }
-                    return
-                }
-
-            }
-        }
-    }
 
     Timer {
         id: notifHideTimer
@@ -477,10 +410,44 @@ PanelWindow {
     Process {
         id: islandIpcManager
         running: true
-        command: [
-            "bash",
-            "-lc",
-            "stdbuf -oL inotifywait -m -e close_write,moved_to /tmp/ --include 'qs_' 2>/dev/null | while read -r dir action file; do case \"$file\" in qs_launcher_state) v=$(cat /tmp/qs_launcher_state 2>/dev/null); printf '{\\\"event\\\":\\\"QS_LAUNCHER\\\",\\\"data\\\":\\\"%s\\\"}\\n' \"$v\" ;; qs_island_dismiss) rm -f /tmp/qs_island_dismiss; printf '{\\\"event\\\":\\\"QS_DISMISS\\\",\\\"data\\\":\\\"\\\"}\\n' ;; qs_island_dnd) v=$(cat /tmp/qs_island_dnd 2>/dev/null); rm -f /tmp/qs_island_dnd; printf '{\\\"event\\\":\\\"QS_DND\\\",\\\"data\\\":\\\"%s\\\"}\\n' \"$v\" ;; qs_osd) v=$(cat /tmp/qs_osd 2>/dev/null); printf '{\\\"event\\\":\\\"QS_OSD\\\",\\\"data\\\":\\\"%s\\\"}\\n' \"$v\" ;; qs_island_toggle) v=$(cat /tmp/qs_island_toggle 2>/dev/null); rm -f /tmp/qs_island_toggle; printf '{\\\"event\\\":\\\"QS_TOGGLE\\\",\\\"data\\\":\\\"%s\\\"}\\n' \"$v\" ;; qs_island_clear_notifs) rm -f /tmp/qs_island_clear_notifs; printf '{\\\"event\\\":\\\"QS_CLEAR\\\",\\\"data\\\":\\\"\\\"}\\n' ;; qs_island_notifs_panel) rm -f /tmp/qs_island_notifs_panel; printf '{\\\"event\\\":\\\"QS_NOTIFS_PANEL\\\",\\\"data\\\":\\\"\\\"}\\n' ;; qs_island_calendar) rm -f /tmp/qs_island_calendar; printf '{\\\"event\\\":\\\"QS_CALENDAR\\\",\\\"data\\\":\\\"\\\"}\\n' ;; qs_island_notif) if [ -f /tmp/qs_island_notif ]; then while IFS= read -r j; do [ -n \"$j\" ] && printf '{\\\"event\\\":\\\"QS_NOTIF\\\",\\\"data\\\":%s}\\n' \"$j\"; done < <(jq -c '.' /tmp/qs_island_notif 2>/dev/null); rm -f /tmp/qs_island_notif; fi ;; esac; done"
+        command: ["bash", "-c",
+            "stdbuf -oL inotifywait -m -e close_write,moved_to /tmp/ 2>/dev/null " +
+            "--include 'qs_(launcher_state|island_dismiss|island_dnd|osd|island_toggle|island_clear_notifs|island_notifs_panel|island_calendar|island_notif)$' | " +
+            "while read -r dir action file; do " +
+            "  case \"$file\" in " +
+            "    qs_launcher_state) " +
+            "      v=$(cat /tmp/qs_launcher_state 2>/dev/null); " +
+            "      printf '{\"event\":\"QS_LAUNCHER\",\"data\":\"%s\"}\\n' \"$v\" ;; " +
+            "    qs_island_dismiss) " +
+            "      rm -f /tmp/qs_island_dismiss; " +
+            "      printf '{\"event\":\"QS_DISMISS\",\"data\":\"\"}\\n' ;; " +
+            "    qs_island_dnd) " +
+            "      v=$(cat /tmp/qs_island_dnd 2>/dev/null); rm -f /tmp/qs_island_dnd; " +
+            "      printf '{\"event\":\"QS_DND\",\"data\":\"%s\"}\\n' \"$v\" ;; " +
+            "    qs_osd) " +
+            "      v=$(cat /tmp/qs_osd 2>/dev/null); " +
+            "      printf '{\"event\":\"QS_OSD\",\"data\":\"%s\"}\\n' \"$v\" ;; " +
+            "    qs_island_toggle) " +
+            "      v=$(cat /tmp/qs_island_toggle 2>/dev/null); rm -f /tmp/qs_island_toggle; " +
+            "      printf '{\"event\":\"QS_TOGGLE\",\"data\":\"%s\"}\\n' \"$v\" ;; " +
+            "    qs_island_clear_notifs) " +
+            "      rm -f /tmp/qs_island_clear_notifs; " +
+            "      printf '{\"event\":\"QS_CLEAR\",\"data\":\"\"}\\n' ;; " +
+            "    qs_island_notifs_panel) " +
+            "      rm -f /tmp/qs_island_notifs_panel; " +
+            "      printf '{\"event\":\"QS_NOTIFS_PANEL\",\"data\":\"\"}\\n' ;; " +
+            "    qs_island_calendar) " +
+            "      rm -f /tmp/qs_island_calendar; " +
+            "      printf '{\"event\":\"QS_CALENDAR\",\"data\":\"\"}\\n' ;; " +
+            "    qs_island_notif) " +
+            "      if [ -f /tmp/qs_island_notif ]; then " +
+            "        while IFS= read -r j; do " +
+            "          [ -n \"$j\" ] && printf '{\"event\":\"QS_NOTIF\",\"data\":%s}\\n' \"$j\"; " +
+            "        done < <(jq -c '.' /tmp/qs_island_notif 2>/dev/null); " +
+            "        rm -f /tmp/qs_island_notif; " +
+            "      fi ;; " +
+            "  esac; " +
+            "done"
         ]
         stdout: SplitParser {
             splitMarker: "\n"
@@ -488,12 +455,14 @@ PanelWindow {
                 if (!line || line.trim() === "")
                     return
                 try {
-                    let obj = JSON.parse(line.trim())
+                    let trimmed = line.trim()
+                    if (trimmed.length === 0 || (trimmed[0] !== '{' && trimmed[0] !== '[')) return
+                    let obj = JSON.parse(trimmed)
                     handleIpcEvent(obj.event, obj.data)
-                } catch (e) {
-                }
+                } catch (e) {}  /* non-JSON output from watchers */
             }
         }
+        onExited: running = true
     }
     Process {
         id: dndStateLoader
@@ -563,7 +532,7 @@ PanelWindow {
                         osdActive = true
                         osdTimer.restart()
                     }
-                } catch(e) {}
+                } catch(e) { console.warn(e) }
             }
         }
         onExited: running = true
@@ -605,7 +574,7 @@ PanelWindow {
         visible: expanded
         color: "transparent"
         opacity: expanded ? 1.0 : 0.0
-        Behavior on opacity { PropertyAnimation { duration: 300; easing.type: Easing.Bezier; easing.bezierCurve: [0.16, 1, 0.3, 1] } }
+        Behavior on opacity { PropertyAnimation { duration: 300; easing.type: Easing.Bezier; easing.bezierCurve: SharedConfig.animEaseOut } }
         gradient: Gradient {
             orientation: Gradient.Vertical
             GradientStop { position: 0.0; color: Qt.rgba(base.r, base.g, base.b, 0.65) }
@@ -670,8 +639,8 @@ PanelWindow {
 
         Behavior on width { PropertyAnimation { duration: 150; easing.type: Easing.OutCubic } }
         Behavior on height { PropertyAnimation { duration: 150; easing.type: Easing.OutCubic } }
-        Behavior on scale { PropertyAnimation { duration: 200; easing.type: Easing.Bezier; easing.bezierCurve: [0.16, 1, 0.3, 1] } }
-        Behavior on opacity { PropertyAnimation { duration: 200; easing.type: Easing.Bezier; easing.bezierCurve: [0.16, 1, 0.3, 1] } }
+        Behavior on scale { PropertyAnimation { duration: 200; easing.type: Easing.Bezier; easing.bezierCurve: SharedConfig.animEaseOut } }
+        Behavior on opacity { PropertyAnimation { duration: 200; easing.type: Easing.Bezier; easing.bezierCurve: SharedConfig.animEaseOut } }
 
         Keys.onEscapePressed: {
             if (expanded) {
@@ -759,6 +728,28 @@ PanelWindow {
             }
         }
 
+        // Ambient soft-shadow layer for depth
+        Rectangle {
+            id: ambientShadow
+            anchors.fill: parent
+            radius: bg.radius
+            color: "transparent"
+            antialiasing: true
+            layer.enabled: true
+            layer.effect: MultiEffect {
+                id: ambientEffect
+                shadowEnabled: true
+                shadowColor: "#000000"
+                shadowBlur: hovered && !expanded ? 3.5 : 3.0
+                shadowOpacity: hovered && !expanded ? 0.16 : 0.12
+                shadowVerticalOffset: hovered && !expanded ? s(3) : s(2)
+                Behavior on shadowBlur { PropertyAnimation { duration: 200; easing.type: Easing.Bezier; easing.bezierCurve: SharedConfig.animEaseOut } }
+                Behavior on shadowOpacity { PropertyAnimation { duration: 200; easing.type: Easing.Bezier; easing.bezierCurve: SharedConfig.animEaseOut } }
+                Behavior on shadowVerticalOffset { PropertyAnimation { duration: 200; easing.type: Easing.Bezier; easing.bezierCurve: SharedConfig.animEaseOut } }
+            }
+            Behavior on radius { PropertyAnimation { duration: 150; easing.type: Easing.OutCubic } }
+        }
+
         Rectangle {
             id: bg
             anchors.fill: parent
@@ -768,21 +759,25 @@ PanelWindow {
 
             layer.enabled: true
             layer.effect: MultiEffect {
+                id: bgEffect
                 shadowEnabled: true
                 shadowColor: "#000000"
-                shadowBlur: 0.5
-                shadowOpacity: 0.45
-                shadowVerticalOffset: s(6)
+                shadowBlur: hovered && !expanded ? 0.8 : 0.5
+                shadowOpacity: hovered && !expanded ? 0.48 : 0.4
+                shadowVerticalOffset: hovered && !expanded ? s(10) : s(6)
                 blurEnabled: hovered && !expanded
                 blurMax: 12
                 blur: 0.5
+                Behavior on shadowBlur { PropertyAnimation { duration: 200; easing.type: Easing.Bezier; easing.bezierCurve: SharedConfig.animEaseOut } }
+                Behavior on shadowOpacity { PropertyAnimation { duration: 200; easing.type: Easing.Bezier; easing.bezierCurve: SharedConfig.animEaseOut } }
+                Behavior on shadowVerticalOffset { PropertyAnimation { duration: 200; easing.type: Easing.Bezier; easing.bezierCurve: SharedConfig.animEaseOut } }
             }
             gradient: Gradient {
                 orientation: Gradient.Vertical
                 GradientStop { position: 0.0; color: Qt.rgba(base.r, base.g, base.b, 0.82) }
                 GradientStop { position: 1.0; color: Qt.rgba(base.r, base.g, base.b, 0.95) }
             }
-            border.width: notifActive ? 2 : 1
+            border.width: notifActive ? 2 : (hovered && !expanded ? 1.5 : 1)
             border.color: {
                 if (osdActive && !expanded) {
                     if (osdType === "volume")
@@ -794,13 +789,13 @@ PanelWindow {
                 if (notifActive)
                     return Qt.rgba(peach.r, peach.g, peach.b, notifPulse)
                 if (hovered)
-                    return Qt.rgba(mauve.r, mauve.g, mauve.b, 0.4)
-                return Qt.rgba(text.r, text.g, text.b, 0.06)
+                    return Qt.rgba(mauve.r, mauve.g, mauve.b, 0.65)
+                return Qt.rgba(mauve.r, mauve.g, mauve.b, 0.35)
             }
             Behavior on radius { PropertyAnimation { duration: 150; easing.type: Easing.OutCubic } }
-            Behavior on opacity { PropertyAnimation { duration: 200; easing.type: Easing.Bezier; easing.bezierCurve: [0.16, 1, 0.3, 1] } }
-            Behavior on border.width { PropertyAnimation { duration: 80; easing.type: Easing.OutCubic } }
-            Behavior on border.color { enabled: islandWindow.visible; ColorAnimation { duration: 100 } }
+            Behavior on opacity { PropertyAnimation { duration: 200; easing.type: Easing.Bezier; easing.bezierCurve: SharedConfig.animEaseOut } }
+            Behavior on border.width { PropertyAnimation { duration: 200; easing.type: Easing.Bezier; easing.bezierCurve: SharedConfig.animEaseOut } }
+            Behavior on border.color { enabled: islandWindow.visible; ColorAnimation { duration: 200 } }
         }
 
         Item {
@@ -810,7 +805,7 @@ PanelWindow {
             visible: showCollapsed
             enabled: showCollapsed
             opacity: showCollapsed ? 1.0 : 0.0
-            Behavior on opacity { PropertyAnimation { duration: 200; easing.type: Easing.Bezier; easing.bezierCurve: [0.16, 1, 0.3, 1] } }
+            Behavior on opacity { PropertyAnimation { duration: 200; easing.type: Easing.Bezier; easing.bezierCurve: SharedConfig.animEaseOut } }
 
             OSDCollapsed {
                 id: osdCollapsed
@@ -844,12 +839,12 @@ PanelWindow {
             visible: expanded
             enabled: expanded
 
-            Repeater {
-                model: pageRegistry
-                delegate: Loader {
-                    anchors.fill: parent
-                    active: expanded
-                    sourceComponent: modelData.comp
+                Repeater {
+                    model: pageRegistry
+                    delegate: Loader {
+                        anchors.fill: parent
+                        active: expanded && modelData.name === islandWindow.currentPage
+                        sourceComponent: modelData.comp
                     property bool isCurrent: showExpandedPage && currentPage === modelData.name
                     visible: opacity > 0.01
                     enabled: visible
@@ -863,9 +858,9 @@ PanelWindow {
                         return s(30)
                     }
                     scale: isCurrent ? 1.0 : 0.95
-                    Behavior on opacity { NumberAnimation { duration: isCurrent ? 220 : 100; easing.type: Easing.Bezier; easing.bezierCurve: [0.16, 1, 0.3, 1] } }
+                    Behavior on opacity { NumberAnimation { duration: isCurrent ? 220 : 100; easing.type: Easing.Bezier; easing.bezierCurve: SharedConfig.animEaseOut } }
                     Behavior on x { NumberAnimation { duration: 200; easing.type: Easing.OutCubic } }
-                    Behavior on scale { NumberAnimation { duration: 200; easing.type: Easing.Bezier; easing.bezierCurve: [0.16, 1, 0.3, 1] } }
+                    Behavior on scale { NumberAnimation { duration: 200; easing.type: Easing.Bezier; easing.bezierCurve: SharedConfig.animEaseOut } }
                 }
             }
 
@@ -877,8 +872,8 @@ PanelWindow {
                 enabled: visible
                 opacity: showExpandedNotif ? 1.0 : 0.0
                 y: showExpandedNotif ? 0 : s(8)
-                Behavior on opacity { PropertyAnimation { duration: 200; easing.type: Easing.Bezier; easing.bezierCurve: [0.16, 1, 0.3, 1] } }
-                Behavior on y { PropertyAnimation { duration: 200; easing.type: Easing.Bezier; easing.bezierCurve: [0.16, 1, 0.3, 1] } }
+                Behavior on opacity { PropertyAnimation { duration: 200; easing.type: Easing.Bezier; easing.bezierCurve: SharedConfig.animEaseOut } }
+                Behavior on y { PropertyAnimation { duration: 200; easing.type: Easing.Bezier; easing.bezierCurve: SharedConfig.animEaseOut } }
             }
         }
 
@@ -899,8 +894,8 @@ PanelWindow {
         opacity: notifBadgeVisible && !expanded ? 1.0 : 0.0
         scale: notifBadgeVisible && !expanded ? 1.0 : 0.5
         transformOrigin: Item.Left
-        Behavior on opacity { PropertyAnimation { duration: 200; easing.type: Easing.Bezier; easing.bezierCurve: [0.16, 1, 0.3, 1] } }
-        Behavior on scale { PropertyAnimation { duration: 200; easing.type: Easing.Bezier; easing.bezierCurve: [0.16, 1, 0.3, 1] } }
+        Behavior on opacity { PropertyAnimation { duration: 200; easing.type: Easing.Bezier; easing.bezierCurve: SharedConfig.animEaseOut } }
+        Behavior on scale { PropertyAnimation { duration: 200; easing.type: Easing.Bezier; easing.bezierCurve: SharedConfig.animEaseOut } }
 
         Rectangle {
             anchors.fill: parent
@@ -960,6 +955,5 @@ PanelWindow {
         id: calendarPageComp
         CalendarPage { island: islandWindow }
     }
-
-    }
+}
 

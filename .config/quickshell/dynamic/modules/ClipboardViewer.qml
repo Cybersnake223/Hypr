@@ -132,6 +132,7 @@ PanelWindow {
                 else if (cmd === "toggle") root.open = !root.open
             }
         }
+        onExited: running = true
     }
 
     // ─── UI ───────────────────────────────────────────────────────────────────
@@ -157,10 +158,10 @@ PanelWindow {
         x: Math.round((parent.width  - width)  / 2)
         y: root.open ? Math.round((parent.height - openH) / 2) : s(8)
 
-        Behavior on width  { NumberAnimation { duration: 400; easing.type: Easing.Bezier; easing.bezierCurve: [0.16, 1, 0.3, 1] } }
-        Behavior on height { NumberAnimation { duration: 400; easing.type: Easing.Bezier; easing.bezierCurve: [0.16, 1, 0.3, 1] } }
-        Behavior on radius { NumberAnimation { duration: 300; easing.type: Easing.Bezier; easing.bezierCurve: [0.16, 1, 0.3, 1] } }
-        Behavior on y      { NumberAnimation { duration: 400; easing.type: Easing.Bezier; easing.bezierCurve: [0.16, 1, 0.3, 1] } }
+        Behavior on width  { NumberAnimation { duration: 400; easing.type: Easing.Bezier; easing.bezierCurve: SharedConfig.animEaseOut } }
+        Behavior on height { NumberAnimation { duration: 400; easing.type: Easing.Bezier; easing.bezierCurve: SharedConfig.animEaseOut } }
+        Behavior on radius { NumberAnimation { duration: 300; easing.type: Easing.Bezier; easing.bezierCurve: SharedConfig.animEaseOut } }
+        Behavior on y      { NumberAnimation { duration: 400; easing.type: Easing.Bezier; easing.bezierCurve: SharedConfig.animEaseOut } }
 
         opacity: root.open ? 1.0 : 0.0
         Behavior on opacity { NumberAnimation { duration: 220 } }
@@ -244,7 +245,7 @@ PanelWindow {
                     model: filteredItems
                     currentIndex: 0
                     boundsBehavior: Flickable.StopAtBounds
-                    Behavior on height { NumberAnimation { duration: 200; easing.type: Easing.Bezier; easing.bezierCurve: [0.16, 1, 0.3, 1] } }
+                    Behavior on height { NumberAnimation { duration: 200; easing.type: Easing.Bezier; easing.bezierCurve: SharedConfig.animEaseOut } }
                     onCurrentIndexChanged: positionViewAtIndex(currentIndex, ListView.Contain)
 
                     delegate: Rectangle {

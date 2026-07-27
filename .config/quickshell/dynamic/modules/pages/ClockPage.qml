@@ -207,14 +207,7 @@ Item {
                     }
                     MouseArea {
                         id: caffeineMouse; anchors.fill: parent; cursorShape: Qt.PointingHandCursor; hoverEnabled: true
-                        onClicked: {
-                            island.caffeineEnabled = !island.caffeineEnabled
-                            island.exec("mkdir -p /tmp; echo '" + (island.caffeineEnabled ? "on" : "off") + "' > /tmp/qs_caffeine")
-                            if (island.caffeineEnabled)
-                                island.exec("systemd-inhibit --what=sleep:idle --who=qs-caffeine --why='Caffeine mode' sleep infinity &")
-                            else
-                                island.exec("pkill -f 'systemd-inhibit.*qs-caffeine' 2>/dev/null")
-                        }
+                        onClicked: island.toggleCaffeine()
                     }
                 }
 

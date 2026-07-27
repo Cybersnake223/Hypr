@@ -1,5 +1,6 @@
 import QtQuick
 import QtQuick.Layouts
+import "../WindowRegistry.js" as Registry
 
 Item {
     id: root
@@ -11,7 +12,7 @@ Item {
 
         transform: Translate {
             y: island.notifActive ? 0 : island.s(-8)
-            Behavior on y { NumberAnimation { duration: 200; easing.type: Easing.Bezier; easing.bezierCurve: [0.16, 1, 0.3, 1] } }
+            Behavior on y { NumberAnimation { duration: 200; easing.type: Easing.Bezier; easing.bezierCurve: SharedConfig.animEaseOut } }
         }
 
         RowLayout {
@@ -37,12 +38,7 @@ Item {
                 border.width: 1; border.color: Qt.rgba(island.peach.r, island.peach.g, island.peach.b, 0.25)
                 Image {
                     id: notifIconImg; anchors.fill: parent; anchors.margins: island.s(5)
-                    source: {
-                        let ic = island.notifData ? (island.notifData.icon || "") : ""
-                        if (ic === "") return ""
-                        if (ic.startsWith("/") || ic.startsWith("file://") || ic.startsWith("http")) return ic
-                        return "image://theme/" + ic
-                    }
+                    source: Registry.resolveIcon(island.notifData ? (island.notifData.icon || "") : "")
                     fillMode: Image.PreserveAspectFit; asynchronous: true
                 }
                 Text {

@@ -50,22 +50,9 @@ Item {
         days = d
     }
 
-    onCMonthChanged: buildCalendar()
-    onCYearChanged: buildCalendar()
+    onCMonthChanged: { calGrid.x = 0; buildCalendar() }
+    onCYearChanged: { calGrid.x = 0; buildCalendar() }
     Component.onCompleted: buildCalendar()
-
-    Timer {
-        interval: 60000
-        running: true
-        repeat: true
-        onTriggered: {
-            var n = new Date()
-            todayDate = n.getDate()
-            todayMonth = n.getMonth()
-            todayYear = n.getFullYear()
-            buildCalendar()
-        }
-    }
 
     property var forecastData: []
 
@@ -111,7 +98,7 @@ Item {
                             weatherRetryCount = 0
                             return
                         }
-                    } catch (e) {}
+                    } catch (e) { console.warn(e) }
                 }
                 weatherError = true
                 if (weatherRetryCount < weatherMaxRetries)
@@ -149,10 +136,11 @@ Item {
                             weatherLoaded = true
                             weatherError = false
                         }
-                    } catch (e) {}
+                    } catch (e) { console.warn(e) }
                 }
             }
         }
+        onExited: running = true
     }
 
     Item {
@@ -381,7 +369,7 @@ Item {
                                     ? Qt.rgba(island.peach.r, island.peach.g, island.peach.b, 0.6)
                                     : Qt.rgba(island.surface2.r, island.surface2.g, island.surface2.b, 0.5)
                                 RotationAnimation on rotation {
-                                    from: 0; to: 360; duration: 3000; loops: Animation.Infinite; running: visible && !weatherError
+                                    from: 0; to: 360; duration: 3000; loops: Animation.Infinite; running: visible && !weatherError && !weatherLoaded
                                 }
                             }
                             Text {

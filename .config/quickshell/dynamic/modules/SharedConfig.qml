@@ -20,9 +20,10 @@ Item {
 
     readonly property alias mocha: _mocha
 
+    readonly property var animEaseOut: [0.16, 1, 0.3, 1]
+
     // ── Shared visual tokens (flat/minimal consistency) ──
     readonly property color hairline:       Qt.rgba(mocha.text.r, mocha.text.g, mocha.text.b, 0.10)
-    readonly property color hairlineStrong: Qt.rgba(mocha.text.r, mocha.text.g, mocha.text.b, 0.16)
     readonly property color pillBg:         Qt.rgba(mocha.base.r, mocha.base.g, mocha.base.b, 0.75)
     readonly property color pillBgHover:    Qt.rgba(mocha.surface1.r, mocha.surface1.g, mocha.surface1.b, 0.5)
     readonly property color pillBgIdle:     Qt.rgba(mocha.surface1.r, mocha.surface1.g, mocha.surface1.b, 0.35)
@@ -35,6 +36,42 @@ Item {
     readonly property color accentPulse: Qt.rgba(mocha.mauve.r, mocha.mauve.g, mocha.mauve.b, 0.12)
 
     property bool isDesktop: false
+
+    // ══════════════════════════════════════════════════════════════════════════
+    // MASTER WATCHER DATA — populated by sharedWatcher below
+    // Shared between TopBar, DynamicIsland, and their children
+    // ══════════════════════════════════════════════════════════════════════════
+    property string kbLayout: "us"
+    property string batPercent: "100%"
+    property string batIcon: "󰁹"
+    property string batStatus: "Unknown"
+    property string volPercent: "0"
+    property string volIcon: "󰝟"
+    property bool volMuted: false
+    property string micPercent: "0"
+    property string micIcon: "󰍬"
+    property bool micMuted: false
+    property int pkgUpdates: 0
+    property string weatherIcon: ""
+    property string weatherDesc: ""
+    property string weatherTemp: "--°"
+    property string weatherMin: ""
+    property string weatherMax: ""
+    property string weatherFeels: ""
+    property string weatherHumidity: ""
+    property string weatherWind: ""
+    property string weatherPop: ""
+    property string weatherHex: "#cdd6f4"
+    property string weatherUnit: "°C"
+    property string weatherCurIcon: ""
+    property string weatherCurTemp: ""
+    property bool weatherLoaded: false
+    property bool caffeineEnabled: false
+    property string wifiSsid: ""
+    property int wifiSignal: 0
+    property bool bluetoothOn: false
+    property int bluetoothDevices: 0
+    property var btDeviceList: []
 
     Process {
         id: chassisDetector
@@ -66,7 +103,7 @@ Item {
                     if (parsed.uiScale !== undefined && config.uiScale !== parsed.uiScale) {
                         config.uiScale = parsed.uiScale;
                     }
-                } catch (e) {}
+                } catch (e) { console.warn(e) }
             }
         }
     }
@@ -85,34 +122,115 @@ Item {
                         let merged = Object.assign({}, config.themeColors)
                         for (var k in c) merged[k] = c[k]
                         config.themeColors = merged
-                    } catch (e) {}
+                    } catch (e) { console.warn(e) }
                 }
             }
         }
     }
 
-    // ── Theme color file watcher (event-driven, reads file on change) ──
+    // ── Theme color file watcher (exit-on-event pattern, matches wsWatcher) ──
     Process {
         id: themeColorWatcher
         running: true
         command: ["bash", "-c",
             "inotifywait -qq -e close_write,moved_to " +
-            Quickshell.env("HOME") + "/.config/hypr/scripts/quickshell 2>/dev/null " +
-            "--include qs_colors.json; " +
-            "cat " + Quickshell.env("HOME") + "/.config/hypr/scripts/quickshell/qs_colors.json"
+            Quickshell.env("HOME") + "/.config/hypr/scripts/quickshell/qs_colors.json 2>/dev/null"
         ]
-        stdout: StdioCollector {
-            onStreamFinished: {
-                let txt = this.text.trim()
-                if (txt !== "" && txt !== "{}") {
+        onExited: {
+            themeColorReader.running = true;
+            running = true;
+        }
+    }
+
+    // ══════════════════════════════════════════════════════════════════════════
+    // MASTER SYSTEM WATCHER — single process shared by TopBar + DynamicIsland
+    // Tags routed: kblaout, batout, audioout, micout, pkgout,
+    //              weatherout, caffeineout, wifiout, btout
+    // ══════════════════════════════════════════════════════════════════════════
+    Process {
+        id: sharedWatcher
+        running: true
+        command: ["bash", "-c", "~/.config/quickshell/dynamic/modules/watchers/master_watcher.sh"]
+        stdout: SplitParser {
+            splitMarker: "\n"
+            onRead: function(line) {
+                let txt = line.trim()
+                if (txt === "" || txt === "{}") return
+                let colonIdx = txt.indexOf(":")
+                if (colonIdx < 0) return
+                let tag = txt.substring(0, colonIdx)
+                let data = txt.substring(colonIdx + 1)
+
+                // ── Keyboard (plain text) ──
+                if (tag === "kblaout") {
+                    if (data !== "") config.kbLayout = data
+                    return
+                }
+
+                // ── JSON-based tags (bat, audio, mic, pkg, wifi, bt) ──
+                if (data.length > 0 && (data[0] === '{' || data[0] === '[')) {
                     try {
-                        let c = JSON.parse(txt)
-                        let merged = Object.assign({}, config.themeColors)
-                        for (var k in c) merged[k] = c[k]
-                        config.themeColors = merged
-                    } catch (e) {}
+                        let obj = JSON.parse(data)
+                        if (tag === "batout") {
+                            let newPct = (obj.percent || "100").toString() + "%"
+                            if (config.batPercent !== newPct) config.batPercent = newPct
+                            if (config.batIcon !== obj.icon) config.batIcon = obj.icon || "󰁹"
+                            if (config.batStatus !== obj.status) config.batStatus = obj.status || "Unknown"
+                        } else if (tag === "audioout") {
+                            if (config.volPercent !== obj.volume) config.volPercent = obj.volume || "0"
+                            if (config.volIcon !== obj.icon) config.volIcon = obj.icon || "󰝟"
+                            config.volMuted = obj.is_muted === "true"
+                        } else if (tag === "micout") {
+                            if (config.micPercent !== obj.volume) config.micPercent = obj.volume || "0"
+                            if (config.micIcon !== obj.icon) config.micIcon = obj.icon || "󰍬"
+                            config.micMuted = obj.is_muted === "true"
+                        } else if (tag === "pkgout") {
+                            config.pkgUpdates = obj.count || 0
+                        } else if (tag === "wifiout") {
+                            config.wifiSsid = obj.ssid || ""
+                            config.wifiSignal = obj.signal || 0
+                        } else if (tag === "btout") {
+                            config.bluetoothOn = (obj.powered === "yes")
+                            config.bluetoothDevices = obj.count || 0
+                            config.btDeviceList = obj.devices || []
+                        }
+                    } catch (e) { /* skip parse errors */ }
+                    return
+                }
+
+                // ── Weather (tab-separated TSV, not JSON) ──
+                if (tag === "weatherout") {
+                    let parts = data.split("\t")
+                    if (parts.length >= 10) {
+                        config.weatherLoaded = true
+                        if (parts[1]) config.weatherDesc = parts[1]
+                        let unit = parts[9] || "°C"
+                        config.weatherUnit = unit
+                        if (parts[2]) config.weatherMax = parts[2] + unit
+                        if (parts[3]) config.weatherMin = parts[3] + unit
+                        if (parts[4]) config.weatherFeels = parts[4] + unit
+                        if (parts[5]) config.weatherHumidity = parts[5]
+                        if (parts[6]) config.weatherWind = parts[6]
+                        if (parts[7]) config.weatherPop = parts[7]
+                        if (parts[8]) config.weatherHex = parts[8]
+                        config.weatherCurIcon = parts[10] || ""
+                        config.weatherCurTemp = parts[11] || ""
+                        config.weatherIcon = config.weatherCurIcon !== "" ? config.weatherCurIcon : (parts[0] || "")
+                        config.weatherTemp = config.weatherCurTemp !== "" ? config.weatherCurTemp : (parts[2] ? parts[2] + unit : "--°")
+                        let w = JSON.stringify({icon: config.weatherIcon, temp: config.weatherTemp, unit: config.weatherUnit})
+                        Quickshell.execDetached(["bash", "-c",
+                            "printf '%s\\n' '" + w.replace(/'/g, "'\\''") + "' > /tmp/qs_weather.json"])
+                    }
+                    return
+                }
+
+                // ── Caffeine (plain text) ──
+                if (tag === "caffeineout") {
+                    config.caffeineEnabled = (data.trim() === "on")
+                    return
                 }
             }
         }
+        onExited: running = true
     }
 }

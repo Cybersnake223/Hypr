@@ -17,7 +17,7 @@ add_packages() {
         name=$(awk '{print $1}' <<<"$line")
         oldver=$(awk '{print $2}' <<<"$line")
         newver=$(awk '{print $4}' <<<"$line")
-        pkgs_json=$(jq --arg n "$name" --arg o "$oldver" --arg v "$newver" \
+        pkgs_json=$(jq -c --arg n "$name" --arg o "$oldver" --arg v "$newver" \
             '. + [{name: $n, oldver: $o, newver: $v}]' <<<"$pkgs_json")
     done < <(eval "$src" 2>/dev/null)
 }
@@ -32,4 +32,4 @@ if [ -n "$YAY" ]; then
     add_packages "$YAY -Qua"
 fi
 
-jq -n --argjson packages "$pkgs_json" '{count: ($packages | length), packages: $packages}'
+jq -c -n --argjson packages "$pkgs_json" '{count: ($packages | length), packages: $packages}'

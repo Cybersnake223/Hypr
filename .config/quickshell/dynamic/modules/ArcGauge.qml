@@ -1,6 +1,4 @@
 import QtQuick
-import QtQuick.Layouts
-import QtQuick.Effects
 import "../"
 
 // Reusable arc gauge orb with hover aura and animated value.
@@ -24,7 +22,7 @@ Item {
         }
     }
     Component.onCompleted: canvas.requestPaint()
-    onValueChanged: animVal = value
+    onValueChanged: if (Math.abs(value - animVal) > 2) animVal = value
 
     // Aura glow
     Rectangle {
@@ -41,13 +39,6 @@ Item {
     // Gauge arc
     Canvas {
         id: canvas; anchors.fill: parent; rotation: 180
-        layer.enabled: true
-        layer.effect: MultiEffect {
-            shadowEnabled: true
-            shadowBlur: 0.4
-            shadowOpacity: 0.25
-            shadowVerticalOffset: 1
-        }
         onPaint: {
             var ctx = getContext("2d"); ctx.clearRect(0, 0, width, height);
             var cX = width/2; var cY = height/2; var rad = (width/2)-width*0.06;

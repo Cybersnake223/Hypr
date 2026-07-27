@@ -1,6 +1,7 @@
 import QtQuick
 import QtQuick.Layouts
 import Quickshell
+import "../WindowRegistry.js" as Registry
 
 Row {
     property var island
@@ -21,13 +22,8 @@ Row {
         anchors.verticalCenter: parent.verticalCenter
         Image {
             id: notifIcon; anchors.fill: parent; anchors.margins: island.s(5)
-            source: {
-                let ic = island.notifHistory.count > 0 ? (island.notifHistory.get(0).icon || "")
-                       : (island.notifData ? (island.notifData.icon || "") : "")
-                if (ic === "") return ""
-                if (ic.startsWith("/") || ic.startsWith("file://") || ic.startsWith("http")) return ic
-                return "image://theme/" + ic
-            }
+            source: Registry.resolveIcon(island.notifHistory.count > 0 ? (island.notifHistory.get(0).icon || "")
+                       : (island.notifData ? (island.notifData.icon || "") : ""))
             fillMode: Image.PreserveAspectFit; asynchronous: true
         }
         Text {

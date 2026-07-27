@@ -12,28 +12,7 @@ import "../"
 
 ShellRoot {
     id: root
-    MatugenColors { id: _theme; colorOverrides: SharedConfig.themeColors }
-    readonly property color base: _theme.base
-    readonly property color crust: _theme.crust
-    readonly property color mantle: _theme.mantle
-    readonly property color text: _theme.text
-    readonly property color subtext0: _theme.subtext0
-    readonly property color overlay0: _theme.overlay0
-    readonly property color overlay2: _theme.overlay2
-    readonly property color surface0: _theme.surface0
-    readonly property color surface1: _theme.surface1
-    readonly property color surface2: _theme.surface2
-
-    readonly property color mauve: _theme.mauve
-    readonly property color red: _theme.red
-    readonly property color peach: _theme.peach
-    readonly property color blue: _theme.blue
-    readonly property color green: _theme.green
-
-    // Consistent font tokens (deduped from SharedConfig)
-    readonly property string nerdFont: SharedConfig.nerdFont
-    readonly property string monoFont: SharedConfig.monoFont
-    readonly property string nerdPropoFont: SharedConfig.nerdPropoFont
+    readonly property var mocha: SharedConfig.mocha
 
     // Persistent Settings
     Settings {
@@ -108,21 +87,21 @@ ShellRoot {
 
                 property string staticWallpaperPath: "file:///tmp/lock_bg.png"
 
-                property string batPct: "100"
-                property string batStatus: "AC"
                 property string currentUser: "User"
                 property string faceIconPath: ""
-                property string kbLayout: "US"
-                property string weatherIcon: ""
-                property string weatherTemp: "--°C"
 
                 // UI States
                 property real introState: 0.0
                 property bool powerMenuOpen: false
                 property bool inputActive: false
-                property bool isPlayingIntro: true
-                property bool isDesktop: false
 
+                Timer {
+                    id: powerMenuTimer
+                    interval: 10000
+                    running: screenRoot.powerMenuOpen
+                    onTriggered: screenRoot.powerMenuOpen = false
+                }
+                property bool isPlayingIntro: true
                 Component.onCompleted: {
                     introSequence.start();
                 }
@@ -142,19 +121,8 @@ ShellRoot {
                 }
 
                 // ---------------------------------------------------------
-                // BACKGROUND DATA POLLING
+                // STARTUP DATA (one-shot user info, rest via SharedConfig)
                 // ---------------------------------------------------------
-
-                Process {
-                    id: chassisDetector
-                    running: true
-                    command: ["bash", "-c", "if ls /sys/class/power_supply/BAT* 1> /dev/null 2>&1; then echo 'laptop'; else echo 'desktop'; fi"]
-                    stdout: StdioCollector {
-                        onStreamFinished: {
-                            screenRoot.isDesktop = (this.text.trim() === "desktop");
-                        }
-                    }
-                }
 
                 Process {
                     id: userPoller
@@ -176,59 +144,13 @@ ShellRoot {
                     Component.onCompleted: running = true
                 }
 
-                Process {
-                    id: kbPoller
-                    command: ["bash", "-c", "hyprctl devices -j | jq -r '.keyboards[] | select(.main == true) | .active_keymap' | head -n1 | cut -c1-2 | tr '[:lower:]' '[:upper:]'"]
-                    stdout: StdioCollector {
-                        onStreamFinished: {
-                            let layout = this.text.trim();
-                            if (layout !== "" && layout !== "null") {
-                                screenRoot.kbLayout = layout;
-                            }
-                        }
-                    }
-                }
-                Timer { interval: 10000; running: true; repeat: true; triggeredOnStart: true; onTriggered: kbPoller.running = true }
-
-                Process {
-                    id: batPoller
-                    running: !screenRoot.isDesktop
-                    command: ["bash", "-c", "cat /sys/class/power_supply/BAT*/capacity 2>/dev/null | head -n1 || echo '100'; cat /sys/class/power_supply/BAT*/status 2>/dev/null | head -n1 || echo 'AC'"]
-                    stdout: StdioCollector {
-                        onStreamFinished: {
-                            let lines = this.text.trim().split("\n");
-                            if (lines.length >= 2) {
-                                screenRoot.batPct = lines[0] || "100";
-                                screenRoot.batStatus = lines[1] || "Unknown";
-                            }
-                        }
-                    }
-                }
-                Timer { interval: 5000; running: !screenRoot.isDesktop; repeat: true; triggeredOnStart: true; onTriggered: batPoller.running = true }
-
-                Process {
-                    id: weatherPoller
-                    property string scriptPath: Qt.resolvedUrl("calendar/weather.sh").toString().replace(/^file:\/\//, "")
-                    command: ["bash", "-c", '"' + scriptPath + '" --island']
-                    stdout: StdioCollector {
-                        onStreamFinished: {
-                            let f = this.text.trim().split("\t");
-                            if (f.length >= 12) {
-                                screenRoot.weatherIcon = f[10] || "";
-                                screenRoot.weatherTemp = f[11] || "--°C";
-                            }
-                        }
-                    }
-                }
-                Timer { interval: 900000; running: true; repeat: true; triggeredOnStart: true; onTriggered: weatherPoller.running = true }
-
                 // ---------------------------------------------------------
                 // 1. LIVING BACKGROUND
                 // ---------------------------------------------------------
 
                 Rectangle {
                     anchors.fill: parent
-                    color: root.base
+                    color: root.mocha.base
                 }
 
                 Image {
@@ -293,7 +215,7 @@ ShellRoot {
                                 height: width
                                 radius: width / 2
                                 color: "transparent"
-                                border.color: lockUI.failed ? root.red : root.text
+                                border.color: lockUI.failed ? root.mocha.red : root.mocha.text
                                 border.width: Math.max(1, 1 * screenRoot.sc)
                                 opacity: lockUI.failed ? (0.1 - (index * 0.02)) : (screenRoot.inputActive ? (0.02 - (index * 0.005)) : (0.04 - (index * 0.01)))
                                 Behavior on border.color { ColorAnimation { duration: 600; easing.type: Easing.OutExpo } }
@@ -342,27 +264,27 @@ ShellRoot {
 
                             Text {
                                 id: clockHours
-                                font.family: root.nerdPropoFont
+                                font.family: SharedConfig.nerdPropoFont
                                 font.pixelSize: 140 * screenRoot.sc
                                 font.weight: Font.Bold
-                                color: root.text
+                                color: root.mocha.text
                                 Behavior on color { ColorAnimation { duration: 300 } }
                             }
                             Text {
                                 text: ":"
-                                font.family: root.nerdPropoFont
+                                font.family: SharedConfig.nerdPropoFont
                                 font.pixelSize: 140 * screenRoot.sc
                                 font.weight: Font.Bold
                                 opacity: 0.5
-                                color: root.text
+                                color: root.mocha.text
                                 Behavior on color { ColorAnimation { duration: 300 } }
                             }
                             Text {
                                 id: clockMinutes
-                                font.family: root.nerdPropoFont
+                                font.family: SharedConfig.nerdPropoFont
                                 font.pixelSize: 140 * screenRoot.sc
                                 font.weight: Font.Bold
-                                color: root.text
+                                color: root.mocha.text
                                 Behavior on color { ColorAnimation { duration: 300 } }
                             }
                         }
@@ -370,14 +292,14 @@ ShellRoot {
                         Text {
                             id: dateText
                             Layout.alignment: Qt.AlignHCenter
-                            font.family: root.nerdPropoFont
+                            font.family: SharedConfig.nerdPropoFont
                             font.pixelSize: 22 * screenRoot.sc
                             font.weight: Font.Bold
-                            color: root.text
+                            color: root.mocha.text
                         }
 
                         Timer {
-                            interval: 1000; running: true; repeat: true; triggeredOnStart: true
+                            interval: 60000; running: true; repeat: true; triggeredOnStart: true
                             onTriggered: {
                                 let d = new Date();
                                 clockHours.text = Qt.formatDateTime(d, "hh");
@@ -420,15 +342,15 @@ ShellRoot {
                             Rectangle {
                                 anchors.fill: parent
                                 radius: height / 2
-                                color: Qt.rgba(root.surface0.r, root.surface0.g, root.surface0.b, 0.5)
+                                color: Qt.rgba(root.mocha.surface0.r, root.mocha.surface0.g, root.mocha.surface0.b, 0.5)
                                 visible: avatarImg.status !== Image.Ready
 
                                 Text {
                                     anchors.centerIn: parent
                                     text: "󰄽"
-                                    font.family: root.nerdPropoFont
+                                    font.family: SharedConfig.nerdPropoFont
                                     font.pixelSize: 64 * screenRoot.sc
-                                    color: root.subtext0
+                                    color: root.mocha.subtext0
                                 }
                             }
 
@@ -454,7 +376,7 @@ ShellRoot {
                                 anchors.fill: parent
                                 radius: height / 2
                                 color: "transparent"
-                                border.color: lockUI.failed ? root.red : (lockUI.authenticating ? root.peach : Qt.rgba(root.text.r, root.text.g, root.text.b, 0.5))
+                                border.color: lockUI.failed ? root.mocha.red : (lockUI.authenticating ? root.mocha.peach : Qt.rgba(root.mocha.text.r, root.mocha.text.g, root.mocha.text.b, 0.5))
                                 border.width: Math.max(1, 3 * screenRoot.sc)
                                 Behavior on border.color { ColorAnimation { duration: 300 } }
                             }
@@ -468,10 +390,10 @@ ShellRoot {
                             Text {
                                 Layout.alignment: Qt.AlignLeft
                                 text: screenRoot.currentUser
-                                font.family: root.nerdPropoFont
+                                font.family: SharedConfig.nerdPropoFont
                                 font.pixelSize: 28 * screenRoot.sc
                                 font.weight: Font.Bold
-                                color: root.text
+                                color: root.mocha.text
                             }
 
                             RowLayout {
@@ -484,13 +406,13 @@ ShellRoot {
                                     radius: height / 2 // Perfect circle
 
                                     color: lockUI.failed
-                                        ? Qt.rgba(root.red.r,   root.red.g,   root.red.b,   0.2)
+                                        ? Qt.rgba(root.mocha.red.r,   root.mocha.red.g,   root.mocha.red.b,   0.2)
                                         : (lockUI.authenticating
-                                            ? Qt.rgba(root.peach.r, root.peach.g, root.peach.b, 0.2)
-                                            : Qt.rgba(root.mauve.r, root.mauve.g, root.mauve.b, 0.15))
+                                            ? Qt.rgba(root.mocha.peach.r, root.mocha.peach.g, root.mocha.peach.b, 0.2)
+                                            : Qt.rgba(root.mocha.mauve.r, root.mocha.mauve.g, root.mocha.mauve.b, 0.15))
                                     border.color: lockUI.failed
-                                        ? root.red
-                                        : (lockUI.authenticating ? root.peach : root.mauve)
+                                        ? root.mocha.red
+                                        : (lockUI.authenticating ? root.mocha.peach : root.mocha.mauve)
                                     border.width: Math.max(1, 1 * screenRoot.sc)
                                     Behavior on color { ColorAnimation { duration: 300 } }
                                     Behavior on border.color { ColorAnimation { duration: 300 } }
@@ -498,23 +420,23 @@ ShellRoot {
                                     Text {
                                         anchors.centerIn: parent
                                         text: lockUI.failed ? "󰌾" : (lockUI.authenticating ? "󰌿" : "󰌾")
-                                        font.family: root.nerdPropoFont
+                                        font.family: SharedConfig.nerdPropoFont
                                         font.pixelSize: 18 * screenRoot.sc
                                         color: lockUI.failed
-                                            ? root.red
-                                            : (lockUI.authenticating ? root.peach : root.mauve)
+                                            ? root.mocha.red
+                                            : (lockUI.authenticating ? root.mocha.peach : root.mocha.mauve)
                                         Behavior on color { ColorAnimation { duration: 300 } }
                                     }
                                 }
 
                                 Text {
-                                    font.family: root.nerdPropoFont
+                                    font.family: SharedConfig.nerdPropoFont
                                     font.pixelSize: 14 * screenRoot.sc
                                     font.weight: Font.Medium
                                     font.letterSpacing: 2.0
                                     color: lockUI.failed
-                                        ? root.red
-                                        : (lockUI.authenticating ? root.peach : root.text)
+                                        ? root.mocha.red
+                                        : (lockUI.authenticating ? root.mocha.peach : root.mocha.text)
                                     text: lockUI.statusText.toUpperCase()
                                     Behavior on color { ColorAnimation { duration: 300 } }
                                 }
@@ -528,13 +450,13 @@ ShellRoot {
                                 radius: height / 2 // Perfect pill shape natively!
                                 clip: true
 
-                                color: lockUI.failed ? Qt.rgba(root.red.r, root.red.g, root.red.b, 0.1) : Qt.rgba(root.surface0.r, root.surface0.g, root.surface0.b, 0.5)
+                                color: lockUI.failed ? Qt.rgba(root.mocha.red.r, root.mocha.red.g, root.mocha.red.b, 0.1) : Qt.rgba(root.mocha.surface0.r, root.mocha.surface0.g, root.mocha.surface0.b, 0.5)
                                 border.width: Math.max(1, 2 * screenRoot.sc)
                                 border.color: {
-                                    if (lockUI.failed) return root.red;
-                                    if (lockUI.authenticating) return root.peach;
-                                    if (inputField.text.length > 0) return root.text;
-                                    return Qt.rgba(root.text.r, root.text.g, root.text.b, 0.08);
+                                    if (lockUI.failed) return root.mocha.red;
+                                    if (lockUI.authenticating) return root.mocha.peach;
+                                    if (inputField.text.length > 0) return root.mocha.text;
+                                    return Qt.rgba(root.mocha.text.r, root.mocha.text.g, root.mocha.text.b, 0.08);
                                 }
 
                                 Behavior on color { ColorAnimation { duration: 250; easing.type: Easing.OutExpo } }
@@ -657,10 +579,10 @@ ShellRoot {
                                             // Render text directly as the delegate to avoid circular layout loops
                                             delegate: Text {
                                                 text: model.isDot ? "•" : model.charStr
-                                                font.family: root.nerdPropoFont
+                                                font.family: SharedConfig.nerdPropoFont
                                                 font.pixelSize: model.isDot ? (32 * screenRoot.sc) : (24 * screenRoot.sc)
                                                 font.weight: Font.Bold
-                                                color: lockUI.failed ? root.red : (lockUI.authenticating ? root.peach : root.text)
+                                                color: lockUI.failed ? root.mocha.red : (lockUI.authenticating ? root.mocha.peach : root.mocha.text)
                                                 verticalAlignment: Text.AlignVCenter
                                                 height: pinPill.height
 
@@ -703,8 +625,8 @@ ShellRoot {
                         Layout.preferredWidth: kbLayoutRow.implicitWidth + (36 * screenRoot.sc)
                         radius: height / 2 // Dynamic pill shape
 
-                        color: isHovered ? Qt.rgba(root.surface1.r, root.surface1.g, root.surface1.b, 0.6) : Qt.rgba(root.surface0.r, root.surface0.g, root.surface0.b, 0.4)
-                        border.color: isHovered ? root.mauve : Qt.rgba(root.text.r, root.text.g, root.text.b, 0.08)
+                        color: isHovered ? Qt.rgba(root.mocha.surface1.r, root.mocha.surface1.g, root.mocha.surface1.b, 0.6) : Qt.rgba(root.mocha.surface0.r, root.mocha.surface0.g, root.mocha.surface0.b, 0.4)
+                        border.color: isHovered ? root.mocha.mauve : Qt.rgba(root.mocha.text.r, root.mocha.text.g, root.mocha.text.b, 0.08)
                         border.width: Math.max(1, 1 * screenRoot.sc)
 
                         scale: isHovered ? 1.05 : 1.0
@@ -714,8 +636,8 @@ ShellRoot {
 
                         RowLayout {
                             id: kbLayoutRow; anchors.centerIn: parent; spacing: 8 * screenRoot.sc
-                            Text { text: "󰌌"; font.family: root.nerdPropoFont; font.pixelSize: 18 * screenRoot.sc; color: parent.parent.isHovered ? root.mauve : root.overlay2; Behavior on color { ColorAnimation { duration: 200 } } }
-                            Text { text: screenRoot.kbLayout; font.family: root.nerdPropoFont; font.pixelSize: 14 * screenRoot.sc; font.weight: Font.Black; color: root.text }
+                            Text { text: "󰌌"; font.family: SharedConfig.nerdPropoFont; font.pixelSize: 18 * screenRoot.sc; color: parent.parent.isHovered ? root.mocha.mauve : root.mocha.overlay2; Behavior on color { ColorAnimation { duration: 200 } } }
+                            Text { text: SharedConfig.kbLayout; font.family: SharedConfig.nerdPropoFont; font.pixelSize: 14 * screenRoot.sc; font.weight: Font.Black; color: root.mocha.text }
                         }
                         MouseArea { id: kbMouse; anchors.fill: parent; hoverEnabled: true; enabled: !screenRoot.isPlayingIntro }
                     }
@@ -723,13 +645,13 @@ ShellRoot {
                     // Battery Pill
                     Rectangle {
                         property bool isHovered: batMouse.containsMouse
-                        visible: !screenRoot.isDesktop
+                        visible: !SharedConfig.isDesktop
                         Layout.preferredHeight: 48 * screenRoot.sc
                         Layout.preferredWidth: batLayoutRow.implicitWidth + (36 * screenRoot.sc)
                         radius: height / 2
 
-                        color: isHovered ? Qt.rgba(root.surface1.r, root.surface1.g, root.surface1.b, 0.6) : Qt.rgba(root.surface0.r, root.surface0.g, root.surface0.b, 0.4)
-                        border.color: isHovered ? batLayoutRow.dynamicBatColor : Qt.rgba(root.text.r, root.text.g, root.text.b, 0.08)
+                        color: isHovered ? Qt.rgba(root.mocha.surface1.r, root.mocha.surface1.g, root.mocha.surface1.b, 0.6) : Qt.rgba(root.mocha.surface0.r, root.mocha.surface0.g, root.mocha.surface0.b, 0.4)
+                        border.color: isHovered ? batLayoutRow.dynamicBatColor : Qt.rgba(root.mocha.text.r, root.mocha.text.g, root.mocha.text.b, 0.08)
                         border.width: Math.max(1, 1 * screenRoot.sc)
 
                         scale: isHovered ? 1.05 : 1.0
@@ -741,23 +663,23 @@ ShellRoot {
                             id: batLayoutRow; anchors.centerIn: parent; spacing: 8 * screenRoot.sc
 
                             property color dynamicBatColor: {
-                                if (screenRoot.batStatus === "Charging") return root.green;
-                                let pct = parseInt(screenRoot.batPct);
-                                if (pct >= 60) return root.green;
-                                if (pct >= 25) return root.peach;
-                                return root.red;
+                                if (SharedConfig.batStatus === "Charging") return root.mocha.green;
+                                let pct = parseInt(SharedConfig.batPercent);
+                                if (pct >= 60) return root.mocha.green;
+                                if (pct >= 25) return root.mocha.peach;
+                                return root.mocha.red;
                             }
 
                             Text {
-                                text: screenRoot.batStatus === "Charging" ? "󰂄" : (parseInt(screenRoot.batPct) < 20 ? "󰂃" : "󰁹")
-                                font.family: root.nerdPropoFont
+                                text: SharedConfig.batStatus === "Charging" ? "󰂄" : (parseInt(SharedConfig.batPercent) < 20 ? "󰂃" : "󰁹")
+                                font.family: SharedConfig.nerdPropoFont
                                 font.pixelSize: 20 * screenRoot.sc
                                 color: batLayoutRow.dynamicBatColor
                                 Behavior on color { ColorAnimation { duration: 200 } }
                             }
                             Text {
-                                text: screenRoot.batPct + "%"
-                                font.family: root.nerdPropoFont
+                                text: SharedConfig.batPercent
+                                font.family: SharedConfig.nerdPropoFont
                                 font.pixelSize: 14 * screenRoot.sc
                                 font.weight: Font.Black
                                 color: batLayoutRow.dynamicBatColor
@@ -774,8 +696,8 @@ ShellRoot {
                         Layout.preferredWidth: weatherLayoutRow.implicitWidth + (36 * screenRoot.sc)
                         radius: height / 2
 
-                        color: isHovered ? Qt.rgba(root.surface1.r, root.surface1.g, root.surface1.b, 0.6) : Qt.rgba(root.surface0.r, root.surface0.g, root.surface0.b, 0.4)
-                        border.color: isHovered ? root.blue : Qt.rgba(root.text.r, root.text.g, root.text.b, 0.08)
+                        color: isHovered ? Qt.rgba(root.mocha.surface1.r, root.mocha.surface1.g, root.mocha.surface1.b, 0.6) : Qt.rgba(root.mocha.surface0.r, root.mocha.surface0.g, root.mocha.surface0.b, 0.4)
+                        border.color: isHovered ? root.mocha.blue : Qt.rgba(root.mocha.text.r, root.mocha.text.g, root.mocha.text.b, 0.08)
                         border.width: Math.max(1, 1 * screenRoot.sc)
 
                         scale: isHovered ? 1.05 : 1.0
@@ -786,18 +708,18 @@ ShellRoot {
                         RowLayout {
                             id: weatherLayoutRow; anchors.centerIn: parent; spacing: 8 * screenRoot.sc
                             Text {
-                                text: screenRoot.weatherIcon
-                                font.family: root.nerdPropoFont
+                                text: SharedConfig.weatherIcon
+                                font.family: SharedConfig.nerdPropoFont
                                 font.pixelSize: 20 * screenRoot.sc
-                                color: parent.parent.isHovered ? root.blue : root.text
+                                color: parent.parent.isHovered ? root.mocha.blue : root.mocha.text
                                 Behavior on color { ColorAnimation { duration: 200 } }
                             }
                             Text {
-                                text: screenRoot.weatherTemp
-                                font.family: root.nerdPropoFont
+                                text: SharedConfig.weatherTemp
+                                font.family: SharedConfig.nerdPropoFont
                                 font.pixelSize: 14 * screenRoot.sc
                                 font.weight: Font.Black
-                                color: root.text
+                                color: root.mocha.text
                                 Behavior on color { ColorAnimation { duration: 200 } }
                             }
                         }
@@ -820,8 +742,8 @@ ShellRoot {
                     clip: true
                     opacity: screenRoot.powerMenuOpen ? 1 : 0
 
-                    color: Qt.rgba(root.surface0.r, root.surface0.g, root.surface0.b, 0.95)
-                    border.color: Qt.rgba(root.mauve.r, root.mauve.g, root.mauve.b, 0.25)
+                    color: Qt.rgba(root.mocha.surface0.r, root.mocha.surface0.g, root.mocha.surface0.b, 0.95)
+                    border.color: Qt.rgba(root.mocha.mauve.r, root.mocha.mauve.g, root.mocha.mauve.b, 0.25)
                     border.width: Math.max(1, 1 * screenRoot.sc)
 
                     Behavior on height { NumberAnimation { duration: 350; easing.type: Easing.OutExpo } }
@@ -838,11 +760,11 @@ ShellRoot {
                         // --- SETTINGS SECTION ---
                         Text {
                             text: "SETTINGS"
-                            font.family: root.nerdPropoFont
+                            font.family: SharedConfig.nerdPropoFont
                             font.weight: Font.Black
                             font.pixelSize: 12 * screenRoot.sc
                             font.letterSpacing: 1.5
-                            color: root.mauve
+                            color: root.mocha.mauve
                             Layout.leftMargin: 18 * screenRoot.sc; Layout.topMargin: 4 * screenRoot.sc; Layout.bottomMargin: 4 * screenRoot.sc
                         }
 
@@ -851,23 +773,23 @@ ShellRoot {
                             Layout.fillWidth: true; Layout.leftMargin: 18 * screenRoot.sc; Layout.rightMargin: 18 * screenRoot.sc; Layout.topMargin: 4 * screenRoot.sc
                             Text {
                                 text: "Hide password"
-                                font.family: root.nerdPropoFont
+                                font.family: SharedConfig.nerdPropoFont
                                 font.pixelSize: 14 * screenRoot.sc
                                 font.weight: Font.Medium
-                                color: root.text
+                                color: root.mocha.text
                                 Layout.fillWidth: true
                             }
 
                             Rectangle {
                                 width: 40 * screenRoot.sc; height: 22 * screenRoot.sc; radius: height / 2
-                                color: lockSettings.hidePassword ? root.mauve : root.surface2
+                                color: lockSettings.hidePassword ? root.mocha.mauve : root.mocha.surface2
                                 Behavior on color { ColorAnimation { duration: 250 } }
 
                                 Rectangle {
                                     width: height; height: 18 * screenRoot.sc; radius: height / 2
                                     x: lockSettings.hidePassword ? parent.width - width - (2 * screenRoot.sc) : (2 * screenRoot.sc)
                                     y: (parent.height - height) / 2
-                                    color: root.base
+                                    color: root.mocha.base
                                     Behavior on x { NumberAnimation { duration: 200; easing.type: Easing.OutBack } }
                                 }
                                 MouseArea {
@@ -892,18 +814,18 @@ ShellRoot {
                                 Layout.fillWidth: true
                                 Text {
                                     text: "Reveal delay"
-                                    font.family: root.nerdPropoFont
+                                    font.family: SharedConfig.nerdPropoFont
                                     font.pixelSize: 14 * screenRoot.sc
                                     font.weight: Font.Medium
-                                    color: root.blue
+                                    color: root.mocha.blue
                                     Layout.fillWidth: true
                                 }
                                 Text {
                                     text: lockSettings.revealDuration >= 1000 ? (lockSettings.revealDuration / 1000).toFixed(1) + " s" : lockSettings.revealDuration + " ms"
-                                    font.family: root.nerdPropoFont
+                                    font.family: SharedConfig.nerdPropoFont
                                     font.pixelSize: 13 * screenRoot.sc
                                     font.weight: Font.Bold
-                                    color: root.peach
+                                    color: root.mocha.peach
                                 }
                             }
 
@@ -912,10 +834,10 @@ ShellRoot {
 
                                 Rectangle {
                                     anchors.verticalCenter: parent.verticalCenter
-                                    width: parent.width; height: 8 * screenRoot.sc; radius: height / 2; color: root.surface2
+                                    width: parent.width; height: 8 * screenRoot.sc; radius: height / 2; color: root.mocha.surface2
                                     Rectangle {
                                         width: ((lockSettings.revealDuration - 100) / 2900) * parent.width
-                                        height: parent.height; radius: height / 2; color: root.mauve
+                                        height: parent.height; radius: height / 2; color: root.mocha.mauve
                                     }
                                 }
 
@@ -924,8 +846,8 @@ ShellRoot {
                                     width: 20 * screenRoot.sc
                                     height: width
                                     radius: height / 2
-                                    color: root.peach
-                                    border.color: root.crust; border.width: Math.max(1, 2 * screenRoot.sc)
+                                    color: root.mocha.peach
+                                    border.color: root.mocha.crust; border.width: Math.max(1, 2 * screenRoot.sc)
                                     anchors.verticalCenter: parent.verticalCenter
                                     x: Math.max(0, Math.min(((lockSettings.revealDuration - 100) / 2900) * parent.width - (width / 2), parent.width - width))
 
@@ -971,33 +893,33 @@ ShellRoot {
                         // Separator
                         Rectangle {
                             Layout.fillWidth: true; Layout.preferredHeight: Math.max(1, 1 * screenRoot.sc)
-                            color: Qt.rgba(root.mauve.r, root.mauve.g, root.mauve.b, 0.2)
+                            color: Qt.rgba(root.mocha.mauve.r, root.mocha.mauve.g, root.mocha.mauve.b, 0.2)
                             Layout.leftMargin: 18 * screenRoot.sc; Layout.rightMargin: 18 * screenRoot.sc; Layout.topMargin: 4 * screenRoot.sc; Layout.bottomMargin: 4 * screenRoot.sc
                         }
 
                         // --- SYSTEM ACTIONS SECTION ---
                         Text {
                             text: "SYSTEM"
-                            font.family: root.nerdPropoFont
+                            font.family: SharedConfig.nerdPropoFont
                             font.weight: Font.Black
                             font.pixelSize: 12 * screenRoot.sc
                             font.letterSpacing: 1.5
-                            color: root.mauve
+                            color: root.mocha.mauve
                             Layout.leftMargin: 18 * screenRoot.sc; Layout.bottomMargin: 4 * screenRoot.sc
                         }
 
                         Rectangle {
                             Layout.fillWidth: true; Layout.preferredHeight: 48 * screenRoot.sc; Layout.leftMargin: 10 * screenRoot.sc; Layout.rightMargin: 10 * screenRoot.sc; radius: 12 * screenRoot.sc
-                            color: ma1.containsMouse ? Qt.rgba(root.blue.r, root.blue.g, root.blue.b, 0.15) : Qt.rgba(root.blue.r, root.blue.g, root.blue.b, 0.04)
+                            color: ma1.containsMouse ? Qt.rgba(root.mocha.blue.r, root.mocha.blue.g, root.mocha.blue.b, 0.15) : Qt.rgba(root.mocha.blue.r, root.mocha.blue.g, root.mocha.blue.b, 0.04)
                             scale: ma1.pressed ? 0.95 : (ma1.containsMouse ? 1.02 : 1.0)
                             Behavior on color { ColorAnimation { duration: 200 } }
                             Behavior on scale { NumberAnimation { duration: 200; easing.type: Easing.OutBack } }
 
                             RowLayout {
                                 anchors.fill: parent; anchors.leftMargin: 16 * screenRoot.sc; anchors.rightMargin: 16 * screenRoot.sc; spacing: 0
-                                Text { text: "󰜉"; font.family: root.nerdPropoFont; font.pixelSize: 18 * screenRoot.sc; color: ma1.containsMouse ? root.blue : Qt.rgba(root.blue.r, root.blue.g, root.blue.b, 0.6); Behavior on color { ColorAnimation { duration: 200 } } }
+                                Text { text: "󰜉"; font.family: SharedConfig.nerdPropoFont; font.pixelSize: 18 * screenRoot.sc; color: ma1.containsMouse ? root.mocha.blue : Qt.rgba(root.mocha.blue.r, root.mocha.blue.g, root.mocha.blue.b, 0.6); Behavior on color { ColorAnimation { duration: 200 } } }
                                 Item { Layout.fillWidth: true }
-                                Text { text: "Reboot"; font.family: root.nerdPropoFont; font.pixelSize: 15 * screenRoot.sc; font.weight: Font.Medium; color: ma1.containsMouse ? root.blue : Qt.rgba(root.blue.r, root.blue.g, root.blue.b, 0.6); Behavior on color { ColorAnimation { duration: 200 } } }
+                                Text { text: "Reboot"; font.family: SharedConfig.nerdPropoFont; font.pixelSize: 15 * screenRoot.sc; font.weight: Font.Medium; color: ma1.containsMouse ? root.mocha.blue : Qt.rgba(root.mocha.blue.r, root.mocha.blue.g, root.mocha.blue.b, 0.6); Behavior on color { ColorAnimation { duration: 200 } } }
                             }
                             MouseArea {
                                 id: ma1; anchors.fill: parent; hoverEnabled: true;
@@ -1010,16 +932,16 @@ ShellRoot {
 
                         Rectangle {
                             Layout.fillWidth: true; Layout.preferredHeight: 48 * screenRoot.sc; Layout.leftMargin: 10 * screenRoot.sc; Layout.rightMargin: 10 * screenRoot.sc; radius: 12 * screenRoot.sc
-                            color: ma2.containsMouse ? Qt.rgba(root.mauve.r, root.mauve.g, root.mauve.b, 0.15) : Qt.rgba(root.mauve.r, root.mauve.g, root.mauve.b, 0.04)
+                            color: ma2.containsMouse ? Qt.rgba(root.mocha.mauve.r, root.mocha.mauve.g, root.mocha.mauve.b, 0.15) : Qt.rgba(root.mocha.mauve.r, root.mocha.mauve.g, root.mocha.mauve.b, 0.04)
                             scale: ma2.pressed ? 0.95 : (ma2.containsMouse ? 1.02 : 1.0)
                             Behavior on color { ColorAnimation { duration: 200 } }
                             Behavior on scale { NumberAnimation { duration: 200; easing.type: Easing.OutBack } }
 
                             RowLayout {
                                 anchors.fill: parent; anchors.leftMargin: 16 * screenRoot.sc; anchors.rightMargin: 16 * screenRoot.sc; spacing: 0
-                                Text { text: "󰒲"; font.family: root.nerdPropoFont; font.pixelSize: 18 * screenRoot.sc; color: ma2.containsMouse ? root.mauve : Qt.rgba(root.mauve.r, root.mauve.g, root.mauve.b, 0.6); Behavior on color { ColorAnimation { duration: 200 } } }
+                                Text { text: "󰒲"; font.family: SharedConfig.nerdPropoFont; font.pixelSize: 18 * screenRoot.sc; color: ma2.containsMouse ? root.mocha.mauve : Qt.rgba(root.mocha.mauve.r, root.mocha.mauve.g, root.mocha.mauve.b, 0.6); Behavior on color { ColorAnimation { duration: 200 } } }
                                 Item { Layout.fillWidth: true }
-                                Text { text: "Suspend"; font.family: root.nerdPropoFont; font.pixelSize: 15 * screenRoot.sc; font.weight: Font.Medium; color: ma2.containsMouse ? root.mauve : Qt.rgba(root.mauve.r, root.mauve.g, root.mauve.b, 0.6); Behavior on color { ColorAnimation { duration: 200 } } }
+                                Text { text: "Suspend"; font.family: SharedConfig.nerdPropoFont; font.pixelSize: 15 * screenRoot.sc; font.weight: Font.Medium; color: ma2.containsMouse ? root.mocha.mauve : Qt.rgba(root.mocha.mauve.r, root.mocha.mauve.g, root.mocha.mauve.b, 0.6); Behavior on color { ColorAnimation { duration: 200 } } }
                             }
                             MouseArea {
                                 id: ma2; anchors.fill: parent; hoverEnabled: true;
@@ -1032,16 +954,16 @@ ShellRoot {
 
                         Rectangle {
                             Layout.fillWidth: true; Layout.preferredHeight: 48 * screenRoot.sc; Layout.leftMargin: 10 * screenRoot.sc; Layout.rightMargin: 10 * screenRoot.sc; Layout.bottomMargin: 8 * screenRoot.sc; radius: 12 * screenRoot.sc
-                            color: ma3.containsMouse ? Qt.rgba(root.red.r, root.red.g, root.red.b, 0.15) : Qt.rgba(root.red.r, root.red.g, root.red.b, 0.04)
+                            color: ma3.containsMouse ? Qt.rgba(root.mocha.red.r, root.mocha.red.g, root.mocha.red.b, 0.15) : Qt.rgba(root.mocha.red.r, root.mocha.red.g, root.mocha.red.b, 0.04)
                             scale: ma3.pressed ? 0.95 : (ma3.containsMouse ? 1.02 : 1.0)
                             Behavior on color { ColorAnimation { duration: 200 } }
                             Behavior on scale { NumberAnimation { duration: 200; easing.type: Easing.OutBack } }
 
                             RowLayout {
                                 anchors.fill: parent; anchors.leftMargin: 16 * screenRoot.sc; anchors.rightMargin: 16 * screenRoot.sc; spacing: 0
-                                Text { text: "󰐥"; font.family: root.nerdPropoFont; font.pixelSize: 18 * screenRoot.sc; color: ma3.containsMouse ? root.red : Qt.rgba(root.red.r, root.red.g, root.red.b, 0.6); Behavior on color { ColorAnimation { duration: 200 } } }
+                                Text { text: "󰐥"; font.family: SharedConfig.nerdPropoFont; font.pixelSize: 18 * screenRoot.sc; color: ma3.containsMouse ? root.mocha.red : Qt.rgba(root.mocha.red.r, root.mocha.red.g, root.mocha.red.b, 0.6); Behavior on color { ColorAnimation { duration: 200 } } }
                                 Item { Layout.fillWidth: true }
-                                Text { text: "Power Off"; font.family: root.nerdPropoFont; font.pixelSize: 15 * screenRoot.sc; font.weight: Font.Medium; color: ma3.containsMouse ? root.red : Qt.rgba(root.red.r, root.red.g, root.red.b, 0.6); Behavior on color { ColorAnimation { duration: 200 } } }
+                                Text { text: "Power Off"; font.family: SharedConfig.nerdPropoFont; font.pixelSize: 15 * screenRoot.sc; font.weight: Font.Medium; color: ma3.containsMouse ? root.mocha.red : Qt.rgba(root.mocha.red.r, root.mocha.red.g, root.mocha.red.b, 0.6); Behavior on color { ColorAnimation { duration: 200 } } }
                             }
                             MouseArea {
                                 id: ma3; anchors.fill: parent; hoverEnabled: true;
@@ -1065,9 +987,9 @@ ShellRoot {
                     radius: height / 2
 
                     color: screenRoot.powerMenuOpen
-                            ? root.surface2
-                            : (powerBtnMa.containsMouse ? Qt.rgba(root.surface1.r, root.surface1.g, root.surface1.b, 0.8) : Qt.rgba(root.surface0.r, root.surface0.g, root.surface0.b, 0.4))
-                    border.color: screenRoot.powerMenuOpen ? root.red : Qt.rgba(root.text.r, root.text.g, root.text.b, 0.15)
+                            ? root.mocha.surface2
+                            : (powerBtnMa.containsMouse ? Qt.rgba(root.mocha.surface1.r, root.mocha.surface1.g, root.mocha.surface1.b, 0.8) : Qt.rgba(root.mocha.surface0.r, root.mocha.surface0.g, root.mocha.surface0.b, 0.4))
+                    border.color: screenRoot.powerMenuOpen ? root.mocha.red : Qt.rgba(root.mocha.text.r, root.mocha.text.g, root.mocha.text.b, 0.15)
                     border.width: Math.max(1, 1 * screenRoot.sc)
 
                     opacity: screenRoot.introState
@@ -1082,9 +1004,9 @@ ShellRoot {
                     Text {
                         anchors.centerIn: parent
                         text: "󰐥"
-                        font.family: root.nerdPropoFont
+                        font.family: SharedConfig.nerdPropoFont
                         font.pixelSize: 22 * screenRoot.sc
-                        color: screenRoot.powerMenuOpen ? root.red : (powerBtnMa.containsMouse ? root.text : root.subtext0)
+                        color: screenRoot.powerMenuOpen ? root.mocha.red : (powerBtnMa.containsMouse ? root.mocha.text : root.mocha.subtext0)
                         Behavior on color { ColorAnimation { duration: 200 } }
                     }
 
@@ -1116,7 +1038,7 @@ ShellRoot {
                         radius: height / 2
                         anchors.centerIn: parent
                         color: "transparent"
-                        border.color: root.mauve
+                        border.color: root.mocha.mauve
                         border.width: Math.max(1, 1 * screenRoot.sc)
                         scale: 0.5
                         opacity: 0.0
@@ -1128,7 +1050,7 @@ ShellRoot {
                         radius: height / 2
                         anchors.centerIn: parent
                         color: "transparent"
-                        border.color: root.text
+                        border.color: root.mocha.text
                         border.width: Math.max(1, 1 * screenRoot.sc)
                         scale: 0.8
                         opacity: 0.0
@@ -1140,7 +1062,7 @@ ShellRoot {
                         radius: height / 2
                         anchors.centerIn: parent
                         color: "transparent"
-                        border.color: root.text
+                        border.color: root.mocha.text
                         border.width: Math.max(1, 2 * screenRoot.sc)
                         scale: 0.8
                         opacity: 0.0
@@ -1157,8 +1079,8 @@ ShellRoot {
                         Rectangle {
                             anchors.fill: parent
                             radius: height / 2
-                            color: Qt.rgba(root.surface0.r, root.surface0.g, root.surface0.b, 0.9)
-                            border.color: root.text
+                            color: Qt.rgba(root.mocha.surface0.r, root.mocha.surface0.g, root.mocha.surface0.b, 0.9)
+                            border.color: root.mocha.text
                             border.width: Math.max(1, 2 * screenRoot.sc)
                         }
 
@@ -1166,9 +1088,9 @@ ShellRoot {
                             id: introIconUnlocked
                             anchors.centerIn: parent
                             text: "󰌿"
-                            font.family: root.nerdPropoFont
+                            font.family: SharedConfig.nerdPropoFont
                             font.pixelSize: 64 * screenRoot.sc
-                            color: root.text
+                            color: root.mocha.text
                             opacity: 1.0
                             scale: 1.0
                             transformOrigin: Item.Center
@@ -1178,9 +1100,9 @@ ShellRoot {
                             id: introIconLocked
                             anchors.centerIn: parent
                             text: "󰌾"
-                            font.family: root.nerdPropoFont
+                            font.family: SharedConfig.nerdPropoFont
                             font.pixelSize: 64 * screenRoot.sc
-                            color: root.text
+                            color: root.mocha.text
                             opacity: 0.0
                             scale: 1.6
                             transformOrigin: Item.Center

@@ -10,7 +10,12 @@ view_file="${cache_dir}/view_id"
 daily_cache_file="${cache_dir}/daily_weather_cache.json"
 next_day_cache_file="${cache_dir}/next_day_precache.json"
 env_tracker_file="${cache_dir}/.env_tracker"
-ENV_FILE="$HOME/.config/quickshell/dynamic/modules/calendar/.env"
+# Source secrets from central location first, fallback to old path
+if [ -f "$HOME/.config/quickshell/secrets/weather.env" ]; then
+    ENV_FILE="$HOME/.config/quickshell/secrets/weather.env"
+else
+    ENV_FILE="$HOME/.config/quickshell/dynamic/modules/calendar/.env"
+fi
 
 # API Settings
 # Load environment variables silently
@@ -149,23 +154,24 @@ get_data() {
         
         for d in $dates; do
             day_data=$(echo "$processed_forecast" | jq "[.list[] | select(.dt_txt | startswith(\"$d\"))]")
-
-            raw_max=$(echo "$day_data" | jq '[.[].main.temp_max] | max')
+            IFS=$'\t' read -r raw_max raw_min raw_feels f_pop_raw f_wind f_hum f_code f_desc <<< $(
+                echo "$day_data" | jq -r --arg d "$d" '
+                    . as $day
+                    | [$day[].main.temp_max] | max as $max
+                    | [$day[].main.temp_min] | min as $min
+                    | [$day[].main.feels_like] | max as $feels
+                    | [$day[].pop] | max as $pop
+                    | ([$day[].wind.speed] | max | round) as $wind
+                    | ([$day[].main.humidity] | add / length | round) as $hum
+                    | ($day[(($day | length) / 2) | floor].weather[0].icon) as $code
+                    | ($day[(($day | length) / 2) | floor].weather[0].description) as $desc
+                    | [$max, $min, $feels, $pop, $wind, $hum, $code, $desc]
+                    | @tsv'
+            )
             f_max_temp=$(printf "%.1f" "$raw_max")
-
-            raw_min=$(echo "$day_data" | jq '[.[].main.temp_min] | min')
             f_min_temp=$(printf "%.1f" "$raw_min")
-
-            raw_feels=$(echo "$day_data" | jq '[.[].main.feels_like] | max')
             f_feels_like=$(printf "%.1f" "$raw_feels")
-
-            f_pop=$(echo "$day_data" | jq '[.[].pop] | max')
-            f_pop_pct=$(echo "$f_pop * 100" | bc | cut -d. -f1)
-            f_wind=$(echo "$day_data" | jq '[.[].wind.speed] | max | round')
-            f_hum=$(echo "$day_data" | jq '[.[].main.humidity] | add / length | round')
-            
-            f_code=$(echo "$day_data" | jq -r '.[length/2 | floor].weather[0].icon')
-            f_desc=$(echo "$day_data" | jq -r '.[length/2 | floor].weather[0].description' | sed -e "s/\b\(.\)/\u\1/g")
+            f_pop_pct=$(echo "$f_pop_raw * 100" | bc | cut -d. -f1)
             f_icon_data=$(get_icon "$f_code")
             f_icon=$(echo "$f_icon_data" | cut -d'|' -f1)
             f_hex=$(get_hex "$f_code")

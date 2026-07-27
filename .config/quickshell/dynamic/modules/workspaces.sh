@@ -31,7 +31,8 @@ fi
 # ---------------------------------------------
 
 # Configuration: How many workspaces do you want to show?
-SEQ_END=8
+# Override via QS_WORKSPACE_COUNT env var, fallback to 8
+SEQ_END=${QS_WORKSPACE_COUNT:-8}
 
 print_workspaces() {
     # Get raw data with a timeout fallback

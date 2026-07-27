@@ -43,7 +43,7 @@ PanelWindow {
     }
 
     Component.onCompleted: {
-        Quickshell.execDetached(["bash", "-c", "echo '" + currentActive + "' > /tmp/qs_active_widget"]);
+        Quickshell.execDetached(["bash", "-c", 'printf "%s\n" "$1" > /tmp/qs_active_widget', "qs_widget", currentActive]);
     }
 
     property string currentActive: "hidden"
@@ -144,28 +144,28 @@ PanelWindow {
             enabled: !masterWindow.disableMorph
             NumberAnimation {
                 duration: masterWindow.morphDuration
-                easing.type: Easing.Bezier; easing.bezierCurve: [0.16, 1, 0.3, 1]
+                easing.type: Easing.Bezier; easing.bezierCurve: SharedConfig.animEaseOut
             }
         }
         Behavior on y {
             enabled: !masterWindow.disableMorph
             NumberAnimation {
                 duration: masterWindow.morphDuration
-                easing.type: Easing.Bezier; easing.bezierCurve: [0.16, 1, 0.3, 1]
+                easing.type: Easing.Bezier; easing.bezierCurve: SharedConfig.animEaseOut
             }
         }
         Behavior on width {
             enabled: !masterWindow.disableMorph
             NumberAnimation {
                 duration: masterWindow.morphDuration
-                easing.type: Easing.Bezier; easing.bezierCurve: [0.16, 1, 0.3, 1]
+                easing.type: Easing.Bezier; easing.bezierCurve: SharedConfig.animEaseOut
             }
         }
         Behavior on height {
             enabled: !masterWindow.disableMorph
             NumberAnimation {
                 duration: masterWindow.morphDuration
-                easing.type: Easing.Bezier; easing.bezierCurve: [0.16, 1, 0.3, 1]
+                easing.type: Easing.Bezier; easing.bezierCurve: SharedConfig.animEaseOut
             }
         }
 
@@ -173,7 +173,7 @@ PanelWindow {
         Behavior on opacity {
             NumberAnimation {
                 duration: masterWindow.morphDuration === 500 ? 300 : 200
-                easing.type: Easing.Bezier; easing.bezierCurve: [0.16, 1, 0.3, 1]
+                easing.type: Easing.Bezier; easing.bezierCurve: SharedConfig.animEaseOut
             }
         }
 
@@ -208,14 +208,14 @@ PanelWindow {
                             from: 0.0
                             to: 1.0
                             duration: 400
-                            easing.type: Easing.Bezier; easing.bezierCurve: [0.16, 1, 0.3, 1]
+                            easing.type: Easing.Bezier; easing.bezierCurve: SharedConfig.animEaseOut
                         }
                         NumberAnimation {
                             property: "scale"
                             from: 0.97
                             to: 1.0
                             duration: 400
-                            easing.type: Easing.Bezier; easing.bezierCurve: [0.16, 1, 0.3, 1]
+                            easing.type: Easing.Bezier; easing.bezierCurve: SharedConfig.animEaseOut
                         }
                     }
                 }
@@ -226,14 +226,14 @@ PanelWindow {
                             from: 1.0
                             to: 0.0
                             duration: masterWindow.exitDuration
-                            easing.type: Easing.Bezier; easing.bezierCurve: [0.16, 1, 0.3, 1]
+                            easing.type: Easing.Bezier; easing.bezierCurve: SharedConfig.animEaseOut
                         }
                         NumberAnimation {
                             property: "scale"
                             from: 1.0
                             to: 0.98
                             duration: masterWindow.exitDuration
-                            easing.type: Easing.Bezier; easing.bezierCurve: [0.16, 1, 0.3, 1]
+                            easing.type: Easing.Bezier; easing.bezierCurve: SharedConfig.animEaseOut
                         }
                     }
                 }
@@ -242,7 +242,7 @@ PanelWindow {
     }
 
     function switchWidget(newWidget, arg) {
-        Quickshell.execDetached(["bash", "-c", "echo '" + newWidget + "' > /tmp/qs_active_widget"]);
+        Quickshell.execDetached(["bash", "-c", 'printf "%s\n" "$1" > /tmp/qs_active_widget', "qs_widget", newWidget]);
 
         prepTimer.stop();
         delayedClear.stop();
@@ -304,36 +304,34 @@ PanelWindow {
         masterWindow.targetW = t.w;
         masterWindow.targetH = t.h;
 
-        let props = {};
-
-        if (immediate) {
-            widgetStack.replace(t.comp, props, StackView.Immediate);
-        } else {
-            widgetStack.replace(t.comp, props);
+        if (t.comp) {
+            let props = {};
+            if (immediate) {
+                widgetStack.replace(t.comp, props, StackView.Immediate);
+            } else {
+                widgetStack.replace(t.comp, props);
+            }
         }
 
-        widgetStack.currentItem.globalUiScale = Qt.binding(function() { return masterWindow.globalUiScale; });
-        widgetStack.currentItem.themeColors = Qt.binding(function() { return masterWindow.themeColors; });
+        if (widgetStack.currentItem) {
+            widgetStack.currentItem.globalUiScale = Qt.binding(function() { return masterWindow.globalUiScale; });
+            widgetStack.currentItem.themeColors = Qt.binding(function() { return masterWindow.themeColors; });
+        }
 
         masterWindow.isVisible = true;
     }
 
     // =========================================================
-    // --- CONSOLIDATED IPC: EVENT-DRIVEN WATCHER ---
-    // Replaces the old ipcWatcher pattern that spawned a new process on every event.
-    // Uses SplitParser + JSON-on-one-line protocol for incremental reading.
-    // Each event outputs: {"event":"QS_WIDGET","data":"..."}\n
+    // --- IPC: WIDGET SWITCHING (event-driven via inotify) ---
+    // Dynamic island events are handled directly by DynamicIsland.qml.
     // =========================================================
     Process {
         id: ipcWatcher
         command: ["bash", "-c",
-            "stdbuf -oL inotifywait -m -e close_write,moved_to /tmp/ --include 'qs_' 2>/dev/null | " +
+            "stdbuf -oL inotifywait -m -e close_write,moved_to /tmp/ --include 'qs_widget_state' 2>/dev/null | " +
             "while read -r dir action file; do " +
-            "  case \"$file\" in " +
-            "    qs_widget_state) " +
-            "      v=$(cat /tmp/qs_widget_state 2>/dev/null); rm -f /tmp/qs_widget_state; " +
-            "      printf '%s\\n' \"{\\\"event\\\":\\\"QS_WIDGET\\\",\\\"data\\\":\\\"$v\\\"}\" ;; " +
-            "  esac; " +
+            "  v=$(cat /tmp/qs_widget_state 2>/dev/null); rm -f /tmp/qs_widget_state; " +
+            "  printf '{\"event\":\"QS_WIDGET\",\"data\":\"%s\"}\\n' \"$v\"; " +
             "done"
         ]
         stdout: SplitParser {
@@ -364,6 +362,7 @@ PanelWindow {
             }
         }
         running: true
+        onExited: running = true
     }
 
     Timer {

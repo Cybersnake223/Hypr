@@ -1,5 +1,6 @@
 import QtQuick
 import QtQuick.Layouts
+import "../WindowRegistry.js" as Registry
 
 Item {
     property var island
@@ -78,12 +79,7 @@ Item {
             anchors.verticalCenter: parent.verticalCenter
             Image {
                 id: collNotifIcon; anchors.fill: parent; anchors.margins: island.s(5)
-                source: {
-                    let ic = island.notifData ? (island.notifData.icon || "") : ""
-                    if (ic === "") return ""
-                    if (ic.startsWith("/") || ic.startsWith("file://") || ic.startsWith("http")) return ic
-                    return "image://theme/" + ic
-                }
+                source: Registry.resolveIcon(island.notifData ? (island.notifData.icon || "") : "")
                 fillMode: Image.PreserveAspectFit; asynchronous: true
             }
             Text {
@@ -128,15 +124,6 @@ Item {
                     font.pixelSize: island.s(19)
                     font.weight: Font.Black
                     color: island.mauve
-                }
-
-                Text {
-                    text: ":" + island.timeStrSec.split(":")[2]
-                    font.family: island.monoFont
-                    font.pixelSize: island.s(19)
-                    font.weight: Font.Black
-                    color: island.mauve
-                    Layout.alignment: Qt.AlignVCenter
                 }
             }
 
