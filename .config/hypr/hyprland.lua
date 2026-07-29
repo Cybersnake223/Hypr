@@ -22,6 +22,7 @@ if not ok then
 end
 
 local modules = {
+	"modules.env-var",
 	"modules.startup",
 	"modules.general",
 	"modules.deco",
@@ -31,7 +32,6 @@ local modules = {
 	"modules.layout",
 	"modules.xwayland",
 	"modules.ecosystem",
-	"modules.env-var",
 	"modules.monitors",
 	"modules.keybinds",
 	"modules.window-rules",
