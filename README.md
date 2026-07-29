@@ -40,7 +40,16 @@
 
 <br/>
 
-**[🖼 Preview](#-preview) · [✨ Features](#-features) · [🧩 Stack](#-stack) · [📦 Prerequisites](#-prerequisites) · [⚡ Installation](#-installation) · [📂 Layout](#-file-layout) · [🚩 Flags](#-installer-flags) · [⌨️ Keybinds](#-keybinds) · [🎨 Theming](#-theming) · [🎛 Quickshell](#-quickshell-panels--osd) · [🌐 Zen](#-zen-browser) · [🔄 Updating](#-updating) · [🔧 Troubleshoot](#-troubleshooting) · [🔐 Security](#-security)**
+<details>
+<summary><b>📖 Table of Contents</b></summary>
+
+**[🖼 Preview](#-preview) · [✨ Features](#-features) · [🧩 Stack](#-stack)**  
+**[📦 Prerequisites](#-prerequisites) · [⚡ Installation](#-installation) · [🚀 Post-Install](#-post-install)**  
+**[📂 Layout](#-file-layout) · [🚩 Flags](#-installer-flags) · [⌨️ Keybinds](#-keybinds)**  
+**[🎨 Theming](#-theming) · [🎛 Quickshell](#-quickshell-panels--osd) · [🌐 Zen](#-zen-browser)**  
+**[🔄 Updating](#-updating) · [🔧 Troubleshoot](#-troubleshooting) · [🔐 Security](#-security)**
+
+</details>
 
 </div>
 
@@ -160,6 +169,14 @@ System dependencies (`--install-nvim-deps`): `wl-clipboard`, `python`, `imagemag
 > [!IMPORTANT]
 > The installer checks for these and warns about anything missing. It will not block installation unless core system utilities like `cp` or `find` are absent.
 
+> [!TIP]
+> If you don't have an AUR helper, install `yay` first:
+> ```bash
+> sudo pacman -S --needed git base-devel
+> git clone https://aur.archlinux.org/yay.git /tmp/yay
+> cd /tmp/yay && makepkg -si
+> ```
+
 ### Tested On
 
 |                |                                                   |
@@ -167,6 +184,12 @@ System dependencies (`--install-nvim-deps`): `wl-clipboard`, `python`, `imagemag
 |   🖥 **OS**    | Arch Linux (latest)                               |
 |      GPU       | Intel / AMD / NVIDIA (all supported via Hyprland) |
 | 🪟 **Display** | Wayland (Hyprland)                                |
+
+> [!NOTE]
+> Zsh configs use `ZDOTDIR=$HOME/.config/zsh`. Set this before first launch:
+> ```bash
+> echo 'export ZDOTDIR="$HOME/.config/zsh"' > ~/.zshenv
+> ```
 
 ### Core packages
 
@@ -296,6 +319,30 @@ echo 'export PATH="$HOME/.local/bin:$PATH"' >> ~/.zshrc
 
 ---
 
+## 🚀 Post-Install
+
+After the installer finishes:
+
+1. **Enable system services** (if this is a fresh Arch install):
+   ```bash
+   systemctl --user enable --now pipewire pipewire-pulse wireplumber
+   sudo systemctl enable --now bluetooth networkmanager
+   ```
+2. **Set ZDOTDIR** (if using Zsh with this config):
+   ```bash
+   echo 'export ZDOTDIR="$HOME/.config/zsh"' > ~/.zshenv
+   ```
+3. **Reload your shell** or log out and back in.
+4. **Start Hyprland**: run `Hyprland` from a TTY or select it in your display manager.
+5. **Run `:MasonInstallAll`** inside Neovim on first launch to install LSP servers and formatters.
+
+> [!TIP]
+> The installer backs up everything it overwrites. If something goes wrong, run `./install.sh --uninstall` to restore your originals.
+
+<br/>
+
+---
+
 ## 📂 File Layout
 
 ```
@@ -371,7 +418,10 @@ $HOME
 </div>
 
 ```bash
-# First-timer recommended flow
+# Full install with all dependencies (recommended for first-timers)
+./install.sh --install-all-deps --yes
+
+# First-timer recommended flow (preview before committing)
 ./install.sh --dry-run
 
 # Standard install

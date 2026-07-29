@@ -10,7 +10,8 @@
 # Designed for Arch Linux + Hyprland. Works on any POSIX-ish shell environment.
 #
 # Usage: ./install.sh [--yes] [--dry-run] [--no-backup] [--uninstall]
-#                     [--list-backups] [--select] [--skip-deps] [-h]
+#                     [--list-backups] [--select] [--install-deps] [--install-all-deps]
+#                     [--install-nvim-deps] [--skip-deps] [-h]
 
 set -Eeuo pipefail
 
@@ -28,7 +29,7 @@ BACKUP_BASE="${XDG_DATA_HOME:-$HOME/.local/share}/hypr-dotfiles-backups"
 BACKUP_DIR="$BACKUP_BASE/$TS"
 INSTALL_MANIFEST="$BACKUP_DIR/.manifest"
 LOG_FILE="${TMPDIR:-/tmp}/hypr-install-${TS}.log"
-LOCK_FILE="${TMPDIR:-/tmp}/hypr-install.lock"
+LOCK_FILE="${XDG_CACHE_HOME:-$HOME/.cache}/hypr-install.lock"
 
 # Flags
 OPT_YES=0
@@ -159,6 +160,8 @@ done
   && die "--uninstall and --select cannot be used together."
 [[ "$OPT_DRY_RUN" -eq 1 && "$OPT_UNINSTALL" -eq 1 ]] \
   && die "--dry-run and --uninstall cannot be used together."
+[[ "$OPT_INSTALL_DEPS" -eq 1 && "$OPT_SKIP_DEPS" -eq 1 ]] \
+  && die "--install-deps and --skip-deps cannot be used together."
 
 # Sanity: must run from inside the repo
 [[ -f "$REPO_DIR/README.md" ]] \
@@ -513,7 +516,7 @@ cmd_check_deps() {
     if [[ ${#still_missing[@]} -gt 0 ]]; then
       echo
       warn "Still missing: ${still_missing[*]}"
-      [[ "$OPT_YES" -eq 1 ]] || confirm "Continue with missing packages?" || { echo "Aborted."; exit 0; }
+      [[ "$OPT_YES" -eq 1 ]] ||     confirm "Continue with missing packages?" || { echo "Aborted."; exit 1; }
     else
       success "All dependencies satisfied."
     fi
@@ -560,7 +563,7 @@ cmd_uninstall() {
   echo
   warn "Files that were NEW (no prior backup) will be LEFT in place — they are never deleted."
   echo
-  confirm "Restore from this backup?" || { echo "Aborted."; exit 0; }
+  confirm "Restore from this backup?" || { echo "Aborted."; exit 1; }
 
   local restored=0 skipped=0
 
@@ -767,7 +770,7 @@ patch_path() {
   step "PATH — ~/.local/bin"
   local bin_dir="$HOME/.local/bin"
 
-  if [[ ":$PATH:" == *":$bin_dir:"* ]]; then
+  if [[ -d "$bin_dir" ]] && printf '%s\n' "$PATH" | tr ':' '\n' | grep -qxF "$bin_dir" >/dev/null 2>&1; then
     success "  ✓  ~/.local/bin is already in PATH."
     return 0
   fi
@@ -957,7 +960,7 @@ fi
 [[ "$OPT_SELECT" -eq 1 ]] && cmd_select_modules
 
 echo
-confirm "Install dotfiles into $HOME?" || { echo "  Aborted."; exit 0; }
+confirm "Install dotfiles into $HOME?" || { echo "  Aborted."; exit 1; }
 
 # Initialise manifest and log
 mkdir -p "$(dirname "$LOG_FILE")" 2>/dev/null || true
