@@ -85,7 +85,9 @@ ShellRoot {
                 readonly property real sc: scaler.baseScale
                 // --------------------------------
 
-                property string staticWallpaperPath: "file:///tmp/lock_bg.png"
+                readonly property string wallpaperDir: Quickshell.env("HOME") + "/.config/hypr/wallpaper"
+                readonly property string wallpaperFile: wallpaperDir + "/current.png"
+                property string wallpaperPath: "file://" + wallpaperFile
 
                 property string currentUser: "User"
                 property string faceIconPath: ""
@@ -144,6 +146,36 @@ ShellRoot {
                     Component.onCompleted: running = true
                 }
 
+                // Wallpaper watcher — reloads when current.png changes
+                Process {
+                    id: wallpaperWatcher
+                    command: [
+                        "bash",
+                        "-c",
+                        "inotifywait -m -e close_write,moved_to,create " +
+                        screenRoot.wallpaperDir + " 2>/dev/null | " +
+                        "while read -r dir action file; do " +
+                        "  if [[ \"$file\" == \"current.png\" ]]; then " +
+                        "    echo 'changed'; " +
+                        "  fi; " +
+                        "done"
+                    ]
+                    stdout: SplitParser {
+                        splitMarker: "\n"
+                        onRead: (line) => {
+                            if (line.trim() === "changed") {
+                                var path = screenRoot.wallpaperPath;
+                                bgWallpaper.source = "";
+                                Qt.callLater(function() {
+                                    bgWallpaper.source = path;
+                                });
+                            }
+                        }
+                    }
+                    running: true
+                    onExited: running = true
+                }
+
                 // ---------------------------------------------------------
                 // 1. LIVING BACKGROUND
                 // ---------------------------------------------------------
@@ -156,7 +188,7 @@ ShellRoot {
                 Image {
                     id: bgWallpaper
                     anchors.fill: parent
-                    source: screenRoot.staticWallpaperPath
+                    source: screenRoot.wallpaperPath
                     fillMode: Image.PreserveAspectCrop
                     asynchronous: true
                     visible: false
