@@ -187,7 +187,8 @@ exec > >(stdbuf -oL tee -a "$OUTFILE")
         fi
     }
     emit_bt() {
-        local json=$($HOME/.config/quickshell/dynamic/scripts/bt_all.sh 2>/dev/null | jq -c . 2>/dev/null)
+        local json=$(timeout 10 $HOME/.config/quickshell/dynamic/scripts/bt_all.sh 2>/dev/null | jq -c . 2>/dev/null)
+        [ -z "$json" ] && json='{"powered":"no","count":0,"devices":[]}'
         echo "btout:$json"
     }
 
