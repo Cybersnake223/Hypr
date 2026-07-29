@@ -6,6 +6,7 @@
 set -uo pipefail
 
 CHECKUPDATES="$HOME/.local/bin/scripts/checkupdates"
+PACMANQU="pacman -Qu"
 YAY="$(command -v yay 2>/dev/null || true)"
 
 pkgs_json="[]"
@@ -25,6 +26,8 @@ add_packages() {
 # Official repositories
 if [ -x "$CHECKUPDATES" ]; then
     add_packages "$CHECKUPDATES"
+elif command -v pacman &> /dev/null; then
+    add_packages "$PACMANQU"
 fi
 
 # AUR (yay)
