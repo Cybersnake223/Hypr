@@ -337,17 +337,17 @@ PanelWindow {
     Timer {
         id: osdTimer
         interval: 1000
+        running: osdActive
         onTriggered: osdActive = false
     }
 
     Timer {
         id: notifSaveDebounce
         interval: 5000
+        running: notifDirty
         onTriggered: {
-            if (notifDirty) {
-                saveNotifHistory()
-                notifDirty = false
-            }
+            saveNotifHistory()
+            notifDirty = false
         }
     }
 
@@ -359,30 +359,39 @@ PanelWindow {
         NumberAnimation { to: 0.9; duration: 900; easing.type: Easing.InOutSine }
     }
 
+    function updateTime(showSeconds) {
+        let d = new Date()
+        timeStr = Qt.formatDateTime(d, "HH:mm")
+        if (showSeconds)
+            timeStrSec = Qt.formatDateTime(d, "HH:mm:ss")
+        dayStr = Qt.formatDateTime(d, "ddd")
+        dateStr = Qt.formatDateTime(d, "ddd, MMM dd")
+        let h = d.getHours()
+        if (h !== lastGreetingHour) {
+            lastGreetingHour = h
+            if (h >= 5 && h < 12) greetingStr = "Good morning"
+            else if (h >= 12 && h < 17) greetingStr = "Good afternoon"
+            else if (h >= 17 && h < 21) greetingStr = "Good evening"
+            else greetingStr = "Good night"
+        }
+    }
+
     property int lastGreetingHour: -1
 
     Timer {
-        interval: expanded ? 1000 : 60000
-        running: currentPage === "clock" || osdActive
+        interval: 60000
+        running: !expanded && (currentPage === "clock" || osdActive)
         repeat: true
         triggeredOnStart: true
-        onTriggered: {
-            let d = new Date()
-            timeStr = Qt.formatDateTime(d, "HH:mm")
-            if (expanded) {
-                timeStrSec = Qt.formatDateTime(d, "HH:mm:ss")
-            }
-            dayStr = Qt.formatDateTime(d, "ddd")
-            dateStr = Qt.formatDateTime(d, "ddd, MMM dd")
-            let h = d.getHours()
-            if (h !== lastGreetingHour) {
-                lastGreetingHour = h
-                if (h >= 5 && h < 12) greetingStr = "Good morning"
-                else if (h >= 12 && h < 17) greetingStr = "Good afternoon"
-                else if (h >= 17 && h < 21) greetingStr = "Good evening"
-                else greetingStr = "Good night"
-            }
-        }
+        onTriggered: updateTime(false)
+    }
+
+    Timer {
+        interval: 1000
+        running: expanded && (currentPage === "clock" || osdActive)
+        repeat: true
+        triggeredOnStart: true
+        onTriggered: updateTime(true)
     }
 
 
@@ -581,13 +590,7 @@ PanelWindow {
             GradientStop { position: 0.25; color: Qt.rgba(base.r, base.g, base.b, 0.35) }
             GradientStop { position: 1.0; color: "transparent" }
         }
-        layer.enabled: true
-        layer.effect: MultiEffect {
-            blurEnabled: true
-            blurMax: 10
-            blur: 0.7
         }
-    }
 
     Item {
         id: islandShape
@@ -728,28 +731,6 @@ PanelWindow {
             }
         }
 
-        // Ambient soft-shadow layer for depth
-        Rectangle {
-            id: ambientShadow
-            anchors.fill: parent
-            radius: bg.radius
-            color: "transparent"
-            antialiasing: true
-            layer.enabled: true
-            layer.effect: MultiEffect {
-                id: ambientEffect
-                shadowEnabled: true
-                shadowColor: "#000000"
-                shadowBlur: hovered && !expanded ? 3.5 : 3.0
-                shadowOpacity: hovered && !expanded ? 0.16 : 0.12
-                shadowVerticalOffset: hovered && !expanded ? s(3) : s(2)
-                Behavior on shadowBlur { PropertyAnimation { duration: 200; easing.type: Easing.Bezier; easing.bezierCurve: SharedConfig.animEaseOut } }
-                Behavior on shadowOpacity { PropertyAnimation { duration: 200; easing.type: Easing.Bezier; easing.bezierCurve: SharedConfig.animEaseOut } }
-                Behavior on shadowVerticalOffset { PropertyAnimation { duration: 200; easing.type: Easing.Bezier; easing.bezierCurve: SharedConfig.animEaseOut } }
-            }
-            Behavior on radius { PropertyAnimation { duration: 150; easing.type: Easing.OutCubic } }
-        }
-
         Rectangle {
             id: bg
             anchors.fill: parent
@@ -757,20 +738,17 @@ PanelWindow {
             antialiasing: true
             opacity: (expanded || hovered) ? 1.0 : 0.85
 
-            layer.enabled: true
+            layer.enabled: hovered && !expanded
             layer.effect: MultiEffect {
                 id: bgEffect
                 shadowEnabled: true
                 shadowColor: "#000000"
-                shadowBlur: hovered && !expanded ? 0.8 : 0.5
-                shadowOpacity: hovered && !expanded ? 0.48 : 0.4
-                shadowVerticalOffset: hovered && !expanded ? s(10) : s(6)
-                blurEnabled: hovered && !expanded
+                shadowBlur: 3.0
+                shadowOpacity: 0.12
+                shadowVerticalOffset: s(2)
+                blurEnabled: true
                 blurMax: 12
                 blur: 0.5
-                Behavior on shadowBlur { PropertyAnimation { duration: 200; easing.type: Easing.Bezier; easing.bezierCurve: SharedConfig.animEaseOut } }
-                Behavior on shadowOpacity { PropertyAnimation { duration: 200; easing.type: Easing.Bezier; easing.bezierCurve: SharedConfig.animEaseOut } }
-                Behavior on shadowVerticalOffset { PropertyAnimation { duration: 200; easing.type: Easing.Bezier; easing.bezierCurve: SharedConfig.animEaseOut } }
             }
             gradient: Gradient {
                 orientation: Gradient.Vertical
@@ -795,7 +773,6 @@ PanelWindow {
             Behavior on radius { PropertyAnimation { duration: 150; easing.type: Easing.OutCubic } }
             Behavior on opacity { PropertyAnimation { duration: 200; easing.type: Easing.Bezier; easing.bezierCurve: SharedConfig.animEaseOut } }
             Behavior on border.width { PropertyAnimation { duration: 200; easing.type: Easing.Bezier; easing.bezierCurve: SharedConfig.animEaseOut } }
-            Behavior on border.color { enabled: islandWindow.visible; ColorAnimation { duration: 200 } }
         }
 
         Item {
