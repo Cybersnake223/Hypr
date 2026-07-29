@@ -63,7 +63,7 @@ Variants {
             readonly property color overlay0_09: SharedConfig.overlay0Soft
             readonly property color surface0_04: SharedConfig.surface0Soft
 
-            // Prevents repeaters (Workspaces/Tray) from flickering on data updates
+            // Prevents repeaters (kkkkkkkkkkkTray) from flickering on data updates
             property bool fastPollerLoaded: false
             
             property bool isDataReady: fastPollerLoaded
@@ -106,7 +106,7 @@ Variants {
             // Workspaces --------------------------------
             Process {
                 id: wsDaemon
-                command: ["bash", "-c", "~/.config/hypr/scripts/quickshell/workspaces.sh"]
+                command: ["bash", "-c", "~/.config/quickshell/dynamic/scripts/workspaces.sh"]
                 running: true
                 onExited: running = true
             }
@@ -513,7 +513,7 @@ Variants {
                                     Text { anchors.verticalCenter: parent.verticalCenter; text: SharedConfig.micIcon; font.family: SharedConfig.nerdFont; font.pixelSize: barWindow.s(16); color: SharedConfig.micMuted ? mocha.red : mocha.text }
                                     Text { anchors.verticalCenter: parent.verticalCenter; text: SharedConfig.micPercent + "%"; font.family: SharedConfig.monoFont; font.pixelSize: barWindow.s(13); font.weight: Font.Black; color: SharedConfig.micMuted ? mocha.red : mocha.text }
                                 }
-                            MouseArea { id: micMouse; anchors.fill: parent; hoverEnabled: true; onClicked: Quickshell.execDetached(["bash", "-c", "~/.config/quickshell/dynamic/osd_volume.sh mic"]) }
+                            MouseArea { id: micMouse; anchors.fill: parent; hoverEnabled: true; onClicked: Quickshell.execDetached(["bash", "-c", "~/.config/quickshell/dynamic/scripts/osd_volume.sh mic"]) }
                         }
 
                         Rectangle { width: 1; height: sysLayout.pillHeight * 0.55; radius: 1; color: SharedConfig.hairline }
@@ -538,7 +538,7 @@ Variants {
                                     Text { anchors.verticalCenter: parent.verticalCenter; text: SharedConfig.volIcon; font.family: SharedConfig.nerdFont; font.pixelSize: barWindow.s(16); color: SharedConfig.volMuted ? mocha.red : mocha.text }
                                     Text { anchors.verticalCenter: parent.verticalCenter; text: SharedConfig.volPercent + "%"; font.family: SharedConfig.monoFont; font.pixelSize: barWindow.s(13); font.weight: Font.Black; color: SharedConfig.volMuted ? mocha.red : mocha.text }
                                 }
-                            MouseArea { id: volMouse; anchors.fill: parent; hoverEnabled: true; onClicked: Quickshell.execDetached(["bash", "-c", "~/.config/quickshell/dynamic/osd_volume.sh mute"]) }
+                            MouseArea { id: volMouse; anchors.fill: parent; hoverEnabled: true; onClicked: Quickshell.execDetached(["bash", "-c", "~/.config/quickshell/dynamic/scripts/osd_volume.sh mute"]) }
                         }
 
                         Rectangle { width: 1; height: sysLayout.pillHeight * 0.55; radius: 1; color: SharedConfig.hairline }

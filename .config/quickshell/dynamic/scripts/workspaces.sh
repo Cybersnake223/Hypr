@@ -31,8 +31,7 @@ fi
 # ---------------------------------------------
 
 # Configuration: How many workspaces do you want to show?
-# Override via QS_WORKSPACE_COUNT env var, fallback to 8
-SEQ_END=${QS_WORKSPACE_COUNT:-8}
+SEQ_END=8
 
 print_workspaces() {
     # Get raw data with a timeout fallback
@@ -45,10 +44,13 @@ print_workspaces() {
     # Generate the JSON and write it atomically to prevent UI flickering
     echo "$spaces" | jq --unbuffered --argjson a "$active" --arg end "$SEQ_END" -c '
         # Create a map of workspace ID -> workspace data for easy lookup
-        (map( { (.id|tostring): . } ) | add) as $s
+        (map( {(.id|tostring): . } ) | add) as $s
+        |
+        # Find special/scratchpad workspace
+        ([.[] | select(.name | startswith("special")) | select(.windows > 0)] | first) as $special
         |
         # Iterate from 1 to SEQ_END
-        [range(1; ($end|tonumber) + 1)] | map(
+        ([range(1; ($end|tonumber) + 1)] | map(
             . as $i |
             # Determine state: active -> occupied -> empty
             (if $i == $a then "active"
@@ -63,7 +65,16 @@ print_workspaces() {
                 state: $state,
                 tooltip: $win
             }
-        )
+        ))
+        +
+        # Append special workspace indicator if active
+        (if $special != null then
+            [{
+                id: "special",
+                state: (if $a == ($special.id) then "active" else "occupied" end),
+                tooltip: ($special.lastwindowtitle // "Scratchpad")
+            }]
+         else [] end)
     ' > /tmp/qs_workspaces.tmp
     
     mv /tmp/qs_workspaces.tmp /tmp/qs_workspaces.json
