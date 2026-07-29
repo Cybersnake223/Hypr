@@ -147,7 +147,7 @@ exec > >(stdbuf -oL tee -a "$OUTFILE")
 # Battery (60s), Pkg (30min+1800s), Weather (300s), WiFi (120s), BT (60s)
 {
     next_bat=0
-    next_pkg=300
+    next_pkg=60
     next_wth=30
     next_wifi=15
     next_bt=20
@@ -160,7 +160,7 @@ exec > >(stdbuf -oL tee -a "$OUTFILE")
             '{percent: $percent, status: $status, icon: $icon}')"
     }
     emit_pkg() {
-        local out=$($HOME/.config/quickshell/dynamic/scripts/pkg_updates.sh 2>/dev/null)
+        local out=$(timeout 30 $HOME/.config/quickshell/dynamic/scripts/pkg_updates.sh 2>/dev/null)
         [ -z "$out" ] && out='{"count":0,"packages":[]}'
         echo "pkgout:$out"
     }
