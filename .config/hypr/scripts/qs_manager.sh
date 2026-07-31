@@ -26,10 +26,12 @@ SUBTARGET="$3"
 if [[ "$ACTION" =~ ^[0-9]+$ ]]; then
     WORKSPACE_NUM="$ACTION"
     echo "close" > "$IPC_FILE"
-    
-    CMD="workspace $WORKSPACE_NUM"
-    [[ "$2" == "move" ]] && CMD="movetoworkspace $WORKSPACE_NUM"
-    hyprctl --batch "dispatch $CMD" >/dev/null 2>&1
+
+    if [[ "$2" == "move" ]]; then
+        hyprctl dispatch "hl.dsp.window.move({ workspace = $WORKSPACE_NUM, follow = false })" >/dev/null 2>&1
+    else
+        hyprctl dispatch "hl.dsp.focus({ workspace = $WORKSPACE_NUM })" >/dev/null 2>&1
+    fi
     exit 0
 fi
 
@@ -110,28 +112,10 @@ handle_network_prep() {
 # -----------------------------------------------------------------------------
 # ZOMBIE WATCHDOG
 # -----------------------------------------------------------------------------
-MAIN_QML_PATH="$HOME/.config/quickshell/dynamic/modules/Main.qml"
-BAR_QML_PATH="$HOME/.config/quickshell/dynamic/modules/TopBar.qml"
-ISLAND_QML_PATH="$HOME/.config/quickshell/dynamic/modules/DynamicIsland.qml"
-CLIPBOARD_QML_PATH="$HOME/.config/quickshell/dynamic/modules/ClipboardViewer.qml"
+SHELL_QML_PATH="$HOME/.config/quickshell/dynamic/modules/Shell.qml"
 
-if ! pgrep -f "quickshell.*Main\.qml" >/dev/null; then
-    quickshell -p "$MAIN_QML_PATH" >/dev/null 2>&1 &
-    disown
-fi
-
-if ! pgrep -f "quickshell.*TopBar\.qml" >/dev/null; then
-    quickshell -p "$BAR_QML_PATH" >/dev/null 2>&1 &
-    disown
-fi
-
-if ! pgrep -f "quickshell.*DynamicIsland\.qml" >/dev/null; then
-    quickshell -p "$ISLAND_QML_PATH" >/dev/null 2>&1 &
-    disown
-fi
-
-if ! pgrep -f "quickshell.*ClipboardViewer\.qml" >/dev/null; then
-    quickshell -p "$CLIPBOARD_QML_PATH" >/dev/null 2>&1 &
+if ! pgrep -f "quickshell.*Shell\.qml" >/dev/null; then
+    quickshell -p "$SHELL_QML_PATH" >/dev/null 2>&1 &
     disown
 fi
 

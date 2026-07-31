@@ -217,9 +217,6 @@ Item {
                         config.weatherCurTemp = parts[11] || ""
                         config.weatherIcon = config.weatherCurIcon !== "" ? config.weatherCurIcon : (parts[0] || "")
                         config.weatherTemp = config.weatherCurTemp !== "" ? config.weatherCurTemp : (parts[2] ? parts[2] + unit : "--°")
-                        let w = JSON.stringify({icon: config.weatherIcon, temp: config.weatherTemp, unit: config.weatherUnit})
-                        Quickshell.execDetached(["bash", "-c",
-                            "printf '%s\\n' '" + w.replace(/'/g, "'\\''") + "' > /tmp/qs_weather.json"])
                     }
                     return
                 }

@@ -5,7 +5,6 @@ import Quickshell
 import Quickshell.Io
 import Quickshell.Wayland
 import Quickshell.Services.Notifications
-import "WindowRegistry.js" as Registry
 
 PanelWindow {
     id: masterWindow
@@ -37,9 +36,15 @@ PanelWindow {
     }
 
     MouseArea {
+        id: clickCatcher
         anchors.fill: parent
         enabled: masterWindow.isVisible
+        focus: true
         onClicked: switchWidget("hidden", "")
+        Keys.onEscapePressed: {
+            switchWidget("hidden", "");
+            event.accepted = true;
+        }
     }
 
     Component.onCompleted: {
@@ -49,20 +54,6 @@ PanelWindow {
     property string currentActive: "hidden"
     property bool isVisible: false
     property string activeArg: ""
-    property bool disableMorph: false
-    property int morphDuration: 500
-    property int exitDuration: 300 // Controls how fast the outgoing widget disappears
-
-    property real animW: 1
-    property real animH: 1
-    property real animX: 0
-    property real animY: 0
-
-    property real targetW: 1
-    property real targetH: 1
-
-    property real globalUiScale: SharedConfig.uiScale
-    property var themeColors: SharedConfig.themeColors
 
     // =========================================================
     // --- DAEMON: NOTIFICATION HANDLING
@@ -94,231 +85,22 @@ PanelWindow {
 
     // =========================================================
 
-    onGlobalUiScaleChanged: {
-        handleNativeScreenChange();
-    }
-
-    function getLayout(name) {
-        return Registry.getLayout(name, 0, 0, Screen.width, Screen.height, masterWindow.globalUiScale);
-    }
-
-    Connections {
-        target: Screen
-        function onWidthChanged() {
-            handleNativeScreenChange();
-        }
-        function onHeightChanged() {
-            handleNativeScreenChange();
-        }
-    }
-
-    function handleNativeScreenChange() {
-        if (masterWindow.currentActive === "hidden")
-            return;
-
-        let t = getLayout(masterWindow.currentActive);
-        if (t) {
-            masterWindow.animX = t.rx;
-            masterWindow.animY = t.ry;
-            masterWindow.animW = t.w;
-            masterWindow.animH = t.h;
-            masterWindow.targetW = t.w;
-            masterWindow.targetH = t.h;
-        }
-    }
-
     onIsVisibleChanged: {
         if (isVisible)
             masterWindow.requestActivate();
     }
 
-    Item {
-        x: masterWindow.animX
-        y: masterWindow.animY
-        width: masterWindow.animW
-        height: masterWindow.animH
-        clip: true
-
-        // Smoother easing type
-        Behavior on x {
-            enabled: !masterWindow.disableMorph
-            NumberAnimation {
-                duration: masterWindow.morphDuration
-                easing.type: Easing.Bezier; easing.bezierCurve: SharedConfig.animEaseOut
-            }
-        }
-        Behavior on y {
-            enabled: !masterWindow.disableMorph
-            NumberAnimation {
-                duration: masterWindow.morphDuration
-                easing.type: Easing.Bezier; easing.bezierCurve: SharedConfig.animEaseOut
-            }
-        }
-        Behavior on width {
-            enabled: !masterWindow.disableMorph
-            NumberAnimation {
-                duration: masterWindow.morphDuration
-                easing.type: Easing.Bezier; easing.bezierCurve: SharedConfig.animEaseOut
-            }
-        }
-        Behavior on height {
-            enabled: !masterWindow.disableMorph
-            NumberAnimation {
-                duration: masterWindow.morphDuration
-                easing.type: Easing.Bezier; easing.bezierCurve: SharedConfig.animEaseOut
-            }
-        }
-
-        opacity: masterWindow.isVisible ? 1.0 : 0.0
-        Behavior on opacity {
-            NumberAnimation {
-                duration: masterWindow.morphDuration === 500 ? 300 : 200
-                easing.type: Easing.Bezier; easing.bezierCurve: SharedConfig.animEaseOut
-            }
-        }
-
-        MouseArea {
-            anchors.fill: parent
-        }
-
-        Item {
-            anchors.centerIn: parent
-            width: masterWindow.targetW
-            height: masterWindow.targetH
-
-            StackView {
-                id: widgetStack
-                anchors.fill: parent
-                focus: true
-
-                Keys.onEscapePressed: {
-                    switchWidget("hidden", "");
-                    event.accepted = true;
-                }
-
-                onCurrentItemChanged: {
-                    if (currentItem)
-                        currentItem.forceActiveFocus();
-                }
-
-                replaceEnter: Transition {
-                    ParallelAnimation {
-                        NumberAnimation {
-                            property: "opacity"
-                            from: 0.0
-                            to: 1.0
-                            duration: 400
-                            easing.type: Easing.Bezier; easing.bezierCurve: SharedConfig.animEaseOut
-                        }
-                        NumberAnimation {
-                            property: "scale"
-                            from: 0.97
-                            to: 1.0
-                            duration: 400
-                            easing.type: Easing.Bezier; easing.bezierCurve: SharedConfig.animEaseOut
-                        }
-                    }
-                }
-                replaceExit: Transition {
-                    ParallelAnimation {
-                        NumberAnimation {
-                            property: "opacity"
-                            from: 1.0
-                            to: 0.0
-                            duration: masterWindow.exitDuration
-                            easing.type: Easing.Bezier; easing.bezierCurve: SharedConfig.animEaseOut
-                        }
-                        NumberAnimation {
-                            property: "scale"
-                            from: 1.0
-                            to: 0.98
-                            duration: masterWindow.exitDuration
-                            easing.type: Easing.Bezier; easing.bezierCurve: SharedConfig.animEaseOut
-                        }
-                    }
-                }
-            }
-        }
-    }
-
     function switchWidget(newWidget, arg) {
         Quickshell.execDetached(["bash", "-c", 'printf "%s\n" "$1" > /tmp/qs_active_widget', "qs_widget", newWidget]);
 
-        prepTimer.stop();
-        delayedClear.stop();
-
         if (newWidget === "hidden") {
-            if (currentActive !== "hidden") {
-                masterWindow.morphDuration = 250;
-                masterWindow.exitDuration = 250;
-                masterWindow.disableMorph = false;
-
-                masterWindow.animW = 1;
-                masterWindow.animH = 1;
-                masterWindow.isVisible = false;
-
-                delayedClear.start();
-            }
+            masterWindow.currentActive = "hidden";
+            masterWindow.isVisible = false;
         } else {
-            if (currentActive === "hidden") {
-                masterWindow.morphDuration = 400; // Snappy but smooth
-                masterWindow.exitDuration = 300;
-                masterWindow.disableMorph = false;
-
-                // Polymorphic start point: top center where the island is
-                masterWindow.animX = Math.floor(Screen.width / 2);
-                masterWindow.animY = 35;
-                masterWindow.animW = 1;
-                masterWindow.animH = 1;
-
-                prepTimer.newWidget = newWidget;
-                prepTimer.newArg = arg;
-                prepTimer.start();
-            } else {
-                masterWindow.morphDuration = 500;
-                masterWindow.disableMorph = false;
-                masterWindow.exitDuration = 300;
-
-                executeSwitch(newWidget, arg, false);
-            }
+            masterWindow.currentActive = newWidget;
+            masterWindow.activeArg = arg;
+            masterWindow.isVisible = true;
         }
-    }
-
-    Timer {
-        id: prepTimer
-        interval: 50
-        property string newWidget: ""
-        property string newArg: ""
-        onTriggered: executeSwitch(newWidget, newArg, false)
-    }
-
-    function executeSwitch(newWidget, arg, immediate) {
-        masterWindow.currentActive = newWidget;
-        masterWindow.activeArg = arg;
-
-        let t = getLayout(newWidget);
-        masterWindow.animX = t.rx;
-        masterWindow.animY = t.ry;
-        masterWindow.animW = t.w;
-        masterWindow.animH = t.h;
-        masterWindow.targetW = t.w;
-        masterWindow.targetH = t.h;
-
-        if (t.comp) {
-            let props = {};
-            if (immediate) {
-                widgetStack.replace(t.comp, props, StackView.Immediate);
-            } else {
-                widgetStack.replace(t.comp, props);
-            }
-        }
-
-        if (widgetStack.currentItem) {
-            widgetStack.currentItem.globalUiScale = Qt.binding(function() { return masterWindow.globalUiScale; });
-            widgetStack.currentItem.themeColors = Qt.binding(function() { return masterWindow.themeColors; });
-        }
-
-        masterWindow.isVisible = true;
     }
 
     // =========================================================
@@ -351,8 +133,7 @@ PanelWindow {
 
                 if (cmd === "close") {
                     switchWidget("hidden", "");
-                } else if (getLayout(cmd)) {
-                    delayedClear.stop();
+                } else if (cmd !== "") {
                     if (cmd === masterWindow.currentActive) {
                         switchWidget("hidden", "");
                     } else {
@@ -363,15 +144,5 @@ PanelWindow {
         }
         running: true
         onExited: running = true
-    }
-
-    Timer {
-        id: delayedClear
-        interval: masterWindow.morphDuration
-        onTriggered: {
-            masterWindow.currentActive = "hidden";
-            widgetStack.clear();
-            masterWindow.disableMorph = false;
-        }
     }
 }

@@ -13,7 +13,6 @@ hl.config({
 		vrr = 1,
 		animate_manual_resizes = false,
 		mouse_move_focuses_monitor = true,
-		disable_splash_rendering = true,
 		-- new_window_takes_over_fullscreen = 2,
 	},
 

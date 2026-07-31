@@ -18,38 +18,6 @@ function s(val, scale) {
     return Math.round(val * scale);
 }
 
-function getLayout(name, mx, my, mw, mh, userScale) {
-    let scale = getScale(mw, userScale);
-
-    let sc = (v) => Math.round(v * scale);
-
-    let centerX = (w) => Math.round((mw - w) / 2);
-
-    let layouts = {
-        "hidden":  { w: 1, h: 1, rx: -5000 - mx, ry: -5000 - my, comp: "" },
-        "calendar": { w: sc(680), h: sc(520), rx: centerX(sc(680)), ry: sc(50), comp: "" },
-        "clock":    { w: sc(480), h: sc(380), rx: centerX(sc(480)), ry: sc(50), comp: "" },
-        "notifs":   { w: sc(640), h: sc(500), rx: centerX(sc(640)), ry: sc(50), comp: "" },
-    };
-
-    let entry = layouts[name];
-    if (!entry) {
-        let w = sc(680);
-        let h = sc(500);
-        entry = { w: w, h: h, rx: centerX(w), ry: sc(50), comp: "" };
-    }
-
-    return {
-        w: entry.w,
-        h: entry.h,
-        rx: entry.rx,
-        ry: entry.ry,
-        x: mx + entry.rx,
-        y: my + entry.ry,
-        comp: entry.comp
-    };
-}
-
 function resolveIcon(ic) {
     if (!ic || ic === "") return "";
     if (ic.startsWith("/") || ic.startsWith("file://") || ic.startsWith("http")) return ic;

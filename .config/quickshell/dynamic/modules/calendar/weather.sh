@@ -6,10 +6,8 @@ export LC_NUMERIC=C
 # Paths
 cache_dir="$HOME/.cache/quickshell/weather"
 json_file="${cache_dir}/weather.json"
-view_file="${cache_dir}/view_id"
 daily_cache_file="${cache_dir}/daily_weather_cache.json"
 next_day_cache_file="${cache_dir}/next_day_precache.json"
-env_tracker_file="${cache_dir}/.env_tracker"
 # Source secrets from central location first, fallback to old path
 if [ -f "$HOME/.config/quickshell/secrets/weather.env" ]; then
     ENV_FILE="$HOME/.config/quickshell/secrets/weather.env"
@@ -226,123 +224,7 @@ get_data() {
 }
 
 # --- MODE HANDLING ---
-if [[ "$1" == "--getdata" ]]; then
-    get_data
-
-elif [[ "$1" == "--json" ]]; then
-    CACHE_LIMIT=900         # 15 minutes for valid working data
-    PENDING_RETRY_LIMIT=3600 # 1 hour for invalid/activating keys
-
-    # Check if .env file has been modified since we last checked
-    env_changed=0
-    if [ -f "$ENV_FILE" ]; then
-        env_mtime=$(stat -c %Y "$ENV_FILE")
-        last_env_mtime=$(cat "$env_tracker_file" 2>/dev/null || echo "0")
-        
-        if [ "$env_mtime" -gt "$last_env_mtime" ]; then
-            env_changed=1
-            echo "$env_mtime" > "$env_tracker_file"
-        fi
-    fi
-
-    if [ -f "$json_file" ]; then
-        file_time=$(stat -c %Y "$json_file")
-        current_time=$(date +%s)
-        diff=$((current_time - file_time))
-        
-        if [ "$env_changed" -eq 1 ]; then
-            # The user just modified the .env file. Bypass cache entirely.
-            touch "$json_file" 
-            get_data &
-        elif grep -q '"desc": "No API Key"' "$json_file"; then
-            # Key is pending/invalid. Check once an hour.
-            if [ $diff -gt $PENDING_RETRY_LIMIT ]; then
-                touch "$json_file" # Bump file timestamp slightly to avoid spamming processes
-                get_data &
-            fi
-        else
-            # Normal working API key. Check every 15 mins.
-            if [ $diff -gt $CACHE_LIMIT ]; then
-                touch "$json_file"
-                get_data &
-            fi
-        fi
-        cat "$json_file"
-    else
-        get_data
-        cat "$json_file"
-    fi
-
-elif [[ "$1" == "--view-listener" ]]; then
-    if [ ! -f "$view_file" ]; then echo "0" > "$view_file"; fi
-    tail -F "$view_file"
-
-elif [[ "$1" == "--nav" ]]; then
-    if [ ! -f "$view_file" ]; then echo "0" > "$view_file"; fi
-    current=$(cat "$view_file")
-    direction=$2
-    max_idx=4
-    if [[ "$direction" == "next" ]]; then
-        if [ "$current" -lt "$max_idx" ]; then
-            new=$((current + 1))
-            echo "$new" > "$view_file"
-        fi
-    elif [[ "$direction" == "prev" ]]; then
-        if [ "$current" -gt 0 ]; then
-            new=$((current - 1))
-            echo "$new" > "$view_file"
-        fi
-    fi
-
-elif [[ "$1" == "--icon" ]]; then
-    cat "$json_file" | jq -r '.forecast[0].icon'
-
-elif [[ "$1" == "--temp" ]]; then 
-    t=$(cat "$json_file" | jq -r '.forecast[0].max')
-    unit=$(cat "$json_file" | jq -r '.forecast[0].unit')
-    echo "${t}${unit}"
-
-elif [[ "$1" == "--hex" ]]; then 
-    cat "$json_file" | jq -r '.forecast[0].hex'
-
-# --- NEW HOURLY MODES FOR TOPBAR ---
-# The hourly array is chronological but wraps past midnight (last entry is the
-# next day's early-morning slot). A naive lexical "time <= now" filter wrongly
-# matches that wrap-around slot in the evening, so we exclude it unless "now"
-# actually falls before the first slot of the day.
-elif [[ "$1" == "--current-icon" ]]; then
-    curr_time=$(date +%H:%M)
-    cat "$json_file" | jq -r --arg ct "$curr_time" '
-        .forecast[0].hourly as $h
-        | ($h[0].time) as $first
-        | (if $ct < $first then $h[-1]
-           else ($h[0:-1] | map(select(.time <= $ct)) | last) // $h[0]
-           end)
-        | .icon'
-
-elif [[ "$1" == "--current-temp" ]]; then
-    curr_time=$(date +%H:%M)
-    t=$(cat "$json_file" | jq -r --arg ct "$curr_time" '
-        .forecast[0].hourly as $h
-        | ($h[0].time) as $first
-        | (if $ct < $first then $h[-1]
-           else ($h[0:-1] | map(select(.time <= $ct)) | last) // $h[0]
-           end)
-        | .temp')
-    unit=$(cat "$json_file" | jq -r '.forecast[0].unit')
-    echo "${t}${unit}"
-
-elif [[ "$1" == "--current-hex" ]]; then
-    curr_time=$(date +%H:%M)
-    cat "$json_file" | jq -r --arg ct "$curr_time" '
-        .forecast[0].hourly as $h
-        | ($h[0].time) as $first
-        | (if $ct < $first then $h[-1]
-           else ($h[0:-1] | map(select(.time <= $ct)) | last) // $h[0]
-           end)
-        | .hex'
-
-elif [[ "$1" == "--island" ]]; then
+if [[ "$1" == "--island" ]]; then
     # Single combined call: refresh cache once if missing/stale, then emit all
     # 12 fields the island expects in one jq pass over the cached JSON.
     # Fields: icon, desc, max, min, feels, humidity, wind, pop, hex, unit, curIcon, curTemp

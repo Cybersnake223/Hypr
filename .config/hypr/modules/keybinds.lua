@@ -6,7 +6,7 @@ local term = "kitty"
 local editor = "nvim"
 local browser = "zen-browser"
 local incogbrowser = "zen-browser --private-window"
-local launcher = "quickshell -p ~/.config/quickshell/launcher ipc call launcher toggle"
+local launcher = "bash -c 'echo toggle > /tmp/qs_launcher'"
 local sysmon = "kitty -e btop"
 local music = "kitty -e cmus"
 
@@ -31,12 +31,12 @@ hl.bind("ALT + N", hl.dsp.exec_cmd("bash -c 'touch /tmp/qs_island_notifs_panel'"
 hl.bind("F1", hl.dsp.exec_cmd("~/.config/quickshell/dynamic/scripts/osd_volume.sh mute"))
 hl.bind("F2", hl.dsp.exec_cmd("~/.config/quickshell/dynamic/scripts/osd_volume.sh down 10"))
 hl.bind("F3", hl.dsp.exec_cmd("~/.config/quickshell/dynamic/scripts/osd_volume.sh up 10"))
-hl.bind("F4", hl.dsp.exec_cmd("~/.config/quickshell/dynamic/scripts/osd_volume.sh mute"))
+hl.bind("F4", hl.dsp.exec_cmd("wpctl set-mute @DEFAULT_SOURCE@ toggle"))
 hl.bind("F7", hl.dsp.exec_cmd("rfkill-toggle wlan"))
 hl.bind("F9", hl.dsp.exec_cmd("~/.config/quickshell/dynamic/scripts/lock.sh"))
 hl.bind("F11", hl.dsp.exec_cmd("~/.config/quickshell/dynamic/scripts/osd_brightness.sh down"))
 hl.bind("F12", hl.dsp.exec_cmd("~/.config/quickshell/dynamic/scripts/osd_brightness.sh up"))
-hl.bind("Print", hl.dsp.exec_cmd("quickshell -p ~/.config/quickshell/launcher ipc call screenshot toggle"))
+hl.bind("Print", hl.dsp.exec_cmd("bash -c 'echo toggle > /tmp/qs_screenshot'"))
 
 -- hl.bind("F11", hl.dsp.exec_cmd("brightnessctl -q s 10%-"))
 -- hl.bind("F2", hl.dsp.exec_cmd("wpctl set-volume @DEFAULT_SINK@ 10%-"))
@@ -52,9 +52,9 @@ hl.bind("ALT + R", hl.dsp.exec_cmd(term .. " -e yazi"))
 hl.bind("ALT + H", hl.dsp.exec_cmd(sysmon))
 hl.bind("ALT + S", hl.dsp.exec_cmd("localsend"))
 hl.bind("ALT + D", hl.dsp.exec_cmd(launcher))
-hl.bind("ALT + E", hl.dsp.exec_cmd("quickshell -p ~/.config/quickshell/launcher ipc call emoji toggle"))
-hl.bind("ALT + X", hl.dsp.exec_cmd("quickshell -p ~/.config/quickshell/launcher ipc call powermenu toggle"))
-hl.bind("ALT + B", hl.dsp.exec_cmd("quickshell -p ~/.config/quickshell/launcher ipc call bluetooth toggle"))
+hl.bind("ALT + E", hl.dsp.exec_cmd("bash -c 'echo toggle > /tmp/qs_emoji'"))
+hl.bind("ALT + X", hl.dsp.exec_cmd("bash -c 'echo toggle > /tmp/qs_powermenu'"))
+hl.bind("ALT + B", hl.dsp.exec_cmd("bash -c 'echo toggle > /tmp/qs_bluetooth'"))
 hl.bind("ALT + F", hl.dsp.window.fullscreen({ mode = "fullscreen", action = "toggle" }))
 hl.bind("ALT + T", hl.dsp.exec_cmd(term .. " -e neomutt"))
 hl.bind("ALT + K", hl.dsp.exec_cmd("wkill"))
@@ -64,14 +64,14 @@ hl.bind("ALT + Y", hl.dsp.exec_cmd("ytdla"))
 -- hl.bind("ALT + C", hl.dsp.exec_cmd("quickshell -p ~/.config/quickshell/launcher ipc call notifications dismissAll"))
 hl.bind("ALT + V", hl.dsp.exec_cmd("bash -c 'echo toggle > /tmp/qs_clipboard'"))
 
-hl.bind("ALT + SHIFT + V", hl.dsp.exec_cmd("quickshell -p ~/.config/quickshell/launcher ipc call watchvid toggle"))
+hl.bind("ALT + SHIFT + V", hl.dsp.exec_cmd("bash -c 'echo toggle > /tmp/qs_watchvid'"))
 hl.bind("ALT + SHIFT + S", hl.dsp.exec_cmd("quickshell -p ~/.config/quickshell/hyprlens/UniversalSnip.qml -n"))
 hl.bind("ALT + SHIFT + K", hl.dsp.exec_cmd("ccleaner -y"))
 hl.bind("ALT + SHIFT + T", hl.dsp.exec_cmd("nautilus"))
 hl.bind("ALT + SHIFT + D", hl.dsp.exec_cmd("aria2cd"))
-hl.bind("ALT + SHIFT + C", hl.dsp.exec_cmd("quickshell -p ~/.config/quickshell/launcher ipc call scriptedit toggle"))
-hl.bind("ALT + SHIFT + E", hl.dsp.exec_cmd("quickshell -p ~/.config/quickshell/launcher ipc call editconf toggle"))
-hl.bind("ALT + SHIFT + N", hl.dsp.exec_cmd("quickshell -p ~/.config/quickshell/launcher ipc call wifi toggle"))
+hl.bind("ALT + SHIFT + C", hl.dsp.exec_cmd("bash -c 'echo toggle > /tmp/qs_scriptedit'"))
+hl.bind("ALT + SHIFT + E", hl.dsp.exec_cmd("bash -c 'echo toggle > /tmp/qs_editconf'"))
+hl.bind("ALT + SHIFT + N", hl.dsp.exec_cmd("bash -c 'echo toggle > /tmp/qs_wifi'"))
 hl.bind("ALT + SHIFT + P", hl.dsp.exec_cmd(term .. " --title wiremix -e wiremix"))
 
 -- Web Apps

@@ -2,7 +2,7 @@
 # master_watcher.sh — Single process for all system monitoring
 # Output format: "tag:data" per line
 # Tags: kblaout, batout, audioout, micout, pkgout,
-#       weatherout, forecastout, caffeineout, wifiout, btout
+#       weatherout, caffeineout, wifiout, btout
 #
 # Uses flock-based primary/secondary pattern:
 # - Only the first instance (primary) runs actual watchers
@@ -170,12 +170,6 @@ exec > >(stdbuf -oL tee -a "$OUTFILE")
             echo "weatherout:$out"
         fi
     }
-    emit_forecast() {
-        if [ -f "$HOME/.cache/quickshell/weather/weather.json" ]; then
-            local f=$(cat "$HOME/.cache/quickshell/weather/weather.json" | jq -c -r '.forecast[1:5] | map({day, icon, max})' 2>/dev/null)
-            [ -n "$f" ] && echo "forecastout:$f"
-        fi
-    }
     emit_wifi() {
         local raw=$(nmcli -t -f ACTIVE,SSID,SIGNAL dev wifi list --rescan no 2>/dev/null | grep '^yes' | head -1)
         if [ -n "$raw" ]; then
@@ -198,7 +192,7 @@ exec > >(stdbuf -oL tee -a "$OUTFILE")
 
         if ((next_bat <= 0)); then emit_bat; next_bat=60; fi
         if ((next_pkg <= 0)); then emit_pkg; next_pkg=1800; fi
-        if ((next_wth <= 0)); then emit_weather; emit_forecast; next_wth=300; fi
+        if ((next_wth <= 0)); then emit_weather; next_wth=300; fi
         if ((next_wifi <= 0)); then emit_wifi; next_wifi=120; fi
         if ((next_bt <= 0)); then emit_bt; next_bt=60; fi
     done

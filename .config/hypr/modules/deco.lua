@@ -30,8 +30,6 @@ hl.config({
 			vibrancy = 0.00,
 			vibrancy_darkness = 0,
 			noise = 0,
-			xray = false,
-			popups = false,
 			ignore_opacity = true,
 			new_optimizations = true,
 		},
