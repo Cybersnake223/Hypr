@@ -43,11 +43,11 @@
 <details>
 <summary><b>📖 Table of Contents</b></summary>
 
-**[🖼 Preview](#-preview) · [✨ Features](#-features) · [🧩 Stack](#-stack)**  
+**[🖼 Preview](#-preview) · [✨ Features](#-features) · [🧩 Stack](#-stack) · [📝 Neovim](#-neovim)**  
 **[📦 Prerequisites](#-prerequisites) · [⚡ Installation](#-installation) · [🚀 Post-Install](#-post-install)**  
 **[📂 Layout](#-file-layout) · [🚩 Flags](#-installer-flags) · [⌨️ Keybinds](#-keybinds)**  
 **[🎨 Theming](#-theming) · [🎛 Quickshell](#-quickshell-panels--osd) · [🌐 Zen](#-zen-browser)**  
-**[🔄 Updating](#-updating) · [🔧 Troubleshoot](#-troubleshooting) · [🔐 Security](#-security)**
+**[🔄 Updating](#-updating) · [🔧 Troubleshoot](#-troubleshooting) · [🔐 Security](#-security) · [🤝 Contributing](#-contributing) · [📄 License](#-license)**
 
 </details>
 
@@ -127,7 +127,7 @@
 | 🔔 **Notifications** | [Mako](https://github.com/emersion/mako)                                                            |
 |   🚀 **Launcher**    | [Quickshell](https://github.com/Quickshell/Quickshell) + [Rofi](https://github.com/lbonn/rofi)      |
 |    🌐 **Browser**    | [Zen Browser](https://zen-browser.app/)                                                             |
-|    🔒 **Locker**     | [Quickshell](https://github.com/Quickshell/Quickshell) (QML lock screen) |
+|   🔒 **Locker**    | [Quickshell](https://github.com/Quickshell/Quickshell) (QML lock screen) |
 |     📁 **Files**     | [Nautilus](https://gitlab.gnome.org/GNOME/nautilus) + [Yazi](https://yazi-rs.github.io/)            |
 |    📝 **Editor**     | [Neovim](https://neovim.io/)                                                                        |
 |   🖼 **Wallpaper**   | [awww](https://github.com/InioX/awww) + [hyprwat](https://github.com/InioX/hyprwat)                |
@@ -194,9 +194,9 @@ System dependencies (`--install-nvim-deps`): `wl-clipboard`, `python`, `imagemag
 ### Core packages
 
 ```bash
-yay -S hyprland waybar foot kitty zsh rofi mako       \
-        matugen-bin btop yazi fastfetch neovim starship          \
-        cava cmus mpv nautilus zen-browser-bin aria2 advcpmv              \
+yay -S hyprland waybar foot kitty zsh rofi mako \
+        matugen-bin btop yazi fastfetch neovim starship \
+        cava cmus mpv nautilus zen-browser-bin aria2 advcpmv \
         quickshell hyprwat
 ```
 
@@ -223,7 +223,8 @@ yay -S hyprland waybar foot kitty zsh rofi mako       \
 | `fd`                                            | Better `find`                             |
 | `bat`                                           | Better `cat`                              |
 | `bleachbit`                                     | System cleaner script dependency          |
-| `aerc`                                          | Terminal email client (`ALT + T`)          |
+| `neomutt`                                        | Terminal email client (`ALT + T`)          |
+| `aerc`                                          | Terminal email client (bundled config)     |
 | `localsend`                                     | Local file sharing (`ALT + S`)            |
 | `nsxiv`                                         | Image viewer (used in scripts)            |
 | `wiremix`                                       | Audio mixer (`ALT SHIFT + P`)            |
@@ -348,7 +349,7 @@ After the installer finishes:
 ```
 $HOME
 ├── .config/
-│   ├── hypr/             ← Hyprland compositor (Lua config)
+│   ├── hypr/             ← Hyprland (Lua config; hyprlock, hypridle, hyprpaper)
 │   ├── waybar/           ← Status bar
 │   ├── quickshell/       ← QML panels, launcher, OSD, lock screen
 │   ├── rofi/             ← App launcher
@@ -362,10 +363,11 @@ $HOME
 │   ├── btop/             ← System monitor
 │   ├── matugen/          ← Matugen config + 20 color templates
 │   ├── fastfetch/        ← System info
+│   ├── starship.toml     ← Prompt
 │   ├── cava/             ← Audio visualizer
 │   ├── anyrun/           ← Alternative launcher (Rust)
 │   ├── bat/              ← Cat replacement
-│   ├── aerc/             ← Terminal email client (`ALT + T`)
+│   ├── aerc/             ← Terminal email client (bundled config)
 │   ├── cmus/             ← Music player
 │   ├── environment.d/    ← Environment variables
 │   ├── fsh/              ← Fish shell config
@@ -375,6 +377,8 @@ $HOME
 │   ├── hyprwat/          ← Wallpaper picker GUI
 │   ├── Kvantum/          ← Qt theme engine
 │   ├── qt5ct/            ← Qt5 settings
+│   ├── qt6ct/            ← Qt6 settings
+│   ├── zen/              ← Zen Browser CSS (userChrome/userContent)
 │   ├── xsettingsd/       ← X settings daemon (GTK theming bridge)
 │   ├── yay/              ← AUR helper config
 │   └── ...
@@ -384,7 +388,7 @@ $HOME
 ├── .themes/              ← GTK/Qt themes
 ├── .Xresources
 ├── .gtkrc-2.0
-├── .zen/chrome/          ← Zen Browser custom CSS
+├── .zen/                 ← Zen Browser profile (custom CSS copied here manually — see Zen section)
 └── assets/               ← Screenshots and logo
 
 /etc/ (system-level — not installed, apply manually):
@@ -410,7 +414,8 @@ $HOME
 |  `--uninstall`           | ↩️ Restore originals from the most recent backup |
 | `--list-backups`         | 📋 Show all backups with timestamps and sizes    |
 |  `--install-deps`        | 📦 Auto-install missing Hyprland ecosystem deps  |
-| `--install-nvim-deps`    | 📦 Auto-install Neovim system dependencies       |
+| `--install-all-deps`     | 📦 Ecosystem + supporting packages (pipewire, bluez, grim…) |
+|  `--install-nvim-deps`    | 📦 Auto-install Neovim system dependencies       |
 |  `--skip-deps`           | 🚀 Skip the ecosystem dependency check           |
 |  `--version`             | ℹ️  Show version and exit                        |
 |  `-h / --help`           | 📖 Show usage                                    |
@@ -486,6 +491,7 @@ Toggle a number, press Enter to confirm.
 | `F9`          | Lock screen            |
 | `F11` / `F12` | Brightness −/+ 10%     |
 | `Print`       | Screenshot             |
+| `SUPER + SHIFT + R` | Reload Hyprland config |
 
 </details>
 
@@ -499,10 +505,10 @@ Toggle a number, press Enter to confirm.
 | `ALT + Enter`   | Terminal (Kitty)            |
 | `ALT + D`       | App launcher (Quickshell)   |
 | `ALT + R`       | Yazi (TUI file manager)     |
-| `ALT + N`       | Neovim                      |
-| `ALT + M`       | cmus                        |
+| `ALT + N`       | Notifications panel         |
+| `ALT + I`       | Toggle Dynamic Island       |
 | `ALT + H`       | btop                        |
-| `ALT + T`       | aerc (email)                |
+| `ALT + T`       | neomutt (email)             |
 | `ALT + E`       | Emoji picker                |
 | `ALT + X`       | Power menu                  |
 | `ALT + B`       | Bluetooth menu              |
@@ -511,8 +517,9 @@ Toggle a number, press Enter to confirm.
 | `ALT + V`       | Clipboard history           |
 | `ALT + W`       | Change wallpaper            |
 | `ALT + K`       | Kill window                 |
-| `ALT + C`       | Dismiss notifications       |
+| `ALT + C`       | Toggle calendar             |
 | `ALT SHIFT + T` | Nautilus (GUI files)        |
+| `ALT SHIFT + X` | Clear notifications         |
 | `ALT SHIFT + P` | Audio mixer (wiremix)       |
 | `ALT SHIFT + V` | Watch video                 |
 | `ALT SHIFT + S` | Universal snip (QuickShell) |
@@ -538,7 +545,7 @@ Toggle a number, press Enter to confirm.
 | `ALT SHIFT + I` | Zen private window |
 | `ALT + G`       | GitHub             |
 | `ALT SHIFT + Y` | YouTube            |
-| `ALT SHIFT + G` | Gemini             |
+| `ALT SHIFT + G` | Perplexity          |
 | `ALT SHIFT + W` | Wallhaven          |
 | `ALT SHIFT + O` | ChatGPT            |
 | `ALT SHIFT + R` | Reddit             |
@@ -555,7 +562,6 @@ Toggle a number, press Enter to confirm.
 | `ALT + Q`             | Close window      |
 | `ALT + F`             | Toggle fullscreen |
 | `ALT + P`             | Toggle floating   |
-| `ALT + J`             | Toggle split      |
 | `ALT + ↑ ↓ ← →`       | Move focus        |
 | `ALT SHIFT + ↑ ↓ ← →` | Swap window       |
 | `ALT CTRL + ↑ ↓ ← →`  | Resize window     |
@@ -574,8 +580,8 @@ Toggle a number, press Enter to confirm.
 | `ALT + 1–0`            | Switch to workspace 1–10      |
 | `ALT SHIFT + 1–0`      | Move window to workspace 1–10 |
 | `ALT + Scroll up/down` | Cycle workspaces              |
-| `ALT + `` ` `` `       | Toggle scratchpad             |
-| `ALT SHIFT + `` ` `` ` | Move window to scratchpad     |
+| `ALT + grave`          | Toggle scratchpad             |
+| `ALT SHIFT + grave`    | Move window to scratchpad     |
 
 </details>
 
@@ -591,7 +597,7 @@ Toggle a number, press Enter to confirm.
 
 <br/>
 
-This setup uses **[Matugen](https://github.com/InioX/matugen)** — a Material You color extraction engine. Change your wallpaper, run Matugen, and Waybar, Rofi, Mako, Hyprlock, GTK apps, and the terminal all recolor automatically.
+This setup uses **[Matugen](https://github.com/InioX/matugen)** — a Material You color extraction engine. Change your wallpaper, run Matugen, and Waybar, Rofi, Mako, GTK apps, and the terminal all recolor automatically.
 
 Use **[hyprwat](https://github.com/InioX/hyprwat)** for a GUI wallpaper picker that triggers Matugen recolor on selection.
 
@@ -621,6 +627,9 @@ Templates are provided for these components:
 | Zen Browser    | MPV            | Cava          |
 | Neovim         | Foot           |               |
 
+> [!NOTE]
+> SwayNC, SwayOSD, and Zathura templates are bundled, but those apps are **not** part of the default stack (Mako handles notifications, Quickshell handles OSD). Install them yourself if you want to use those templates.
+
 <br/>
 
 ---
@@ -649,19 +658,20 @@ Quickshell processes are auto-started by `qs_manager.sh` on Hyprland startup. Th
 
 ## 🌐 Zen Browser
 
-Custom styling for [Zen Browser](https://zen-browser.app/) is included under `.zen/chrome/` to match the Viper aesthetic.
+Custom styling for [Zen Browser](https://zen-browser.app/) is included under `.config/zen/` to match the Viper aesthetic.
 
-| File                             | Purpose                                    |
-| -------------------------------- | ------------------------------------------ |
-| `.zen/chrome/userChrome.css`     | Browser chrome — sidebar, tab bar, toolbar |
-| `.zen/chrome/userContent.css`    | Internal pages — new tab, `about:` pages   |
-| `.zen/chrome/zen-logo-mocha.svg` | Custom logo asset                          |
+| File                                   | Purpose                                    |
+| -------------------------------------- | ------------------------------------------ |
+| `.config/zen/chrome/userChrome.css`    | Browser chrome — sidebar, tab bar, toolbar |
+| `.config/zen/chrome/userContent.css`   | Internal pages — new tab, `about:` pages   |
+| `.config/zen/chrome/zen-logo-mocha.svg`| Custom logo asset                          |
+| `.config/zen/user.js`                  | Browser preferences                        |
 
 > [!IMPORTANT]
-> The installer does **not** copy `.zen/` automatically. Apply it manually:
+> The installer does **not** copy `.config/zen/` automatically. Apply it manually:
 
 ```bash
-cp -r .zen/chrome "$HOME/.zen/chrome"
+cp -r .config/zen/chrome "$HOME/.zen/chrome"
 ```
 
 Then enable custom CSS in `about:config`:
