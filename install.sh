@@ -15,15 +15,12 @@
 
 set -Eeuo pipefail
 
-# Must not run as root — files would land in /root/ instead of the user's $HOME
-[[ "$EUID" -eq 0 ]] && die "Do not run as root. Run this installer as a normal user."
-
 # ══════════════════════════════════════════════════════════════════════════════
 # GLOBALS
 # ══════════════════════════════════════════════════════════════════════════════
 
 REPO_DIR="$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" && pwd)"
-SCRIPT_VERSION="2.1.0"
+SCRIPT_VERSION="2.2.0"
 TS="$(date +"%Y%m%d-%H%M%S")"
 BACKUP_BASE="${XDG_DATA_HOME:-$HOME/.local/share}/hypr-dotfiles-backups"
 BACKUP_DIR="$BACKUP_BASE/$TS"
@@ -76,6 +73,9 @@ error()   { local msg="[error]  $*"; echo -e "${R}${msg}${RESET}" >&2; _log_plai
 die()     { error "$*"; exit 1; }
 step()    { echo -e "\n${BOLD}━━━  $* ${RESET}"; _log_plain "--- $* ---"; }
 dim()     { echo -e "${D}$*${RESET}"; }
+
+# Must not run as root — files would land in /root/ instead of the user's $HOME
+[[ "$EUID" -eq 0 ]] && die "Do not run as root. Run this installer as a normal user."
 
 # ══════════════════════════════════════════════════════════════════════════════
 # USAGE
@@ -160,6 +160,8 @@ done
   && die "--uninstall and --select cannot be used together."
 [[ "$OPT_DRY_RUN" -eq 1 && "$OPT_UNINSTALL" -eq 1 ]] \
   && die "--dry-run and --uninstall cannot be used together."
+[[ "$OPT_UNINSTALL" -eq 1 && "$OPT_LIST_BACKUPS" -eq 1 ]] \
+  && die "--uninstall and --list-backups cannot be used together."
 [[ "$OPT_INSTALL_DEPS" -eq 1 && "$OPT_SKIP_DEPS" -eq 1 ]] \
   && die "--install-deps and --skip-deps cannot be used together."
 
@@ -255,7 +257,7 @@ safe_copy_tree() {
         record "$dest/$rel"
         substitute_home_paths "$dest/$rel"
         (( COPIED++ )) || true
-      done < <(find "$src" -mindepth 1 -type f -print0)
+      done < <(find "$src" -mindepth 1 \( -type f -o -type l \) -print0)
     fi
   else
     error "  ✗  Failed to copy tree: $src → $dest"
@@ -267,6 +269,8 @@ safe_copy_tree() {
 # so configs work for other users
 substitute_home_paths() {
   local file="$1"
+  # Never rewrite through a symlink — sed -i would replace it with a regular file
+  [[ -L "$file" ]] && return 0
   case "${file,,}" in
     *.conf|*.lua|*.css|*.toml|*.json|*.sh|*.rc|*.txt|*.cfg|*.desktop|*.service|*.timer|*.svg|*.js|*.py|*.md|*.html) ;;
     *) return 0 ;;
@@ -329,6 +333,12 @@ ECOSYSTEM_DEPS=(
   "yazi:yazi:extra:TUI file manager"
   "fastfetch:fastfetch:extra:System info fetch"
   "quickshell:quickshell:extra:QML shell framework (panels, launcher, OSD)"
+  "kitty:kitty:extra:Terminal emulator (default)"
+  "nvim:neovim:extra:Editor (Lua config, lazy.nvim)"
+  "starship:starship:extra:Shell prompt"
+  "zen-browser:zen-browser-bin:aur:Web browser (web shortcuts)"
+  "hyprwat:hyprwat:aur:Wallpaper picker GUI"
+  "hyprpaper:hyprpaper:extra:Wallpaper daemon"
 )
 
 # Supporting packages from README (not checked by command existence)
@@ -353,9 +363,16 @@ SUPPORTING_DEPS=(
   "bat"
   "bleachbit"
   "aerc"
+  "neomutt"
   "localsend"
   "nsxiv"
   "wiremix"
+  "cava"
+  "cmus"
+  "mpv"
+  "nautilus"
+  "aria2"
+  "advcpmv"
 )
 
 cmd_install_deps() {
@@ -569,6 +586,14 @@ cmd_uninstall() {
 
   while IFS= read -r target; do
     [[ -z "$target" ]] && continue
+    if [[ "$target" == rc:* ]]; then
+      local rc="${target#rc:}"
+      if [[ -f "$rc" ]] && grep -q "Added by Hypr dotfiles installer" "$rc" 2>/dev/null; then
+        sed -i '/^# Added by Hypr dotfiles installer/,+1d' "$rc"
+        success "  ✓  Removed installer PATH line from $rc"
+      fi
+      continue
+    fi
     local rel="${target#"$HOME/"}"
     local bkp="$backup_root/$rel"
 
@@ -588,6 +613,13 @@ cmd_uninstall() {
   info "$restored file(s) restored."
   [[ "$skipped" -gt 0 ]] \
     && warn "$skipped file(s) had no prior backup and were left untouched."
+
+  # Retire the backup after a successful restore (interactive only — never auto-delete under --yes)
+  if [[ "$OPT_YES" -eq 0 ]]; then
+    echo
+    confirm "Delete the backup now?" \
+      && { rm -rf "$backup_root" && success "Backup removed: $backup_root"; }
+  fi
 }
 
 # ══════════════════════════════════════════════════════════════════════════════
@@ -759,7 +791,9 @@ install_dotfiles() {
       (( found++ )) || true
     fi
   done
-  [[ "$found" -eq 0 ]] && warn "No root dotfiles found in repo."
+  if [[ "$found" -eq 0 ]]; then
+    warn "No root dotfiles found in repo."
+  fi
 }
 
 # ══════════════════════════════════════════════════════════════════════════════
@@ -782,7 +816,7 @@ patch_path() {
 
   case "$shell_name" in
     zsh)
-      rc_file="$HOME/.zshrc"
+      rc_file="${ZDOTDIR:-$HOME}/.zshrc"
       path_line='path=(~/.local/bin $path)'
       ;;
     bash)
@@ -818,6 +852,7 @@ patch_path() {
           echo "# Added by Hypr dotfiles installer ($(date +"%Y-%m-%d"))"
           echo "$path_line"
         } >> "$rc_file"
+        record "rc:$rc_file"
         success "  ✓  Written to $rc_file"
         info "  Reload now with: source $rc_file"
       fi
@@ -895,6 +930,7 @@ rollback() {
     local restored=0
     while IFS= read -r target; do
       [[ -z "$target" ]] && continue
+      [[ "$target" == rc:* ]] && continue
       local rel="${target#"$HOME/"}"
       local bkp="${BACKUP_DIR:-}/$rel"
       if [[ -e "$bkp" ]]; then
@@ -928,6 +964,7 @@ acquire_lock() {
       rm -f "$LOCK_FILE"
     fi
   fi
+  mkdir -p "$(dirname "$LOCK_FILE")"
   echo "$$" > "$LOCK_FILE"
   trap cleanup EXIT INT TERM
   trap rollback ERR
@@ -939,7 +976,11 @@ acquire_lock() {
 
 # Dispatch simple commands first
 [[ "$OPT_LIST_BACKUPS" -eq 1 ]] && { cmd_list_backups; exit 0; }
-[[ "$OPT_UNINSTALL"    -eq 1 ]] && { cmd_uninstall;    exit $?; }
+if [[ "$OPT_UNINSTALL" -eq 1 ]]; then
+  acquire_lock
+  cmd_uninstall
+  exit $?
+fi
 
 # Acquire lock to prevent concurrent runs
 acquire_lock
@@ -965,7 +1006,9 @@ confirm "Install dotfiles into $HOME?" || { echo "  Aborted."; exit 1; }
 # Initialise manifest and log
 mkdir -p "$(dirname "$LOG_FILE")" 2>/dev/null || true
 touch "$LOG_FILE" 2>/dev/null || LOG_FILE="/dev/null"
-if [[ "$OPT_BACKUP" -eq 1 && "$OPT_DRY_RUN" -eq 0 ]]; then
+# Manifest is always created (non-dry-run) — needed for rollback and for
+# recording PATH edits, even when --no-backup disables file backups.
+if [[ "$OPT_DRY_RUN" -eq 0 ]]; then
   mkdir -p "$BACKUP_DIR"
   touch "$INSTALL_MANIFEST"
 fi
