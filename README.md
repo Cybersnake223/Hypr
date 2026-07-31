@@ -64,7 +64,7 @@
 
 
 <div align="center">
-<img src="https://capsule-render.vercel.app/api?type=soft&color=A024F7&height=40"/>
+<img src="https://capsule-render.vercel.app/api?type=soft&color=A024F7&height=20"/>
 </div>
 
 
@@ -105,7 +105,7 @@
 
 
 <div align="center">
-<img src="https://capsule-render.vercel.app/api?type=soft&color=A024F7&height=40"/>
+<img src="https://capsule-render.vercel.app/api?type=soft&color=A024F7&height=20"/>
 </div>
 
 
@@ -127,7 +127,7 @@
 
 
 <div align="center">
-<img src="https://capsule-render.vercel.app/api?type=soft&color=A024F7&height=40"/>
+<img src="https://capsule-render.vercel.app/api?type=soft&color=A024F7&height=20"/>
 </div>
 
 
@@ -162,7 +162,7 @@
 
 
 <div align="center">
-<img src="https://capsule-render.vercel.app/api?type=soft&color=A024F7&height=40"/>
+<img src="https://capsule-render.vercel.app/api?type=soft&color=A024F7&height=20"/>
 </div>
 
 
@@ -187,7 +187,7 @@ System dependencies (`--install-nvim-deps`): `wl-clipboard`, `python`, `imagemag
 
 
 <div align="center">
-<img src="https://capsule-render.vercel.app/api?type=soft&color=A024F7&height=40"/>
+<img src="https://capsule-render.vercel.app/api?type=soft&color=A024F7&height=20"/>
 </div>
 
 
@@ -279,7 +279,7 @@ fc-cache -f
 
 
 <div align="center">
-<img src="https://capsule-render.vercel.app/api?type=soft&color=A024F7&height=40"/>
+<img src="https://capsule-render.vercel.app/api?type=soft&color=A024F7&height=20"/>
 </div>
 
 
@@ -302,23 +302,22 @@ chmod +x install.sh
 
 <table align="center" bgcolor="#0d0d0d">
 <tr>
+<td align="center">
+<sub>🟥 🟨 🟢 &nbsp; <code>install.sh</code></sub>
+</td>
+</tr>
+<tr>
 <td>
 
-<pre align="left"><code>
-┌───────────────────────────────────────────────┐
-│  ●  ●  ●                                      │
-├───────────────────────────────────────────────┤
-│  [1] ✅  Verify core system utilities          │
-│  [2] 🔍  Check Hyprland ecosystem packages    │
-│  [3] 📦  Check Neovim system dependencies      │
-│  [4] 💾  Backup all files that will be         │
-│           overwritten                          │
-│  [5] 📁  Copy selected modules into $HOME      │
-│  [6] 🔑  chmod +x all scripts                 │
-│  [7] 🔤  Rebuild font cache (fc-cache -f)      │
-│  [8] 🛤  Detect shell, patch PATH              │
-│  [9] 📋  Print install summary + log path      │
-└───────────────────────────────────────────────┘</code></pre>
+<pre align="left"><code>[1] ✅  Verify core system utilities
+[2] 🔍  Check Hyprland ecosystem packages
+[3] 📦  Check Neovim system dependencies
+[4] 💾  Backup all files that will be overwritten
+[5] 📁  Copy selected modules into $HOME
+[6] 🔑  chmod +x all scripts
+[7] 🔤  Rebuild font cache (fc-cache -f)
+[8] 🛤  Detect shell, patch PATH
+[9] 📋  Print install summary + log path</code></pre>
 
 </td>
 </tr>
@@ -363,7 +362,7 @@ echo 'export PATH="$HOME/.local/bin:$PATH"' >> ~/.zshrc
 
 
 <div align="center">
-<img src="https://capsule-render.vercel.app/api?type=soft&color=A024F7&height=40"/>
+<img src="https://capsule-render.vercel.app/api?type=soft&color=A024F7&height=20"/>
 </div>
 
 
@@ -391,7 +390,7 @@ After the installer finishes:
 
 
 <div align="center">
-<img src="https://capsule-render.vercel.app/api?type=soft&color=A024F7&height=40"/>
+<img src="https://capsule-render.vercel.app/api?type=soft&color=A024F7&height=20"/>
 </div>
 
 
@@ -458,7 +457,7 @@ $HOME
 
 
 <div align="center">
-<img src="https://capsule-render.vercel.app/api?type=soft&color=A024F7&height=40"/>
+<img src="https://capsule-render.vercel.app/api?type=soft&color=A024F7&height=20"/>
 </div>
 
 
@@ -533,7 +532,7 @@ Toggle a number, press Enter to confirm.
 
 
 <div align="center">
-<img src="https://capsule-render.vercel.app/api?type=soft&color=A024F7&height=40"/>
+<img src="https://capsule-render.vercel.app/api?type=soft&color=A024F7&height=20"/>
 </div>
 
 
@@ -654,7 +653,7 @@ Toggle a number, press Enter to confirm.
 
 
 <div align="center">
-<img src="https://capsule-render.vercel.app/api?type=soft&color=A024F7&height=40"/>
+<img src="https://capsule-render.vercel.app/api?type=soft&color=A024F7&height=20"/>
 </div>
 
 
@@ -723,7 +722,7 @@ Templates are provided for these components:
 
 
 <div align="center">
-<img src="https://capsule-render.vercel.app/api?type=soft&color=A024F7&height=40"/>
+<img src="https://capsule-render.vercel.app/api?type=soft&color=A024F7&height=20"/>
 </div>
 
 
@@ -749,7 +748,7 @@ Quickshell processes are auto-started by `qs_manager.sh` on Hyprland startup. Th
 
 
 <div align="center">
-<img src="https://capsule-render.vercel.app/api?type=soft&color=A024F7&height=40"/>
+<img src="https://capsule-render.vercel.app/api?type=soft&color=A024F7&height=20"/>
 </div>
 
 
@@ -783,7 +782,7 @@ Restart Zen. If your profile is not at `~/.zen/` (e.g. Flatpak installs use `~/.
 
 
 <div align="center">
-<img src="https://capsule-render.vercel.app/api?type=soft&color=A024F7&height=40"/>
+<img src="https://capsule-render.vercel.app/api?type=soft&color=A024F7&height=20"/>
 </div>
 
 
@@ -806,7 +805,7 @@ Each run creates a fresh backup. To roll back after an update:
 
 
 <div align="center">
-<img src="https://capsule-render.vercel.app/api?type=soft&color=A024F7&height=40"/>
+<img src="https://capsule-render.vercel.app/api?type=soft&color=A024F7&height=20"/>
 </div>
 
 
@@ -919,7 +918,7 @@ tail -50 /tmp/hypr-install-*.log 2>/dev/null
 
 
 <div align="center">
-<img src="https://capsule-render.vercel.app/api?type=soft&color=A024F7&height=40"/>
+<img src="https://capsule-render.vercel.app/api?type=soft&color=A024F7&height=20"/>
 </div>
 
 
@@ -929,7 +928,7 @@ Do **not** open a public GitHub issue for vulnerabilities. See [SECURITY.md](SEC
 
 
 <div align="center">
-<img src="https://capsule-render.vercel.app/api?type=soft&color=A024F7&height=40"/>
+<img src="https://capsule-render.vercel.app/api?type=soft&color=A024F7&height=20"/>
 </div>
 
 
@@ -947,7 +946,7 @@ For bugs and issues, use the **[Issue Tracker](https://github.com/Cybersnake223/
 
 
 <div align="center">
-<img src="https://capsule-render.vercel.app/api?type=soft&color=A024F7&height=40"/>
+<img src="https://capsule-render.vercel.app/api?type=soft&color=A024F7&height=20"/>
 </div>
 
 
@@ -957,7 +956,7 @@ MIT — see [LICENSE](LICENSE) for details.
 
 
 <div align="center">
-<img src="https://capsule-render.vercel.app/api?type=soft&color=A024F7&height=40"/>
+<img src="https://capsule-render.vercel.app/api?type=soft&color=A024F7&height=20"/>
 </div>
 
 
@@ -975,7 +974,7 @@ MIT — see [LICENSE](LICENSE) for details.
 
 
 <div align="center">
-<img src="https://capsule-render.vercel.app/api?type=soft&color=A024F7&height=40"/>
+<img src="https://capsule-render.vercel.app/api?type=soft&color=A024F7&height=20"/>
 </div>
 
 
