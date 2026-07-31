@@ -1,5 +1,9 @@
 <div align="center">
 
+<img src="https://capsule-render.vercel.app/api?type=waving&color=A024F7&height=100&section=header" alt="Header wave"/>
+
+<br/>
+
 <img src="assets/cslogo.jpeg" width="120" alt="Vicious Viper Logo"/>
 
 <br/>
@@ -488,16 +492,16 @@ Toggle a number, press Enter to confirm.
 
 <br/>
 
-| Keybind       | Action                 |
-| ------------- | ---------------------- |
-| `F1`          | Toggle mute (speakers) |
-| `F2` / `F3`   | Volume −/+ 10%         |
-| `F4`          | Toggle mute (mic)      |
-| `F7`          | Toggle Wi-Fi           |
-| `F9`          | Lock screen            |
-| `F11` / `F12` | Brightness −/+ 10%     |
-| `Print`       | Screenshot             |
-| `SUPER + SHIFT + R` | Reload Hyprland config |
+| Keybind                        | Action                 |
+| ------------------------------ | ---------------------- |
+| <kbd>F1</kbd>                  | Toggle mute (speakers) |
+| <kbd>F2</kbd> / <kbd>F3</kbd>  | Volume −/+ 10%         |
+| <kbd>F4</kbd>                  | Toggle mute (mic)      |
+| <kbd>F7</kbd>                  | Toggle Wi-Fi           |
+| <kbd>F9</kbd>                  | Lock screen            |
+| <kbd>F11</kbd> / <kbd>F12</kbd> | Brightness −/+ 10%     |
+| <kbd>Print</kbd>               | Screenshot             |
+| <kbd>SUPER</kbd> + <kbd>SHIFT</kbd> + <kbd>R</kbd> | Reload Hyprland config |
 
 </details>
 
@@ -506,34 +510,34 @@ Toggle a number, press Enter to confirm.
 
 <br/>
 
-| Keybind         | Action                      |
-| --------------- | --------------------------- |
-| `ALT + Enter`   | Terminal (Kitty)            |
-| `ALT + D`       | App launcher (Quickshell)   |
-| `ALT + R`       | Yazi (TUI file manager)     |
-| `ALT + N`       | Notifications panel         |
-| `ALT + I`       | Toggle Dynamic Island       |
-| `ALT + H`       | btop                        |
-| `ALT + T`       | neomutt (email)             |
-| `ALT + E`       | Emoji picker                |
-| `ALT + X`       | Power menu                  |
-| `ALT + B`       | Bluetooth menu              |
-| `ALT + L`       | AirPods TUI                 |
-| `ALT + Y`       | YouTube downloader          |
-| `ALT + V`       | Clipboard history           |
-| `ALT + W`       | Change wallpaper            |
-| `ALT + K`       | Kill window                 |
-| `ALT + C`       | Toggle calendar             |
-| `ALT SHIFT + T` | Nautilus (GUI files)        |
-| `ALT SHIFT + X` | Clear notifications         |
-| `ALT SHIFT + P` | Audio mixer (wiremix)       |
-| `ALT SHIFT + V` | Watch video                 |
-| `ALT SHIFT + S` | Universal snip (QuickShell) |
-| `ALT SHIFT + K` | System cleaner              |
-| `ALT SHIFT + D` | aria2 downloader            |
-| `ALT SHIFT + C` | Script editor               |
-| `ALT SHIFT + E` | Config editor               |
-| `ALT SHIFT + N` | Wi-Fi menu                  |
+| Keybind                      | Action                      |
+| ---------------------------- | --------------------------- |
+| <kbd>ALT</kbd> + <kbd>Enter</kbd> | Terminal (Kitty)            |
+| <kbd>ALT</kbd> + <kbd>D</kbd>     | App launcher (Quickshell)   |
+| <kbd>ALT</kbd> + <kbd>R</kbd>     | Yazi (TUI file manager)     |
+| <kbd>ALT</kbd> + <kbd>N</kbd>     | Notifications panel         |
+| <kbd>ALT</kbd> + <kbd>I</kbd>     | Toggle Dynamic Island       |
+| <kbd>ALT</kbd> + <kbd>H</kbd>     | btop                        |
+| <kbd>ALT</kbd> + <kbd>T</kbd>     | neomutt (email)             |
+| <kbd>ALT</kbd> + <kbd>E</kbd>     | Emoji picker                |
+| <kbd>ALT</kbd> + <kbd>X</kbd>     | Power menu                  |
+| <kbd>ALT</kbd> + <kbd>B</kbd>     | Bluetooth menu              |
+| <kbd>ALT</kbd> + <kbd>L</kbd>     | AirPods TUI                 |
+| <kbd>ALT</kbd> + <kbd>Y</kbd>     | YouTube downloader          |
+| <kbd>ALT</kbd> + <kbd>V</kbd>     | Clipboard history           |
+| <kbd>ALT</kbd> + <kbd>W</kbd>     | Change wallpaper            |
+| <kbd>ALT</kbd> + <kbd>K</kbd>     | Kill window                 |
+| <kbd>ALT</kbd> + <kbd>C</kbd>     | Toggle calendar             |
+| <kbd>ALT</kbd> + <kbd>SHIFT</kbd> + <kbd>T</kbd> | Nautilus (GUI files)        |
+| <kbd>ALT</kbd> + <kbd>SHIFT</kbd> + <kbd>X</kbd> | Clear notifications         |
+| <kbd>ALT</kbd> + <kbd>SHIFT</kbd> + <kbd>P</kbd> | Audio mixer (wiremix)       |
+| <kbd>ALT</kbd> + <kbd>SHIFT</kbd> + <kbd>V</kbd> | Watch video                 |
+| <kbd>ALT</kbd> + <kbd>SHIFT</kbd> + <kbd>S</kbd> | Universal snip (QuickShell) |
+| <kbd>ALT</kbd> + <kbd>SHIFT</kbd> + <kbd>K</kbd> | System cleaner              |
+| <kbd>ALT</kbd> + <kbd>SHIFT</kbd> + <kbd>D</kbd> | aria2 downloader            |
+| <kbd>ALT</kbd> + <kbd>SHIFT</kbd> + <kbd>C</kbd> | Script editor               |
+| <kbd>ALT</kbd> + <kbd>SHIFT</kbd> + <kbd>E</kbd> | Config editor               |
+| <kbd>ALT</kbd> + <kbd>SHIFT</kbd> + <kbd>N</kbd> | Wi-Fi menu                  |
 
 </details>
 
@@ -545,16 +549,16 @@ Toggle a number, press Enter to confirm.
 > [!NOTE]
 > These open personal bookmarks hardcoded in the Hyprland config. Edit them before adopting this setup — they're in `.config/hypr/modules/keybinds.lua`.
 
-| Keybind         | Action             |
-| --------------- | ------------------ |
-| `ALT SHIFT + B` | Zen Browser        |
-| `ALT SHIFT + I` | Zen private window |
-| `ALT + G`       | GitHub             |
-| `ALT SHIFT + Y` | YouTube            |
-| `ALT SHIFT + G` | Perplexity          |
-| `ALT SHIFT + W` | Wallhaven          |
-| `ALT SHIFT + O` | ChatGPT            |
-| `ALT SHIFT + R` | Reddit             |
+| Keybind                      | Action             |
+| ---------------------------- | ------------------ |
+| <kbd>ALT</kbd> + <kbd>SHIFT</kbd> + <kbd>B</kbd> | Zen Browser        |
+| <kbd>ALT</kbd> + <kbd>SHIFT</kbd> + <kbd>I</kbd> | Zen private window |
+| <kbd>ALT</kbd> + <kbd>G</kbd>     | GitHub             |
+| <kbd>ALT</kbd> + <kbd>SHIFT</kbd> + <kbd>Y</kbd> | YouTube            |
+| <kbd>ALT</kbd> + <kbd>SHIFT</kbd> + <kbd>G</kbd> | Perplexity          |
+| <kbd>ALT</kbd> + <kbd>SHIFT</kbd> + <kbd>W</kbd> | Wallhaven          |
+| <kbd>ALT</kbd> + <kbd>SHIFT</kbd> + <kbd>O</kbd> | ChatGPT            |
+| <kbd>ALT</kbd> + <kbd>SHIFT</kbd> + <kbd>R</kbd> | Reddit             |
 
 </details>
 
@@ -563,16 +567,16 @@ Toggle a number, press Enter to confirm.
 
 <br/>
 
-| Keybind               | Action            |
-| --------------------- | ----------------- |
-| `ALT + Q`             | Close window      |
-| `ALT + F`             | Toggle fullscreen |
-| `ALT + P`             | Toggle floating   |
-| `ALT + ↑ ↓ ← →`       | Move focus        |
-| `ALT SHIFT + ↑ ↓ ← →` | Swap window       |
-| `ALT CTRL + ↑ ↓ ← →`  | Resize window     |
-| `ALT + LMB drag`      | Move window       |
-| `ALT + RMB drag`      | Resize window     |
+| Keybind                       | Action            |
+| ----------------------------- | ----------------- |
+| <kbd>ALT</kbd> + <kbd>Q</kbd>             | Close window      |
+| <kbd>ALT</kbd> + <kbd>F</kbd>             | Toggle fullscreen |
+| <kbd>ALT</kbd> + <kbd>P</kbd>             | Toggle floating   |
+| <kbd>ALT</kbd> + <kbd>↑</kbd> <kbd>↓</kbd> <kbd>←</kbd> <kbd>→</kbd>       | Move focus        |
+| <kbd>ALT</kbd> + <kbd>SHIFT</kbd> + <kbd>↑</kbd> <kbd>↓</kbd> <kbd>←</kbd> <kbd>→</kbd> | Swap window       |
+| <kbd>ALT</kbd> + <kbd>CTRL</kbd> + <kbd>↑</kbd> <kbd>↓</kbd> <kbd>←</kbd> <kbd>→</kbd>  | Resize window     |
+| <kbd>ALT</kbd> + LMB drag      | Move window       |
+| <kbd>ALT</kbd> + RMB drag      | Resize window     |
 
 </details>
 
@@ -581,13 +585,13 @@ Toggle a number, press Enter to confirm.
 
 <br/>
 
-| Keybind                | Action                        |
-| ---------------------- | ----------------------------- |
-| `ALT + 1–0`            | Switch to workspace 1–10      |
-| `ALT SHIFT + 1–0`      | Move window to workspace 1–10 |
-| `ALT + Scroll up/down` | Cycle workspaces              |
-| `ALT + grave`          | Toggle scratchpad             |
-| `ALT SHIFT + grave`    | Move window to scratchpad     |
+| Keybind                       | Action                        |
+| ----------------------------- | ----------------------------- |
+| <kbd>ALT</kbd> + <kbd>1–0</kbd>            | Switch to workspace 1–10      |
+| <kbd>ALT</kbd> + <kbd>SHIFT</kbd> + <kbd>1–0</kbd> | Move window to workspace 1–10 |
+| <kbd>ALT</kbd> + Scroll up/down | Cycle workspaces              |
+| <kbd>ALT</kbd> + <kbd>grave</kbd>          | Toggle scratchpad             |
+| <kbd>ALT</kbd> + <kbd>SHIFT</kbd> + <kbd>grave</kbd> | Move window to scratchpad     |
 
 </details>
 
@@ -843,6 +847,20 @@ For bugs and issues, use the **[Issue Tracker](https://github.com/Cybersnake223/
 ## 📄 License
 
 MIT — see [LICENSE](LICENSE) for details.
+
+---
+
+<div align="center">
+
+<a href="https://github.com/Cybersnake223/Hypr/stargazers">
+  <img src="https://img.shields.io/github/stars/Cybersnake223/Hypr?style=for-the-badge&color=A024F7"/>
+</a>
+
+**Enjoying Vicious Viper? Give it a ⭐!**
+
+<br/>
+
+</div>
 
 ---
 
