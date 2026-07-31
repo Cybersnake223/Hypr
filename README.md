@@ -1,6 +1,9 @@
 <div align="center">
 
-<img src="https://capsule-render.vercel.app/api?type=waving&color=A024F7&height=100&section=header" alt="Header wave"/>
+<picture>
+  <source media="(prefers-color-scheme: dark)" srcset="https://capsule-render.vercel.app/api?type=waving&color=6D2E8F&height=100&section=header"/>
+  <img src="https://capsule-render.vercel.app/api?type=waving&color=A024F7&height=100&section=header" alt="Header wave"/>
+</picture>
 
 <br/>
 
@@ -59,7 +62,11 @@
 
 <br/>
 
----
+
+<div align="center">
+<img src="https://capsule-render.vercel.app/api?type=soft&color=A024F7&height=40"/>
+</div>
+
 
 ## 🖼 Preview
 
@@ -67,28 +74,28 @@
 
 <table>
   <tr>
-    <td><img src="assets/asset1.jpeg"/></td>
-    <td><img src="assets/asset10.jpeg"/></td>
+    <td><img src="assets/asset1.jpeg" style="border-radius:8px"/></td>
+    <td><img src="assets/asset10.jpeg" style="border-radius:8px"/></td>
   </tr>
   <tr>
-    <td><img src="assets/asset11.jpeg"/></td>
-    <td><img src="assets/asset12.jpeg"/></td>
+    <td><img src="assets/asset11.jpeg" style="border-radius:8px"/></td>
+    <td><img src="assets/asset12.jpeg" style="border-radius:8px"/></td>
   </tr>
   <tr>
-    <td><img src="assets/asset2.jpeg"/></td>
-    <td><img src="assets/asset3.jpeg"/></td>
+    <td><img src="assets/asset2.jpeg" style="border-radius:8px"/></td>
+    <td><img src="assets/asset3.jpeg" style="border-radius:8px"/></td>
   </tr>
   <tr>
-    <td><img src="assets/asset4.jpeg"/></td>
-    <td><img src="assets/asset5.jpeg"/></td>
+    <td><img src="assets/asset4.jpeg" style="border-radius:8px"/></td>
+    <td><img src="assets/asset5.jpeg" style="border-radius:8px"/></td>
   </tr>
   <tr>
-    <td><img src="assets/asset6.jpeg"/></td>
-    <td><img src="assets/asset7.jpeg"/></td>
+    <td><img src="assets/asset6.jpeg" style="border-radius:8px"/></td>
+    <td><img src="assets/asset7.jpeg" style="border-radius:8px"/></td>
   </tr>
   <tr>
-    <td><img src="assets/asset8.jpeg"/></td>
-    <td><img src="assets/asset9.jpeg"/></td>
+    <td><img src="assets/asset8.jpeg" style="border-radius:8px"/></td>
+    <td><img src="assets/asset9.jpeg" style="border-radius:8px"/></td>
   </tr>
 </table>
 
@@ -96,7 +103,11 @@
 
 <br/>
 
----
+
+<div align="center">
+<img src="https://capsule-render.vercel.app/api?type=soft&color=A024F7&height=40"/>
+</div>
+
 
 ## ✨ Features
 
@@ -114,38 +125,46 @@
 
 <br/>
 
----
+
+<div align="center">
+<img src="https://capsule-render.vercel.app/api?type=soft&color=A024F7&height=40"/>
+</div>
+
 
 ## 🧩 Stack
 
 <div align="center">
 
-|         Role         | Tool                                                                                                |
-| :------------------: | :-------------------------------------------------------------------------------------------------- |
-|     🏗 **Base**      | [Arch Linux](https://archlinux.org/)                                                                |
-|  🪟 **Compositor**   | [Hyprland](https://hyprland.org/)                                                                   |
-|      📊 **Bar**      | [Waybar](https://github.com/Alexays/Waybar)                                                         |
-|   🎛 **Panels**     | [Quickshell](https://github.com/Quickshell/Quickshell) — dynamic island, OSD, launcher              |
-|   🖥 **Terminal**    | [Kitty](https://sw.kovidgoyal.net/kitty/) + [Foot](https://codeberg.org/dnkl/foot)                  |
-|     🐚 **Shell**     | [Zsh](https://zsh.sourceforge.io/) + [Starship](https://starship.rs/)                               |
-| 🔔 **Notifications** | [Mako](https://github.com/emersion/mako)                                                            |
-|   🚀 **Launcher**    | [Quickshell](https://github.com/Quickshell/Quickshell) + [Rofi](https://github.com/lbonn/rofi)      |
-|    🌐 **Browser**    | [Zen Browser](https://zen-browser.app/)                                                             |
-|   🔒 **Locker**    | [Quickshell](https://github.com/Quickshell/Quickshell) (QML lock screen) |
-|     📁 **Files**     | [Nautilus](https://gitlab.gnome.org/GNOME/nautilus) + [Yazi](https://yazi-rs.github.io/)            |
-|    📝 **Editor**     | [Neovim](https://neovim.io/)                                                                        |
-|   🖼 **Wallpaper**   | [awww](https://github.com/InioX/awww) + [hyprwat](https://github.com/InioX/hyprwat)                |
-|    🎨 **Theming**    | [Matugen](https://github.com/InioX/matugen)                                                         |
-|  📡 **System Info**  | [Fastfetch](https://github.com/fastfetch-cli/fastfetch)                                             |
-|     🎵 **Audio**     | [cmus](https://cmus.github.io/) + [Cava](https://github.com/karlstav/cava) + [mpv](https://mpv.io/) |
-|    📈 **Monitor**    | [btop](https://github.com/aristocratos/btop)                                                        |
-|   ⬇ **Downloads**    | [aria2](https://aria2.github.io/)                                                                   |
+|     Role     | Tool                                                                                                                                 |
+| :----------: | :----------------------------------------------------------------------------------------------------------------------------------- |
+| 🏗 **Base**  | [![Arch Linux](https://img.shields.io/badge/Arch_Linux-181717?style=for-the-badge&logo=archlinux&logoColor=white)](https://archlinux.org/) |
+| 🪟 **Compositor** | [![Hyprland](https://img.shields.io/badge/Hyprland-181717?style=for-the-badge&logo=hyprland&logoColor=white)](https://hyprland.org/) |
+| 📊 **Bar**   | [![Waybar](https://img.shields.io/badge/Waybar-181717?style=for-the-badge&logo=waybar&logoColor=white)](https://github.com/Alexays/Waybar) |
+| 🎛 **Panels** | [![Quickshell](https://img.shields.io/badge/Quickshell-181717?style=for-the-badge&logo=quickshell&logoColor=white)](https://github.com/Quickshell/Quickshell) — dynamic island, OSD, launcher |
+| 🖥 **Terminal** | [![Kitty](https://img.shields.io/badge/Kitty-181717?style=for-the-badge&logo=kitty&logoColor=white)](https://sw.kovidgoyal.net/kitty/) + [![Foot](https://img.shields.io/badge/Foot-181717?style=for-the-badge&logo=foot&logoColor=white)](https://codeberg.org/dnkl/foot) |
+| 🐚 **Shell** | [![Zsh](https://img.shields.io/badge/Zsh-181717?style=for-the-badge&logo=zsh&logoColor=white)](https://zsh.sourceforge.io/) + [![Starship](https://img.shields.io/badge/Starship-181717?style=for-the-badge&logo=starship&logoColor=white)](https://starship.rs/) |
+| 🔔 **Notifications** | [![Mako](https://img.shields.io/badge/Mako-181717?style=for-the-badge&logo=mako&logoColor=white)](https://github.com/emersion/mako) |
+| 🚀 **Launcher** | [![Quickshell](https://img.shields.io/badge/Quickshell-181717?style=for-the-badge&logo=quickshell&logoColor=white)](https://github.com/Quickshell/Quickshell) + [![Rofi](https://img.shields.io/badge/Rofi-181717?style=for-the-badge&logo=rofi&logoColor=white)](https://github.com/lbonn/rofi) |
+| 🌐 **Browser** | [![Zen Browser](https://img.shields.io/badge/Zen_Browser-181717?style=for-the-badge&logo=zen-browser&logoColor=white)](https://zen-browser.app/) |
+| 🔒 **Locker** | [![Quickshell](https://img.shields.io/badge/Quickshell-181717?style=for-the-badge&logo=quickshell&logoColor=white)](https://github.com/Quickshell/Quickshell) (QML lock screen) |
+| 📁 **Files** | [![Nautilus](https://img.shields.io/badge/Nautilus-181717?style=for-the-badge&logo=nautilus&logoColor=white)](https://gitlab.gnome.org/GNOME/nautilus) + [![Yazi](https://img.shields.io/badge/Yazi-181717?style=for-the-badge&logo=yazi&logoColor=white)](https://yazi-rs.github.io/) |
+| 📝 **Editor** | [![Neovim](https://img.shields.io/badge/Neovim-181717?style=for-the-badge&logo=neovim&logoColor=white)](https://neovim.io/) |
+| 🖼 **Wallpaper** | [![awww](https://img.shields.io/badge/awww-181717?style=for-the-badge&logo=awww&logoColor=white)](https://github.com/InioX/awww) + [![hyprwat](https://img.shields.io/badge/hyprwat-181717?style=for-the-badge&logo=hyprwat&logoColor=white)](https://github.com/InioX/hyprwat) |
+| 🎨 **Theming** | [![Matugen](https://img.shields.io/badge/Matugen-181717?style=for-the-badge&logo=matugen&logoColor=white)](https://github.com/InioX/matugen) |
+| 📡 **System Info** | [![Fastfetch](https://img.shields.io/badge/Fastfetch-181717?style=for-the-badge&logo=fastfetch&logoColor=white)](https://github.com/fastfetch-cli/fastfetch) |
+| 🎵 **Audio** | [![cmus](https://img.shields.io/badge/cmus-181717?style=for-the-badge&logo=cmus&logoColor=white)](https://cmus.github.io/) + [![Cava](https://img.shields.io/badge/Cava-181717?style=for-the-badge&logo=cava&logoColor=white)](https://github.com/karlstav/cava) + [![mpv](https://img.shields.io/badge/mpv-181717?style=for-the-badge&logo=mpv&logoColor=white)](https://mpv.io/) |
+| 📈 **Monitor** | [![btop](https://img.shields.io/badge/btop-181717?style=for-the-badge&logo=btop&logoColor=white)](https://github.com/aristocratos/btop) |
+| ⬇ **Downloads** | [![aria2](https://img.shields.io/badge/aria2-181717?style=for-the-badge&logo=aria2&logoColor=white)](https://aria2.github.io/) |
 
 </div>
 
 <br/>
 
----
+
+<div align="center">
+<img src="https://capsule-render.vercel.app/api?type=soft&color=A024F7&height=40"/>
+</div>
+
 
 ## 📝 Neovim
 
@@ -166,7 +185,11 @@ System dependencies (`--install-nvim-deps`): `wl-clipboard`, `python`, `imagemag
 
 <br/>
 
----
+
+<div align="center">
+<img src="https://capsule-render.vercel.app/api?type=soft&color=A024F7&height=40"/>
+</div>
+
 
 ## 📦 Prerequisites
 
@@ -254,7 +277,11 @@ fc-cache -f
 
 <br/>
 
----
+
+<div align="center">
+<img src="https://capsule-render.vercel.app/api?type=soft&color=A024F7&height=40"/>
+</div>
+
 
 ## ⚡ Installation
 
@@ -273,17 +300,29 @@ chmod +x install.sh
 
 ### What happens during install
 
-```
-[1] ✅  Verify core system utilities
-[2] 🔍  Check Hyprland ecosystem packages
-[3] 📦  Check Neovim system dependencies (Mason, language servers)
-[4] 💾  Backup all files that will be overwritten
-[5] 📁  Copy selected modules into $HOME
-[6] 🔑  chmod +x all scripts in ~/.local/bin/scripts
-[7] 🔤  Rebuild font cache via fc-cache -f
-[8] 🛤  Detect shell and optionally patch PATH
-[9] 📋  Print install summary with log path
-```
+<table align="center" bgcolor="#0d0d0d">
+<tr>
+<td>
+
+<pre align="left"><code>
+┌───────────────────────────────────────────────┐
+│  ●  ●  ●                                      │
+├───────────────────────────────────────────────┤
+│  [1] ✅  Verify core system utilities          │
+│  [2] 🔍  Check Hyprland ecosystem packages    │
+│  [3] 📦  Check Neovim system dependencies      │
+│  [4] 💾  Backup all files that will be         │
+│           overwritten                          │
+│  [5] 📁  Copy selected modules into $HOME      │
+│  [6] 🔑  chmod +x all scripts                 │
+│  [7] 🔤  Rebuild font cache (fc-cache -f)      │
+│  [8] 🛤  Detect shell, patch PATH              │
+│  [9] 📋  Print install summary + log path      │
+└───────────────────────────────────────────────┘</code></pre>
+
+</td>
+</tr>
+</table>
 
 Backups land here:
 
@@ -322,7 +361,11 @@ echo 'export PATH="$HOME/.local/bin:$PATH"' >> ~/.zshrc
 
 <br/>
 
----
+
+<div align="center">
+<img src="https://capsule-render.vercel.app/api?type=soft&color=A024F7&height=40"/>
+</div>
+
 
 ## 🚀 Post-Install
 
@@ -346,7 +389,11 @@ After the installer finishes:
 
 <br/>
 
----
+
+<div align="center">
+<img src="https://capsule-render.vercel.app/api?type=soft&color=A024F7&height=40"/>
+</div>
+
 
 ## 📂 File Layout
 
@@ -409,7 +456,11 @@ $HOME
 
 <br/>
 
----
+
+<div align="center">
+<img src="https://capsule-render.vercel.app/api?type=soft&color=A024F7&height=40"/>
+</div>
+
 
 ## 🚩 Installer Flags
 
@@ -480,7 +531,11 @@ Toggle a number, press Enter to confirm.
 
 <br/>
 
----
+
+<div align="center">
+<img src="https://capsule-render.vercel.app/api?type=soft&color=A024F7&height=40"/>
+</div>
+
 
 ## ⌨️ Keybinds
 
@@ -597,12 +652,36 @@ Toggle a number, press Enter to confirm.
 
 <br/>
 
----
+
+<div align="center">
+<img src="https://capsule-render.vercel.app/api?type=soft&color=A024F7&height=40"/>
+</div>
+
 
 ## 🎨 Theming
 
 <div align="center">
 <i>Every color, everywhere — driven by your wallpaper.</i>
+</div>
+
+<br/>
+
+<div align="center">
+
+<sub><i>The palette is derived live from your wallpaper.</i></sub>
+
+<br/>
+
+<img src="https://img.shields.io/badge/-191113?style=for-the-badge&color=191113" alt="background"/>
+<img src="https://img.shields.io/badge/-372e30?style=for-the-badge&color=372e30" alt="surface_container"/>
+<img src="https://img.shields.io/badge/-514347?style=for-the-badge&color=514347" alt="surface_variant"/>
+<img src="https://img.shields.io/badge/-deb9c3?style=for-the-badge&color=deb9c3" alt="secondary_container"/>
+<img src="https://img.shields.io/badge/-fdabc6?style=for-the-badge&color=fdabc6" alt="primary_container"/>
+<img src="https://img.shields.io/badge/-ffb0c9?style=for-the-badge&color=ffb0c9" alt="surface_tint"/>
+<img src="https://img.shields.io/badge/-ffebef?style=for-the-badge&color=ffebef" alt="primary"/>
+<img src="https://img.shields.io/badge/-ebb991?style=for-the-badge&color=ebb991" alt="tertiary_container"/>
+<img src="https://img.shields.io/badge/-d4267a?style=for-the-badge&color=d4267a" alt="source_color"/>
+
 </div>
 
 <br/>
@@ -642,7 +721,11 @@ Templates are provided for these components:
 
 <br/>
 
----
+
+<div align="center">
+<img src="https://capsule-render.vercel.app/api?type=soft&color=A024F7&height=40"/>
+</div>
+
 
 ## 🎛 Quickshell Panels & OSD
 
@@ -664,7 +747,11 @@ Quickshell processes are auto-started by `qs_manager.sh` on Hyprland startup. Th
 
 <br/>
 
----
+
+<div align="center">
+<img src="https://capsule-render.vercel.app/api?type=soft&color=A024F7&height=40"/>
+</div>
+
 
 ## 🌐 Zen Browser
 
@@ -694,7 +781,11 @@ Restart Zen. If your profile is not at `~/.zen/` (e.g. Flatpak installs use `~/.
 
 <br/>
 
----
+
+<div align="center">
+<img src="https://capsule-render.vercel.app/api?type=soft&color=A024F7&height=40"/>
+</div>
+
 
 ## 🔄 Updating
 
@@ -713,7 +804,11 @@ Each run creates a fresh backup. To roll back after an update:
 
 <br/>
 
----
+
+<div align="center">
+<img src="https://capsule-render.vercel.app/api?type=soft&color=A024F7&height=40"/>
+</div>
+
 
 ## 🔧 Troubleshooting
 
@@ -822,13 +917,21 @@ tail -50 /tmp/hypr-install-*.log 2>/dev/null
 
 <br/>
 
----
+
+<div align="center">
+<img src="https://capsule-render.vercel.app/api?type=soft&color=A024F7&height=40"/>
+</div>
+
 
 ## 🔐 Security
 
 Do **not** open a public GitHub issue for vulnerabilities. See [SECURITY.md](SECURITY.md) for responsible disclosure.
 
----
+
+<div align="center">
+<img src="https://capsule-render.vercel.app/api?type=soft&color=A024F7&height=40"/>
+</div>
+
 
 ## 🤝 Contributing
 
@@ -842,13 +945,21 @@ Need help or have questions? Start a discussion:
 
 For bugs and issues, use the **[Issue Tracker](https://github.com/Cybersnake223/Hypr/issues)**.
 
----
+
+<div align="center">
+<img src="https://capsule-render.vercel.app/api?type=soft&color=A024F7&height=40"/>
+</div>
+
 
 ## 📄 License
 
 MIT — see [LICENSE](LICENSE) for details.
 
----
+
+<div align="center">
+<img src="https://capsule-render.vercel.app/api?type=soft&color=A024F7&height=40"/>
+</div>
+
 
 <div align="center">
 
@@ -862,7 +973,11 @@ MIT — see [LICENSE](LICENSE) for details.
 
 </div>
 
----
+
+<div align="center">
+<img src="https://capsule-render.vercel.app/api?type=soft&color=A024F7&height=40"/>
+</div>
+
 
 <div align="center">
 
