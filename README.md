@@ -395,6 +395,12 @@ $HOME
 ├── auto-cpufreq.conf    ← CPU governor tuning
 ├── pacman.conf          ← Pacman parallel downloads + eye candy
 └── pacman.d/
+
+> ⚠️ **Security notes:** `etc/pacman.conf` sets `SigLevel = Optional TrustAll`, which
+> disables package signature verification — convenient on a personal machine but not
+> recommended to copy verbatim. `.config/environment.d/zen.conf` sets
+> `MOZ_DISABLE_RDD_SANDBOX=1`, which disables Firefox's media-decoder sandbox to
+> allow hardware video decode; a known tradeoff between security and performance.
 ```
 
 <br/>

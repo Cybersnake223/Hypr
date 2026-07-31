@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 nsxiv_otps=" -tfpo -z 100"
 max_pages=24
 sorting=relevance
@@ -121,7 +121,7 @@ image_ids="$($VIEWER $nsxiv_otps "$cachedir")"
 #########################
 
 # download the selected wall papers
-cd "$walldir"
+cd "$walldir" || { echo "Cannot enter wallpaper directory: $walldir" >&2; exit 1; }
 sh_info "downloading wallpapers..."
 for ids in $image_ids
 do

@@ -4,7 +4,7 @@
 
 hl.on("hyprland.start", function()
 	hl.exec_cmd("quickshell -p ~/.config/quickshell/dynamic/modules/Shell.qml")
-	hl.exec_cmd("quickshell -p /home/cybersnake/.config/quickshell/launcher/shell.qml")
+	hl.exec_cmd("quickshell -p ~/.config/quickshell/launcher/shell.qml")
 	hl.exec_cmd("rfkill unblock all")
 	hl.exec_cmd("/usr/lib/polkit-gnome/polkit-gnome-authentication-agent-1")
 	hl.exec_cmd("awww-daemon --format xrgb")

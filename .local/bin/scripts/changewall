@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 
 # ── Required Environment Variables ────────────────────────────────────────────
 # DIR                  Directory containing wallpapers
