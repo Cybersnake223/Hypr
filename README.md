@@ -135,26 +135,47 @@
 
 <div align="center">
 
-|     Role     | Tool                                                                                                                                 |
-| :----------: | :----------------------------------------------------------------------------------------------------------------------------------- |
-| 🏗 **Base**  | [![Arch Linux](https://img.shields.io/badge/Arch_Linux-181717?style=for-the-badge&logo=archlinux&logoColor=white)](https://archlinux.org/) |
-| 🪟 **Compositor** | [![Hyprland](https://img.shields.io/badge/Hyprland-181717?style=for-the-badge&logo=hyprland&logoColor=white)](https://hyprland.org/) |
-| 📊 **Bar**   | [![Waybar](https://img.shields.io/badge/Waybar-181717?style=for-the-badge&logo=waybar&logoColor=white)](https://github.com/Alexays/Waybar) |
-| 🎛 **Panels** | [![Quickshell](https://img.shields.io/badge/Quickshell-181717?style=for-the-badge&logo=quickshell&logoColor=white)](https://github.com/Quickshell/Quickshell) — dynamic island, OSD, launcher |
-| 🖥 **Terminal** | [![Kitty](https://img.shields.io/badge/Kitty-181717?style=for-the-badge&logo=kitty&logoColor=white)](https://sw.kovidgoyal.net/kitty/) + [![Foot](https://img.shields.io/badge/Foot-181717?style=for-the-badge&logo=foot&logoColor=white)](https://codeberg.org/dnkl/foot) |
-| 🐚 **Shell** | [![Zsh](https://img.shields.io/badge/Zsh-181717?style=for-the-badge&logo=zsh&logoColor=white)](https://zsh.sourceforge.io/) + [![Starship](https://img.shields.io/badge/Starship-181717?style=for-the-badge&logo=starship&logoColor=white)](https://starship.rs/) |
-| 🔔 **Notifications** | [![Mako](https://img.shields.io/badge/Mako-181717?style=for-the-badge&logo=mako&logoColor=white)](https://github.com/emersion/mako) |
-| 🚀 **Launcher** | [![Quickshell](https://img.shields.io/badge/Quickshell-181717?style=for-the-badge&logo=quickshell&logoColor=white)](https://github.com/Quickshell/Quickshell) + [![Rofi](https://img.shields.io/badge/Rofi-181717?style=for-the-badge&logo=rofi&logoColor=white)](https://github.com/lbonn/rofi) |
-| 🌐 **Browser** | [![Zen Browser](https://img.shields.io/badge/Zen_Browser-181717?style=for-the-badge&logo=zen-browser&logoColor=white)](https://zen-browser.app/) |
-| 🔒 **Locker** | [![Quickshell](https://img.shields.io/badge/Quickshell-181717?style=for-the-badge&logo=quickshell&logoColor=white)](https://github.com/Quickshell/Quickshell) (QML lock screen) |
-| 📁 **Files** | [![Nautilus](https://img.shields.io/badge/Nautilus-181717?style=for-the-badge&logo=nautilus&logoColor=white)](https://gitlab.gnome.org/GNOME/nautilus) + [![Yazi](https://img.shields.io/badge/Yazi-181717?style=for-the-badge&logo=yazi&logoColor=white)](https://yazi-rs.github.io/) |
-| 📝 **Editor** | [![Neovim](https://img.shields.io/badge/Neovim-181717?style=for-the-badge&logo=neovim&logoColor=white)](https://neovim.io/) |
-| 🖼 **Wallpaper** | [![awww](https://img.shields.io/badge/awww-181717?style=for-the-badge&logo=awww&logoColor=white)](https://github.com/InioX/awww) + [![hyprwat](https://img.shields.io/badge/hyprwat-181717?style=for-the-badge&logo=hyprwat&logoColor=white)](https://github.com/InioX/hyprwat) |
-| 🎨 **Theming** | [![Matugen](https://img.shields.io/badge/Matugen-181717?style=for-the-badge&logo=matugen&logoColor=white)](https://github.com/InioX/matugen) |
-| 📡 **System Info** | [![Fastfetch](https://img.shields.io/badge/Fastfetch-181717?style=for-the-badge&logo=fastfetch&logoColor=white)](https://github.com/fastfetch-cli/fastfetch) |
-| 🎵 **Audio** | [![cmus](https://img.shields.io/badge/cmus-181717?style=for-the-badge&logo=cmus&logoColor=white)](https://cmus.github.io/) + [![Cava](https://img.shields.io/badge/Cava-181717?style=for-the-badge&logo=cava&logoColor=white)](https://github.com/karlstav/cava) + [![mpv](https://img.shields.io/badge/mpv-181717?style=for-the-badge&logo=mpv&logoColor=white)](https://mpv.io/) |
-| 📈 **Monitor** | [![btop](https://img.shields.io/badge/btop-181717?style=for-the-badge&logo=btop&logoColor=white)](https://github.com/aristocratos/btop) |
-| ⬇ **Downloads** | [![aria2](https://img.shields.io/badge/aria2-181717?style=for-the-badge&logo=aria2&logoColor=white)](https://aria2.github.io/) |
+<sub><b>🛠 Core</b></sub>
+
+<br/>
+
+[![Arch Linux](https://img.shields.io/badge/Arch_Linux-A024F7?style=for-the-badge&logo=archlinux&logoColor=white)](https://archlinux.org/) [![Hyprland](https://img.shields.io/badge/Hyprland-A024F7?style=for-the-badge&logo=hyprland&logoColor=white)](https://hyprland.org/)
+
+<br/>
+
+<sub><b>🖥 UI</b></sub>
+
+<br/>
+
+[![Waybar](https://img.shields.io/badge/Waybar-A024F7?style=for-the-badge&logo=waybar&logoColor=white)](https://github.com/Alexays/Waybar) [![Quickshell](https://img.shields.io/badge/Quickshell-A024F7?style=for-the-badge&logo=quickshell&logoColor=white)](https://github.com/Quickshell/Quickshell) [![Mako](https://img.shields.io/badge/Mako-A024F7?style=for-the-badge&logo=mako&logoColor=white)](https://github.com/emersion/mako) [![Rofi](https://img.shields.io/badge/Rofi-A024F7?style=for-the-badge&logo=rofi&logoColor=white)](https://github.com/lbonn/rofi)
+
+<br/>
+
+<sub><b>⌨ Terminal & Shell</b></sub>
+
+<br/>
+
+[![Kitty](https://img.shields.io/badge/Kitty-A024F7?style=for-the-badge&logo=kitty&logoColor=white)](https://sw.kovidgoyal.net/kitty/) [![Foot](https://img.shields.io/badge/Foot-A024F7?style=for-the-badge&logo=foot&logoColor=white)](https://codeberg.org/dnkl/foot) [![Zsh](https://img.shields.io/badge/Zsh-A024F7?style=for-the-badge&logo=zsh&logoColor=white)](https://zsh.sourceforge.io/) [![Starship](https://img.shields.io/badge/Starship-A024F7?style=for-the-badge&logo=starship&logoColor=white)](https://starship.rs/)
+
+<br/>
+
+<sub><b>📦 Apps</b></sub>
+
+<br/>
+
+[![Zen Browser](https://img.shields.io/badge/Zen_Browser-A024F7?style=for-the-badge&logo=zen-browser&logoColor=white)](https://zen-browser.app/) [![Nautilus](https://img.shields.io/badge/Nautilus-A024F7?style=for-the-badge&logo=nautilus&logoColor=white)](https://gitlab.gnome.org/GNOME/nautilus) [![Yazi](https://img.shields.io/badge/Yazi-A024F7?style=for-the-badge&logo=yazi&logoColor=white)](https://yazi-rs.github.io/) [![Neovim](https://img.shields.io/badge/Neovim-A024F7?style=for-the-badge&logo=neovim&logoColor=white)](https://neovim.io/)
+
+<br/>
+
+[![cmus](https://img.shields.io/badge/cmus-A024F7?style=for-the-badge&logo=cmus&logoColor=white)](https://cmus.github.io/) [![Cava](https://img.shields.io/badge/Cava-A024F7?style=for-the-badge&logo=cava&logoColor=white)](https://github.com/karlstav/cava) [![mpv](https://img.shields.io/badge/mpv-A024F7?style=for-the-badge&logo=mpv&logoColor=white)](https://mpv.io/) [![btop](https://img.shields.io/badge/btop-A024F7?style=for-the-badge&logo=btop&logoColor=white)](https://github.com/aristocratos/btop) [![aria2](https://img.shields.io/badge/aria2-A024F7?style=for-the-badge&logo=aria2&logoColor=white)](https://aria2.github.io/) [![Fastfetch](https://img.shields.io/badge/Fastfetch-A024F7?style=for-the-badge&logo=fastfetch&logoColor=white)](https://github.com/fastfetch-cli/fastfetch)
+
+<br/>
+
+<sub><b>🎨 Theming</b></sub>
+
+<br/>
+
+[![Matugen](https://img.shields.io/badge/Matugen-A024F7?style=for-the-badge&logo=matugen&logoColor=white)](https://github.com/InioX/matugen) [![awww](https://img.shields.io/badge/awww-A024F7?style=for-the-badge&logo=awww&logoColor=white)](https://github.com/InioX/awww) [![hyprwat](https://img.shields.io/badge/hyprwat-A024F7?style=for-the-badge&logo=hyprwat&logoColor=white)](https://github.com/InioX/hyprwat)
 
 </div>
 
