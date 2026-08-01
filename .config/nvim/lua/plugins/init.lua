@@ -18,7 +18,20 @@ return {
       vim.cmd "colorscheme nightfox"
     end,
   },
-
+  -- ─────────────────────────────────────────────────────────
+  -- File System
+  -- ─────────────────────────────────────────────────────────
+  {
+    "stevearc/oil.nvim",
+    ---@module 'oil'
+    ---@type oil.SetupOpts
+    opts = {},
+    -- Optional dependencies
+    dependencies = { { "nvim-mini/mini.icons", opts = {} } },
+    -- dependencies = { "nvim-tree/nvim-web-devicons" }, -- use if you prefer nvim-web-devicons
+    -- Lazy loading is not recommended because it is very tricky to make it work correctly in all situations.
+    lazy = false,
+  },
   -- ─────────────────────────────────────────────────────────
   -- Icons
   -- ─────────────────────────────────────────────────────────
@@ -32,32 +45,15 @@ return {
     event = { "BufReadPost", "BufNewFile" },
     opts = {
       current_line_blame = false,
-      signs = { add = { text = "▎" }, change = { text = "▎" }, delete = { text = "󰍵" } },
+      signs = { add = { text = "▎" }, change = { text = " ▎" }, delete = { text = "󰍵" } },
       signs_staged_enable = true,
       preview_config = { border = "rounded" },
     },
   },
 
   -- ─────────────────────────────────────────────────────────
-  -- Git UI (Neogit)
+  -- LuaLine
   -- ─────────────────────────────────────────────────────────
-  {
-    "NeogitOrg/neogit",
-    cmd = "Neogit",
-    dependencies = { "nvim-lua/plenary.nvim", "sindrets/diffview.nvim" },
-    opts = {
-      kind = "tab",
-      integrations = { diffview = true },
-    },
-    keys = {
-      { "<leader>gg", "<cmd>Neogit<CR>", desc = "Neogit: Status" },
-      { "<leader>gc", "<cmd>Neogit commit<CR>", desc = "Neogit: Commit" },
-      { "<leader>gl", "<cmd>Neogit log<CR>", desc = "Neogit: Log" },
-      { "<leader>gP", "<cmd>Neogit pull<CR>", desc = "Neogit: Pull" },
-      { "<leader>gpu", "<cmd>Neogit push<CR>", desc = "Neogit: Push" },
-    },
-  },
-
   {
     "nvim-lualine/lualine.nvim",
     event = "VeryLazy",

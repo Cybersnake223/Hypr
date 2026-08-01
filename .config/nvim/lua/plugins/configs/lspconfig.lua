@@ -55,7 +55,7 @@ vim.lsp.config("ruff", {
 vim.filetype.add { extension = { mdx = "markdown" } }
 
 -- ── 4. Enable servers ─────────────────────────────────────
-vim.lsp.enable { "lua_ls", "ruff", "sqls", "bashls", "marksman", "cssls", "html", "jsonls", "yamlls" }
+vim.lsp.enable { "lua_ls", "ruff", "sqls", "bashls", "marksman", "cssls", "html", "jsonls", "yamlls", "qmlls" }
 
 -- ── 5. Diagnostics ────────────────────────────────────────
 vim.diagnostic.config {
@@ -73,7 +73,18 @@ vim.api.nvim_create_autocmd("CursorHold", {
   callback = function()
     local ft = vim.bo.filetype
     if
-      vim.tbl_contains({ "dbee", "lazy", "mason", "TelescopePrompt", "snacks_picker_input", "snacks_terminal", "lspinfo", "help", "neo-tree", "noice" }, ft)
+      vim.tbl_contains({
+        "dbee",
+        "lazy",
+        "mason",
+        "TelescopePrompt",
+        "snacks_picker_input",
+        "snacks_terminal",
+        "lspinfo",
+        "help",
+        "neo-tree",
+        "noice",
+      }, ft)
     then
       return
     end

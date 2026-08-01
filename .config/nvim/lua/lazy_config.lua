@@ -1,3 +1,0 @@
-return {
-  -- install = { colorscheme = { "nightfox" } },
-}
