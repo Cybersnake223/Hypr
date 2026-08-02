@@ -271,13 +271,9 @@ substitute_home_paths() {
   local file="$1"
   # Never rewrite through a symlink — sed -i would replace it with a regular file
   [[ -L "$file" ]] && return 0
-  case "${file,,}" in
-    *.conf|*.lua|*.css|*.toml|*.json|*.sh|*.rc|*.txt|*.cfg|*.desktop|*.service|*.timer|*.svg|*.js|*.py|*.md|*.html) ;;
-    *) return 0 ;;
-  esac
-  if grep -q "/home/cybersnake/" "$file" 2>/dev/null; then
-    run sed -i "s|/home/cybersnake/|$HOME/|g" "$file"
-  fi
+  # Skip binary files — grep -I treats them as not matching
+  grep -qI "/home/cybersnake/" "$file" 2>/dev/null || return 0
+  run sed -i "s|/home/cybersnake/|$HOME/|g" "$file"
 }
 
 # ══════════════════════════════════════════════════════════════════════════════
@@ -717,6 +713,8 @@ install_config() {
   while IFS= read -r -d '' subdir; do
     local name
     name="$(basename "$subdir")"
+    # zen/ is inert in ~/.config — applied manually to the browser profile (see README)
+    [[ "$name" == "zen" ]] && continue
     safe_copy_tree "$subdir" "$HOME/.config/$name" ".config/$name"
     [[ "$name" == "quickshell" ]] && has_quickshell=1
   done < <(find "$REPO_DIR/.config" -mindepth 1 -maxdepth 1 -type d -print0)

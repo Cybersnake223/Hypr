@@ -165,8 +165,8 @@ The Neovim config (`.config/nvim/`) is a modern Lua-based setup:
 | ------------------ | -------------------------------------------- |
 | **Plugin manager** | [lazy.nvim](https://github.com/folke/lazy.nvim) |
 | **LSP**            | [Mason](https://github.com/williamboman/mason.nvim) — auto-installs language servers |
-| **Completion**     | [nvim-cmp](https://github.com/hrsh7th/nvim-cmp) |
-| **Telescope**      | Fuzzy finder for files, grep, buffers        |
+| **Completion**     | [blink.cmp](https://github.com/Saghen/blink.cmp) |
+| **Pickers**        | [snacks.nvim](https://github.com/folke/snacks.nvim) — files, grep, buffers, explorer, terminal |
 | **Treesitter**     | Syntax highlighting and parsing              |
 
 System dependencies (`--install-nvim-deps`): `wl-clipboard`, `python`, `imagemagick`, `luarocks`, `shellcheck`, `gcc`, `nodejs`, `npm`.
@@ -212,8 +212,8 @@ System dependencies (`--install-nvim-deps`): `wl-clipboard`, `python`, `imagemag
 ### Core packages
 
 ```bash
-yay -S hyprland waybar foot kitty zsh rofi mako \
-        matugen-bin btop yazi fastfetch neovim starship \
+yay -S hyprland hyprlock hyprpaper waybar foot kitty zsh rofi mako \
+        matugen-bin awww-git btop yazi fastfetch neovim starship fontconfig \
         cava cmus mpv nautilus zen-browser-bin aria2 advcpmv \
         quickshell hyprwat
 ```
@@ -320,11 +320,18 @@ Backups land here:
 ~/.local/share/hypr-dotfiles-backups/<YYYYMMDD-HHMMSS>/
 ```
 
+> [!NOTE]
+> The base directory honors `$XDG_DATA_HOME` if set — e.g. `$XDG_DATA_HOME/hypr-dotfiles-backups/`.
+
 Each backup contains a `.manifest` of every installed path — used by `--uninstall` to restore precisely.
 
 ### Manual install (no script)
 
 The installer is just a Bash script — review it, then replicate manually:
+
+> [!WARNING]
+> The manual steps below **skip the home-path substitution** the real installer performs
+> (`/home/cybersnake/...` → `$HOME/...`). Prefer `./install.sh` unless you edit the configs yourself.
 
 ```bash
 for dir in .config .icons .themes .fonts; do
@@ -419,7 +426,7 @@ $HOME
 │   ├── Kvantum/          ← Qt theme engine
 │   ├── qt5ct/            ← Qt5 settings
 │   ├── qt6ct/            ← Qt6 settings
-│   ├── zen/              ← Zen Browser CSS (userChrome/userContent)
+│   ├── zen/              ← Zen Browser CSS — NOT installed; applied to ~/.zen/chrome manually (see Zen section)
 │   ├── xsettingsd/       ← X settings daemon (GTK theming bridge)
 │   ├── yay/              ← AUR helper config
 │   └── ...
@@ -494,7 +501,14 @@ $HOME
 
 # See all saved backups
 ./install.sh --list-backups
+
+# Show installer version
+./install.sh --version
 ```
+
+> [!NOTE]
+> `--install-deps`, `--install-all-deps`, and `--install-nvim-deps` all install the Neovim
+> system dependencies when the ecosystem dependency check is not skipped.
 
 ### `--select` module picker
 
@@ -688,7 +702,7 @@ matugen image /path/to/wallpaper.jpg
 
 ```bash
 # Force a refresh from the cached wallpaper
-matugen image ~/.config/hypr/wallpaper/current.jpeg
+matugen image ~/.config/hypr/wallpaper/current.png
 ```
 
 > [!NOTE]
@@ -755,7 +769,7 @@ Custom styling for [Zen Browser](https://zen-browser.app/) is included under `.c
 | `.config/zen/user.js`                  | Browser preferences                        |
 
 > [!IMPORTANT]
-> The installer does **not** copy `.config/zen/` automatically. Apply it manually:
+> The installer copies `.config/zen/` to `~/.config/zen/`, but that location is inert — Zen Browser reads its styles from your **profile** directory. Apply it manually:
 
 ```bash
 cp -r .config/zen/chrome "$HOME/.zen/chrome"

@@ -1,5 +1,5 @@
 return {
-    image = "/home/cybersnake/Pictures/Wallpapers/x8vvko.png",
+    image = "~/.config/hypr/wallpaper/current.png",
 
     background = "0xff191113",
 
