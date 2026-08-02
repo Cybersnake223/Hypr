@@ -240,12 +240,16 @@ yay -S hyprland hyprlock hyprpaper waybar foot kitty zsh rofi mako \
 | `eza`                                           | Better `ls`                               |
 | `fd`                                            | Better `find`                             |
 | `bat`                                           | Better `cat`                              |
+| `jq`                                            | JSON parsing (script dependency)          |
+| `libnotify`                                     | `notify-send` — desktop notifications (script dependency) |
+| `playerctl`                                     | Media controls (waybar / nowplaying)      |
 | `bleachbit`                                     | System cleaner script dependency          |
 | `neomutt`                                        | Terminal email client (`ALT + T`)          |
 | `aerc`                                          | Terminal email client (bundled config)     |
 | `localsend`                                     | Local file sharing (`ALT + S`)            |
 | `nsxiv`                                         | Image viewer (used in scripts)            |
 | `wiremix`                                       | Audio mixer (`ALT SHIFT + P`)            |
+| `adw-gtk3` *(AUR)*                               | GTK3 theme `adw-gtk3-dark` — referenced by the GTK configs but **not bundled**; without it GTK apps fall back to default Adwaita. Installed by `--install-all-deps` via your AUR helper |
 
 </details>
 
@@ -409,7 +413,7 @@ $HOME
 │   ├── yazi/             ← TUI file manager
 │   ├── mpv/              ← Media player
 │   ├── btop/             ← System monitor
-│   ├── matugen/          ← Matugen config + 20 color templates
+│   ├── matugen/          ← Matugen config + 28 color templates
 │   ├── fastfetch/        ← System info
 │   ├── starship.toml     ← Prompt
 │   ├── cava/             ← Audio visualizer
@@ -418,7 +422,7 @@ $HOME
 │   ├── aerc/             ← Terminal email client (bundled config)
 │   ├── cmus/             ← Music player
 │   ├── environment.d/    ← Environment variables
-│   ├── fsh/              ← Fish shell config
+│   ├── fsh/              ← fast-syntax-highlighting theme (Zsh, via `fast-theme`)
 │   ├── gtk-2.0/          ← GTK2 theme
 │   ├── gtk-3.0/          ← GTK3 CSS (Matugen-recolored)
 │   ├── gtk-4.0/          ← GTK4 CSS (Matugen-recolored)
@@ -718,7 +722,9 @@ Templates are provided for these components:
 | GTK4           | Kvantum        | hyprwat       |
 | Kitty          | SwayNC         | SwayOSD       |
 | Zen Browser    | MPV            | Cava          |
-| Neovim         | Foot           |               |
+| Neovim         | Foot           | qt5ct         |
+| qt6ct          | Quickshell     | Sway          |
+| aerc           | opencode       |               |
 
 > [!NOTE]
 > SwayNC, SwayOSD, and Zathura templates are bundled, but those apps are **not** part of the default stack (Mako handles notifications, Quickshell handles OSD). Install them yourself if you want to use those templates.

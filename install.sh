@@ -11,7 +11,7 @@
 #
 # Usage: ./install.sh [--yes] [--dry-run] [--no-backup] [--uninstall]
 #                     [--list-backups] [--select] [--install-deps] [--install-all-deps]
-#                     [--install-nvim-deps] [--skip-deps] [-h]
+#                     [--install-nvim-deps] [--skip-deps] [--version] [-h]
 
 set -Eeuo pipefail
 
@@ -20,7 +20,7 @@ set -Eeuo pipefail
 # ══════════════════════════════════════════════════════════════════════════════
 
 REPO_DIR="$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" && pwd)"
-SCRIPT_VERSION="2.2.0"
+SCRIPT_VERSION="2.3.0"
 TS="$(date +"%Y%m%d-%H%M%S")"
 BACKUP_BASE="${XDG_DATA_HOME:-$HOME/.local/share}/hypr-dotfiles-backups"
 BACKUP_DIR="$BACKUP_BASE/$TS"
@@ -335,6 +335,9 @@ ECOSYSTEM_DEPS=(
   "zen-browser:zen-browser-bin:aur:Web browser (web shortcuts)"
   "hyprwat:hyprwat:aur:Wallpaper picker GUI"
   "hyprpaper:hyprpaper:extra:Wallpaper daemon"
+  "notify-send:libnotify:extra:Desktop notifications (scripts)"
+  "playerctl:playerctl:extra:Media controls (waybar, nowplaying)"
+  "jq:jq:extra:JSON parsing (scripts)"
 )
 
 # Supporting packages from README (not checked by command existence)
@@ -371,6 +374,11 @@ SUPPORTING_DEPS=(
   "advcpmv"
 )
 
+# AUR packages installed by --install-all-deps via the AUR helper
+SUPPORTING_DEPS_AUR=(
+  "adw-gtk3"
+)
+
 cmd_install_deps() {
   local official=() aur=()
 
@@ -388,6 +396,7 @@ cmd_install_deps() {
   # If --install-all-deps, also install supporting packages
   if [[ "$OPT_INSTALL_ALL_DEPS" -eq 1 ]]; then
     official+=("${SUPPORTING_DEPS[@]}")
+    aur+=("${SUPPORTING_DEPS_AUR[@]}")
   fi
 
   [[ ${#official[@]} -eq 0 && ${#aur[@]} -eq 0 ]] && return 0
@@ -485,12 +494,12 @@ cmd_check_deps() {
 
   # Core system tools — hard requirement
   local core_missing=()
-  for cmd in cp mkdir find date sort; do
+  for cmd in cp mkdir find date sort sed grep basename dirname tr; do
     command -v "$cmd" >/dev/null 2>&1 || core_missing+=("$cmd")
   done
   [[ ${#core_missing[@]} -gt 0 ]] \
     && die "Missing core system utilities: ${core_missing[*]}"
-  success "  ✓  Core utilities (cp, mkdir, find, date)"
+  success "  ✓  Core utilities (cp, mkdir, find, date, sort, sed, grep, basename, dirname, tr)"
 
   [[ "$OPT_SKIP_DEPS" -eq 1 ]] && { warn "  Ecosystem check skipped (--skip-deps)"; return 0; }
 
