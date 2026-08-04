@@ -195,12 +195,19 @@ ShellRoot {
                     cache: true
                 }
 
-                MultiEffect {
-                    source: bgWallpaper
-                    anchors.fill: bgWallpaper
-                    blurEnabled: true
-                    blurMax: 28 * screenRoot.sc
-                    blur: 0.5
+                Item {
+                    id: wallpaperBlur
+                    width: parent.width / 2
+                    height: parent.height / 2
+                    scale: 2
+                    transformOrigin: Item.TopLeft
+                    MultiEffect {
+                        source: bgWallpaper
+                        anchors.fill: parent
+                        blurEnabled: true
+                        blurMax: 16
+                        blur: 0.4
+                    }
                 }
 
                 Rectangle {
@@ -404,13 +411,39 @@ ShellRoot {
                                 visible: avatarImg.status === Image.Ready
                             }
 
-                            Rectangle {
+                            // Animated rotating gradient border
+                            Item {
                                 anchors.fill: parent
-                                radius: height / 2
-                                color: "transparent"
-                                border.color: lockUI.failed ? root.mocha.red : (lockUI.authenticating ? root.mocha.peach : Qt.rgba(root.mocha.text.r, root.mocha.text.g, root.mocha.text.b, 0.5))
-                                border.width: Math.max(1, 3 * screenRoot.sc)
-                                Behavior on border.color { ColorAnimation { duration: 300 } }
+
+                                // Base circle with rotating gradient
+                                Rectangle {
+                                    id: avatarBorder
+                                    anchors.fill: parent
+                                    radius: height / 2
+                                    color: "transparent"
+                                    border.width: Math.max(1, 3 * screenRoot.sc)
+
+                                    // Simple rotating border effect using opacity pulse
+                                    SequentialAnimation on border.width {
+                                        running: lockUI.authenticating
+                                        loops: Animation.Infinite
+                                        NumberAnimation { from: Math.max(1, 3 * screenRoot.sc); to: Math.max(1, 5 * screenRoot.sc); duration: 1000; easing.type: Easing.InOutSine }
+                                        NumberAnimation { from: Math.max(1, 5 * screenRoot.sc); to: Math.max(1, 3 * screenRoot.sc); duration: 1000; easing.type: Easing.InOutSine }
+                                    }
+
+                                    Behavior on border.width { NumberAnimation { duration: 300 } }
+                                }
+
+                                // Overlay for auth state feedback
+                                Rectangle {
+                                    anchors.fill: parent
+                                    radius: height / 2
+                                    color: "transparent"
+                                    border.color: lockUI.failed ? root.mocha.red : "transparent"
+                                    border.width: lockUI.failed ? Math.max(1, 3 * screenRoot.sc) : 0
+                                    Behavior on border.color { ColorAnimation { duration: 300 } }
+                                    Behavior on border.width { NumberAnimation { duration: 300 } }
+                                }
                             }
                         }
 
@@ -774,9 +807,28 @@ ShellRoot {
                     clip: true
                     opacity: screenRoot.powerMenuOpen ? 1 : 0
 
-                    color: Qt.rgba(root.mocha.surface0.r, root.mocha.surface0.g, root.mocha.surface0.b, 0.95)
-                    border.color: Qt.rgba(root.mocha.mauve.r, root.mocha.mauve.g, root.mocha.mauve.b, 0.25)
-                    border.width: Math.max(1, 1 * screenRoot.sc)
+                    // Frosted glass background with blur
+                    Rectangle {
+                        anchors.fill: parent
+                        color: Qt.rgba(root.mocha.surface0.r, root.mocha.surface0.g, root.mocha.surface0.b, 0.85)
+                        radius: parent.radius
+
+                        layer.enabled: screenRoot.powerMenuOpen
+                        layer.effect: MultiEffect {
+                            blurEnabled: true
+                            blurMax: 12
+                            blur: 0.5
+                        }
+                    }
+
+                    // Border overlay
+                    Rectangle {
+                        anchors.fill: parent
+                        radius: parent.radius
+                        color: "transparent"
+                        border.color: Qt.rgba(root.mocha.mauve.r, root.mocha.mauve.g, root.mocha.mauve.b, 0.25)
+                        border.width: Math.max(1, 1 * screenRoot.sc)
+                    }
 
                     Behavior on height { NumberAnimation { duration: 350; easing.type: Easing.OutExpo } }
                     Behavior on opacity { NumberAnimation { duration: 250 } }

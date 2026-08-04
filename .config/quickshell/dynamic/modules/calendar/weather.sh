@@ -98,7 +98,7 @@ get_data() {
     # STANDARD API FETCH LOGIC
     # ---------------------------------------------------------
     forecast_url="http://api.openweathermap.org/data/2.5/forecast?APPID=${KEY}&id=${ID}&units=${UNIT}"
-    raw_api=$(curl -sf "$forecast_url")
+    raw_api=$(curl -sf --max-time 15 "$forecast_url")
     
     # Check if curl failed OR if OpenWeather returned an error (like 401 for pending keys)
     api_cod=$(echo "$raw_api" | jq -r '.cod' 2>/dev/null)

@@ -1,6 +1,5 @@
 import QtQuick
 import QtQuick.Layouts
-import QtQuick.Effects
 import "../WindowRegistry.js" as Registry
 
 Item {
@@ -16,12 +15,6 @@ Item {
             anchors.fill: parent
             radius: island.s(16)
             color: Qt.rgba(island.base.r, island.base.g, island.base.b, 0.5)
-            layer.enabled: true
-            layer.effect: MultiEffect {
-                blurEnabled: island.notifHistory.count > 0
-                blurMax: 16
-                blur: 0.7
-            }
         }
 
         ColumnLayout {
@@ -93,113 +86,212 @@ Item {
                 }
             }
 
-            // ── Notification history list ───────────────────────
-            ListView {
+            // ── Grouped notification list ────────────────────────
+            Flickable {
                 Layout.fillWidth: true; Layout.fillHeight: true
-                model: island.notifHistory
                 visible: island.notifHistory.count > 0
-                spacing: island.s(5); clip: true
+                clip: true
+                contentHeight: groupedCol.height
+                flickableDirection: Flickable.VerticalFlick
 
-                add:        Transition { NumberAnimation { property: "opacity"; from: 0; to: 1; duration: 200; easing.type: Easing.Bezier; easing.bezierCurve: SharedConfig.animEaseOut } }
-                remove:     Transition { NumberAnimation { property: "opacity"; from: 1; to: 0; duration: 150; easing.type: Easing.Bezier; easing.bezierCurve: SharedConfig.animEaseOut } }
-                displaced:  Transition { NumberAnimation { property: "y"; duration: 200; easing.type: Easing.Bezier; easing.bezierCurve: SharedConfig.animEaseOut } }
+                ColumnLayout {
+                    id: groupedCol
+                    width: parent.width
+                    spacing: island.s(4)
 
-                delegate: Rectangle {
-                    id: notifDelegate
-                    width: ListView.view.width; height: island.s(56); radius: island.s(12)
-                    color: Qt.rgba(island.surface0.r, island.surface0.g, island.surface0.b, 0.55)
-                    border.width: 1; border.color: Qt.rgba(island.text.r, island.text.g, island.text.b, 0.07)
-                    transform: Translate { id: dragOffset }
-                    opacity: 1.0 - Math.abs(dragOffset.x) / (width * 0.4)
+                    Repeater {
+                        model: island.notifGroups
 
-                    NumberAnimation {
-                        id: dragSpringBack; target: dragOffset; property: "x"
-                        duration: 300; easing.type: Easing.OutBack
-                    }
+                        delegate: ColumnLayout {
+                            required property var modelData
+                            required property int index
+                            spacing: island.s(3)
+                            Layout.fillWidth: true
 
-                    property color accentColor: island.appAccentColor(model.appName)
-                    property string timeAgo: {
-                        if (!model.timestamp) return ""
-                        let diff = Math.floor((Date.now() - model.timestamp) / 1000)
-                        if (diff < 60) return "now"
-                        if (diff < 3600) return Math.floor(diff / 60) + "m"
-                        if (diff < 86400) return Math.floor(diff / 3600) + "h"
-                        return Math.floor(diff / 86400) + "d"
-                    }
+                            property bool isExpanded: island.expandedGroup === modelData.app
+                            property color accentColor: island.appAccentColor(modelData.app)
 
-                    DragHandler {
-                        id: rowDrag
-                        target: null
-                        margin: island.s(12)
-                        onTranslationChanged: dragOffset.x = rowDrag.translation.x
-                        onActiveChanged: {
-                            if (!active) {
-                                if (rowDrag.translation.x > notifDelegate.width * 0.4) {
-                                    island.notifHistory.remove(index)
-                                } else {
-                                    dragSpringBack.start()
+                            // ── Group header ─────────────────────
+                            Rectangle {
+                                Layout.fillWidth: true
+                                Layout.preferredHeight: island.s(36)
+                                radius: island.s(10)
+                                color: groupHeaderMouse.containsMouse
+                                    ? Qt.rgba(accentColor.r, accentColor.g, accentColor.b, 0.15)
+                                    : Qt.rgba(island.surface0.r, island.surface0.g, island.surface0.b, 0.4)
+                                border.width: 1
+                                border.color: Qt.rgba(island.text.r, island.text.g, island.text.b, 0.06)
+                                Behavior on color { ColorAnimation { duration: 120 } }
+
+                                RowLayout {
+                                    anchors.fill: parent
+                                    anchors.leftMargin: island.s(10); anchors.rightMargin: island.s(10)
+                                    spacing: island.s(8)
+
+                                    // App icon
+                                    Rectangle {
+                                        width: island.s(24); height: island.s(24); radius: island.s(6); clip: true
+                                        color: Qt.rgba(accentColor.r, accentColor.g, accentColor.b, 0.12)
+                                        Layout.alignment: Qt.AlignVCenter
+                                        Image {
+                                            anchors.fill: parent; anchors.margins: island.s(4)
+                                            source: Registry.resolveIcon(modelData.icon || "")
+                                            fillMode: Image.PreserveAspectFit; asynchronous: true
+                                        }
+                                        Text {
+                                            anchors.centerIn: parent; text: "󰵙"
+                                            font.family: island.nerdFont; font.pixelSize: island.s(12); color: accentColor
+                                            visible: parent.children[0].status !== Image.Ready
+                                        }
+                                    }
+
+                                    // App name
+                                    Text {
+                                        text: modelData.app
+                                        font.family: island.monoFont; font.pixelSize: island.s(12); font.weight: Font.Bold
+                                        color: island.text; Layout.fillWidth: true
+                                    }
+
+                                    // Count badge
+                                    Rectangle {
+                                        visible: modelData.count > 1
+                                        width: countText.implicitWidth + island.s(10); height: island.s(18); radius: island.s(9)
+                                        color: Qt.rgba(accentColor.r, accentColor.g, accentColor.b, 0.2)
+                                        Text {
+                                            id: countText; anchors.centerIn: parent
+                                            text: modelData.count
+                                            font.family: island.monoFont; font.pixelSize: island.s(10); font.weight: Font.Black
+                                            color: accentColor
+                                        }
+                                    }
+
+                                    // Chevron
+                                    Text {
+                                        text: "󰅃"
+                                        font.family: island.nerdFont; font.pixelSize: island.s(14)
+                                        color: island.subtext0
+                                        rotation: isExpanded ? 180 : 0
+                                        Behavior on rotation { NumberAnimation { duration: 200; easing.type: Easing.OutCubic } }
+                                    }
+                                }
+
+                                MouseArea {
+                                    id: groupHeaderMouse; anchors.fill: parent; hoverEnabled: true
+                                    onClicked: {
+                                        if (isExpanded) island.expandedGroup = ""
+                                        else island.expandedGroup = modelData.app
+                                    }
                                 }
                             }
-                        }
-                    }
 
-                    RowLayout {
-                        anchors.fill: parent
-                        anchors.leftMargin: island.s(8); anchors.rightMargin: island.s(8)
-                        spacing: island.s(8)
+                            // ── Expanded notifications ───────────
+                            Repeater {
+                                model: isExpanded ? modelData.items : []
+                                delegate: Rectangle {
+                                    required property var modelData
+                                    required property int index
+                                    Layout.fillWidth: true
+                                    Layout.preferredHeight: island.s(44)
+                                    Layout.leftMargin: island.s(12)
+                                    radius: island.s(10)
+                                    color: Qt.rgba(island.surface0.r, island.surface0.g, island.surface0.b, 0.45)
+                                    border.width: 1; border.color: Qt.rgba(island.text.r, island.text.g, island.text.b, 0.05)
+                                    transform: Translate { id: notifDragOffset }
+                                    opacity: 1.0 - Math.abs(notifDragOffset.x) / (width * 0.4)
 
-                        Rectangle {
-                            width: island.s(3); Layout.fillHeight: true
-                            Layout.topMargin: island.s(12); Layout.bottomMargin: island.s(12)
-                            radius: island.s(2); color: notifDelegate.accentColor; opacity: 0.75
-                        }
+                                    NumberAnimation {
+                                        id: notifDragSpring; target: notifDragOffset; property: "x"
+                                        duration: 300; easing.type: Easing.OutBack
+                                    }
 
-                        Rectangle {
-                            Layout.preferredWidth: island.s(34); Layout.preferredHeight: island.s(34)
-                            radius: island.s(9); clip: true; Layout.alignment: Qt.AlignVCenter
-                            color: Qt.rgba(notifDelegate.accentColor.r, notifDelegate.accentColor.g, notifDelegate.accentColor.b, 0.12)
-                            Image {
-                                id: histIcon; anchors.fill: parent; anchors.margins: island.s(4)
-                                source: Registry.resolveIcon(model.icon || "")
-                                fillMode: Image.PreserveAspectFit; asynchronous: true
-                            }
-                            Text { anchors.centerIn: parent; text: "󰵙"; font.family: island.nerdFont; font.pixelSize: island.s(16); color: notifDelegate.accentColor; visible: histIcon.status !== Image.Ready }
-                        }
+                                    property string timeAgo: {
+                                        if (!modelData.timestamp) return ""
+                                        let diff = Math.floor((Date.now() - modelData.timestamp) / 1000)
+                                        if (diff < 60) return "now"
+                                        if (diff < 3600) return Math.floor(diff / 60) + "m"
+                                        if (diff < 86400) return Math.floor(diff / 3600) + "h"
+                                        return Math.floor(diff / 86400) + "d"
+                                    }
 
-                        ColumnLayout {
-                            Layout.fillWidth: true; Layout.alignment: Qt.AlignVCenter; spacing: island.s(1)
-                            RowLayout {
-                                Layout.fillWidth: true; spacing: island.s(4)
-                                Text {
-                                    text: (model.appName || "System") + (model.title ? "  ·  " + model.title : "")
-                                    font.family: island.monoFont; font.pixelSize: island.s(12); font.weight: Font.Bold
-                                    color: island.text; Layout.fillWidth: true; elide: Text.ElideRight
+                                    DragHandler {
+                                        id: notifRowDrag; target: null; margin: island.s(8)
+                                        onTranslationChanged: notifDragOffset.x = notifRowDrag.translation.x
+                                        onActiveChanged: {
+                                            if (!active) {
+                                                if (notifRowDrag.translation.x > parent.width * 0.4) {
+                                                    for (let i = 0; i < island.notifHistory.count; i++) {
+                                                        let n = island.notifHistory.get(i)
+                                                        if (n.appName === modelData.appName && n.title === modelData.title && n.body === modelData.body && n.timestamp === modelData.timestamp) {
+                                                            island.notifHistory.remove(i)
+                                                            break
+                                                        }
+                                                    }
+                                                    island.saveNotifHistory()
+                                                } else {
+                                                    notifDragSpring.start()
+                                                }
+                                            }
+                                        }
+                                    }
+
+                                    RowLayout {
+                                        anchors.fill: parent
+                                        anchors.leftMargin: island.s(8); anchors.rightMargin: island.s(8)
+                                        spacing: island.s(6)
+
+                                        Rectangle {
+                                            width: island.s(3); Layout.fillHeight: true
+                                            Layout.topMargin: island.s(10); Layout.bottomMargin: island.s(10)
+                                            radius: island.s(2); color: accentColor; opacity: 0.6
+                                        }
+
+                                        ColumnLayout {
+                                            Layout.fillWidth: true; Layout.alignment: Qt.AlignVCenter; spacing: island.s(1)
+                                            RowLayout {
+                                                Layout.fillWidth: true; spacing: island.s(4)
+                                                Text {
+                                                    text: modelData.title || modelData.body || ""
+                                                    font.family: island.monoFont; font.pixelSize: island.s(11); font.weight: Font.Bold
+                                                    color: island.text; Layout.fillWidth: true; elide: Text.ElideRight
+                                                }
+                                                Text {
+                                                    text: timeAgo
+                                                    font.family: island.monoFont; font.pixelSize: island.s(8); font.weight: Font.Medium
+                                                    color: island.subtext0; opacity: 0.5; visible: text !== ""
+                                                    Layout.alignment: Qt.AlignVCenter
+                                                }
+                                            }
+                                            Text {
+                                                text: modelData.body || ""
+                                                font.family: island.monoFont; font.pixelSize: island.s(9)
+                                                color: island.subtext0; Layout.fillWidth: true; elide: Text.ElideRight; visible: text !== ""
+                                            }
+                                        }
+
+                                        Rectangle {
+                                            Layout.preferredWidth: island.s(20); Layout.preferredHeight: island.s(20); radius: island.s(10)
+                                            color: notifDismissMouse.containsMouse
+                                                ? Qt.rgba(island.surface1.r, island.surface1.g, island.surface1.b, 0.8)
+                                                : "transparent"
+                                            Layout.alignment: Qt.AlignVCenter
+                                            Behavior on color { ColorAnimation { duration: 120 } }
+                                            Text { anchors.centerIn: parent; text: "󰅖"; font.family: island.nerdFont; font.pixelSize: island.s(10); color: island.subtext0 }
+                                            MouseArea {
+                                                id: notifDismissMouse; anchors.fill: parent; hoverEnabled: true
+                                                onClicked: {
+                                                    for (let i = 0; i < island.notifHistory.count; i++) {
+                                                        let n = island.notifHistory.get(i)
+                                                        if (n.appName === modelData.appName && n.title === modelData.title && n.body === modelData.body && n.timestamp === modelData.timestamp) {
+                                                            island.notifHistory.remove(i)
+                                                            break
+                                                        }
+                                                    }
+                                                    island.saveNotifHistory()
+                                                }
+                                            }
+                                        }
+                                    }
                                 }
-                                Text {
-                                    text: notifDelegate.timeAgo
-                                    font.family: island.monoFont; font.pixelSize: island.s(9); font.weight: Font.Medium
-                                    color: island.subtext0; opacity: 0.5; visible: text !== ""
-                                    Layout.alignment: Qt.AlignVCenter
-                                }
-                            }
-                            Text {
-                                text: model.body || ""
-                                font.family: island.monoFont; font.pixelSize: island.s(10)
-                                color: island.subtext0; Layout.fillWidth: true; elide: Text.ElideRight; visible: text !== ""
-                            }
-                        }
-
-                        Rectangle {
-                            Layout.preferredWidth: island.s(22); Layout.preferredHeight: island.s(22); radius: island.s(11)
-                            color: histDismissMouse.containsMouse
-                                ? Qt.rgba(island.surface1.r, island.surface1.g, island.surface1.b, 0.8)
-                                : "transparent"
-                            Layout.alignment: Qt.AlignVCenter
-                            Behavior on color { ColorAnimation { duration: 120 } }
-                            Text { anchors.centerIn: parent; text: "󰅖"; font.family: island.nerdFont; font.pixelSize: island.s(11); color: island.subtext0 }
-                            MouseArea {
-                                id: histDismissMouse; anchors.fill: parent; hoverEnabled: true
-                                onClicked: { island.notifHistory.remove(index); island.saveNotifHistory() }
                             }
                         }
                     }

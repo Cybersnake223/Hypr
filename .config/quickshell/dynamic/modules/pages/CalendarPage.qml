@@ -1,7 +1,6 @@
 import QtQuick
 import QtQuick.Layouts
 import QtQuick.Controls
-import QtQuick.Effects
 import Quickshell
 import Quickshell.Io
 
@@ -152,12 +151,6 @@ Item {
             anchors.fill: parent
             radius: island.s(16)
             color: Qt.rgba(island.base.r, island.base.g, island.base.b, 0.5)
-            layer.enabled: true
-            layer.effect: MultiEffect {
-                blurEnabled: true
-                blurMax: 16
-                blur: 0.7
-            }
         }
 
         RowLayout {
@@ -294,6 +287,14 @@ Item {
                                 }
                                 Behavior on color { ColorAnimation { duration: 120 } }
 
+                                // Subtle pulse animation for today cell
+                                SequentialAnimation on opacity {
+                                    running: isToday
+                                    loops: Animation.Infinite
+                                    NumberAnimation { from: 1.0; to: 0.7; duration: 1500; easing.type: Easing.InOutSine }
+                                    NumberAnimation { from: 0.7; to: 1.0; duration: 1500; easing.type: Easing.InOutSine }
+                                }
+
                                 Text {
                                     anchors.centerIn: parent
                                     text: dayNum > 0 ? dayNum.toString() : ""
@@ -403,9 +404,18 @@ Item {
                                 spacing: island.s(14)
 
                                 Text {
-                                    text: (function() { let c = curWeather(); return (c && c.icon) ? c.icon : ""; })()
+                                    id: weatherIconText
+                                    text: (function() { let c = curWeather(); return (c && c.icon) ? c.icon : ""; })()
                                     font.family: island.nerdFont; font.pixelSize: island.s(36)
                                     color: forecastData.length > 0 ? forecastData[0].hex : island.subtext0
+
+                                    // Subtle floating animation for weather icon
+                                    SequentialAnimation on y {
+                                        running: true
+                                        loops: Animation.Infinite
+                                        NumberAnimation { from: 0; to: -island.s(3); duration: 2000; easing.type: Easing.InOutSine }
+                                        NumberAnimation { from: -island.s(3); to: 0; duration: 2000; easing.type: Easing.InOutSine }
+                                    }
                                 }
 
                                 ColumnLayout {

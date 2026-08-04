@@ -210,6 +210,7 @@ PanelWindow {
                 currentIndex: 0
                 boundsBehavior: Flickable.StopAtBounds
                 focus: root.open && !searchInput.activeFocus
+                ScrollBar.vertical: ScrollBar { policy: ScrollBar.AsNeeded }
 
                 onCurrentIndexChanged: {
                     if (currentIndex >= 0)

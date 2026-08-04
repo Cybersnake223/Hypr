@@ -1,4 +1,5 @@
 import QtQuick
+import QtQuick.Controls
 import QtQuick.Layouts
 import QtQuick.Effects
 import Quickshell
@@ -20,9 +21,7 @@ PanelWindow {
     color: "transparent"
     visible: _showing
 
-    MatugenColors {
-        id: theme
-    }
+    MatugenColors { id: theme }
 
     property bool open: false
     property bool _showing: false
@@ -271,6 +270,7 @@ PanelWindow {
                 model: m
                 currentIndex: 0
                 boundsBehavior: Flickable.StopAtBounds
+                ScrollBar.vertical: ScrollBar { policy: ScrollBar.AsNeeded }
 
                 add: Transition {
                     NumberAnimation {
@@ -417,13 +417,13 @@ PanelWindow {
                     Layout.preferredHeight: 40
                     radius: 14
                     color: confirmIndex === 0
-                           ? Qt.rgba(0.8, 0.2, 0.2, 0.30)
-                           : Qt.rgba(0.8, 0.2, 0.2, 0.20)
+                           ? Qt.rgba(theme.red.r, theme.red.g, theme.red.b, 0.30)
+                           : Qt.rgba(theme.red.r, theme.red.g, theme.red.b, 0.20)
 
                     Text {
                         anchors.centerIn: parent
                         text: "Yes"
-                        color: "#ff6b6b"
+                        color: theme.red
                         font.pixelSize: 14
                         font.weight: Font.Bold
                     }

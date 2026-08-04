@@ -18,6 +18,7 @@ Variants {
 
             // Bind this specific bar instance to the dynamically assigned screen
             screen: modelData
+            WlrLayershell.namespace: "qs-topbar"
             
             anchors {
                 top: true
@@ -52,6 +53,21 @@ Variants {
             // exclusiveZone = height + top margin
             exclusiveZone: barHeight + s(2)
             color: "transparent"
+
+            // Top light-catch hairline (glass edge)
+            Rectangle {
+                anchors.top: parent.top
+                anchors.left: parent.left
+                anchors.right: parent.right
+                height: 1
+                color: "transparent"
+                gradient: Gradient {
+                    orientation: Gradient.Horizontal
+                    GradientStop { position: 0.3; color: "transparent" }
+                    GradientStop { position: 0.5; color: Qt.rgba(mocha.text.r, mocha.text.g, mocha.text.b, 0.22) }
+                    GradientStop { position: 0.7; color: "transparent" }
+                }
+            }
 
             // Dynamic Matugen Palette (aliased to shared tokens for consistency)
             readonly property color base75: SharedConfig.pillBg
@@ -245,15 +261,39 @@ Variants {
                                     Behavior on scale { NumberAnimation { duration: 250; easing.type: Easing.OutBack } }
 
                                     Rectangle {
+                                        id: wsActiveFill
                                         anchors.centerIn: parent
                                         width: parent.width
                                         height: barWindow.s(28)
                                         radius: barWindow.s(9)
                                         visible: stateLabel === "active"
+                                        clip: true
                                         gradient: Gradient {
                                             orientation: Gradient.Horizontal
                                             GradientStop { position: 0.0; color: barWindow.wsActiveColor; Behavior on color { enabled: barWindow.visible; ColorAnimation { duration: 300 } } }
                                             GradientStop { position: 1.0; color: Qt.lighter(barWindow.wsActiveColor, 1.3); Behavior on color { enabled: barWindow.visible; ColorAnimation { duration: 300 } } }
+                                        }
+
+                                        // Slow light-glint sweep
+                                        Rectangle {
+                                            id: wsSheen
+                                            width: wsActiveFill.width * 0.45
+                                            height: wsActiveFill.height * 2
+                                            y: -wsActiveFill.height * 0.5
+                                            rotation: 15
+                                            color: "transparent"
+                                            gradient: Gradient {
+                                                GradientStop { position: 0.0; color: "transparent" }
+                                                GradientStop { position: 0.5; color: Qt.rgba(barWindow.mocha.text.r, barWindow.mocha.text.g, barWindow.mocha.text.b, 0.30) }
+                                                GradientStop { position: 1.0; color: "transparent" }
+                                            }
+                                            SequentialAnimation on x {
+                                                running: wsActiveFill.visible
+                                                loops: Animation.Infinite
+                                                PauseAnimation { duration: 2200 }
+                                                NumberAnimation { from: -width; to: wsActiveFill.width + width; duration: 800; easing.type: Easing.InOutQuad }
+                                                PauseAnimation { duration: 2200 }
+                                            }
                                         }
                                     }
 

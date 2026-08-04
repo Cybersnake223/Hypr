@@ -102,6 +102,20 @@ Item {
                 color: island.text; elide: Text.ElideRight; Layout.maximumWidth: island.s(200)
             }
         }
+
+        // Stacked count badge
+        Rectangle {
+            visible: island.pendingNotifs.length > 1
+            width: island.s(18); height: island.s(18); radius: island.s(9)
+            color: Qt.rgba(island.peach.r, island.peach.g, island.peach.b, 0.85)
+            anchors.verticalCenter: parent.verticalCenter
+            Text {
+                anchors.centerIn: parent
+                text: island.pendingNotifs.length.toString()
+                font.family: island.monoFont; font.pixelSize: island.s(10); font.weight: Font.Black
+                color: island.base
+            }
+        }
     }
 
     // ── CENTER: Time / Date ──────────────────────────────────

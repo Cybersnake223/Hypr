@@ -21,9 +21,7 @@ PanelWindow {
     color: "transparent"
     visible: showing
 
-    MatugenColors {
-        id: theme
-    }
+    MatugenColors { id: theme }
 
     property bool open: false
     property bool showing: false
@@ -57,23 +55,21 @@ PanelWindow {
         return qi === q.length ? 1 : 0
     }
 
-    function appendFilteredApp(app) {
-        filteredModel.append({
-            name: app.name,
-            exec: app.exec,
-            icon: app.icon,
-            desktop: app.desktop,
-            terminal: app.terminal
-        })
-    }
-
     function filterApps(query) {
-        filteredModel.clear()
+        let items = []
 
         let q = (query || "").trim()
         if (!q) {
-            for (let i = 0; i < allAppsModel.count; ++i)
-                appendFilteredApp(allAppsModel.get(i))
+            for (let i = 0; i < allAppsModel.count; ++i) {
+                let app = allAppsModel.get(i)
+                items.push({
+                    name: app.name,
+                    exec: app.exec,
+                    icon: app.icon,
+                    desktop: app.desktop,
+                    terminal: app.terminal
+                })
+            }
         } else {
             let scored = []
             for (let i = 0; i < allAppsModel.count; ++i) {
@@ -87,10 +83,20 @@ PanelWindow {
                 return b.score - a.score || a.app.name.localeCompare(b.app.name)
             })
 
-            for (let i = 0; i < scored.length; ++i)
-                appendFilteredApp(scored[i].app)
+            for (let i = 0; i < scored.length; ++i) {
+                let app = scored[i].app
+                items.push({
+                    name: app.name,
+                    exec: app.exec,
+                    icon: app.icon,
+                    desktop: app.desktop,
+                    terminal: app.terminal
+                })
+            }
         }
 
+        filteredModel.clear()
+        filteredModel.append(items)
         appList.currentIndex = filteredModel.count > 0 ? 0 : -1
     }
 
@@ -380,6 +386,7 @@ PanelWindow {
                     currentIndex: 0
                     boundsBehavior: Flickable.StopAtBounds
                     focus: root.open && !searchInput.activeFocus
+                    ScrollBar.vertical: ScrollBar { policy: ScrollBar.AsNeeded }
 
                     onCurrentIndexChanged: {
                         if (currentIndex >= 0)
@@ -405,31 +412,18 @@ PanelWindow {
                     }
 
                     add: Transition {
-                        NumberAnimation {
-                            property: "opacity"
-                            from: 0
-                            to: 1
-                            duration: 250
-                            easing.type: Easing.OutCubic
-                        }
-
-                        NumberAnimation {
-                            property: "scale"
-                            from: 0.95
-                            to: 1
-                            duration: 250
-                            easing.type: Easing.OutBack
+                        SequentialAnimation {
+                            PauseAnimation { duration: ViewTransition.index * 40 }
+                            ParallelAnimation {
+                                NumberAnimation { property: "opacity"; from: 0; to: 1; duration: 200; easing.type: Easing.OutCubic }
+                                NumberAnimation { property: "scale"; from: 0.95; to: 1; duration: 250; easing.type: Easing.OutBack; easing.overshoot: 1.15 }
+                            }
                         }
                     }
 
                     delegate: Item {
                         width: appList.width
                         height: 54
-
-                        transform: Translate {
-                            id: itemSlide
-                            x: -15
-                        }
 
                         Rectangle {
                             id: itemDelegate
@@ -473,10 +467,41 @@ PanelWindow {
                                 anchors.right: parent.right
                                 anchors.rightMargin: 12
                                 anchors.verticalCenter: parent.verticalCenter
-                                spacing: 12
+                                spacing: 10
+
+                                Item {
+                                    width: 32
+                                    height: 32
+                                    anchors.verticalCenter: parent.verticalCenter
+
+                                    Image {
+                                        id: appIcon
+                                        anchors.fill: parent
+                                        source: model.icon
+                                        fillMode: Image.PreserveAspectFit
+                                        asynchronous: true
+                                        smooth: true
+                                        visible: status === Image.Ready
+                                    }
+
+                                    Rectangle {
+                                        anchors.fill: parent
+                                        radius: 8
+                                        visible: appIcon.status !== Image.Ready
+                                        color: Qt.rgba(theme.surface1.r, theme.surface1.g, theme.surface1.b, 0.6)
+
+                                        Text {
+                                            anchors.centerIn: parent
+                                            text: model.name.length > 0 ? model.name.charAt(0).toUpperCase() : "?"
+                                            font.pixelSize: 13
+                                            font.weight: Font.Black
+                                            color: theme.subtext0
+                                        }
+                                    }
+                                }
 
                                 Text {
-                                    width: parent.width - 14 - 12
+                                    width: parent.width - 32 - 10 - 14 - 12
                                     anchors.verticalCenter: parent.verticalCenter
                                     text: model.name
                                     color: appList.currentIndex === index ? theme.text : theme.subtext0
@@ -509,38 +534,6 @@ PanelWindow {
                                 radius: 4
                                 color: theme.mauve
                                 opacity: 0
-                            }
-                        }
-
-                        ParallelAnimation {
-                            id: fadeInAnim
-                            running: true
-
-                            NumberAnimation {
-                                target: itemDelegate
-                                property: "opacity"
-                                from: 0
-                                to: 1
-                                duration: 300
-                                easing.type: Easing.OutCubic
-                            }
-
-                            NumberAnimation {
-                                target: itemDelegate
-                                property: "scale"
-                                from: 0.95
-                                to: 1
-                                duration: 300
-                                easing.type: Easing.OutBack
-                            }
-
-                            NumberAnimation {
-                                target: itemSlide
-                                property: "x"
-                                from: -15
-                                to: 0
-                                duration: 300
-                                easing.type: Easing.OutCubic
                             }
                         }
 

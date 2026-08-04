@@ -28,7 +28,7 @@ touch "$OUTFILE"
 exec > >(stdbuf -oL tee -a "$OUTFILE")
 
 # ── 1. Keyboard — Hyprland socket, event-driven ──────────────────────────────
-{
+keyboard_block() {
     layout=$(hyprctl devices -j 2>/dev/null | jq -r '(.keyboards[] | select(.main == true) | .active_keymap) // .keyboards[0].active_keymap // empty' | head -n1)
     [[ -z "$layout" || "$layout" == "null" ]] && layout="US"
     echo "kblaout:$(echo "${layout:0:2}" | tr '[:lower:]' '[:upper:]')"
@@ -47,92 +47,66 @@ exec > >(stdbuf -oL tee -a "$OUTFILE")
             sleep 2
         done
     fi
-} &
+}
 
 # ── 2. Audio — pactl subscribe, event-driven ─────────────────────────────────
-{
-    get_volume() {
-        local vol=""
-        if command -v wpctl &> /dev/null; then
-            vol=$(wpctl get-volume @DEFAULT_AUDIO_SINK@ 2>/dev/null | awk '{print int($2*100)}')
-        fi
-        if [[ -z "$vol" ]] && command -v pamixer &> /dev/null; then
-            vol=$(pamixer --get-volume 2>/dev/null)
-        fi
-        echo "${vol:-0}"
-    }
-    is_muted() {
-        if command -v wpctl &> /dev/null; then
-            wpctl get-volume @DEFAULT_AUDIO_SINK@ 2>/dev/null | grep -q "MUTED" && echo "true" || echo "false"
-        elif command -v pamixer &> /dev/null; then
-            pamixer --get-mute 2>/dev/null | grep -q "true" && echo "true" || echo "false"
-        else
-            echo "false"
-        fi
-    }
-    get_volume_icon() {
-        local vol=$(get_volume)
-        local muted=$(is_muted)
-        if [ "$muted" = "true" ]; then echo "󰝟"
-        elif [ "$vol" -ge 70 ]; then echo "󰕾"
-        elif [ "$vol" -ge 30 ]; then echo "󰖀"
-        elif [ "$vol" -gt 0 ]; then echo "󰕿"
-        else echo "󰝟"; fi
-    }
+audio_block() {
     emit() {
-        echo "audioout:$(jq -n -c \
-            --arg volume "$(get_volume)" \
-            --arg icon "$(get_volume_icon)" \
-            --arg is_muted "$(is_muted)" \
-            '{volume: $volume, icon: $icon, is_muted: $is_muted}')"
+        local out vol=0 muted=false icon
+        if command -v wpctl &> /dev/null; then
+            out=$(wpctl get-volume @DEFAULT_AUDIO_SINK@ 2>/dev/null)
+        elif command -v pamixer &> /dev/null; then
+            vol=$(pamixer --get-volume 2>/dev/null)
+            [ "$(pamixer --get-mute 2>/dev/null)" = "true" ] && muted=true
+        fi
+        if [ -n "$out" ]; then
+            vol=$(awk '{print int($2*100)}' <<<"$out")
+            case "$out" in *MUTED*) muted=true;; esac
+        fi
+        if [ "$muted" = "true" ]; then icon="󰝟"
+        elif [ "$vol" -ge 70 ]; then icon="󰕾"
+        elif [ "$vol" -ge 30 ]; then icon="󰖀"
+        elif [ "$vol" -gt 0 ]; then icon="󰕿"
+        else icon="󰝟"; fi
+        echo "audioout:$(jq -n -c --arg volume "$vol" --arg icon "$icon" --arg is_muted "$muted" '{volume: $volume, icon: $icon, is_muted: $is_muted}')"
     }
     emit
     pactl subscribe 2>/dev/null \
-        | grep --line-buffered -E "sink|server" \
-        | while read -r _; do emit; done
-} &
+        | grep --line-buffered -E "sink|server|card" \
+        | while read -r _; do
+            while read -t 0.1 -r _; do :; done
+            emit
+          done
+}
 
 # ── 3. Mic — pactl subscribe, event-driven ───────────────────────────────────
-{
-    get_mic_volume() {
-        local vol=""
-        if command -v wpctl &> /dev/null; then
-            vol=$(wpctl get-volume @DEFAULT_AUDIO_SOURCE@ 2>/dev/null | awk '{print int($2*100)}')
-        fi
-        if [[ -z "$vol" ]] && command -v pamixer &> /dev/null; then
-            vol=$(pamixer --default-source --get-volume 2>/dev/null)
-        fi
-        echo "${vol:-0}"
-    }
-    is_mic_muted() {
-        if command -v wpctl &> /dev/null; then
-            wpctl get-volume @DEFAULT_AUDIO_SOURCE@ 2>/dev/null | grep -q "MUTED" && echo "true" || echo "false"
-        elif command -v pamixer &> /dev/null; then
-            pamixer --default-source --get-mute 2>/dev/null | grep -q "true" && echo "true" || echo "false"
-        else
-            echo "false"
-        fi
-    }
-    get_mic_icon() {
-        local muted=$(is_mic_muted)
-        if [ "$muted" = "true" ]; then echo "󰍭"
-        else echo "󰍬"; fi
-    }
+mic_block() {
     emit() {
-        echo "micout:$(jq -n -c \
-            --arg volume "$(get_mic_volume)" \
-            --arg icon "$(get_mic_icon)" \
-            --arg is_muted "$(is_mic_muted)" \
-            '{volume: $volume, icon: $icon, is_muted: $is_muted}')"
+        local out vol=0 muted=false icon="󰍬"
+        if command -v wpctl &> /dev/null; then
+            out=$(wpctl get-volume @DEFAULT_AUDIO_SOURCE@ 2>/dev/null)
+        elif command -v pamixer &> /dev/null; then
+            vol=$(pamixer --default-source --get-volume 2>/dev/null)
+            [ "$(pamixer --default-source --get-mute 2>/dev/null)" = "true" ] && muted=true
+        fi
+        if [ -n "$out" ]; then
+            vol=$(awk '{print int($2*100)}' <<<"$out")
+            case "$out" in *MUTED*) muted=true;; esac
+        fi
+        [ "$muted" = "true" ] && icon="󰍭"
+        echo "micout:$(jq -n -c --arg volume "$vol" --arg icon "$icon" --arg is_muted "$muted" '{volume: $volume, icon: $icon, is_muted: $is_muted}')"
     }
     emit
     pactl subscribe 2>/dev/null \
         | grep --line-buffered -E "source|server" \
-        | while read -r _; do emit; done
-} &
+        | while read -r _; do
+            while read -t 0.1 -r _; do :; done
+            emit
+          done
+}
 
 # ── 4. Caffeine — event-driven via inotifywait ─────────────────────────────────
-{
+caffeine_block() {
     state=$(cat /tmp/qs_caffeine 2>/dev/null || echo 'off')
     echo "caffeineout:$state"
     touch /tmp/qs_caffeine 2>/dev/null
@@ -141,11 +115,11 @@ exec > >(stdbuf -oL tee -a "$OUTFILE")
             state=$(cat /tmp/qs_caffeine 2>/dev/null || echo 'off')
             echo "caffeineout:$state"
           done
-} &
+}
 
 # ── 5. Polling watchers — combined loop ──────────────────────────────────────
 # Battery (60s), Pkg (30min+1800s), Weather (300s), WiFi (120s), BT (60s)
-{
+poll_loop() {
     next_bat=0
     next_pkg=60
     next_wth=30
@@ -196,6 +170,23 @@ exec > >(stdbuf -oL tee -a "$OUTFILE")
         if ((next_wifi <= 0)); then emit_wifi; next_wifi=120; fi
         if ((next_bt <= 0)); then emit_bt; next_bt=60; fi
     done
-} &
+}
 
-while true; do wait; done
+# ── Supervisor: restart any block that exits, instead of dying with it ───────
+run_forever() {
+    while true; do
+        "$@" || true
+        sleep 1
+    done
+}
+
+run_forever keyboard_block &
+run_forever audio_block &
+run_forever mic_block &
+run_forever caffeine_block &
+run_forever poll_loop &
+
+while true; do
+    wait -n 2>/dev/null || true
+    sleep 1
+done

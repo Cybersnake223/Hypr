@@ -1,4 +1,5 @@
 import QtQuick
+import QtQuick.Controls
 import QtQuick.Layouts
 import QtQuick.Effects
 import Quickshell
@@ -20,9 +21,7 @@ PanelWindow {
     color: "transparent"
     visible: _showing
 
-    MatugenColors {
-        id: theme
-    }
+    MatugenColors { id: theme }
 
     property bool open: false
     property bool _showing: false
@@ -62,7 +61,17 @@ PanelWindow {
 
         let item = menuModel.get(idx)
         root.open = false
-        screenshotProc.mode = item.action
+        let mode = item.action
+        screenshotProc.command = ["bash", "-c",
+            "SAVE_DIR=\"${HOME}/Pictures/Screenshots\"; mkdir -p \"$SAVE_DIR\"; " +
+            "FILE=\"$SAVE_DIR/$(date +'%Y-%m-%d_%H-%M-%S').png\"; " +
+            "case " + JSON.stringify(mode) + " in " +
+            "screen) sleep 0.5; grim - | tee \"$FILE\" | wl-copy ;; " +
+            "area) geo=$(slurp) || exit 0; grim -g \"$geo\" - | tee \"$FILE\" | wl-copy ;; " +
+            "window) while IFS=': ' read -r key rest; do case \"$key\" in at) set -- $rest; x=$1; y=$2 ;; size) set -- $rest; w=$1; h=$2 ;; esac; done < <(hyprctl activewindow); grim -g \"${x},${y} ${w}x${h}\" - | tee \"$FILE\" | wl-copy ;; " +
+            "5|10) sec=" + JSON.stringify(mode) + "; while (( sec > 0 )); do notify-send -t 900 \"Screenshot in\" \"$sec s remaining\"; sleep 1; ((sec--)); done; sleep 0.5; grim - | tee \"$FILE\" | wl-copy ;; " +
+            "esac; notify-send \"Screenshot saved\" \"$FILE\""
+        ]
         screenshotProc.running = false
         screenshotProc.running = true
     }
@@ -73,24 +82,7 @@ PanelWindow {
 
     Process {
         id: screenshotProc
-        property string mode: ""
-        command: ["bash", "-c",
-            "SAVE_DIR=\"${HOME}/Pictures/Screenshots\"; mkdir -p \"$SAVE_DIR\"; " +
-            "FILE=\"$SAVE_DIR/$(date +'%Y-%m-%d_%H-%M-%S').png\"; " +
-            "case " + JSON.stringify(screenshotProc.mode) + " in " +
-            "screen) sleep 0.2; grim - | tee \"$FILE\" | wl-copy ;; " +
-            "area) geo=$(slurp) || exit 0; grim -g \"$geo\" - | tee \"$FILE\" | wl-copy ;; " +
-            "window) " +
-            "while IFS=': ' read -r key rest; do " +
-            "case \"$key\" in at) set -- $rest; x=$1; y=$2 ;; size) set -- $rest; w=$1; h=$2 ;; esac; " +
-            "done < <(hyprctl activewindow); " +
-            "grim -g \"${x},${y} ${w}x${h}\" - | tee \"$FILE\" | wl-copy ;; " +
-            "5|10) " +
-            "sec=" + JSON.stringify(screenshotProc.mode) + "; " +
-            "while (( sec > 0 )); do notify-send -t 900 \"Screenshot in\" \"$sec s remaining\"; sleep 1; ((sec--)); done; " +
-            "sleep 0.2; grim - | tee \"$FILE\" | wl-copy ;; " +
-            "esac; notify-send \"Screenshot saved\" \"$FILE\""
-        ]
+        command: ["true"]
     }
 
     IpcHandler {
@@ -145,6 +137,7 @@ PanelWindow {
                 currentIndex: 0
                 boundsBehavior: Flickable.StopAtBounds
                 focus: root.open
+                ScrollBar.vertical: ScrollBar { policy: ScrollBar.AsNeeded }
 
                 Keys.onPressed: function(ev) {
                     if (ev.key === Qt.Key_Up) {

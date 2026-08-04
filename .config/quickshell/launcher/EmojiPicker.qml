@@ -104,18 +104,20 @@ PanelWindow {
   }
 
   function filterEmoji(query) {
-    filteredModel.clear()
     let q = query.trim().toLowerCase()
 
     if (!q) {
+      let items = []
       for (let i = 0; i < allEmojiModel.count; i++) {
         let e = allEmojiModel.get(i)
-        filteredModel.append({
+        items.push({
           emojiChar: e.emojiChar,
           name: e.name,
           keywords: e.keywords
         })
       }
+      filteredModel.clear()
+      filteredModel.append(items)
     } else {
       let scored = []
       for (let i = 0; i < allEmojiModel.count; i++) {
@@ -133,14 +135,17 @@ PanelWindow {
         return a.item.name.localeCompare(b.item.name)
       })
 
+      let items = []
       for (let i = 0; i < scored.length; i++) {
         let e = scored[i].item
-        filteredModel.append({
+        items.push({
           emojiChar: e.emojiChar,
           name: e.name,
           keywords: e.keywords
         })
       }
+      filteredModel.clear()
+      filteredModel.append(items)
     }
 
     emojiList.currentIndex = filteredModel.count > 0 ? 0 : -1
@@ -261,6 +266,7 @@ PanelWindow {
         model: filteredModel
         currentIndex: 0
         boundsBehavior: Flickable.StopAtBounds
+        ScrollBar.vertical: ScrollBar { policy: ScrollBar.AsNeeded }
 
         onCurrentIndexChanged: {
           if (currentIndex >= 0)
@@ -268,23 +274,18 @@ PanelWindow {
         }
 
         add: Transition {
-          NumberAnimation { property: "opacity"; from: 0; to: 1; duration: 250; easing.type: Easing.OutCubic }
-          NumberAnimation { property: "scale"; from: 0.95; to: 1; duration: 250; easing.type: Easing.OutBack }
+          SequentialAnimation {
+            PauseAnimation { duration: ViewTransition.index * 40 }
+            ParallelAnimation {
+              NumberAnimation { property: "opacity"; from: 0; to: 1; duration: 200; easing.type: Easing.OutCubic }
+              NumberAnimation { property: "scale"; from: 0.95; to: 1; duration: 250; easing.type: Easing.OutBack; easing.overshoot: 1.15 }
+            }
+          }
         }
 
         delegate: Item {
           width: emojiList.width
           height: 54
-
-          transform: Translate { id: itemSlide; x: -15 }
-
-          ParallelAnimation {
-            id: fadeInAnim
-            running: true
-            NumberAnimation { target: itemDelegate; property: "opacity"; from: 0; to: 1; duration: 300; easing.type: Easing.OutCubic }
-            NumberAnimation { target: itemDelegate; property: "scale"; from: 0.95; to: 1; duration: 300; easing.type: Easing.OutBack }
-            NumberAnimation { target: itemSlide; property: "x"; from: -15; to: 0; duration: 300; easing.type: Easing.OutCubic }
-          }
 
           Rectangle {
             id: itemDelegate

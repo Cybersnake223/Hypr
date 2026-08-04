@@ -17,11 +17,18 @@ Item {
             spacing: island.s(12)
 
             // ── Clock / Date ──────────────────────────────────
-            Text {
+            Item {
+                id: clockBlock
                 Layout.alignment: Qt.AlignHCenter
-                text: island.timeStrSec
-                font.family: island.monoFont; font.pixelSize: island.s(50); font.weight: Font.Black
-                color: island.mauve
+                width: island.s(132)
+                height: island.s(132)
+
+                Text {
+                    anchors.centerIn: parent
+                    text: island.timeStrSec
+                    font.family: island.monoFont; font.pixelSize: island.s(64); font.weight: Font.Black
+                    color: island.mauve
+                }
             }
             Text {
                 Layout.alignment: Qt.AlignHCenter
@@ -55,6 +62,7 @@ Item {
                     Layout.alignment: Qt.AlignVCenter
 
                     Text {
+                        id: wifiIcon
                         text: {
                             if (island.wifiSignal <= 0) return "󰤮";
                             if (island.wifiSignal < 25) return "󰤟";
@@ -64,6 +72,14 @@ Item {
                         }
                         font.family: island.nerdFont; font.pixelSize: island.s(24)
                         color: island.wifiSignal > 0 ? island.blue : island.overlay0
+
+                        // Subtle wave animation for active WiFi
+                        SequentialAnimation on opacity {
+                            running: island.wifiSignal > 0
+                            loops: Animation.Infinite
+                            NumberAnimation { from: 1.0; to: 0.6; duration: 1200; easing.type: Easing.InOutSine }
+                            NumberAnimation { from: 0.6; to: 1.0; duration: 1200; easing.type: Easing.InOutSine }
+                        }
                     }
                     ColumnLayout {
                         spacing: island.s(1)
@@ -168,8 +184,13 @@ Item {
                     Behavior on color { ColorAnimation { duration: 180 } }
                     border.color: island.dndEnabled ? island.mauve : island.overlay0
                     border.width: 1
-                    scale: dndMouse.containsMouse ? 1.08 : 1.0
-                    Behavior on scale { NumberAnimation { duration: 200; easing.type: Easing.OutBack } }
+                    scale: dndMouse.pressed ? 0.95 : (dndMouse.containsMouse ? 1.08 : 1.0)
+                    Behavior on scale {
+                        NumberAnimation {
+                            duration: dndMouse.pressed ? 100 : 200
+                            easing.type: dndMouse.pressed ? Easing.OutQuad : Easing.OutBack
+                        }
+                    }
                     Text {
                         anchors.centerIn: parent
                         text: island.dndEnabled ? "󰂛" : "󰂚"
@@ -197,8 +218,13 @@ Item {
                     Behavior on color { ColorAnimation { duration: 180 } }
                     border.color: island.caffeineEnabled ? island.green : island.overlay0
                     border.width: 1
-                    scale: caffeineMouse.containsMouse ? 1.08 : 1.0
-                    Behavior on scale { NumberAnimation { duration: 200; easing.type: Easing.OutBack } }
+                    scale: caffeineMouse.pressed ? 0.95 : (caffeineMouse.containsMouse ? 1.08 : 1.0)
+                    Behavior on scale {
+                        NumberAnimation {
+                            duration: caffeineMouse.pressed ? 100 : 200
+                            easing.type: caffeineMouse.pressed ? Easing.OutQuad : Easing.OutBack
+                        }
+                    }
                     Text {
                         anchors.centerIn: parent
                         text: ""
@@ -223,8 +249,13 @@ Item {
                     Behavior on color { ColorAnimation { duration: 180 } }
                     border.color: island.currentPage === "calendar" ? island.mauve : island.overlay0
                     border.width: 1
-                    scale: calMouse.containsMouse ? 1.08 : 1.0
-                    Behavior on scale { NumberAnimation { duration: 200; easing.type: Easing.OutBack } }
+                    scale: calMouse.pressed ? 0.95 : (calMouse.containsMouse ? 1.08 : 1.0)
+                    Behavior on scale {
+                        NumberAnimation {
+                            duration: calMouse.pressed ? 100 : 200
+                            easing.type: calMouse.pressed ? Easing.OutQuad : Easing.OutBack
+                        }
+                    }
                     Text {
                         anchors.centerIn: parent
                         text: ""
@@ -252,8 +283,13 @@ Item {
                         : Qt.rgba(island.peach.r, island.peach.g, island.peach.b, 0.3)
                     Behavior on border.color { ColorAnimation { duration: 180 } }
                     border.width: 1
-                    scale: notifMouse.containsMouse ? 1.08 : 1.0
-                    Behavior on scale { NumberAnimation { duration: 200; easing.type: Easing.OutBack } }
+                    scale: notifMouse.pressed ? 0.95 : (notifMouse.containsMouse ? 1.08 : 1.0)
+                    Behavior on scale {
+                        NumberAnimation {
+                            duration: notifMouse.pressed ? 100 : 200
+                            easing.type: notifMouse.pressed ? Easing.OutQuad : Easing.OutBack
+                        }
+                    }
                     Text {
                         anchors.centerIn: parent
                         text: "󰎟"

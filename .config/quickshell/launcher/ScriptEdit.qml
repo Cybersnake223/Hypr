@@ -221,6 +221,7 @@ PanelWindow {
         model: filteredModel
         currentIndex: 0
         boundsBehavior: Flickable.StopAtBounds
+        ScrollBar.vertical: ScrollBar { policy: ScrollBar.AsNeeded }
 
         add: Transition {
           NumberAnimation { property: "opacity"; from: 0; to: 1; duration: 250; easing.type: Easing.OutCubic }

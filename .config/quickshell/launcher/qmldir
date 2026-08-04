@@ -1,0 +1,13 @@
+singleton IpcBus 1.0 IpcBus.qml
+AppLauncher 1.0 AppLauncher.qml
+BluetoothMenu 1.0 BluetoothMenu.qml
+EditConfig 1.0 EditConfig.qml
+EmojiPicker 1.0 EmojiPicker.qml
+IpcWatcher 1.0 IpcWatcher.qml
+MatugenColors 1.0 MatugenColors.qml
+MenuCard 1.0 MenuCard.qml
+PowerMenu 1.0 PowerMenu.qml
+ScreenshotMenu 1.0 ScreenshotMenu.qml
+ScriptEdit 1.0 ScriptEdit.qml
+WatchVid 1.0 WatchVid.qml
+WifiMenu 1.0 WifiMenu.qml

@@ -6,12 +6,12 @@ Item {
 
     property int preferredWidth: {
         if (island.osdType === "layout" || island.osdType === "capslock" || island.osdType === "numlock") return island.s(160)
-        return island.s(200)
+        return island.s(120)
     }
 
     anchors.centerIn: parent
     width: preferredWidth
-    height: island.s(64)
+    height: island.s(48)
 
     // Keyboard layout / Caps / Num Lock
     Row {
@@ -42,21 +42,64 @@ Item {
     Column {
         visible: island.osdType === "volume" || island.osdType === "brightness"
         anchors.centerIn: parent
-        spacing: island.s(8)
+        spacing: island.s(6)
 
         Row {
             anchors.horizontalCenter: parent.horizontalCenter
             spacing: island.s(8)
 
+            // Circular progress ring
             Item {
-                width: island.s(28)
-                height: island.s(28)
+                width: island.s(44)
+                height: island.s(44)
                 anchors.verticalCenter: parent.verticalCenter
+
+                Canvas {
+                    id: ringCanvas
+                    anchors.fill: parent
+                    antialiasing: true
+                    property bool isVolume: island.osdType === "volume"
+                    onPaint: {
+                        let ctx = getContext("2d")
+                        ctx.reset()
+                        let c = width / 2
+                        let r = c - island.s(3)
+                        let lineW = island.s(4)
+                        let v = Math.max(0, Math.min(1, (parseInt(island.osdValue) || 0) / 100))
+
+                        ctx.lineWidth = lineW
+                        ctx.lineCap = "round"
+                        ctx.strokeStyle = Qt.rgba(island.surface1.r, island.surface1.g, island.surface1.b, 0.35).toString()
+                        ctx.beginPath()
+                        ctx.arc(c, c, r, 0, Math.PI * 2)
+                        ctx.stroke()
+
+                        if (v > 0) {
+                            let g = ctx.createLinearGradient(0, 0, width, height)
+                            if (ringCanvas.isVolume) {
+                                g.addColorStop(0, island.blue.toString())
+                                g.addColorStop(1, island.mauve.toString())
+                            } else {
+                                g.addColorStop(0, island.peach.toString())
+                                g.addColorStop(1, island.mocha.yellow.toString())
+                            }
+                            ctx.strokeStyle = g
+                            ctx.beginPath()
+                            ctx.arc(c, c, r, -Math.PI / 2, -Math.PI / 2 + v * Math.PI * 2)
+                            ctx.stroke()
+                        }
+                    }
+                    Connections {
+                        target: island
+                        function onOsdValueChanged() { ringCanvas.requestPaint() }
+                        function onOsdTypeChanged() { ringCanvas.requestPaint() }
+                    }
+                }
 
                 Rectangle {
                     anchors.centerIn: parent
-                    width: island.s(36)
-                    height: island.s(36)
+                    width: island.s(26)
+                    height: island.s(26)
                     radius: width / 2
                     color: island.osdType === "volume" ? island.blue : island.peach
                     opacity: {
@@ -85,41 +128,28 @@ Item {
                         if (b < 70) return "󰃟"
                         return "󰃠"
                     }
-                    font.family: island.nerdFont; font.pixelSize: island.s(20)
+                    font.family: island.nerdFont; font.pixelSize: island.s(15)
                     color: island.osdType === "volume" ? island.blue : island.peach
                 }
-            }
-            Text {
-                text: (parseInt(island.osdValue) || 0) + "%"
-                font.family: island.monoFont; font.pixelSize: island.s(18); font.weight: Font.Black
-                color: island.osdType === "volume" ? island.blue : island.peach
-                anchors.verticalCenter: parent.verticalCenter
-            }
-            Text {
-                text: "󰝛"
-                font.family: island.nerdFont; font.pixelSize: island.s(14)
-                color: island.red
-                anchors.verticalCenter: parent.verticalCenter
-                opacity: island.osdMuted ? 1.0 : 0.0
-                Behavior on opacity { PropertyAnimation { duration: 120 } }
-            }
-        }
 
-        Rectangle {
-            width: island.s(160); height: island.s(5); radius: island.s(3)
-            anchors.horizontalCenter: parent.horizontalCenter
-            color: Qt.rgba(island.surface1.r, island.surface1.g, island.surface1.b, 0.35)
-
-            Rectangle {
-                anchors.left: parent.left; anchors.top: parent.top; anchors.bottom: parent.bottom
-                width: parent.width * Math.max(0, Math.min(1, (parseInt(island.osdValue) || 0) / 100))
-                radius: parent.radius
-                gradient: Gradient {
-                    orientation: Gradient.Horizontal
-                    GradientStop { position: 0.0; color: island.osdType === "volume" ? island.blue  : island.peach }
-                    GradientStop { position: 1.0; color: island.osdType === "volume" ? island.mauve : island.yellow }
+                // Muted badge (ring bottom-right corner)
+                Text {
+                    anchors.right: parent.right
+                    anchors.bottom: parent.bottom
+                    anchors.rightMargin: -island.s(1)
+                    text: "󰝛"
+                    font.family: island.nerdFont; font.pixelSize: island.s(11)
+                    color: island.red
+                    opacity: island.osdMuted ? 1.0 : 0.0
+                    Behavior on opacity { PropertyAnimation { duration: 120 } }
                 }
-                Behavior on width { NumberAnimation { duration: 120; easing.type: Easing.OutCubic } }
+            }
+
+            Text {
+                anchors.verticalCenter: parent.verticalCenter
+                text: (parseInt(island.osdValue) || 0) + "%"
+                font.family: island.monoFont; font.pixelSize: island.s(15); font.weight: Font.Black
+                color: island.osdType === "volume" ? island.blue : island.peach
             }
         }
     }

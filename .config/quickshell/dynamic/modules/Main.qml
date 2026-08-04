@@ -40,9 +40,9 @@ PanelWindow {
         anchors.fill: parent
         enabled: masterWindow.isVisible
         focus: true
-        onClicked: switchWidget("hidden", "")
+        onClicked: switchWidget("hidden")
         Keys.onEscapePressed: {
-            switchWidget("hidden", "");
+            switchWidget("hidden");
             event.accepted = true;
         }
     }
@@ -53,7 +53,6 @@ PanelWindow {
 
     property string currentActive: "hidden"
     property bool isVisible: false
-    property string activeArg: ""
 
     // =========================================================
     // --- DAEMON: NOTIFICATION HANDLING
@@ -90,7 +89,7 @@ PanelWindow {
             masterWindow.requestActivate();
     }
 
-    function switchWidget(newWidget, arg) {
+    function switchWidget(newWidget) {
         Quickshell.execDetached(["bash", "-c", 'printf "%s\n" "$1" > /tmp/qs_active_widget', "qs_widget", newWidget]);
 
         if (newWidget === "hidden") {
@@ -98,51 +97,10 @@ PanelWindow {
             masterWindow.isVisible = false;
         } else {
             masterWindow.currentActive = newWidget;
-            masterWindow.activeArg = arg;
             masterWindow.isVisible = true;
         }
     }
 
     // =========================================================
-    // --- IPC: WIDGET SWITCHING (event-driven via inotify) ---
-    // Dynamic island events are handled directly by DynamicIsland.qml.
-    // =========================================================
-    Process {
-        id: ipcWatcher
-        command: ["bash", "-c",
-            "stdbuf -oL inotifywait -m -e close_write,moved_to /tmp/ --include 'qs_widget_state' 2>/dev/null | " +
-            "while read -r dir action file; do " +
-            "  v=$(cat /tmp/qs_widget_state 2>/dev/null); rm -f /tmp/qs_widget_state; " +
-            "  printf '{\"event\":\"QS_WIDGET\",\"data\":\"%s\"}\\n' \"$v\"; " +
-            "done"
-        ]
-        stdout: SplitParser {
-            splitMarker: "\n"
-            onRead: (line) => {
-                if (!line || line.trim() === "") return;
-                let obj;
-                try { obj = JSON.parse(line.trim()); } catch(e) { return; }
-                if (obj.event !== "QS_WIDGET") return;
-
-                let rawCmd = (obj.data || "").trim();
-                if (rawCmd === "") return;
-
-                let parts = rawCmd.split(":");
-                let cmd = parts[0];
-                let arg = parts.length > 1 ? parts[1] : "";
-
-                if (cmd === "close") {
-                    switchWidget("hidden", "");
-                } else if (cmd !== "") {
-                    if (cmd === masterWindow.currentActive) {
-                        switchWidget("hidden", "");
-                    } else {
-                        switchWidget(cmd, arg);
-                    }
-                }
-            }
-        }
-        running: true
-        onExited: running = true
-    }
+    // --- IPC: WIDGET SWITCHING (handled by Shell.qml watcher) ---
 }

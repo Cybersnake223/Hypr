@@ -24,7 +24,7 @@ Item {
 
     // ── Shared visual tokens (flat/minimal consistency) ──
     readonly property color hairline:       Qt.rgba(mocha.text.r, mocha.text.g, mocha.text.b, 0.10)
-    readonly property color pillBg:         Qt.rgba(mocha.base.r, mocha.base.g, mocha.base.b, 0.75)
+    readonly property color pillBg:         Qt.rgba(mocha.base.r, mocha.base.g, mocha.base.b, 0.55)
     readonly property color pillBgHover:    Qt.rgba(mocha.surface1.r, mocha.surface1.g, mocha.surface1.b, 0.5)
     readonly property color pillBgIdle:     Qt.rgba(mocha.surface1.r, mocha.surface1.g, mocha.surface1.b, 0.35)
     readonly property color surface2Soft:   Qt.rgba(mocha.surface2.r, mocha.surface2.g, mocha.surface2.b, 0.9)
@@ -53,18 +53,8 @@ Item {
     property bool micMuted: false
     property int pkgUpdates: 0
     property string weatherIcon: ""
-    property string weatherDesc: ""
     property string weatherTemp: "--°"
-    property string weatherMin: ""
-    property string weatherMax: ""
-    property string weatherFeels: ""
-    property string weatherHumidity: ""
-    property string weatherWind: ""
-    property string weatherPop: ""
     property string weatherHex: "#cdd6f4"
-    property string weatherUnit: "°C"
-    property string weatherCurIcon: ""
-    property string weatherCurTemp: ""
     property bool weatherLoaded: false
     property bool caffeineEnabled: false
     property string wifiSsid: ""
@@ -203,20 +193,12 @@ Item {
                     let parts = data.split("\t")
                     if (parts.length >= 10) {
                         config.weatherLoaded = true
-                        if (parts[1]) config.weatherDesc = parts[1]
                         let unit = parts[9] || "°C"
-                        config.weatherUnit = unit
-                        if (parts[2]) config.weatherMax = parts[2] + unit
-                        if (parts[3]) config.weatherMin = parts[3] + unit
-                        if (parts[4]) config.weatherFeels = parts[4] + unit
-                        if (parts[5]) config.weatherHumidity = parts[5]
-                        if (parts[6]) config.weatherWind = parts[6]
-                        if (parts[7]) config.weatherPop = parts[7]
-                        if (parts[8]) config.weatherHex = parts[8]
-                        config.weatherCurIcon = parts[10] || ""
-                        config.weatherCurTemp = parts[11] || ""
-                        config.weatherIcon = config.weatherCurIcon !== "" ? config.weatherCurIcon : (parts[0] || "")
-                        config.weatherTemp = config.weatherCurTemp !== "" ? config.weatherCurTemp : (parts[2] ? parts[2] + unit : "--°")
+                        let curIcon = parts[10] || ""
+                        let curTemp = parts[11] || ""
+                        config.weatherIcon = curIcon !== "" ? curIcon : (parts[0] || "")
+                        config.weatherTemp = curTemp !== "" ? curTemp : (parts[2] ? parts[2] + unit : "--°")
+                        config.weatherHex = parts[8]
                     }
                     return
                 }

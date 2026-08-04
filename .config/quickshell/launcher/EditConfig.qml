@@ -21,9 +21,7 @@ PanelWindow {
     color: "transparent"
     visible: _showing
 
-    MatugenColors {
-        id: theme
-    }
+    MatugenColors { id: theme }
 
     property bool open: false
     property bool _showing: false
@@ -244,6 +242,7 @@ PanelWindow {
                 currentIndex: 0
                 boundsBehavior: Flickable.StopAtBounds
                 focus: root.open && !searchInput.activeFocus
+                ScrollBar.vertical: ScrollBar { policy: ScrollBar.AsNeeded }
 
                 Keys.onPressed: function(event) {
                     if (event.key === Qt.Key_Up) {
