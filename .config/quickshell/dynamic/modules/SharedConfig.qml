@@ -52,6 +52,7 @@ Item {
     property string micIcon: "󰍬"
     property bool micMuted: false
     property int pkgUpdates: 0
+    property int prevPkgUpdates: 0
     property string weatherIcon: ""
     property string weatherTemp: "--°"
     property string weatherHex: "#cdd6f4"
@@ -62,6 +63,24 @@ Item {
     property bool bluetoothOn: false
     property int bluetoothDevices: 0
     property var btDeviceList: []
+
+    Connections {
+        target: config
+        function onPkgUpdatesChanged() {
+            if (config.prevPkgUpdates === 0 && config.pkgUpdates > 0) {
+                Quickshell.execDetached(["bash", "-c",
+                    'printf "%s\n" "$1" > /tmp/qs_island_notif',
+                    "qs_pkg_notif",
+                    JSON.stringify({
+                        appName: "Package Manager",
+                        title: "Package Updates Available",
+                        body: config.pkgUpdates + " package(s) can be updated"
+                    })
+                ]);
+            }
+            config.prevPkgUpdates = config.pkgUpdates
+        }
+    }
 
     Process {
         id: chassisDetector
