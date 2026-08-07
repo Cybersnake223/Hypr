@@ -73,7 +73,7 @@ PanelWindow {
                 iconUrl = n.appIcon;
             }
 
-            Quickshell.execDetached(["bash", "-c", 'printf "%s\n" "$1" > /tmp/qs_island_notif', "qs_notif_sender", JSON.stringify({
+            Quickshell.execDetached(["bash", "-c", 'printf "%s\n" "$1" >> /tmp/qs_island_notif', "qs_notif_sender", JSON.stringify({
                     appName: n.appName !== "" ? n.appName : "System",
                     title: n.summary !== "" ? n.summary : "No Title",
                     body: n.body !== "" ? n.body : "",

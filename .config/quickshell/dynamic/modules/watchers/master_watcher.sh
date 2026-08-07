@@ -22,8 +22,10 @@ if ! flock -n 200; then
 fi
 
 # ── Primary instance ─────────────────────────────────────────────────────────
-rm -f "$OUTFILE"
-trap 'rm -f "$LOCKFILE" "$OUTFILE"; kill 0' EXIT
+# Truncate instead of unlink: a surviving secondary's `tail -f` follows the
+# inode, so it must stay alive across primary rotations.
+: > "$OUTFILE"
+trap 'rm -f "$LOCKFILE"; kill 0' EXIT
 touch "$OUTFILE"
 exec > >(stdbuf -oL tee -a "$OUTFILE")
 

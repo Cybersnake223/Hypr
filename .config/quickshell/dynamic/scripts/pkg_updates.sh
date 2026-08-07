@@ -20,7 +20,7 @@ add_packages() {
         newver=$(awk '{print $4}' <<<"$line")
         pkgs_json=$(jq -c --arg n "$name" --arg o "$oldver" --arg v "$newver" \
             '. + [{name: $n, oldver: $o, newver: $v}]' <<<"$pkgs_json")
-    done < <(eval "$src" 2>/dev/null)
+    done < <(bash -c "$src" 2>/dev/null)
 }
 
 # Official repositories

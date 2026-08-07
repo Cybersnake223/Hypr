@@ -67,9 +67,9 @@ Item {
     Connections {
         target: config
         function onPkgUpdatesChanged() {
-            if (config.prevPkgUpdates === 0 && config.pkgUpdates > 0) {
+            if (config.pkgUpdates > 0 && config.pkgUpdates !== config.prevPkgUpdates) {
                 Quickshell.execDetached(["bash", "-c",
-                    'printf "%s\n" "$1" > /tmp/qs_island_notif',
+                    'printf "%s\n" "$1" >> /tmp/qs_island_notif',
                     "qs_pkg_notif",
                     JSON.stringify({
                         appName: "Package Manager",

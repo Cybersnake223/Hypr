@@ -110,7 +110,7 @@ ShellRoot {
 
                 property real globalOrbitAngle: 0
                 NumberAnimation on globalOrbitAngle {
-                    from: 0; to: Math.PI * 2; duration: 90000; loops: Animation.Infinite; running: screenRoot.isPlayingIntro || screenRoot.inputActive
+                    from: 0; to: Math.PI * 2; duration: 90000; loops: Animation.Infinite
                 }
 
                 // Auto-hide input field if empty and idle for 15 seconds
