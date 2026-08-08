@@ -9,7 +9,7 @@ Item {
     Item {
         anchors.fill: parent
         anchors.margins: island.s(20)
-        anchors.bottomMargin: island.s(72)
+        anchors.bottomMargin: island.s(44)
 
         Rectangle {
             anchors.fill: parent

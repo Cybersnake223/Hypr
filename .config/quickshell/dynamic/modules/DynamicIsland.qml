@@ -273,6 +273,9 @@ PanelWindow {
     property bool bluetoothOn: SharedConfig.bluetoothOn
     property int bluetoothDevices: SharedConfig.bluetoothDevices
     property var btDeviceList: SharedConfig.btDeviceList
+    property string volPercent: SharedConfig.volPercent
+    property string volIcon: SharedConfig.volIcon
+    property bool volMuted: SharedConfig.volMuted
 
     property bool notifDirty: false
     property real notifPulse: 0.9
@@ -286,7 +289,7 @@ PanelWindow {
     }
 
     property var pageRegistry: [
-        { name: "clock",    expandedH: 380, comp: clockPageComp },
+        { name: "clock",    expandedH: 440, comp: clockPageComp },
         { name: "notifs",   expandedH: 500, comp: notifsPageComp },
         { name: "calendar", expandedH: 520, comp: calendarPageComp }
     ]
@@ -800,7 +803,7 @@ PanelWindow {
                     return Qt.rgba(peach.r, peach.g, peach.b, notifPulse)
                 if (hovered)
                     return Qt.rgba(mauve.r, mauve.g, mauve.b, 0.65)
-                return Qt.rgba(mauve.r, mauve.g, mauve.b, 0.35)
+                return SharedConfig.hairline
             }
             Behavior on radius { PropertyAnimation { duration: 150; easing.type: Easing.OutCubic } }
             Behavior on opacity { PropertyAnimation { duration: 200; easing.type: Easing.Bezier; easing.bezierCurve: SharedConfig.animEaseOut } }
@@ -886,6 +889,51 @@ PanelWindow {
             }
         }
 
+        // ── Page indicator (bottom band) ──────────────────────────
+        Item {
+            id: pageIndicator
+            anchors.horizontalCenter: parent.horizontalCenter
+            anchors.bottom: parent.bottom
+            anchors.bottomMargin: islandWindow.s(14)
+            z: 12
+            visible: expanded && !notifActive
+            enabled: visible
+            opacity: visible ? 1.0 : 0.0
+            Behavior on opacity { PropertyAnimation { duration: 200; easing.type: Easing.Bezier; easing.bezierCurve: SharedConfig.animEaseOut } }
+
+            Row {
+                anchors.centerIn: parent
+                spacing: islandWindow.s(6)
+
+                Repeater {
+                    model: islandWindow.availablePages
+
+                    delegate: Item {
+                        required property var modelData
+                        width: dotMouse.containsMouse ? islandWindow.s(16) : (islandWindow.currentPage === modelData ? islandWindow.s(20) : islandWindow.s(6))
+                        height: islandWindow.s(6)
+                        Behavior on width { NumberAnimation { duration: 180; easing.type: Easing.OutCubic } }
+
+                        Rectangle {
+                            anchors.fill: parent
+                            radius: height / 2
+                            color: islandWindow.currentPage === modelData
+                                ? Qt.rgba(mauve.r, mauve.g, mauve.b, 0.95)
+                                : Qt.rgba(surface2.r, surface2.g, surface2.b, 0.55)
+                            Behavior on color { ColorAnimation { duration: 180 } }
+                        }
+
+                        MouseArea {
+                            id: dotMouse
+                            anchors.fill: parent
+                            anchors.margins: -islandWindow.s(4)
+                            hoverEnabled: true
+                            onClicked: islandWindow.currentPage = modelData
+                        }
+                    }
+                }
+            }
+        }
 
     }
 
