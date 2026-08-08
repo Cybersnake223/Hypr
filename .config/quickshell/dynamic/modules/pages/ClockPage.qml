@@ -241,12 +241,13 @@ Item {
                         radius: island.s(1.5)
                         color: Qt.rgba(island.surface1.r, island.surface1.g, island.surface1.b, 0.4)
                         clip: true
+                        visible: root.nowLen > 0
 
                         Rectangle {
                             anchors.verticalCenter: parent.verticalCenter
                             anchors.left: parent.left
                             height: parent.height
-                            width: parent.width * (root.nowLen > 0 ? Math.min(Math.max(root.nowPos / root.nowLen, 0), 1) : 0)
+                            width: parent.width * Math.min(Math.max(root.nowPos / root.nowLen, 0), 1)
                             radius: island.s(1.5)
                             color: island.mauve
                             Behavior on width { NumberAnimation { duration: 1000; easing.type: Easing.Linear } }
@@ -271,6 +272,7 @@ Item {
                     }
                     Text {
                         text: root.fmtTime(root.nowLen)
+                        visible: root.nowLen > 0
                         font.family: island.monoFont; font.pixelSize: island.s(9)
                         color: island.subtext0
                     }
